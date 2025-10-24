@@ -43,6 +43,11 @@ namespace Expo_Panel.Admin
                 // Load all speakers initially
                 LoadSpeakers("");
             }
+            if (Session["FlashMessage"] != null)
+            {
+                ShowMessage(Session["FlashMessage"].ToString(), "success");
+                Session.Remove("FlashMessage");
+            }
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
@@ -101,24 +106,69 @@ namespace Expo_Panel.Admin
                 if (mode == "add")
                 {
                     AddSpeaker(name, email, mobile, designation, company, isActive);
+                    Session["FlashMessage"] = "Speaker added successfully!";
                 }
                 else if (mode == "edit")
                 {
                     UpdateSpeaker(speakerId, name, email, mobile, designation, company, isActive);
+                    Session["FlashMessage"] = "Speaker updated successfully!";
                 }
-
-                // Reload grid
-                LoadSpeakers(txtSearch.Text.Trim());
 
                 // Clear form
                 ClearForm();
 
-                // Close modal via client script
-                ScriptManager.RegisterStartupScript(this, GetType(), "closeModal", "closeModal();", true);
+                // Redirect to prevent form resubmission
+                Response.Redirect(Request.RawUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (SqlException sqlEx)
+            {
+                string errorMsg = sqlEx.Message;
+                if (errorMsg.Contains("Email already exists"))
+                {
+                    ShowMessage("This email address is already registered in Speakers. Please use a different email.", "danger");
+                }
+                else
+                {
+                    ShowMessage("Database Error: " + errorMsg, "danger");
+                }
+
+                // Keep modal open on error
+                string escapedName = txtName.Text.Replace("'", "\\'");
+                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
+                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
+                string escapedDesignation = txtDesignation.Text.Replace("'", "\\'");
+                string escapedCompany = txtCompany.Text.Replace("'", "\\'");
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
+                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
+                    $"'{hdnSpeakerID.Value}', " +
+                    $"'{escapedName}', " +
+                    $"'{escapedEmail}', " +
+                    $"'{escapedMobile}', " +
+                    $"'{escapedDesignation}', " +
+                    $"'{escapedCompany}', " +
+                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
             }
             catch (Exception ex)
             {
                 ShowMessage("Error: " + ex.Message, "danger");
+
+                string escapedName = txtName.Text.Replace("'", "\\'");
+                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
+                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
+                string escapedDesignation = txtDesignation.Text.Replace("'", "\\'");
+                string escapedCompany = txtCompany.Text.Replace("'", "\\'");
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
+                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
+                    $"'{hdnSpeakerID.Value}', " +
+                    $"'{escapedName}', " +
+                    $"'{escapedEmail}', " +
+                    $"'{escapedMobile}', " +
+                    $"'{escapedDesignation}', " +
+                    $"'{escapedCompany}', " +
+                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
             }
         }
 
@@ -200,70 +250,46 @@ namespace Expo_Panel.Admin
 
         private void AddSpeaker(string name, string email, string mobile, string designation, string company, bool isActive)
         {
-            try
+            using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                using (SqlCommand cmd = new SqlCommand("sp_AddSpeaker", con))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_AddSpeaker", con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Name", name);
-                        cmd.Parameters.AddWithValue("@Email", email);
-                        cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
-                        cmd.Parameters.AddWithValue("@Designation", designation);
-                        cmd.Parameters.AddWithValue("@Company", company);
-                        cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
+                    cmd.Parameters.AddWithValue("@Designation", designation);
+                    cmd.Parameters.AddWithValue("@Company", company);
+                    cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
 
-                        // Add OUTPUT parameter
-                        SqlParameter outParam = new SqlParameter("@SpeakerID", SqlDbType.Int);
-                        outParam.Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(outParam);
+                    SqlParameter outParam = new SqlParameter("@SpeakerID", SqlDbType.Int);
+                    outParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outParam);
 
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-
-                        // Optional: Get the new ID
-                        int newSpeakerId = Convert.ToInt32(cmd.Parameters["@SpeakerID"].Value);
-                    }
+                    con.Open();
+                    cmd.ExecuteNonQuery();
                 }
-
-                ShowMessage("Speaker added successfully!", "success");
-            }
-            catch (Exception ex)
-            {
-                ShowMessage("Error adding speaker: " + ex.Message, "danger");
-                throw;
             }
         }
 
         private void UpdateSpeaker(int speakerId, string name, string email, string mobile, string designation, string company, bool isActive)
         {
-            try
+            using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                using (SqlCommand cmd = new SqlCommand("sp_UpdateSpeaker", con))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_UpdateSpeaker", con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
-                        cmd.Parameters.AddWithValue("@Name", name);
-                        cmd.Parameters.AddWithValue("@Email", email);
-                        cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
-                        cmd.Parameters.AddWithValue("@Designation", designation);
-                        cmd.Parameters.AddWithValue("@Company", company);
-                        cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
+                    cmd.Parameters.AddWithValue("@Designation", designation);
+                    cmd.Parameters.AddWithValue("@Company", company);
+                    cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
 
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                    }
+                    con.Open();
+                    cmd.ExecuteNonQuery();
                 }
-
-                ShowMessage("Speaker updated successfully!", "success");
-            }
-            catch (Exception ex)
-            {
-                ShowMessage("Error updating speaker: " + ex.Message, "danger");
-                throw;
             }
         }
 

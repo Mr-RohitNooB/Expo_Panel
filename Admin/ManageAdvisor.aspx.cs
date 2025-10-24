@@ -43,6 +43,13 @@ namespace Expo_Panel.Admin
                 // Load all advisors initially
                 LoadAdvisors("");
             }
+
+            // Handle flash messages
+            if (Session["FlashMessage"] != null)
+            {
+                ShowMessage(Session["FlashMessage"].ToString(), "success");
+                Session.Remove("FlashMessage");
+            }
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
@@ -99,26 +106,64 @@ namespace Expo_Panel.Admin
                 if (mode == "add")
                 {
                     AddAdvisor(name, email, mobile, isActive);
+                    Session["FlashMessage"] = "Advisor added successfully!";
                 }
                 else if (mode == "edit")
                 {
                     UpdateAdvisor(advisorId, name, email, mobile, isActive);
+                    Session["FlashMessage"] = "Advisor updated successfully!";
                 }
-
-                // Reload grid
-                LoadAdvisors(txtSearch.Text.Trim());
 
                 // Clear form
                 ClearForm();
 
-                // Close modal via client script
-                ScriptManager.RegisterStartupScript(this, GetType(), "closeModal", "closeModal();", true);
+                // Redirect to prevent form resubmission
+                Response.Redirect(Request.RawUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (SqlException sqlEx)
+            {
+                string errorMsg = sqlEx.Message;
+                if (errorMsg.Contains("Email already exists"))
+                {
+                    ShowMessage("This email address is already registered in Advisors. Please use a different email.", "danger");
+                }
+                else
+                {
+                    ShowMessage("Database Error: " + errorMsg, "danger");
+                }
+
+                // Keep modal open on error
+                string escapedName = txtName.Text.Replace("'", "\\'");
+                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
+                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
+                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
+                    $"'{hdnAdvisorID.Value}', " +
+                    $"'{escapedName}', " +
+                    $"'{escapedEmail}', " +
+                    $"'{escapedMobile}', " +
+                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
             }
             catch (Exception ex)
             {
                 ShowMessage("Error: " + ex.Message, "danger");
+
+                string escapedName = txtName.Text.Replace("'", "\\'");
+                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
+                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
+                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
+                    $"'{hdnAdvisorID.Value}', " +
+                    $"'{escapedName}', " +
+                    $"'{escapedEmail}', " +
+                    $"'{escapedMobile}', " +
+                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
             }
         }
+
 
         private void LoadAdvisors(string searchText)
         {
@@ -189,68 +234,53 @@ namespace Expo_Panel.Admin
 
         private void AddAdvisor(string name, string email, string mobile, bool isActive)
         {
-            try
+            using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                using (SqlCommand cmd = new SqlCommand("sp_AddAdvisor", con))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_AddAdvisor", con))
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
+                    cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+
+                    SqlParameter outParam = new SqlParameter("@AdvisorID", SqlDbType.Int)
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Name", name);
-                        cmd.Parameters.AddWithValue("@Email", email);
-                        cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
-                        cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outParam);
 
-                        // Add OUTPUT parameter
-                        SqlParameter outParam = new SqlParameter("@AdvisorID", SqlDbType.Int);
-                        outParam.Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(outParam);
-
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-
-                        // Optional: Get the new ID
-                        int newAdvisorId = Convert.ToInt32(cmd.Parameters["@AdvisorID"].Value);
-                    }
+                    con.Open();
+                    cmd.ExecuteNonQuery();
                 }
-
-                ShowMessage("Advisor added successfully!", "success");
             }
-            catch (Exception ex)
-            {
-                ShowMessage("Error adding advisor: " + ex.Message, "danger");
-                throw;
-            }
+            // Don't show message here - it will be shown after redirect
         }
+
 
         private void UpdateAdvisor(int advisorId, string name, string email, string mobile, bool isActive)
         {
-            try
+            using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                using (SqlCommand cmd = new SqlCommand("sp_UpdateAdvisor", con))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_UpdateAdvisor", con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@AdvisorID", advisorId);
-                        cmd.Parameters.AddWithValue("@Name", name);
-                        cmd.Parameters.AddWithValue("@Email", email);
-                        cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
-                        cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@AdvisorID", advisorId);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
+                    cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
 
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                    }
+                    con.Open();
+                    cmd.ExecuteNonQuery();
                 }
-
-                ShowMessage("Advisor updated successfully!", "success");
             }
-            catch (Exception ex)
-            {
-                ShowMessage("Error updating advisor: " + ex.Message, "danger");
-                throw;
-            }
+            // Don't show message here - it will be shown after redirect
         }
+
+
+
+
 
         private void ToggleAdvisorStatus(int advisorId)
         {

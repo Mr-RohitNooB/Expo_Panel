@@ -65,7 +65,7 @@ namespace Expo_Panel.Admin
                     }
 
                     // Get Speaker Count
-                    string speakerQuery = "SELECT COUNT(*) FROM TBL.Speaker WHERE IS_ACTIVE = 1";
+                    string speakerQuery = "SELECT COUNT(*) FROM TBL_Speaker WHERE IS_ACTIVE = 1";
                     using (SqlCommand cmd = new SqlCommand(speakerQuery, con))
                     {
                         object result = cmd.ExecuteScalar();
@@ -75,7 +75,7 @@ namespace Expo_Panel.Admin
                     // Get Exhibitor Count (if table exists)
                     try
                     {
-                        string exhibitorQuery = "SELECT COUNT(*) FROM TBL.Exhibitor WHERE IS_ACTIVE = 1";
+                        string exhibitorQuery = "SELECT COUNT(*) FROM TBL_Exhibitor WHERE IS_ACTIVE = 1";
                         using (SqlCommand cmd = new SqlCommand(exhibitorQuery, con))
                         {
                             object result = cmd.ExecuteScalar();

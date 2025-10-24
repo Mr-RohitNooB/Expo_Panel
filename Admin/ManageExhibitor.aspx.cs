@@ -43,6 +43,13 @@ namespace Expo_Panel.Admin
                 // Load all exhibitors initially
                 LoadExhibitors("");
             }
+
+            // Handle flash messages
+            if (Session["FlashMessage"] != null)
+            {
+                ShowMessage(Session["FlashMessage"].ToString(), "success");
+                Session.Remove("FlashMessage");
+            }
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
@@ -101,28 +108,27 @@ namespace Expo_Panel.Admin
                 if (mode == "add")
                 {
                     AddExhibitor(name, email, mobile, designation, company, isActive);
+                    Session["FlashMessage"] = "Exhibitor added successfully!";
                 }
                 else if (mode == "edit")
                 {
                     UpdateExhibitor(exhibitorId, name, email, mobile, designation, company, isActive);
+                    Session["FlashMessage"] = "Exhibitor updated successfully!";
                 }
-
-                // Reload grid
-                LoadExhibitors(txtSearch.Text.Trim());
 
                 // Clear form
                 ClearForm();
 
-                // Close modal via client script
-                ScriptManager.RegisterStartupScript(this, GetType(), "closeModal", "closeModal();", true);
+                // Redirect to prevent form resubmission
+                Response.Redirect(Request.RawUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             catch (SqlException sqlEx)
             {
-                // Handle SQL errors (including duplicate email)
                 string errorMsg = sqlEx.Message;
                 if (errorMsg.Contains("Email already exists"))
                 {
-                    ShowMessage("This email address is already registered. Please use a different email.", "danger");
+                    ShowMessage("This email address is already registered in Exhibitors. Please use a different email.", "danger");
                 }
                 else
                 {
@@ -130,29 +136,40 @@ namespace Expo_Panel.Admin
                 }
 
                 // Keep modal open on error
+                string escapedName = txtName.Text.Replace("'", "\\'");
+                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
+                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
+                string escapedDesignation = txtDesignation.Text.Replace("'", "\\'");
+                string escapedCompany = txtCompany.Text.Replace("'", "\\'");
+
                 ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
                     $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
                     $"'{hdnExhibitorID.Value}', " +
-                    $"'{txtName.Text.Replace("'", "\\'")}', " +
-                    $"'{txtEmail.Text.Replace("'", "\\'")}', " +
-                    $"'{txtMobile.Text.Replace("'", "\\'")}', " +
-                    $"'{txtDesignation.Text.Replace("'", "\\'")}', " +
-                    $"'{txtCompany.Text.Replace("'", "\\'")}', " +
+                    $"'{escapedName}', " +
+                    $"'{escapedEmail}', " +
+                    $"'{escapedMobile}', " +
+                    $"'{escapedDesignation}', " +
+                    $"'{escapedCompany}', " +
                     $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
             }
             catch (Exception ex)
             {
                 ShowMessage("Error: " + ex.Message, "danger");
 
-                // Keep modal open on error
+                string escapedName = txtName.Text.Replace("'", "\\'");
+                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
+                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
+                string escapedDesignation = txtDesignation.Text.Replace("'", "\\'");
+                string escapedCompany = txtCompany.Text.Replace("'", "\\'");
+
                 ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
                     $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
                     $"'{hdnExhibitorID.Value}', " +
-                    $"'{txtName.Text.Replace("'", "\\'")}', " +
-                    $"'{txtEmail.Text.Replace("'", "\\'")}', " +
-                    $"'{txtMobile.Text.Replace("'", "\\'")}', " +
-                    $"'{txtDesignation.Text.Replace("'", "\\'")}', " +
-                    $"'{txtCompany.Text.Replace("'", "\\'")}', " +
+                    $"'{escapedName}', " +
+                    $"'{escapedEmail}', " +
+                    $"'{escapedMobile}', " +
+                    $"'{escapedDesignation}', " +
+                    $"'{escapedCompany}', " +
                     $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
             }
         }
@@ -240,20 +257,14 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@Company", company);
                     cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
 
-                    // Add OUTPUT parameter
                     SqlParameter outParam = new SqlParameter("@ExhibitorID", SqlDbType.Int);
                     outParam.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(outParam);
 
                     con.Open();
-                    cmd.ExecuteNonQuery(); // This will throw SqlException if email exists
-
-                    // Optional: Get the new ID
-                    int newExhibitorId = Convert.ToInt32(cmd.Parameters["@ExhibitorID"].Value);
+                    cmd.ExecuteNonQuery();
                 }
             }
-
-            ShowMessage("Exhibitor added successfully!", "success");
         }
 
         private void UpdateExhibitor(int exhibitorId, string name, string email, string mobile, string designation, string company, bool isActive)
@@ -272,11 +283,9 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
 
                     con.Open();
-                    cmd.ExecuteNonQuery(); // This will throw SqlException if email exists
+                    cmd.ExecuteNonQuery();
                 }
             }
-
-            ShowMessage("Exhibitor updated successfully!", "success");
         }
 
         private void ToggleExhibitorStatus(int exhibitorId)
