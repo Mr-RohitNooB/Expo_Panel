@@ -562,9 +562,10 @@
                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, mobile, designation, or company..."></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
-                    <button type="button" class="btn btn-info" onclick="alert('Registration link will be configured')">
-                        <i class="fas fa-link"></i>Get Registration Link
-                    </button>
+                    <a href="/RegisterExhibitor.aspx" class="btn btn-info" target="_blank">
+                    <i class="fas fa-link"></i> Get Registration Link
+                    </a>
+
                     <button type="button" class="btn btn-success" onclick="openModal('add')">
                         <i class="fas fa-plus"></i>Add Exhibitor
                     </button>

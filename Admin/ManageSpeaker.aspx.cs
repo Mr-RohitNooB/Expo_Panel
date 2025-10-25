@@ -14,6 +14,16 @@ namespace Expo_Panel.Admin
             get { return ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString; }
         }
 
+        private int CurrentAdminID
+        {
+            get
+            {
+                if (Session["AdminID"] != null)
+                    return Convert.ToInt32(Session["AdminID"]);
+                return 0;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // Check if user is logged in
@@ -40,8 +50,10 @@ namespace Expo_Panel.Admin
                     lblSessionStatus.ForeColor = System.Drawing.Color.Red;
                 }
 
-                // Load all data initially
-                LoadSpeakers("");
+                // Load counts and set default filter
+                LoadStatusCounts();
+                LoadSpeakers(txtSearch.Text.Trim(), "Pending");
+                SetActiveFilterButton("Pending");
             }
 
             // Handle flash messages
@@ -63,11 +75,26 @@ namespace Expo_Panel.Admin
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string searchText = txtSearch.Text.Trim();
-            LoadSpeakers(searchText);
+            string currentFilter = hdnCurrentFilter.Value;
+
+            LoadSpeakers(searchText, currentFilter);
+
             if (!string.IsNullOrEmpty(searchText))
             {
-                ShowMessage($"Search results for '{searchText}'", "info");
+                ShowMessage($"Search results for '{searchText}' in {currentFilter} records", "info");
             }
+        }
+
+        protected void btnStatusFilter_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            string filterStatus = btn.CommandArgument;
+
+            hdnCurrentFilter.Value = filterStatus;
+
+            LoadSpeakers(txtSearch.Text.Trim(), filterStatus);
+            LoadStatusCounts();
+            SetActiveFilterButton(filterStatus);
         }
 
         protected void gvSpeakers_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -85,6 +112,10 @@ namespace Expo_Panel.Admin
             else if (e.CommandName == "QuickToggle")
             {
                 ToggleSpeakerStatus(speakerId);
+            }
+            else if (e.CommandName == "ApprovalAction")
+            {
+                LoadSpeakerForApproval(speakerId);
             }
         }
 
@@ -134,8 +165,6 @@ namespace Expo_Panel.Admin
                 {
                     ShowMessage("Database Error: " + errorMsg, "danger");
                 }
-
-                // DON'T reopen modal automatically - just show error and clear form
                 ClearForm();
             }
             catch (Exception ex)
@@ -145,7 +174,127 @@ namespace Expo_Panel.Admin
             }
         }
 
-        private void LoadSpeakers(string searchText)
+        protected void btnSaveApproval_Click(object sender, EventArgs e)
+        {
+            if (!Page.IsValid)
+                return;
+
+            try
+            {
+                int speakerId = Convert.ToInt32(hdnApprovalSpeakerID.Value);
+                string approvalStatus = ddlApprovalStatus.SelectedValue;
+                string remarks = txtApprovalRemarks.Text.Trim();
+
+                if (approvalStatus == "Rejected" && string.IsNullOrEmpty(remarks))
+                {
+                    ShowMessage("Remarks are required when rejecting a speaker.", "danger");
+                    return;
+                }
+
+                UpdateApprovalStatus(speakerId, approvalStatus, remarks);
+
+                Session["FlashMessage"] = $"Speaker {approvalStatus.ToLower()} successfully!";
+
+                Response.Redirect(Request.RawUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error updating approval status: " + ex.Message, "danger");
+            }
+        }
+
+        protected void cvRemarks_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            string approvalStatus = ddlApprovalStatus.SelectedValue;
+            string remarks = txtApprovalRemarks.Text.Trim();
+
+            if (approvalStatus == "Rejected" && string.IsNullOrEmpty(remarks))
+            {
+                args.IsValid = false;
+            }
+            else
+            {
+                args.IsValid = true;
+            }
+        }
+
+        protected void gvSpeakers_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                try
+                {
+                    DataRowView drv = (DataRowView)e.Row.DataItem;
+                    bool isActive = Convert.ToBoolean(drv["IS_ACTIVE"]);
+
+                    if (!isActive)
+                    {
+                        e.Row.CssClass += " inactive-row";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage("Error during row binding: " + ex.Message, "danger");
+                }
+            }
+        }
+
+        private void LoadStatusCounts()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerStatusCounts", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            int pendingCount = Convert.ToInt32(reader["PendingCount"]);
+                            int approvedCount = Convert.ToInt32(reader["ApprovedCount"]);
+                            int rejectedCount = Convert.ToInt32(reader["RejectedCount"]);
+
+                            btnPending.Text = $"Pending ({pendingCount})";
+                            btnApproved.Text = $"Approved ({approvedCount})";
+                            btnRejected.Text = $"Rejected ({rejectedCount})";
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading counts: " + ex.Message, "danger");
+            }
+        }
+
+        private void SetActiveFilterButton(string activeFilter)
+        {
+            btnPending.CssClass = "btn-filter";
+            btnApproved.CssClass = "btn-filter";
+            btnRejected.CssClass = "btn-filter";
+
+            switch (activeFilter)
+            {
+                case "Pending":
+                    btnPending.CssClass = "btn-filter active";
+                    break;
+                case "Approved":
+                    btnApproved.CssClass = "btn-filter active";
+                    break;
+                case "Rejected":
+                    btnRejected.CssClass = "btn-filter active";
+                    break;
+            }
+        }
+
+        private void LoadSpeakers(string searchText, string approvalStatus)
         {
             try
             {
@@ -155,6 +304,7 @@ namespace Expo_Panel.Admin
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SearchText", string.IsNullOrEmpty(searchText) ? (object)DBNull.Value : searchText);
+                        cmd.Parameters.AddWithValue("@ApprovalStatus", string.IsNullOrEmpty(approvalStatus) ? (object)DBNull.Value : approvalStatus);
 
                         DataTable dt = new DataTable();
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -221,6 +371,54 @@ namespace Expo_Panel.Admin
             }
         }
 
+        private void LoadSpeakerForApproval(int speakerId)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerById", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            hdnApprovalSpeakerID.Value = speakerId.ToString();
+
+                            string name = reader["Name"].ToString();
+                            string email = reader["Email"].ToString();
+                            string regType = reader["RegistrationType"].ToString();
+                            string designation = reader["Designation"].ToString();
+                            string company = reader["Company"].ToString();
+                            string approvalStatus = reader["ApprovalStatus"].ToString();
+                            string remarks = reader["Remarks"].ToString();
+
+                            // Escape single quotes for JavaScript
+                            name = name.Replace("'", "\\'");
+                            email = email.Replace("'", "\\'");
+                            regType = regType.Replace("'", "\\'");
+                            designation = designation.Replace("'", "\\'");
+                            company = company.Replace("'", "\\'");
+                            remarks = remarks.Replace("'", "\\'");
+
+                            string script = $"openApprovalModal({speakerId}, '{name}', '{email}', '{regType}', '{designation}', '{company}', '{approvalStatus}', '{remarks}');";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal", script, true);
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading speaker for approval: " + ex.Message, "danger");
+            }
+        }
+
         private void AddSpeaker(string name, string email, string mobile, string designation, string company, bool isActive)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
@@ -283,7 +481,9 @@ namespace Expo_Panel.Admin
                 }
 
                 ShowMessage("Speaker status updated successfully!", "success");
-                LoadSpeakers(txtSearch.Text.Trim());
+                string currentFilter = hdnCurrentFilter.Value;
+                LoadSpeakers(txtSearch.Text.Trim(), currentFilter);
+                LoadStatusCounts();
             }
             catch (Exception ex)
             {
@@ -291,28 +491,20 @@ namespace Expo_Panel.Admin
             }
         }
 
-        protected void gvSpeakers_RowDataBound(object sender, GridViewRowEventArgs e)
+        private void UpdateApprovalStatus(int speakerId, string approvalStatus, string remarks)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
+            using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-                try
+                using (SqlCommand cmd = new SqlCommand("sp_UpdateSpeakerApprovalStatus", con))
                 {
-                    // Get the data item bound to this row
-                    DataRowView drv = (DataRowView)e.Row.DataItem;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
+                    cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
+                    cmd.Parameters.AddWithValue("@ApprovedBy", CurrentAdminID);
 
-                    // Check the IS_ACTIVE status from the data
-                    bool isActive = Convert.ToBoolean(drv["IS_ACTIVE"]);
-
-                    if (!isActive)
-                    {
-                        // Add the CSS class to the entire row
-                        e.Row.CssClass += " inactive-row";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle any potential errors
-                    ShowMessage("Error during row binding: " + ex.Message, "danger");
+                    con.Open();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
@@ -335,12 +527,10 @@ namespace Expo_Panel.Admin
             string icon = type == "success" ? "fa-check-circle" : type == "info" ? "fa-info-circle" : "fa-exclamation-circle";
 
             litMessage.Text = $@"
-                <div class='alert {cssClass} alert-dismissible fade show' role='alert'>
-                    <i class='fas {icon}'></i> {message}
-                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                        <span aria-hidden='true'>&times;</span>
-                    </button>
-                </div>";
+        <div class='alert {cssClass}'>
+            <i class='fas {icon}'></i>
+            {message}
+        </div>";
         }
     }
 }

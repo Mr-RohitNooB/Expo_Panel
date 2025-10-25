@@ -72,6 +72,9 @@
     <Content Include="Admin\ManageAdvisor.aspx" />
     <Content Include="Admin\ManageExhibitor.aspx" />
     <Content Include="Admin\ManageSpeaker.aspx" />
+    <Content Include="RegisterAdvisor.aspx" />
+    <Content Include="RegisterExhibitor.aspx" />
+    <Content Include="RegisterSpeaker.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +114,27 @@
       <DependentUpon>ManageSpeaker.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterAdvisor.aspx.cs">
+      <DependentUpon>RegisterAdvisor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegisterAdvisor.aspx.designer.cs">
+      <DependentUpon>RegisterAdvisor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterExhibitor.aspx.cs">
+      <DependentUpon>RegisterExhibitor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegisterExhibitor.aspx.designer.cs">
+      <DependentUpon>RegisterExhibitor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterSpeaker.aspx.cs">
+      <DependentUpon>RegisterSpeaker.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegisterSpeaker.aspx.designer.cs">
+      <DependentUpon>RegisterSpeaker.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="gemini.env" />
