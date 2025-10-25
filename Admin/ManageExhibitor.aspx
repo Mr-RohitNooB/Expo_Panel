@@ -40,11 +40,11 @@
             align-items: center;
         }
 
-        .header h1 {
-            color: #ed8936;
-            font-size: 28px;
-            font-weight: 600;
-        }
+            .header h1 {
+                color: #ed8936;
+                font-size: 28px;
+                font-weight: 600;
+            }
 
         .dashboard-card {
             background: rgba(255, 255, 255, 0.95);
@@ -78,10 +78,10 @@
             flex: 1;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+            .form-control:focus {
+                outline: none;
+                border-color: #667eea;
+            }
 
         .btn {
             padding: 10px 20px;
@@ -101,11 +101,11 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background: #4338ca;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
-        }
+            .btn-primary:hover {
+                background: #4338ca;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            }
 
         .btn-success {
             background: #10b981;
@@ -114,9 +114,9 @@
             font-size: 13px;
         }
 
-        .btn-success:hover {
-            background: #059669;
-        }
+            .btn-success:hover {
+                background: #059669;
+            }
 
         .btn-edit {
             background: #3b82f6;
@@ -125,9 +125,9 @@
             font-size: 13px;
         }
 
-        .btn-edit:hover {
-            background: #2563eb;
-        }
+            .btn-edit:hover {
+                background: #2563eb;
+            }
 
         .btn-danger {
             background: #ef4444;
@@ -136,9 +136,9 @@
             font-size: 13px;
         }
 
-        .btn-danger:hover {
-            background: #dc2626;
-        }
+            .btn-danger:hover {
+                background: #dc2626;
+            }
 
         .btn-inactive {
             background: #6b7280;
@@ -147,9 +147,9 @@
             font-size: 13px;
         }
 
-        .btn-inactive:hover {
-            background: #4b5563;
-        }
+            .btn-inactive:hover {
+                background: #4b5563;
+            }
 
         .grid-container {
             overflow-x: auto;
@@ -160,27 +160,27 @@
             border-collapse: collapse;
         }
 
-        table thead {
-            background: #f8fafc;
-        }
+            table thead {
+                background: #f8fafc;
+            }
 
-        table th {
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #475569;
-            border-bottom: 2px solid #e2e8f0;
-        }
+            table th {
+                padding: 15px;
+                text-align: left;
+                font-weight: 600;
+                color: #475569;
+                border-bottom: 2px solid #e2e8f0;
+            }
 
-        table td {
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #334155;
-        }
+            table td {
+                padding: 15px;
+                border-bottom: 1px solid #e2e8f0;
+                color: #334155;
+            }
 
-        table tbody tr:hover {
-            background: #f8fafc;
-        }
+            table tbody tr:hover {
+                background: #f8fafc;
+            }
 
         /* Toggle Switch Styles */
         .toggle-switch {
@@ -190,11 +190,11 @@
             height: 30px;
         }
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
 
         .toggle-slider {
             position: absolute;
@@ -212,26 +212,26 @@
             padding: 0 8px;
         }
 
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
+            .toggle-slider:before {
+                position: absolute;
+                content: "";
+                height: 22px;
+                width: 22px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
 
         .toggle-switch input:checked + .toggle-slider {
             background-color: #10b981;
         }
 
-        .toggle-switch input:checked + .toggle-slider:before {
-            transform: translateX(30px);
-        }
+            .toggle-switch input:checked + .toggle-slider:before {
+                transform: translateX(30px);
+            }
 
         .toggle-icon {
             font-size: 12px;
@@ -286,11 +286,11 @@
             backdrop-filter: blur(4px);
         }
 
-        .modal.show {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+            .modal.show {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
         .modal-content {
             background: white;
@@ -307,6 +307,7 @@
                 opacity: 0;
                 transform: translateY(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -320,10 +321,10 @@
             margin-bottom: 25px;
         }
 
-        .modal-header h2 {
-            color: #4f46e5;
-            font-size: 22px;
-        }
+            .modal-header h2 {
+                color: #4f46e5;
+                font-size: 22px;
+            }
 
         .close-btn {
             background: none;
@@ -339,12 +340,25 @@
             justify-content: center;
         }
 
-        .close-btn:hover {
-            color: #ef4444;
-        }
+            .close-btn:hover {
+                color: #ef4444;
+            }
 
         .form-group {
             margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         .form-group label {
@@ -363,11 +377,11 @@
             font-size: 14px;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+            .form-group input:focus,
+            .form-group select:focus {
+                outline: none;
+                border-color: #667eea;
+            }
 
         .modal-footer {
             display: flex;
@@ -381,9 +395,9 @@
             color: #475569;
         }
 
-        .btn-cancel:hover {
-            background: #cbd5e1;
-        }
+            .btn-cancel:hover {
+                background: #cbd5e1;
+            }
 
         .no-records {
             text-align: center;
@@ -405,18 +419,130 @@
         .toggle-button-hidden {
             display: none;
         }
+
+        .status-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-filter {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            color: #475569;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+            .btn-filter:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+            }
+
+            .btn-filter.active {
+                background: #ed8936;
+                color: white;
+                border-color: #ed8936;
+            }
+
+        .btn-info {
+            background: #0ea5e9;
+            color: white;
+        }
+
+            .btn-info:hover {
+                background: #0284c7;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+            }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+            .btn-warning:hover {
+                background: #d97706;
+            }
+
+        .badge-admin {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-online {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .remarks-cell {
+            display: block;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: help;
+        }
+
+        #remarksRequired {
+            display: none;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-        
+
         <div class="container">
             <div class="header">
-                <h1><i class="fas fa-store"></i> Manage Exhibitors</h1>
+                <h1><i class="fas fa-store"></i>Manage Exhibitors</h1>
                 <div>
-                    Welcome, <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
-                    | Session Status: <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
+                    Welcome,
+                    <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
+                    | Session Status:
+                    <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
                 </div>
                 <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
             </div>
@@ -424,44 +550,86 @@
             <div class="dashboard-card">
                 <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
 
+                <div class="status-filters">
+                    <asp:Button ID="btnPending" runat="server" Text="Pending (0)" CssClass="btn-filter active" OnClick="btnStatusFilter_Click" CommandArgument="Pending" />
+                    <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" />
+                    <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" />
+                    <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="Pending" />
+                </div>
+
                 <div class="toolbar">
                     <div class="search-box">
                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, mobile, designation, or company..."></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
+                    <button type="button" class="btn btn-info" onclick="alert('Registration link will be configured')">
+                        <i class="fas fa-link"></i>Get Registration Link
+                    </button>
                     <button type="button" class="btn btn-success" onclick="openModal('add')">
-                        <i class="fas fa-plus"></i> Add Exhibitor
+                        <i class="fas fa-plus"></i>Add Exhibitor
                     </button>
                 </div>
 
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>
                         <div class="grid-container">
-                            <asp:GridView ID="gvExhibitors" runat="server" AutoGenerateColumns="False" 
+                            <asp:GridView ID="gvExhibitors" runat="server" AutoGenerateColumns="False"
                                 OnRowCommand="gvExhibitors_RowCommand" DataKeyNames="ExhibitorID"
                                 CssClass="exhibitors-grid" GridLines="None" OnRowDataBound="gvExhibitors_RowDataBound">
                                 <Columns>
                                     <asp:BoundField DataField="ExhibitorID" HeaderText="ID" Visible="false" />
+
+                                    <asp:TemplateField HeaderText="Sr. No.">
+                                        <ItemTemplate>
+                                            <%# Container.DataItemIndex + 1 %>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
                                     <asp:BoundField DataField="Name" HeaderText="Name" />
                                     <asp:BoundField DataField="Email" HeaderText="Email" />
                                     <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
                                     <asp:BoundField DataField="Designation" HeaderText="Designation" />
                                     <asp:BoundField DataField="Company" HeaderText="Company" />
+
+                                    <asp:TemplateField HeaderText="Reg. Type">
+                                        <ItemTemplate>
+                                            <span class='<%# "badge-" + Eval("RegistrationType").ToString().ToLower() %>'>
+                                                <%# Eval("RegistrationType") %>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Approval">
+                                        <ItemTemplate>
+                                            <span class='<%# "badge-status badge-" + Eval("ApprovalStatus").ToString().ToLower() %>'>
+                                                <%# Eval("ApprovalStatus") %>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Remarks">
+                                        <ItemTemplate>
+                                            <span class="remarks-cell" title='<%# Eval("Remarks") %>'>
+                                                <%# Eval("Remarks") %>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
                                     <asp:TemplateField HeaderText="Status">
                                         <ItemTemplate>
                                             <label class="toggle-switch">
-                                                <input type="checkbox" 
-                                                    <%# (bool)Eval("IS_ACTIVE") ? "checked" : "" %> 
+                                                <input type="checkbox"
+                                                    <%# (bool)Eval("IS_ACTIVE") ? "checked" : "" %>
                                                     onchange="toggleStatusSimple(this)">
                                                 <span class="toggle-slider">
                                                     <i class="fas fa-check toggle-icon toggle-icon-check"></i>
                                                     <i class="fas fa-times toggle-icon toggle-icon-x"></i>
                                                 </span>
                                             </label>
-                                            <asp:Button runat="server" 
-                                                CommandName="QuickToggle" 
-                                                CommandArgument='<%# Eval("ExhibitorID") %>' 
-                                                CssClass="toggle-button-hidden" 
+                                            <asp:Button runat="server"
+                                                CommandName="QuickToggle"
+                                                CommandArgument='<%# Eval("ExhibitorID") %>'
+                                                CssClass="toggle-button-hidden"
                                                 ID="Button1" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -469,9 +637,12 @@
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
                                             <div class="action-buttons">
-                                                <asp:Button runat="server" Text="Edit" CommandName="EditExhibitor" 
-                                                    CommandArgument='<%# Eval("ExhibitorID") %>' 
+                                                <asp:Button runat="server" Text="Edit" CommandName="EditExhibitor"
+                                                    CommandArgument='<%# Eval("ExhibitorID") %>'
                                                     CssClass="btn btn-edit" />
+                                                <asp:Button runat="server" Text="Approve/Reject" CommandName="ApprovalAction"
+                                                    CommandArgument='<%# Eval("ExhibitorID") %>'
+                                                    CssClass="btn btn-warning" />
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -496,24 +667,24 @@
                     <h2 id="modalTitle">Add Exhibitor</h2>
                     <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
                 </div>
-                
+
                 <asp:HiddenField ID="hdnExhibitorID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
 
                 <div class="form-group">
                     <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
                     <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter exhibitor name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
+                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
                         ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail" 
+                    <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
                         ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" 
-                        ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic" 
+                    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                        ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
                         ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="ExhibitorValidation"></asp:RegularExpressionValidator>
                 </div>
 
@@ -525,14 +696,14 @@
                 <div class="form-group">
                     <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
                     <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation" 
+                    <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
                         ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtCompany.ClientID%>">Company <span style="color: red;">*</span></label>
                     <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany" 
+                    <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
                         ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
                 </div>
 
@@ -546,12 +717,76 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-                    <asp:Button ID="btnSaveExhibitor" runat="server" Text="Save" CssClass="btn btn-primary" 
+                    <asp:Button ID="btnSaveExhibitor" runat="server" Text="Save" CssClass="btn btn-primary"
                         OnClick="btnSaveExhibitor_Click" ValidationGroup="ExhibitorValidation" />
                 </div>
             </div>
         </div>
+        <!-- Approval/Rejection Modal -->
+        <div id="approvalModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="approvalModalTitle">Approve/Reject Exhibitor</h2>
+                    <button type="button" class="close-btn" onclick="closeApprovalModal()">&times;</button>
+                </div>
 
+                <asp:HiddenField ID="hdnApprovalExhibitorID" runat="server" Value="0" />
+
+                <div class="form-group">
+                    <label>Name</label>
+                    <asp:TextBox ID="txtApprovalName" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <asp:TextBox ID="txtApprovalEmail" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label>Registration Type</label>
+                        <asp:TextBox ID="txtApprovalRegType" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Designation</label>
+                        <asp:TextBox ID="txtApprovalDesignation" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <asp:TextBox ID="txtApprovalCompany" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=ddlApprovalStatus.ClientID%>">Approval Status <span style="color: red;">*</span></label>
+                    <asp:DropDownList ID="ddlApprovalStatus" runat="server" CssClass="form-control">
+                        <asp:ListItem Text="Pending" Value="Pending"></asp:ListItem>
+                        <asp:ListItem Text="Approved" Value="Approved"></asp:ListItem>
+                        <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=txtApprovalRemarks.ClientID%>">Remarks <span style="color: red;" id="remarksRequired">*</span></label>
+                    <asp:TextBox ID="txtApprovalRemarks" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" placeholder="Enter remarks (required for rejection)"></asp:TextBox>
+                    <asp:CustomValidator ID="cvRemarks" runat="server"
+                        ControlToValidate="txtApprovalRemarks"
+                        ClientValidationFunction="validateRemarks"
+                        OnServerValidate="cvRemarks_ServerValidate"
+                        ErrorMessage="Remarks are required for rejection"
+                        ForeColor="Red" Display="Dynamic"
+                        ValidationGroup="ApprovalValidation"></asp:CustomValidator>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" onclick="closeApprovalModal()">Cancel</button>
+                    <asp:Button ID="btnSaveApproval" runat="server" Text="Save" CssClass="btn btn-primary"
+                        OnClick="btnSaveApproval_Click" ValidationGroup="ApprovalValidation" />
+                </div>
+            </div>
+        </div>
         <script type="text/javascript">
             function toggleStatusSimple(checkbox) {
                 var row = checkbox.closest('tr');
@@ -615,6 +850,68 @@
                     closeModal();
                 }
             }
+            function openApprovalModal(id, name, email, regType, designation, company, approvalStatus, remarks) {
+                document.getElementById('<%=hdnApprovalExhibitorID.ClientID%>').value = id;
+                document.getElementById('<%=txtApprovalName.ClientID%>').value = name;
+                document.getElementById('<%=txtApprovalEmail.ClientID%>').value = email;
+                document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
+                document.getElementById('<%=txtApprovalDesignation.ClientID%>').value = designation;
+                document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
+                document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
+                document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
+
+                var modal = document.getElementById('approvalModal');
+                modal.classList.add('show');
+
+                toggleRemarksRequired();
+            }
+
+            function closeApprovalModal() {
+                var modal = document.getElementById('approvalModal');
+                modal.classList.remove('show');
+            }
+
+            function toggleRemarksRequired() {
+                var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
+                var remarksReq = document.getElementById('remarksRequired');
+                if (status === 'Rejected') {
+                    remarksReq.style.display = 'inline';
+                } else {
+                    remarksReq.style.display = 'none';
+                }
+            }
+
+            function validateRemarks(sender, args) {
+                var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
+    var remarks = document.getElementById('<%=txtApprovalRemarks.ClientID%>').value.trim();
+
+                if (status === 'Rejected' && remarks === '') {
+                    args.IsValid = false;
+                } else {
+                    args.IsValid = true;
+                }
+            }
+
+            // Update window.onclick to handle both modals
+            window.onclick = function (event) {
+                var exhibitorModal = document.getElementById('exhibitorModal');
+                var approvalModal = document.getElementById('approvalModal');
+
+                if (event.target == exhibitorModal) {
+                    closeModal();
+                }
+                if (event.target == approvalModal) {
+                    closeApprovalModal();
+                }
+            }
+
+            // Add onchange event to approval status dropdown
+            document.addEventListener('DOMContentLoaded', function () {
+                var ddlApproval = document.getElementById('<%=ddlApprovalStatus.ClientID%>');
+    if (ddlApproval) {
+        ddlApproval.addEventListener('change', toggleRemarksRequired);
+    }
+});
         </script>
     </form>
 </body>
