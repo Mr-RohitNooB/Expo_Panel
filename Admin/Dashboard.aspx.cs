@@ -7,9 +7,6 @@ namespace Expo_Panel.Admin
 {
     public partial class Dashboard : System.Web.UI.Page
     {
-        /// <summary>
-        /// Reads connection string "ExpoPanelDB" from web.config; throws if missing.
-        /// </summary>
         private string ConnectionString
         {
             get
@@ -23,7 +20,6 @@ namespace Expo_Panel.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Redirect to login page if not logged in as admin
             if (!IsAdminLoggedIn())
             {
                 Response.Redirect("Default.aspx", false);
@@ -38,9 +34,6 @@ namespace Expo_Panel.Admin
             }
         }
 
-        /// <summary>
-        /// Logout button click - clears session and redirects to login.
-        /// </summary>
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             try
@@ -57,9 +50,6 @@ namespace Expo_Panel.Admin
 
         #region Dashboard Stats
 
-        /// <summary>
-        /// Loads advisor/speaker/exhibitor counts and populates label controls.
-        /// </summary>
         private void LoadDashboardStats()
         {
             try
@@ -68,31 +58,26 @@ namespace Expo_Panel.Admin
                 {
                     con.Open();
 
-                    // Use schema-qualified names (your DB uses schema "TBL")
                     lblAdvisorCount.Text = GetActiveCount(con, "TBL", "Advisory");
                     lblSpeakerCount.Text = GetActiveCount(con, "TBL", "Speaker");
                     lblExhibitorCount.Text = GetActiveCount(con, "TBL", "Exhibitor");
+                    lblAgendaCount.Text = GetActiveCount(con, "TBL", "Agenda");
                 }
             }
             catch (Exception ex)
             {
-                // Log the error for debugging. Replace with proper logger in production.
                 Debug.WriteLine($"LoadDashboardStats Exception: {ex.Message}");
                 lblAdvisorCount.Text = "0";
                 lblSpeakerCount.Text = "0";
                 lblExhibitorCount.Text = "0";
+                lblAgendaCount.Text = "0";
             }
         }
 
-        /// <summary>
-        /// Returns number of rows with IS_ACTIVE = 1 for the given schema/table.
-        /// Returns "0" if table doesn't exist or an error occurs.
-        /// </summary>
         private string GetActiveCount(SqlConnection con, string schema, string table)
         {
             try
             {
-                // Basic safety/whitelist so table names are not arbitrary
                 if (!IsAllowedTable(schema, table))
                     return "0";
 
@@ -113,23 +98,18 @@ namespace Expo_Panel.Admin
             }
         }
 
-        /// <summary>
-        /// Quick whitelist of allowed tables used by the dashboard.
-        /// Add additional allowed schema.table values here if you expand the dashboard.
-        /// </summary>
         private bool IsAllowedTable(string schema, string table)
         {
             if (string.IsNullOrWhiteSpace(schema) || string.IsNullOrWhiteSpace(table)) return false;
 
-            // Normalized form: "TBL.Advisory"
             string full = $"{schema}.{table}".Trim();
 
             string[] allowed = new[]
             {
                 "TBL.Advisory",
                 "TBL.Speaker",
-                "TBL.Exhibitor"
-                // add more if needed
+                "TBL.Exhibitor",
+                "TBL.Agenda"
             };
 
             foreach (var a in allowed)
@@ -139,10 +119,6 @@ namespace Expo_Panel.Admin
             return false;
         }
 
-        /// <summary>
-        /// Checks existence of a schema-qualified table using OBJECT_ID('schema.table','U').
-        /// Expects schema and table separately (no brackets).
-        /// </summary>
         private bool TableExists(SqlConnection con, string schema, string table)
         {
             if (con == null) return false;
@@ -163,9 +139,6 @@ namespace Expo_Panel.Admin
 
         #region Session / UI helpers
 
-        /// <summary>
-        /// Safely checks the session entry "IsAdminLoggedIn" (handles bool or string values).
-        /// </summary>
         private bool IsAdminLoggedIn()
         {
             if (Session == null) return false;
@@ -176,9 +149,6 @@ namespace Expo_Panel.Admin
             return bool.TryParse(s.ToString(), out parsed) && parsed;
         }
 
-        /// <summary>
-        /// Sets username and avatar label values from session.
-        /// </summary>
         private void SetUserLabelsFromSession()
         {
             string username = Session["AdminUsername"]?.ToString() ?? "Administrator";
@@ -191,7 +161,6 @@ namespace Expo_Panel.Admin
             catch (Exception ex)
             {
                 Debug.WriteLine($"SetUserLabelsFromSession Exception: {ex.Message}");
-                // Fallbacks
                 lblUsername.Text = "Administrator";
                 lblWelcomeUser.Text = "Administrator";
                 lblUserInitial.Text = "A";

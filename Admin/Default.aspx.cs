@@ -43,7 +43,7 @@ namespace Expo_Panel.Admin
                 else
                 {
                     ShowError("Invalid username or password. Please try again.");
-                    txtPassword.Text = string.Empty;
+                    txtPassword.Text = string.Empty; // Clear password on failure
                     txtUsername.Focus();
                 }
             }

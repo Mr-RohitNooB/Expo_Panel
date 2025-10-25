@@ -19,7 +19,6 @@
             color: #2d3748;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             color: white;
@@ -105,14 +104,12 @@
             transform: translateY(-1px);
         }
 
-        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* Welcome Section */
         .welcome-section {
             background: white;
             padding: 40px;
@@ -157,7 +154,6 @@
             margin-top: 5px;
         }
 
-        /* Management Cards Grid */
         .section-title {
             font-size: 20px;
             font-weight: 600;
@@ -168,7 +164,7 @@
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(222px, 1fr));
             gap: 24px;
             margin-bottom: 40px;
         }
@@ -224,6 +220,14 @@
             background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
         }
 
+        .card.agenda-card {
+            border-left-color: #3b82f6;
+        }
+
+        .card.agenda-card .card-icon {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -270,7 +274,6 @@
             line-height: 1.6;
         }
 
-        /* Quick Actions */
         .quick-actions {
             background: white;
             padding: 30px;
@@ -311,7 +314,6 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -350,7 +352,6 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <!-- Header -->
         <div class="header">
             <div class="header-left">
                 <h1><i class="fas fa-tachometer-alt"></i> Expo Panel Admin</h1>
@@ -372,15 +373,19 @@
             </div>
         </div>
 
-        <!-- Main Container -->
         <div class="container">
-            <!-- Welcome Section -->
             <div class="welcome-section">
                 <div class="welcome-content">
                     <h2>Welcome back, <asp:Label ID="lblWelcomeUser" runat="server"></asp:Label>!</h2>
                     <p>Manage your expo panel system efficiently from here.</p>
                 </div>
                 <div class="welcome-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">
+                            <asp:Label ID="lblAgendaCount" runat="server" Text="0"></asp:Label>
+                        </span>
+                        <span class="stat-label">Agenda Items</span>
+                    </div>
                     <div class="stat-item">
                         <span class="stat-number">
                             <asp:Label ID="lblAdvisorCount" runat="server" Text="0"></asp:Label>
@@ -402,71 +407,80 @@
                 </div>
             </div>
 
-            <!-- Management Cards -->
             <h2 class="section-title">Management Modules</h2>
             <div class="cards-grid">
-    <!-- Manage Advisors -->
-    <asp:HyperLink ID="lnkAdvisor" runat="server" NavigateUrl="~/Admin/ManageAdvisor.aspx" CssClass="card advisor-card">
-        <div class="card-header">
-            <div class="card-icon">
-                <i class="fas fa-users"></i>
+                <asp:HyperLink ID="lnkAgenda" runat="server" NavigateUrl="~/Admin/ManageAgenda.aspx" CssClass="card agenda-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <i class="fas fa-arrow-right card-arrow"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Agenda</h3>
+                        <p>Create and manage event schedules, session tracks, timing, and detailed agendas for the expo.</p>
+                    </div>
+                </asp:HyperLink>
+
+                <asp:HyperLink ID="lnkAdvisor" runat="server" NavigateUrl="~/Admin/ManageAdvisor.aspx" CssClass="card advisor-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <i class="fas fa-arrow-right card-arrow"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Advisors</h3>
+                        <p>Add, edit, and manage advisory board members. View advisor profiles and maintain contact information.</p>
+                    </div>
+                </asp:HyperLink>
+
+                <asp:HyperLink ID="lnkSpeaker" runat="server" NavigateUrl="~/Admin/ManageSpeaker.aspx" CssClass="card speaker-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <i class="fas fa-arrow-right card-arrow"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Speakers</h3>
+                        <p>View, approve, or reject speaker registrations. Manage speaker details and presentation schedules.</p>
+                    </div>
+                </asp:HyperLink>
+
+                <asp:HyperLink ID="lnkExhibitor" runat="server" NavigateUrl="~/Admin/ManageExhibitor.aspx" CssClass="card exhibitor-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <i class="fas fa-arrow-right card-arrow"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Exhibitors</h3>
+                        <p>Handle exhibitor applications, booth assignments, and company profile management.</p>
+                    </div>
+                </asp:HyperLink>
+
+                <asp:HyperLink ID="lnkInnovation" runat="server" NavigateUrl="~/Admin/ManageInnovation.aspx" CssClass="card innovation-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <i class="fas fa-arrow-right card-arrow"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Innovations</h3>
+                        <p>Review submitted innovations and ideas, update statuses, and promote outstanding projects.</p>
+                    </div>
+                </asp:HyperLink>
             </div>
-            <i class="fas fa-arrow-right card-arrow"></i>
-        </div>
-        <div class="card-body">
-            <h3>Manage Advisors</h3>
-            <p>Add, edit, and manage advisory board members. View advisor profiles and maintain contact information.</p>
-        </div>
-    </asp:HyperLink>
 
-    <!-- Manage Speakers -->
-    <asp:HyperLink ID="lnkSpeaker" runat="server" NavigateUrl="~/Admin/ManageSpeaker.aspx" CssClass="card speaker-card">
-        <div class="card-header">
-            <div class="card-icon">
-                <i class="fas fa-microphone"></i>
-            </div>
-            <i class="fas fa-arrow-right card-arrow"></i>
-        </div>
-        <div class="card-body">
-            <h3>Manage Speakers</h3>
-            <p>View, approve, or reject speaker registrations. Manage speaker details and presentation schedules.</p>
-        </div>
-    </asp:HyperLink>
-
-    <!-- Manage Exhibitors -->
-    <asp:HyperLink ID="lnkExhibitor" runat="server" NavigateUrl="~/Admin/ManageExhibitor.aspx" CssClass="card exhibitor-card">
-        <div class="card-header">
-            <div class="card-icon">
-                <i class="fas fa-store"></i>
-            </div>
-            <i class="fas fa-arrow-right card-arrow"></i>
-        </div>
-        <div class="card-body">
-            <h3>Manage Exhibitors</h3>
-            <p>Handle exhibitor applications, booth assignments, and company profile management.</p>
-        </div>
-    </asp:HyperLink>
-
-    <!-- Manage Innovations -->
-    <asp:HyperLink ID="lnkInnovation" runat="server" NavigateUrl="~/Admin/ManageInnovation.aspx" CssClass="card innovation-card">
-        <div class="card-header">
-            <div class="card-icon">
-                <i class="fas fa-lightbulb"></i>
-            </div>
-            <i class="fas fa-arrow-right card-arrow"></i>
-        </div>
-        <div class="card-body">
-            <h3>Manage Innovations</h3>
-            <p>Review submitted innovations and ideas, update statuses, and promote outstanding projects.</p>
-        </div>
-    </asp:HyperLink>
-</div>
-
-
-            <!-- Quick Actions -->
             <div class="quick-actions">
                 <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
                 <div class="action-buttons">
+                    <button type="button" class="btn-action" onclick="window.location='ManageAgenda.aspx'">
+                        <i class="fas fa-calendar-plus"></i> Add Agenda Item
+                    </button>
                     <button type="button" class="btn-action" onclick="window.location='ManageAdvisor.aspx'">
                         <i class="fas fa-user-plus"></i> Add New Advisor
                     </button>

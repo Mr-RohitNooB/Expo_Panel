@@ -60,6 +60,15 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.Label lblWelcomeUser;
 
         /// <summary>
+        /// lblAgendaCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAgendaCount;
+
+        /// <summary>
         /// lblAdvisorCount control.
         /// </summary>
         /// <remarks>
@@ -85,6 +94,15 @@ namespace Expo_Panel.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblExhibitorCount;
+
+        /// <summary>
+        /// lnkAgenda control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkAgenda;
 
         /// <summary>
         /// lnkAdvisor control.

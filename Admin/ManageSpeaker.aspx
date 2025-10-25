@@ -25,7 +25,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -40,11 +40,11 @@
             align-items: center;
         }
 
-        .header h1 {
-            color: #38a169;
-            font-size: 28px;
-            font-weight: 600;
-        }
+            .header h1 {
+                color: #38a169;
+                font-size: 28px;
+                font-weight: 600;
+            }
 
         .dashboard-card {
             background: rgba(255, 255, 255, 0.95);
@@ -78,10 +78,10 @@
             flex: 1;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: #48bb78;
-        }
+            .form-control:focus {
+                outline: none;
+                border-color: #48bb78;
+            }
 
         .btn {
             padding: 10px 20px;
@@ -101,11 +101,11 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background: #2f855a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(56, 161, 105, 0.4);
-        }
+            .btn-primary:hover {
+                background: #2f855a;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(56, 161, 105, 0.4);
+            }
 
         .btn-success {
             background: #10b981;
@@ -114,9 +114,9 @@
             font-size: 13px;
         }
 
-        .btn-success:hover {
-            background: #059669;
-        }
+            .btn-success:hover {
+                background: #059669;
+            }
 
         .btn-edit {
             background: #3b82f6;
@@ -125,20 +125,20 @@
             font-size: 13px;
         }
 
-        .btn-edit:hover {
-            background: #2563eb;
-        }
+            .btn-edit:hover {
+                background: #2563eb;
+            }
 
         .btn-danger {
             background: #ef4444;
             color: white;
-            padding: 6px 12px;
-            font-size: 13px;
+            padding: 12.5px 12px;
+            font-size: 14px;
         }
 
-        .btn-danger:hover {
-            background: #dc2626;
-        }
+            .btn-danger:hover {
+                background: #dc2626;
+            }
 
         .btn-inactive {
             background: #6b7280;
@@ -147,20 +147,20 @@
             font-size: 13px;
         }
 
-        .btn-inactive:hover {
-            background: #4b5563;
-        }
+            .btn-inactive:hover {
+                background: #4b5563;
+            }
 
         .btn-info {
             background: #0ea5e9;
             color: white;
         }
 
-        .btn-info:hover {
-            background: #0284c7;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
-        }
+            .btn-info:hover {
+                background: #0284c7;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+            }
 
         .btn-warning {
             background: #f59e0b;
@@ -169,9 +169,9 @@
             font-size: 13px;
         }
 
-        .btn-warning:hover {
-            background: #d97706;
-        }
+            .btn-warning:hover {
+                background: #d97706;
+            }
 
         .grid-container {
             overflow-x: auto;
@@ -182,27 +182,27 @@
             border-collapse: collapse;
         }
 
-        table thead {
-            background: #f8fafc;
-        }
+            table thead {
+                background: #f8fafc;
+            }
 
-        table th {
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #475569;
-            border-bottom: 2px solid #e2e8f0;
-        }
+            table th {
+                padding: 15px;
+                text-align: left;
+                font-weight: 600;
+                color: #475569;
+                border-bottom: 2px solid #e2e8f0;
+            }
 
-        table td {
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #334155;
-        }
+            table td {
+                padding: 15px;
+                border-bottom: 1px solid #e2e8f0;
+                color: #334155;
+            }
 
-        table tbody tr:hover {
-            background: #f8fafc;
-        }
+            table tbody tr:hover {
+                background: #f8fafc;
+            }
 
         /* Toggle Switch Styles */
         .toggle-switch {
@@ -212,11 +212,11 @@
             height: 30px;
         }
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
 
         .toggle-slider {
             position: absolute;
@@ -234,26 +234,26 @@
             padding: 0 8px;
         }
 
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
+            .toggle-slider:before {
+                position: absolute;
+                content: "";
+                height: 22px;
+                width: 22px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
 
         .toggle-switch input:checked + .toggle-slider {
             background-color: #10b981;
         }
 
-        .toggle-switch input:checked + .toggle-slider:before {
-            transform: translateX(30px);
-        }
+            .toggle-switch input:checked + .toggle-slider:before {
+                transform: translateX(30px);
+            }
 
         .toggle-icon {
             font-size: 12px;
@@ -314,11 +314,11 @@
             backdrop-filter: blur(4px);
         }
 
-        .modal.show {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+            .modal.show {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
         .modal-content {
             background: white;
@@ -337,6 +337,7 @@
                 opacity: 0;
                 transform: translateY(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -350,10 +351,10 @@
             margin-bottom: 25px;
         }
 
-        .modal-header h2 {
-            color: #38a169;
-            font-size: 22px;
-        }
+            .modal-header h2 {
+                color: #38a169;
+                font-size: 22px;
+            }
 
         .close-btn {
             background: none;
@@ -369,38 +370,38 @@
             justify-content: center;
         }
 
-        .close-btn:hover {
-            color: #ef4444;
-        }
+            .close-btn:hover {
+                color: #ef4444;
+            }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #475569;
-            font-weight: 500;
-        }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #475569;
+                font-weight: 500;
+            }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Poppins', sans-serif;
-        }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 10px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                font-family: 'Poppins', sans-serif;
+            }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #48bb78;
-        }
+                .form-group input:focus,
+                .form-group select:focus,
+                .form-group textarea:focus {
+                    outline: none;
+                    border-color: #48bb78;
+                }
 
         .modal-footer {
             display: flex;
@@ -414,9 +415,9 @@
             color: #475569;
         }
 
-        .btn-cancel:hover {
-            background: #cbd5e1;
-        }
+            .btn-cancel:hover {
+                background: #cbd5e1;
+            }
 
         .no-records {
             text-align: center;
@@ -469,16 +470,16 @@
             position: relative;
         }
 
-        .btn-filter:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-        }
+            .btn-filter:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+            }
 
-        .btn-filter.active {
-            background: #38a169;
-            color: white;
-            border-color: #38a169;
-        }
+            .btn-filter.active {
+                background: #38a169;
+                color: white;
+                border-color: #38a169;
+            }
 
         .badge-admin {
             background: #dbeafe;
@@ -532,20 +533,73 @@
         #remarksRequired {
             display: none;
         }
+
+                table th, table td {
+    padding-left: 8px;  /* Was 15px */
+    padding-right: 8px; /* Was 15px */
+}
+        table th {
+    white-space: nowrap;
+}
+        table {
+    font-size: 13px; /* Reduce from default 14px */
+}
+
+table th {
+    font-size: 13px;
+}
+table th:nth-child(4), /* Mobile */
+table td:nth-child(4) {
+    max-width: 100px;
+}
+
+table th:nth-child(5), /* Designation */
+table td:nth-child(5) {
+    max-width: 90px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+table th:nth-child(6), /* Company */
+table td:nth-child(6) {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+table th:nth-child(8), /* Approval */
+table td:nth-child(8) {
+    max-width: 90px;
+}
+.action-buttons .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+}
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-        
+
         <div class="container">
             <div class="header">
-                <h1><i class="fas fa-microphone"></i> Manage Speakers</h1>
-                <div>
-                    Welcome, <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
-                    | Session Status: <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
+                <h1><i class="fas fa-microphone"></i>Manage Speakers</h1>
+                <div style="display: flex; align-items: center; gap: 10px;">
+
+
+                    <span>Welcome,
+                        <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
+                        | Session Status:
+                        <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
+                    </span>
+                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
+        <i class="fas fa-arrow-left"></i> Back
+                    </asp:HyperLink>
+                    <asp:Button ID="Button1" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
                 </div>
-                <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
+
             </div>
 
             <div class="dashboard-card">
@@ -563,23 +617,26 @@
                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, mobile, designation, or company..."></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
-                      <a href="/RegisterSpeaker.aspx" class="btn btn-info" target="_blank">
-  <i class="fas fa-link"></i> Get Registration Link
-  </a>
-                    <button type="button" class="btn btn-success" onclick="openModal('add')">
-                        <i class="fas fa-plus"></i> Add Speaker
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="/RegisterSpeaker.aspx" class="btn btn-info" target="_blank">
+                            <i class="fas fa-link"></i>Get Registration Link
+                        </a>
+
+                        <button type="button" class="btn btn-success" onclick="openModal('add')">
+                            <i class="fas fa-plus"></i>Add Speaker
+                        </button>
+                    </div>
                 </div>
 
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>
                         <div class="grid-container">
-                            <asp:GridView ID="gvSpeakers" runat="server" AutoGenerateColumns="False" 
+                            <asp:GridView ID="gvSpeakers" runat="server" AutoGenerateColumns="False"
                                 OnRowCommand="gvSpeakers_RowCommand" DataKeyNames="SpeakerID"
                                 CssClass="speakers-grid" GridLines="None" OnRowDataBound="gvSpeakers_RowDataBound">
                                 <Columns>
                                     <asp:BoundField DataField="SpeakerID" HeaderText="ID" Visible="false" />
-                                    
+
                                     <asp:TemplateField HeaderText="Sr. No.">
                                         <ItemTemplate>
                                             <%# Container.DataItemIndex + 1 %>
@@ -591,7 +648,7 @@
                                     <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
                                     <asp:BoundField DataField="Designation" HeaderText="Designation" />
                                     <asp:BoundField DataField="Company" HeaderText="Company" />
-                                    
+
                                     <asp:TemplateField HeaderText="Reg. Type">
                                         <ItemTemplate>
                                             <span class='<%# "badge-" + Eval("RegistrationType").ToString().ToLower() %>'>
@@ -619,18 +676,18 @@
                                     <asp:TemplateField HeaderText="Status">
                                         <ItemTemplate>
                                             <label class="toggle-switch">
-                                                <input type="checkbox" 
-                                                    <%# (bool)Eval("IS_ACTIVE") ? "checked" : "" %> 
+                                                <input type="checkbox"
+                                                    <%# (bool)Eval("IS_ACTIVE") ? "checked" : "" %>
                                                     onchange="toggleStatusSimple(this)">
                                                 <span class="toggle-slider">
                                                     <i class="fas fa-check toggle-icon toggle-icon-check"></i>
                                                     <i class="fas fa-times toggle-icon toggle-icon-x"></i>
                                                 </span>
                                             </label>
-                                            <asp:Button runat="server" 
-                                                CommandName="QuickToggle" 
-                                                CommandArgument='<%# Eval("SpeakerID") %>' 
-                                                CssClass="toggle-button-hidden" 
+                                            <asp:Button runat="server"
+                                                CommandName="QuickToggle"
+                                                CommandArgument='<%# Eval("SpeakerID") %>'
+                                                CssClass="toggle-button-hidden"
                                                 ID="btnToggleHidden" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -638,11 +695,11 @@
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
                                             <div class="action-buttons">
-                                                <asp:Button runat="server" Text="Edit" CommandName="EditSpeaker" 
-                                                    CommandArgument='<%# Eval("SpeakerID") %>' 
+                                                <asp:Button runat="server" Text="Edit" CommandName="EditSpeaker"
+                                                    CommandArgument='<%# Eval("SpeakerID") %>'
                                                     CssClass="btn btn-edit" />
-                                                <asp:Button runat="server" Text="Approve/Reject" CommandName="ApprovalAction" 
-                                                    CommandArgument='<%# Eval("SpeakerID") %>' 
+                                                <asp:Button runat="server" Text="Approve/Reject" CommandName="ApprovalAction"
+                                                    CommandArgument='<%# Eval("SpeakerID") %>'
                                                     CssClass="btn btn-warning" />
                                             </div>
                                         </ItemTemplate>
@@ -668,7 +725,7 @@
                     <h2 id="modalTitle">Add Speaker</h2>
                     <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
                 </div>
-                
+
                 <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
 
@@ -676,17 +733,17 @@
                     <div class="form-group">
                         <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
                         <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter speaker name"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
+                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
                             ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
                         <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail" 
+                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
                             ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
-                        <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" 
-                            ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic" 
+                        <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                            ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
                             ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="SpeakerValidation"></asp:RegularExpressionValidator>
                     </div>
                 </div>
@@ -710,21 +767,21 @@
                     <div class="form-group">
                         <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
                         <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation" 
+                        <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
                             ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
                         <label for="<%=txtCompany.ClientID%>">Company <span style="color: red;">*</span></label>
                         <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany" 
+                        <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
                             ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-                    <asp:Button ID="btnSaveSpeaker" runat="server" Text="Save" CssClass="btn btn-primary" 
+                    <asp:Button ID="btnSaveSpeaker" runat="server" Text="Save" CssClass="btn btn-primary"
                         OnClick="btnSaveSpeaker_Click" ValidationGroup="SpeakerValidation" />
                 </div>
             </div>
@@ -737,9 +794,9 @@
                     <h2 id="approvalModalTitle">Approve/Reject Speaker</h2>
                     <button type="button" class="close-btn" onclick="closeApprovalModal()">&times;</button>
                 </div>
-                
+
                 <asp:HiddenField ID="hdnApprovalSpeakerID" runat="server" Value="0" />
-                
+
                 <div class="form-group">
                     <label>Name</label>
                     <asp:TextBox ID="txtApprovalName" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
@@ -779,18 +836,18 @@
                 <div class="form-group">
                     <label for="<%=txtApprovalRemarks.ClientID%>">Remarks <span style="color: red;" id="remarksRequired">*</span></label>
                     <asp:TextBox ID="txtApprovalRemarks" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" placeholder="Enter remarks (required for rejection)"></asp:TextBox>
-                    <asp:CustomValidator ID="cvRemarks" runat="server" 
-                        ControlToValidate="txtApprovalRemarks" 
+                    <asp:CustomValidator ID="cvRemarks" runat="server"
+                        ControlToValidate="txtApprovalRemarks"
                         ClientValidationFunction="validateRemarks"
                         OnServerValidate="cvRemarks_ServerValidate"
-                        ErrorMessage="Remarks are required for rejection" 
-                        ForeColor="Red" Display="Dynamic" 
+                        ErrorMessage="Remarks are required for rejection"
+                        ForeColor="Red" Display="Dynamic"
                         ValidationGroup="ApprovalValidation"></asp:CustomValidator>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeApprovalModal()">Cancel</button>
-                    <asp:Button ID="btnSaveApproval" runat="server" Text="Save" CssClass="btn btn-primary" 
+                    <asp:Button ID="btnSaveApproval" runat="server" Text="Save" CssClass="btn btn-primary"
                         OnClick="btnSaveApproval_Click" ValidationGroup="ApprovalValidation" />
                 </div>
             </div>
@@ -862,10 +919,10 @@
                 document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
                 document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
                 document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
-                
+
                 var modal = document.getElementById('approvalModal');
                 modal.classList.add('show');
-                
+
                 toggleRemarksRequired();
             }
 
@@ -887,7 +944,7 @@
             function validateRemarks(sender, args) {
                 var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
                 var remarks = document.getElementById('<%=txtApprovalRemarks.ClientID%>').value.trim();
-                
+
                 if (status === 'Rejected' && remarks === '') {
                     args.IsValid = false;
                 } else {
@@ -909,7 +966,7 @@
             }
 
             // Add onchange event to approval status dropdown
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 var ddlApproval = document.getElementById('<%=ddlApprovalStatus.ClientID%>');
                 if (ddlApproval) {
                     ddlApproval.addEventListener('change', toggleRemarksRequired);

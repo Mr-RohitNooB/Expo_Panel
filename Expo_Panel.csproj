@@ -70,6 +70,7 @@
     <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Admin\Default.aspx" />
     <Content Include="Admin\ManageAdvisor.aspx" />
+    <Content Include="Admin\ManageAgenda.aspx" />
     <Content Include="Admin\ManageExhibitor.aspx" />
     <Content Include="Admin\ManageSpeaker.aspx" />
     <Content Include="RegisterAdvisor.aspx" />
@@ -98,6 +99,13 @@
     </Compile>
     <Compile Include="Admin\ManageAdvisor.aspx.designer.cs">
       <DependentUpon>ManageAdvisor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ManageAgenda.aspx.cs">
+      <DependentUpon>ManageAgenda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageAgenda.aspx.designer.cs">
+      <DependentUpon>ManageAgenda.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ManageExhibitor.aspx.cs">
       <DependentUpon>ManageExhibitor.aspx</DependentUpon>
@@ -137,7 +145,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="gemini.env" />
     <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>

@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageExhibitor.aspx.cs" Inherits="Expo_Panel.Admin.ExhibitorDashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAgenda.aspx.cs" Inherits="Expo_Panel.Admin.AgendaDashboard" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manage Exhibitors - Expo Panel</title>
+    <title>Manage Agenda - Expo Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -19,13 +19,13 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
@@ -40,11 +40,11 @@
             align-items: center;
         }
 
-            .header h1 {
-                color: #ed8936;
-                font-size: 28px;
-                font-weight: 600;
-            }
+        .header h1 {
+            color: #3b82f6;
+            font-size: 28px;
+            font-weight: 600;
+        }
 
         .dashboard-card {
             background: rgba(255, 255, 255, 0.95);
@@ -78,10 +78,10 @@
             flex: 1;
         }
 
-            .form-control:focus {
-                outline: none;
-                border-color: #667eea;
-            }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
 
         .btn {
             padding: 10px 20px;
@@ -97,15 +97,15 @@
         }
 
         .btn-primary {
-            background: #ed8936;
+            background: #3b82f6;
             color: white;
         }
 
-            .btn-primary:hover {
-                background: #4338ca;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
-            }
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
 
         .btn-success {
             background: #10b981;
@@ -114,9 +114,9 @@
             font-size: 13px;
         }
 
-            .btn-success:hover {
-                background: #059669;
-            }
+        .btn-success:hover {
+            background: #059669;
+        }
 
         .btn-edit {
             background: #3b82f6;
@@ -125,31 +125,42 @@
             font-size: 13px;
         }
 
-            .btn-edit:hover {
-                background: #2563eb;
-            }
+        .btn-edit:hover {
+            background: #2563eb;
+        }
 
         .btn-danger {
-    background: #ef4444;
-    color: white;
-    padding: 12.5px 12px;
-    font-size: 14px;
-}
+            background: #ef4444;
+            color: white;
+            padding: 12.5px 12px;
+            font-size: 14px;
+        }
 
-            .btn-danger:hover {
-                background: #dc2626;
-            }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
 
-        .btn-inactive {
-            background: #6b7280;
+        .btn-info {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #0284c7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-warning {
+            background: #f59e0b;
             color: white;
             padding: 6px 12px;
             font-size: 13px;
         }
 
-            .btn-inactive:hover {
-                background: #4b5563;
-            }
+        .btn-warning:hover {
+            background: #d97706;
+        }
 
         .grid-container {
             overflow-x: auto;
@@ -158,31 +169,44 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 13px;
         }
 
-            table thead {
-                background: #f8fafc;
-            }
+        table thead {
+            background: #f8fafc;
+        }
 
-            table th {
-                padding: 15px;
-                text-align: left;
-                font-weight: 600;
-                color: #475569;
-                border-bottom: 2px solid #e2e8f0;
-            }
+        table th {
+            padding: 15px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+            font-size: 13px;
+        }
 
-            table td {
-                padding: 15px;
-                border-bottom: 1px solid #e2e8f0;
-                color: #334155;
-            }
+        table th:first-child {
+            width: 60px;
+            text-align: center;
+        }
 
-            table tbody tr:hover {
-                background: #f8fafc;
-            }
+        table td {
+            padding: 15px 8px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+        }
 
-        /* Toggle Switch Styles */
+        table td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+
+        table tbody tr:hover {
+            background: #f8fafc;
+        }
+
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -190,11 +214,11 @@
             height: 30px;
         }
 
-            .toggle-switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
         .toggle-slider {
             position: absolute;
@@ -212,26 +236,26 @@
             padding: 0 8px;
         }
 
-            .toggle-slider:before {
-                position: absolute;
-                content: "";
-                height: 22px;
-                width: 22px;
-                left: 4px;
-                bottom: 4px;
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
 
         .toggle-switch input:checked + .toggle-slider {
             background-color: #10b981;
         }
 
-            .toggle-switch input:checked + .toggle-slider:before {
-                transform: translateX(30px);
-            }
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
 
         .toggle-icon {
             font-size: 12px;
@@ -239,17 +263,14 @@
             z-index: 1;
         }
 
-        .toggle-icon-check {
-            margin-right: auto;
-        }
-
-        .toggle-icon-x {
-            margin-left: auto;
-        }
-
         .action-buttons {
             display: flex;
             gap: 8px;
+        }
+
+        .action-buttons .btn {
+            padding: 6px 10px;
+            font-size: 12px;
         }
 
         .alert {
@@ -273,7 +294,12 @@
             border: 1px solid #fecaca;
         }
 
-        /* Modal Styles */
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -286,20 +312,22 @@
             backdrop-filter: blur(4px);
         }
 
-            .modal.show {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         .modal-content {
             background: white;
             border-radius: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 800px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: modalSlideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes modalSlideIn {
@@ -307,7 +335,6 @@
                 opacity: 0;
                 transform: translateY(-50px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -321,10 +348,10 @@
             margin-bottom: 25px;
         }
 
-            .modal-header h2 {
-                color: #4f46e5;
-                font-size: 22px;
-            }
+        .modal-header h2 {
+            color: #3b82f6;
+            font-size: 22px;
+        }
 
         .close-btn {
             background: none;
@@ -340,12 +367,8 @@
             justify-content: center;
         }
 
-            .close-btn:hover {
-                color: #ef4444;
-            }
-
-        .form-group {
-            margin-bottom: 20px;
+        .close-btn:hover {
+            color: #ef4444;
         }
 
         .form-row {
@@ -355,10 +378,8 @@
             margin-bottom: 20px;
         }
 
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+        .form-group {
+            margin-bottom: 20px;
         }
 
         .form-group label {
@@ -369,19 +390,22 @@
         }
 
         .form-group input,
-        .form-group select {
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 10px 15px;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             font-size: 14px;
+            font-family: 'Poppins', sans-serif;
         }
 
-            .form-group input:focus,
-            .form-group select:focus {
-                outline: none;
-                border-color: #667eea;
-            }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
 
         .modal-footer {
             display: flex;
@@ -395,9 +419,9 @@
             color: #475569;
         }
 
-            .btn-cancel:hover {
-                background: #cbd5e1;
-            }
+        .btn-cancel:hover {
+            background: #cbd5e1;
+        }
 
         .no-records {
             text-align: center;
@@ -409,11 +433,6 @@
         .inactive-row td {
             color: #94a3b8;
             font-style: italic;
-        }
-
-        .inactive-row .action-buttons .btn {
-            font-style: normal;
-            opacity: 0.6;
         }
 
         .toggle-button-hidden {
@@ -438,55 +457,15 @@
             position: relative;
         }
 
-            .btn-filter:hover {
-                background: #f8fafc;
-                border-color: #cbd5e1;
-            }
+        .btn-filter:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
 
-            .btn-filter.active {
-                background: #ed8936;
-                color: white;
-                border-color: #ed8936;
-            }
-
-        .btn-info {
-            background: #0ea5e9;
+        .btn-filter.active {
+            background: #3b82f6;
             color: white;
-        }
-
-            .btn-info:hover {
-                background: #0284c7;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
-            }
-
-        .btn-warning {
-            background: #f59e0b;
-            color: white;
-            padding: 6px 12px;
-            font-size: 13px;
-        }
-
-            .btn-warning:hover {
-                background: #d97706;
-            }
-
-        .badge-admin {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .badge-online {
-            background: #fef3c7;
-            color: #92400e;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
+            border-color: #3b82f6;
         }
 
         .badge-status {
@@ -511,9 +490,26 @@
             color: #991b1b;
         }
 
-        .remarks-cell {
-            display: block;
-            max-width: 200px;
+        .badge-admin {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-online {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .truncate-cell {
+            max-width: 150px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -524,55 +520,11 @@
             display: none;
         }
 
-        .alert-info {
-            background: #dbeafe;
-            color: #1e40af;
-            border: 1px solid #bfdbfe;
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
-
-                table th, table td {
-    padding-left: 8px;  /* Was 15px */
-    padding-right: 8px; /* Was 15px */
-}
-        table th {
-    white-space: nowrap;
-}
-        table {
-    font-size: 13px; /* Reduce from default 14px */
-}
-
-table th {
-    font-size: 13px;
-}
-table th:nth-child(4), /* Mobile */
-table td:nth-child(4) {
-    max-width: 100px;
-}
-
-table th:nth-child(5), /* Designation */
-table td:nth-child(5) {
-    max-width: 90px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-table th:nth-child(6), /* Company */
-table td:nth-child(6) {
-    max-width: 120px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-table th:nth-child(8), /* Approval */
-table td:nth-child(8) {
-    max-width: 90px;
-}
-.action-buttons .btn {
-    padding: 6px 10px;
-    font-size: 12px;
-}
     </style>
 </head>
 <body>
@@ -581,20 +533,18 @@ table td:nth-child(8) {
 
         <div class="container">
             <div class="header">
-                <h1><i class="fas fa-store"></i>Manage Exhibitors</h1>
+                <h1><i class="fas fa-calendar-alt"></i> Manage Agenda</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
-                <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
+                        <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
                         | Session Status:
-                <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
+                        <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
                     </span>
                     <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
-<i class="fas fa-arrow-left"></i> Back
+                        <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
-                    <asp:Button ID="Button1" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
+                    <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
                 </div>
-
-
             </div>
 
             <div class="dashboard-card">
@@ -609,16 +559,12 @@ table td:nth-child(8) {
 
                 <div class="toolbar">
                     <div class="search-box">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, mobile, designation, or company..."></asp:TextBox>
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by day, track, title..."></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
                     <div style="display: flex; gap: 10px;">
-                        <a href="/RegisterExhibitor.aspx" class="btn btn-info" target="_blank">
-                            <i class="fas fa-link"></i>Get Registration Link
-                        </a>
-
                         <button type="button" class="btn btn-success" onclick="openModal('add')">
-                            <i class="fas fa-plus"></i>Add Exhibitor
+                            <i class="fas fa-plus"></i> Add Agenda
                         </button>
                     </div>
                 </div>
@@ -626,23 +572,51 @@ table td:nth-child(8) {
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>
                         <div class="grid-container">
-                            <asp:GridView ID="gvExhibitors" runat="server" AutoGenerateColumns="False"
-                                OnRowCommand="gvExhibitors_RowCommand" DataKeyNames="ExhibitorID"
-                                CssClass="exhibitors-grid" GridLines="None" OnRowDataBound="gvExhibitors_RowDataBound">
+                            <asp:GridView ID="gvAgenda" runat="server" AutoGenerateColumns="False"
+                                OnRowCommand="gvAgenda_RowCommand" DataKeyNames="AgendaID"
+                                CssClass="agenda-grid" GridLines="None" OnRowDataBound="gvAgenda_RowDataBound">
                                 <Columns>
-                                    <asp:BoundField DataField="ExhibitorID" HeaderText="ID" Visible="false" />
+                                    <asp:BoundField DataField="AgendaID" HeaderText="ID" Visible="false" />
 
-                                    <asp:TemplateField HeaderText="Sr. No.">
+                                    <asp:TemplateField HeaderText="Sr.">
                                         <ItemTemplate>
                                             <%# Container.DataItemIndex + 1 %>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:BoundField DataField="Name" HeaderText="Name" />
-                                    <asp:BoundField DataField="Email" HeaderText="Email" />
-                                    <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
-                                    <asp:BoundField DataField="Designation" HeaderText="Designation" />
-                                    <asp:BoundField DataField="Company" HeaderText="Company" />
+                                    <asp:TemplateField HeaderText="Day">
+                                        <ItemTemplate>
+                                            <span class="truncate-cell" title='<%# Eval("Day") %>'>
+                                                <%# Eval("Day") %>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Track">
+                                        <ItemTemplate>
+                                            <span class="truncate-cell" title='<%# Eval("Track") %>'>
+                                                <%# Eval("Track") %>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:BoundField DataField="Time" HeaderText="Time" />
+
+                                    <asp:TemplateField HeaderText="Title">
+                                        <ItemTemplate>
+                                            <span class="truncate-cell" title='<%# Eval("Title") %>'>
+                                                <%# Eval("Title") %>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Brief">
+                                        <ItemTemplate>
+                                            <span class="truncate-cell" title='<%# Eval("Brief") %>'>
+                                                <%# Eval("Brief") %>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
 
                                     <asp:TemplateField HeaderText="Reg. Type">
                                         <ItemTemplate>
@@ -660,14 +634,6 @@ table td:nth-child(8) {
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Remarks">
-                                        <ItemTemplate>
-                                            <span class="remarks-cell" title='<%# Eval("Remarks") %>'>
-                                                <%# Eval("Remarks") %>
-                                            </span>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
                                     <asp:TemplateField HeaderText="Status">
                                         <ItemTemplate>
                                             <label class="toggle-switch">
@@ -675,26 +641,26 @@ table td:nth-child(8) {
                                                     <%# (bool)Eval("IS_ACTIVE") ? "checked" : "" %>
                                                     onchange="toggleStatusSimple(this)">
                                                 <span class="toggle-slider">
-                                                    <i class="fas fa-check toggle-icon toggle-icon-check"></i>
-                                                    <i class="fas fa-times toggle-icon toggle-icon-x"></i>
+                                                    <i class="fas fa-check toggle-icon"></i>
+                                                    <i class="fas fa-times toggle-icon"></i>
                                                 </span>
                                             </label>
                                             <asp:Button runat="server"
                                                 CommandName="QuickToggle"
-                                                CommandArgument='<%# Eval("ExhibitorID") %>'
+                                                CommandArgument='<%# Eval("AgendaID") %>'
                                                 CssClass="toggle-button-hidden"
-                                                ID="Button1" />
+                                                ID="btnToggle" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
                                             <div class="action-buttons">
-                                                <asp:Button runat="server" Text="Edit" CommandName="EditExhibitor"
-                                                    CommandArgument='<%# Eval("ExhibitorID") %>'
+                                                <asp:Button runat="server" Text="Edit" CommandName="EditAgenda"
+                                                    CommandArgument='<%# Eval("AgendaID") %>'
                                                     CssClass="btn btn-edit" />
                                                 <asp:Button runat="server" Text="Approve/Reject" CommandName="ApprovalAction"
-                                                    CommandArgument='<%# Eval("ExhibitorID") %>'
+                                                    CommandArgument='<%# Eval("AgendaID") %>'
                                                     CssClass="btn btn-warning" />
                                             </div>
                                         </ItemTemplate>
@@ -703,7 +669,7 @@ table td:nth-child(8) {
                                 <EmptyDataTemplate>
                                     <div class="no-records">
                                         <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
-                                        No exhibitors found. Click "Add Exhibitor" to create one.
+                                        No agenda items found. Click "Add Agenda" to create one.
                                     </div>
                                 </EmptyDataTemplate>
                             </asp:GridView>
@@ -714,86 +680,99 @@ table td:nth-child(8) {
         </div>
 
         <!-- Add/Edit Modal -->
-        <div id="exhibitorModal" class="modal">
+        <div id="agendaModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 id="modalTitle">Add Exhibitor</h2>
+                    <h2 id="modalTitle">Add Agenda Item</h2>
                     <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
                 </div>
 
-                <asp:HiddenField ID="hdnExhibitorID" runat="server" Value="0" />
+                <asp:HiddenField ID="hdnAgendaID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
 
-                <div class="form-group">
-                    <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter exhibitor name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
-                        ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="<%=txtDay.ClientID%>">Day <span style="color: red;">*</span></label>
+                        <asp:TextBox ID="txtDay" runat="server" CssClass="form-control" placeholder="e.g., Day 1 - Monday, Jan 15"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvDay" runat="server" ControlToValidate="txtDay"
+                            ErrorMessage="Day is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AgendaValidation"></asp:RequiredFieldValidator>
+                    </div>
 
-                <div class="form-group">
-                    <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
-                        ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
-                        ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
-                        ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="ExhibitorValidation"></asp:RegularExpressionValidator>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtMobile.ClientID%>">Mobile</label>
-                    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Enter mobile number"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
-                        ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtCompany.ClientID%>">Company <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
-                        ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=ddlStatus.ClientID%>">Status</label>
-                    <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
-                        <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
-                    </asp:DropDownList>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-                    <asp:Button ID="btnSaveExhibitor" runat="server" Text="Save" CssClass="btn btn-primary"
-                        OnClick="btnSaveExhibitor_Click" ValidationGroup="ExhibitorValidation" />
-                </div>
-            </div>
-        </div>
-        <!-- Approval/Rejection Modal -->
-        <div id="approvalModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="approvalModalTitle">Approve/Reject Exhibitor</h2>
-                    <button type="button" class="close-btn" onclick="closeApprovalModal()">&times;</button>
-                </div>
-
-                <asp:HiddenField ID="hdnApprovalExhibitorID" runat="server" Value="0" />
-
-                <div class="form-group">
-                    <label>Name</label>
-                    <asp:TextBox ID="txtApprovalName" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                    <div class="form-group">
+                        <label for="<%=txtTrack.ClientID%>">Track <span style="color: red;">*</span></label>
+                        <asp:TextBox ID="txtTrack" runat="server" CssClass="form-control" placeholder="e.g., Main Hall, Track A"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvTrack" runat="server" ControlToValidate="txtTrack"
+                            ErrorMessage="Track is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AgendaValidation"></asp:RequiredFieldValidator>
+                    </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Email</label>
-                        <asp:TextBox ID="txtApprovalEmail" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                        <label for="<%=txtTime.ClientID%>">Time <span style="color: red;">*</span></label>
+                        <asp:TextBox ID="txtTime" runat="server" CssClass="form-control" placeholder="e.g., 09:00 AM - 10:00 AM"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvTime" runat="server" ControlToValidate="txtTime"
+                            ErrorMessage="Time is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AgendaValidation"></asp:RequiredFieldValidator>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="<%=ddlStatus.ClientID%>">Status</label>
+                        <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
+                            <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=txtTitle.ClientID%>">Title <span style="color: red;">*</span></label>
+                    <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control" placeholder="Session title"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvTitle" runat="server" ControlToValidate="txtTitle"
+                        ErrorMessage="Title is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AgendaValidation"></asp:RequiredFieldValidator>
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=txtBrief.ClientID%>">Brief</label>
+                    <asp:TextBox ID="txtBrief" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="2" placeholder="Short description"></asp:TextBox>
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=txtSynopsis.ClientID%>">Synopsis</label>
+                    <asp:TextBox ID="txtSynopsis" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="4" placeholder="Detailed description"></asp:TextBox>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <asp:Button ID="btnSaveAgenda" runat="server" Text="Save" CssClass="btn btn-primary"
+                        OnClick="btnSaveAgenda_Click" ValidationGroup="AgendaValidation" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Approval/Rejection Modal -->
+        <div id="approvalModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Approve/Reject Agenda Item</h2>
+                    <button type="button" class="close-btn" onclick="closeApprovalModal()">&times;</button>
+                </div>
+
+                <asp:HiddenField ID="hdnApprovalAgendaID" runat="server" Value="0" />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Day</label>
+                        <asp:TextBox ID="txtApprovalDay" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label>Track</label>
+                        <asp:TextBox ID="txtApprovalTrack" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Time</label>
+                        <asp:TextBox ID="txtApprovalTime" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
                     </div>
                     <div class="form-group">
                         <label>Registration Type</label>
@@ -801,15 +780,14 @@ table td:nth-child(8) {
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Designation</label>
-                        <asp:TextBox ID="txtApprovalDesignation" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
-                    </div>
-                    <div class="form-group">
-                        <label>Company</label>
-                        <asp:TextBox ID="txtApprovalCompany" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
-                    </div>
+                <div class="form-group">
+                    <label>Title</label>
+                    <asp:TextBox ID="txtApprovalTitle" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <div class="form-group">
+                    <label>Brief</label>
+                    <asp:TextBox ID="txtApprovalBrief" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="2" ReadOnly="true"></asp:TextBox>
                 </div>
 
                 <div class="form-group">
@@ -840,10 +818,10 @@ table td:nth-child(8) {
                 </div>
             </div>
         </div>
+
         <script type="text/javascript">
             function toggleStatusSimple(checkbox) {
                 var row = checkbox.closest('tr');
-
                 if (!row) {
                     console.error('Row not found');
                     checkbox.checked = !checkbox.checked;
@@ -851,7 +829,6 @@ table td:nth-child(8) {
                 }
 
                 var btn = row.querySelector('.toggle-button-hidden');
-
                 if (btn) {
                     btn.click();
                 } else {
@@ -861,31 +838,33 @@ table td:nth-child(8) {
                 }
             }
 
-            function openModal(mode, id, name, email, mobile, designation, company, isActive) {
-                var modal = document.getElementById('exhibitorModal');
+            function openModal(mode, id, day, track, time, title, brief, synopsis, isActive) {
+                var modal = document.getElementById('agendaModal');
                 var modalTitle = document.getElementById('modalTitle');
                 var hdnMode = document.getElementById('<%=hdnModalMode.ClientID%>');
-                var hdnID = document.getElementById('<%=hdnExhibitorID.ClientID%>');
+                var hdnID = document.getElementById('<%=hdnAgendaID.ClientID%>');
 
                 if (mode === 'add') {
-                    modalTitle.innerText = 'Add Exhibitor';
+                    modalTitle.innerText = 'Add Agenda Item';
                     hdnMode.value = 'add';
                     hdnID.value = '0';
-                    document.getElementById('<%=txtName.ClientID%>').value = '';
-                    document.getElementById('<%=txtEmail.ClientID%>').value = '';
-                    document.getElementById('<%=txtMobile.ClientID%>').value = '';
-                    document.getElementById('<%=txtDesignation.ClientID%>').value = '';
-                    document.getElementById('<%=txtCompany.ClientID%>').value = '';
+                    document.getElementById('<%=txtDay.ClientID%>').value = '';
+                    document.getElementById('<%=txtTrack.ClientID%>').value = '';
+                    document.getElementById('<%=txtTime.ClientID%>').value = '';
+                    document.getElementById('<%=txtTitle.ClientID%>').value = '';
+                    document.getElementById('<%=txtBrief.ClientID%>').value = '';
+                    document.getElementById('<%=txtSynopsis.ClientID%>').value = '';
                     document.getElementById('<%=ddlStatus.ClientID%>').selectedIndex = 0;
                 } else if (mode === 'edit') {
-                    modalTitle.innerText = 'Edit Exhibitor';
+                    modalTitle.innerText = 'Edit Agenda Item';
                     hdnMode.value = 'edit';
                     hdnID.value = id;
-                    document.getElementById('<%=txtName.ClientID%>').value = name;
-                    document.getElementById('<%=txtEmail.ClientID%>').value = email;
-                    document.getElementById('<%=txtMobile.ClientID%>').value = mobile;
-                    document.getElementById('<%=txtDesignation.ClientID%>').value = designation;
-                    document.getElementById('<%=txtCompany.ClientID%>').value = company;
+                    document.getElementById('<%=txtDay.ClientID%>').value = day || '';
+                    document.getElementById('<%=txtTrack.ClientID%>').value = track || '';
+                    document.getElementById('<%=txtTime.ClientID%>').value = time || '';
+                    document.getElementById('<%=txtTitle.ClientID%>').value = title || '';
+                    document.getElementById('<%=txtBrief.ClientID%>').value = brief || '';
+                    document.getElementById('<%=txtSynopsis.ClientID%>').value = synopsis || '';
                     document.getElementById('<%=ddlStatus.ClientID%>').value = isActive;
                 }
 
@@ -893,23 +872,18 @@ table td:nth-child(8) {
             }
 
             function closeModal() {
-                var modal = document.getElementById('exhibitorModal');
+                var modal = document.getElementById('agendaModal');
                 modal.classList.remove('show');
             }
 
-            window.onclick = function (event) {
-                var modal = document.getElementById('exhibitorModal');
-                if (event.target == modal) {
-                    closeModal();
-                }
-            }
-            function openApprovalModal(id, name, email, regType, designation, company, approvalStatus, remarks) {
-                document.getElementById('<%=hdnApprovalExhibitorID.ClientID%>').value = id;
-                document.getElementById('<%=txtApprovalName.ClientID%>').value = name;
-                document.getElementById('<%=txtApprovalEmail.ClientID%>').value = email;
+            function openApprovalModal(id, day, track, time, title, brief, regType, approvalStatus, remarks) {
+                document.getElementById('<%=hdnApprovalAgendaID.ClientID%>').value = id;
+                document.getElementById('<%=txtApprovalDay.ClientID%>').value = day;
+                document.getElementById('<%=txtApprovalTrack.ClientID%>').value = track;
+                document.getElementById('<%=txtApprovalTime.ClientID%>').value = time;
+                document.getElementById('<%=txtApprovalTitle.ClientID%>').value = title;
+                document.getElementById('<%=txtApprovalBrief.ClientID%>').value = brief;
                 document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
-                document.getElementById('<%=txtApprovalDesignation.ClientID%>').value = designation;
-                document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
                 document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
                 document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
 
@@ -945,12 +919,11 @@ table td:nth-child(8) {
                 }
             }
 
-            // Update window.onclick to handle both modals
             window.onclick = function (event) {
-                var exhibitorModal = document.getElementById('exhibitorModal');
+                var agendaModal = document.getElementById('agendaModal');
                 var approvalModal = document.getElementById('approvalModal');
 
-                if (event.target == exhibitorModal) {
+                if (event.target == agendaModal) {
                     closeModal();
                 }
                 if (event.target == approvalModal) {
@@ -958,7 +931,6 @@ table td:nth-child(8) {
                 }
             }
 
-            // Add onchange event to approval status dropdown
             document.addEventListener('DOMContentLoaded', function () {
                 var ddlApproval = document.getElementById('<%=ddlApprovalStatus.ClientID%>');
                 if (ddlApproval) {

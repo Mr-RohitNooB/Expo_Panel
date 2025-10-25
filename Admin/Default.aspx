@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Expo_Panel.Admin.Default" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Expo_Panel.Admin.Default" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,8 +27,8 @@
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            width: 100%;
-            max-width: 420px;
+            width: 600px;
+            /*max-width: 420px;*/
             animation: slideUp 0.5s ease-out;
         }
 
@@ -127,8 +127,8 @@
         }
 
         .alert-error {
-            background: #fed7d7;
-            color: #742a2a;
+            background: #fff5f5;
+            color: #c53030;
             border-left: 4px solid #fc8181;
         }
 
@@ -140,9 +140,25 @@
         }
 
         .error-message {
-            color: #fc8181;
-            font-size: 12px;
-            margin-top: 5px;
+            color: #c53030;
+            font-size: 14px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #a0aec0;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         @media (max-width: 480px) {
@@ -190,9 +206,12 @@
 
                 <div class="form-group">
                     <label for="txtPassword">Password</label>
-                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" 
-                                 CssClass="form-control" placeholder="Enter your password" 
-                                 MaxLength="255"></asp:TextBox>
+                    <div class="password-container">
+                        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" 
+                                     CssClass="form-control" placeholder="Enter your password" 
+                                     MaxLength="255"></asp:TextBox>
+                        <span class="toggle-password" onclick="togglePasswordVisibility()">Show</span>
+                    </div>
                     <asp:RequiredFieldValidator ID="rfvPassword" runat="server" 
                                                 ControlToValidate="txtPassword" 
                                                 ErrorMessage="Password is required" 
@@ -209,5 +228,20 @@
             </div>
         </div>
     </form>
+
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('<%= txtPassword.ClientID %>');
+            var togglePassword = document.querySelector('.toggle-password');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePassword.textContent = 'Hide';
+            } else {
+                passwordInput.type = 'password';
+                togglePassword.textContent = 'Show';
+            }
+        }
+    </script>
 </body>
 </html>
