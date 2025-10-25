@@ -25,7 +25,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -296,10 +296,12 @@
             background: white;
             border-radius: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 700px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: modalSlideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes modalSlideIn {
@@ -341,6 +343,13 @@
 
         .close-btn:hover {
             color: #ef4444;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
         .form-group {
@@ -392,19 +401,23 @@
             font-size: 16px;
         }
         .inactive-row td {
-            color: #94a3b8; /* Muted grey text */
+            color: #94a3b8;
             font-style: italic;
         }
 
-        /* Override to keep action buttons looking normal */
         .inactive-row .action-buttons .btn {
             font-style: normal;
             opacity: 0.6;
         }
 
-        /* Hide default ASP.NET button for toggle */
         .toggle-button-hidden {
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -427,7 +440,7 @@
 
                 <div class="toolbar">
                     <div class="search-box">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, or mobile..."></asp:TextBox>
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, mobile, company..."></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
                     <button type="button" class="btn btn-success" onclick="openModal('add')">
@@ -446,6 +459,8 @@
                                     <asp:BoundField DataField="Name" HeaderText="Name" />
                                     <asp:BoundField DataField="Email" HeaderText="Email" />
                                     <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
+                                    <asp:BoundField DataField="Designation" HeaderText="Designation" />
+                                    <asp:BoundField DataField="Company" HeaderText="Company" />
                                     <asp:TemplateField HeaderText="Status">
                                     <ItemTemplate>
                                         <label class="toggle-switch">
@@ -499,34 +514,54 @@
                 <asp:HiddenField ID="hdnAdvisorID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
 
-                <div class="form-group">
-                    <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter advisor name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
-                        ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AdvisorValidation"></asp:RequiredFieldValidator>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
+                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter advisor name"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
+                            ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AdvisorValidation"></asp:RequiredFieldValidator>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail" 
+                            ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AdvisorValidation"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" 
+                            ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic" 
+                            ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="AdvisorValidation"></asp:RegularExpressionValidator>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail" 
-                        ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AdvisorValidation"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" 
-                        ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic" 
-                        ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="AdvisorValidation"></asp:RegularExpressionValidator>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="<%=txtMobile.ClientID%>">Mobile</label>
+                        <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Enter mobile number"></asp:TextBox>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
+                        <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation" 
+                            ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AdvisorValidation"></asp:RequiredFieldValidator>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="<%=txtMobile.ClientID%>">Mobile</label>
-                    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Enter mobile number"></asp:TextBox>
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="<%=txtCompany.ClientID%>">Company <span style="color: red;">*</span></label>
+                        <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany" 
+                            ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AdvisorValidation"></asp:RequiredFieldValidator>
+                    </div>
 
-                <div class="form-group">
-                    <label for="<%=ddlStatus.ClientID%>">Status</label>
-                    <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
-                        <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
-                    </asp:DropDownList>
+                    <div class="form-group">
+                        <label for="<%=ddlStatus.ClientID%>">Status</label>
+                        <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
+                            <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
@@ -539,7 +574,6 @@
 
         <script type="text/javascript">
             function toggleStatusSimple(checkbox) {
-                // Find the closest table row
                 var row = checkbox.closest('tr');
 
                 if (!row) {
@@ -548,22 +582,18 @@
                     return;
                 }
 
-                // Find the hidden button within this row
                 var btn = row.querySelector('.toggle-button-hidden');
 
                 if (btn) {
-                    // Trigger server-side button click
                     btn.click();
                 } else {
                     console.error('Toggle button not found in row');
-                    // Revert checkbox state if button not found
                     checkbox.checked = !checkbox.checked;
                     alert('Error: Could not find toggle button');
                 }
             }
 
-
-            function openModal(mode, id, name, email, mobile, isActive) {
+            function openModal(mode, id, name, email, mobile, designation, company, isActive) {
                 var modal = document.getElementById('advisorModal');
                 var modalTitle = document.getElementById('modalTitle');
                 var hdnMode = document.getElementById('<%=hdnModalMode.ClientID%>');
@@ -576,6 +606,8 @@
                     document.getElementById('<%=txtName.ClientID%>').value = '';
                     document.getElementById('<%=txtEmail.ClientID%>').value = '';
                     document.getElementById('<%=txtMobile.ClientID%>').value = '';
+                    document.getElementById('<%=txtDesignation.ClientID%>').value = '';
+                    document.getElementById('<%=txtCompany.ClientID%>').value = '';
                     document.getElementById('<%=ddlStatus.ClientID%>').selectedIndex = 0;
                 } else if (mode === 'edit') {
                     modalTitle.innerText = 'Edit Advisor';
@@ -583,7 +615,9 @@
                     hdnID.value = id;
                     document.getElementById('<%=txtName.ClientID%>').value = name;
                     document.getElementById('<%=txtEmail.ClientID%>').value = email;
-                    document.getElementById('<%=txtMobile.ClientID%>').value = mobile;
+                    document.getElementById('<%=txtMobile.ClientID%>').value = mobile || '';
+                    document.getElementById('<%=txtDesignation.ClientID%>').value = designation || '';
+                    document.getElementById('<%=txtCompany.ClientID%>').value = company || '';
                     document.getElementById('<%=ddlStatus.ClientID%>').value = isActive;
                 }
 
@@ -595,7 +629,6 @@
                 modal.classList.remove('show');
             }
 
-            // Close modal when clicking outside
             window.onclick = function (event) {
                 var modal = document.getElementById('advisorModal');
                 if (event.target == modal) {

@@ -14,6 +14,7 @@ namespace Expo_Panel.Admin
             get { return ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString; }
         }
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // Check if user is logged in
@@ -40,8 +41,8 @@ namespace Expo_Panel.Admin
                     lblSessionStatus.ForeColor = System.Drawing.Color.Red;
                 }
 
-                // Load all advisors initially
-                LoadAdvisors("");
+                // Load all data initially
+                LoadAdvisors(""); // or LoadSpeakers("") or LoadExhibitors("")
             }
 
             // Handle flash messages
@@ -133,34 +134,14 @@ namespace Expo_Panel.Admin
                     ShowMessage("Database Error: " + errorMsg, "danger");
                 }
 
-                // Keep modal open on error
-                string escapedName = txtName.Text.Replace("'", "\\'");
-                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
-                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
-                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
-                    $"'{hdnAdvisorID.Value}', " +
-                    $"'{escapedName}', " +
-                    $"'{escapedEmail}', " +
-                    $"'{escapedMobile}', " +
-                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
+                // DON'T reopen modal automatically - let user click "Add Advisor" again if needed
+                // Just show the error message and clear the form
+                ClearForm();
             }
             catch (Exception ex)
             {
                 ShowMessage("Error: " + ex.Message, "danger");
-
-                string escapedName = txtName.Text.Replace("'", "\\'");
-                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
-                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
-                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
-                    $"'{hdnAdvisorID.Value}', " +
-                    $"'{escapedName}', " +
-                    $"'{escapedEmail}', " +
-                    $"'{escapedMobile}', " +
-                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
+                ClearForm();
             }
         }
 

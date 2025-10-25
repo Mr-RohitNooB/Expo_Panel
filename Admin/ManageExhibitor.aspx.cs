@@ -40,7 +40,7 @@ namespace Expo_Panel.Admin
                     lblSessionStatus.ForeColor = System.Drawing.Color.Red;
                 }
 
-                // Load all exhibitors initially
+                // Load all data initially
                 LoadExhibitors("");
             }
 
@@ -135,42 +135,13 @@ namespace Expo_Panel.Admin
                     ShowMessage("Database Error: " + errorMsg, "danger");
                 }
 
-                // Keep modal open on error
-                string escapedName = txtName.Text.Replace("'", "\\'");
-                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
-                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
-                string escapedDesignation = txtDesignation.Text.Replace("'", "\\'");
-                string escapedCompany = txtCompany.Text.Replace("'", "\\'");
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
-                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
-                    $"'{hdnExhibitorID.Value}', " +
-                    $"'{escapedName}', " +
-                    $"'{escapedEmail}', " +
-                    $"'{escapedMobile}', " +
-                    $"'{escapedDesignation}', " +
-                    $"'{escapedCompany}', " +
-                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
+                // DON'T reopen modal automatically - just show error and clear form
+                ClearForm();
             }
             catch (Exception ex)
             {
                 ShowMessage("Error: " + ex.Message, "danger");
-
-                string escapedName = txtName.Text.Replace("'", "\\'");
-                string escapedEmail = txtEmail.Text.Replace("'", "\\'");
-                string escapedMobile = txtMobile.Text.Replace("'", "\\'");
-                string escapedDesignation = txtDesignation.Text.Replace("'", "\\'");
-                string escapedCompany = txtCompany.Text.Replace("'", "\\'");
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "keepModalOpen",
-                    $"setTimeout(function(){{ openModal('{hdnModalMode.Value}', " +
-                    $"'{hdnExhibitorID.Value}', " +
-                    $"'{escapedName}', " +
-                    $"'{escapedEmail}', " +
-                    $"'{escapedMobile}', " +
-                    $"'{escapedDesignation}', " +
-                    $"'{escapedCompany}', " +
-                    $"'{ddlStatus.SelectedValue}'); }}, 100);", true);
+                ClearForm();
             }
         }
 
