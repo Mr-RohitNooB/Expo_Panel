@@ -19,7 +19,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -41,7 +41,7 @@
         }
 
         .header h1 {
-            color: #4f46e5;
+            color: #ed8936;
             font-size: 28px;
             font-weight: 600;
         }
@@ -97,7 +97,7 @@
         }
 
         .btn-primary {
-            background: #4f46e5;
+            background: #ed8936;
             color: white;
         }
 
