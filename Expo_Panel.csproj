@@ -74,6 +74,7 @@
     <Content Include="Admin\ManageExhibitor.aspx" />
     <Content Include="Admin\ManageSpeaker.aspx" />
     <Content Include="RegisterAdvisor.aspx" />
+    <Content Include="RegisterAgenda.aspx" />
     <Content Include="RegisterExhibitor.aspx" />
     <Content Include="RegisterSpeaker.aspx" />
     <Content Include="Web.config" />
@@ -128,6 +129,13 @@
     </Compile>
     <Compile Include="RegisterAdvisor.aspx.designer.cs">
       <DependentUpon>RegisterAdvisor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterAgenda.aspx.cs">
+      <DependentUpon>RegisterAgenda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegisterAgenda.aspx.designer.cs">
+      <DependentUpon>RegisterAgenda.aspx</DependentUpon>
     </Compile>
     <Compile Include="RegisterExhibitor.aspx.cs">
       <DependentUpon>RegisterExhibitor.aspx</DependentUpon>

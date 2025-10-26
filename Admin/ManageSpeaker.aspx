@@ -187,17 +187,20 @@
             }
 
             table th {
-                padding: 15px;
+                padding: 15px 8px;
                 text-align: left;
                 font-weight: 600;
                 color: #475569;
                 border-bottom: 2px solid #e2e8f0;
+                white-space: nowrap;
+                font-size: 13px;
             }
 
             table td {
-                padding: 15px;
+                padding: 15px 8px;
                 border-bottom: 1px solid #e2e8f0;
                 color: #334155;
+                font-size: 13px;
             }
 
             table tbody tr:hover {
@@ -274,6 +277,11 @@
             gap: 8px;
         }
 
+            .action-buttons .btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
         .alert {
             padding: 15px 20px;
             border-radius: 8px;
@@ -324,7 +332,7 @@
             background: white;
             border-radius: 15px;
             width: 90%;
-            max-width: 600px;
+            max-width: 900px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: modalSlideIn 0.3s ease-out;
@@ -403,6 +411,11 @@
                     border-color: #48bb78;
                 }
 
+            .form-group textarea {
+                resize: vertical;
+                min-height: 80px;
+            }
+
         .modal-footer {
             display: flex;
             justify-content: flex-end;
@@ -446,8 +459,65 @@
             gap: 15px;
         }
 
+        .form-row-three {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+            .form-section:last-child {
+                border-bottom: none;
+            }
+
+            .form-section h3 {
+                color: #38a169;
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .checkbox-item input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
+
+            .checkbox-item label {
+                margin: 0;
+                cursor: pointer;
+                font-weight: 400;
+            }
+
+        .char-counter {
+            font-size: 12px;
+            color: #64748b;
+            text-align: right;
+            margin-top: 5px;
+        }
+
         @media (max-width: 768px) {
-            .form-row {
+            .form-row, .form-row-three {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
                 grid-template-columns: 1fr;
             }
         }
@@ -534,49 +604,36 @@
             display: none;
         }
 
-                table th, table td {
-    padding-left: 8px;  /* Was 15px */
-    padding-right: 8px; /* Was 15px */
-}
-        table th {
-    white-space: nowrap;
-}
-        table {
-    font-size: 13px; /* Reduce from default 14px */
-}
+        table th:nth-child(4),
+        table td:nth-child(4) {
+            max-width: 100px;
+        }
 
-table th {
-    font-size: 13px;
-}
-table th:nth-child(4), /* Mobile */
-table td:nth-child(4) {
-    max-width: 100px;
-}
+        table th:nth-child(5),
+        table td:nth-child(5) {
+            max-width: 90px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-table th:nth-child(5), /* Designation */
-table td:nth-child(5) {
-    max-width: 90px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        table th:nth-child(6),
+        table td:nth-child(6) {
+            max-width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-table th:nth-child(6), /* Company */
-table td:nth-child(6) {
-    max-width: 120px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        table th:nth-child(8),
+        table td:nth-child(8) {
+            max-width: 90px;
+        }
 
-table th:nth-child(8), /* Approval */
-table td:nth-child(8) {
-    max-width: 90px;
-}
-.action-buttons .btn {
-    padding: 6px 10px;
-    font-size: 12px;
-}
+        /* Commented out for future use */
+        .file-upload-section {
+            display: none; /* Will be enabled later */
+        }
     </style>
 </head>
 <body>
@@ -587,19 +644,16 @@ table td:nth-child(8) {
             <div class="header">
                 <h1><i class="fas fa-microphone"></i>Manage Speakers</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
-
-
                     <span>Welcome,
                         <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
                         | Session Status:
                         <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
                     </span>
                     <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
-        <i class="fas fa-arrow-left"></i> Back
+                        <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
                     <asp:Button ID="Button1" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
                 </div>
-
             </div>
 
             <div class="dashboard-card">
@@ -621,7 +675,6 @@ table td:nth-child(8) {
                         <a href="/RegisterSpeaker.aspx" class="btn btn-info" target="_blank">
                             <i class="fas fa-link"></i>Get Registration Link
                         </a>
-
                         <button type="button" class="btn btn-success" onclick="openModal('add')">
                             <i class="fas fa-plus"></i>Add Speaker
                         </button>
@@ -729,60 +782,217 @@ table td:nth-child(8) {
                 <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
 
-                <div class="form-row">
+                <!-- Section 1: Personal Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Personal Information</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="<%=txtName.ClientID%>">Full Name <span style="color: red;">*</span></label>
+                            <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter full name"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
+                                ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="<%=txtEmail.ClientID%>">Email Address <span style="color: red;">*</span></label>
+                            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
+                                ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
+                            <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                                ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
+                                ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="SpeakerValidation"></asp:RegularExpressionValidator>
+                        </div>
+                    </div>
+
+                    <div class="form-row-three">
+                        <div class="form-group">
+                            <label for="<%=txtMobile.ClientID%>">Mobile Number</label>
+                            <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Enter mobile number"></asp:TextBox>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
+                            <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
+                                ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="<%=txtYearsOfExperience.ClientID%>">Years of Experience</label>
+                            <asp:TextBox ID="txtYearsOfExperience" runat="server" CssClass="form-control" TextMode="Number" placeholder="Enter years" min="0"></asp:TextBox>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="<%=txtCompany.ClientID%>">Company/Organization <span style="color: red;">*</span></label>
+                            <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
+                                ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="<%=ddlStatus.ClientID%>">Status</label>
+                            <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
+                                <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
+                            </asp:DropDownList>
+                        </div>
+                    </div>
+
+                    <!-- COMMENTED OUT FOR FUTURE USE -->
+                    <!--
+                    <div class="form-row file-upload-section">
+                        <div class="form-group">
+                            <label for="<%=txtLinkedInProfile.ClientID%>">LinkedIn Profile</label>
+                            <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control" placeholder="https://linkedin.com/in/username"></asp:TextBox>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Recent Photo</label>
+                            <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group file-upload-section">
+                        <label>Company Logo (High Resolution)</label>
+                        <asp:FileUpload ID="fuLogo" runat="server" CssClass="form-control" />
+                    </div>
+                    -->
+                </div>
+
+                <!-- Section 2: Professional Profile -->
+                <div class="form-section">
+                    <h3><i class="fas fa-briefcase"></i> Professional Profile</h3>
+
                     <div class="form-group">
-                        <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
-                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter speaker name"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
-                            ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
+                        <label for="<%=txtProfessionalBio.ClientID%>">Professional Bio (150-250 words recommended)</label>
+                        <asp:TextBox ID="txtProfessionalBio" runat="server" CssClass="form-control" TextMode="MultiLine" 
+                            Rows="5" placeholder="Enter professional bio for promotional and agenda material" 
+                            onkeyup="updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount')"></asp:TextBox>
+                        <div id="bioCharCount" class="char-counter">0 characters</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
-                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
-                            ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
-                        <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
-                            ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
-                            ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="SpeakerValidation"></asp:RegularExpressionValidator>
+                        <label>Areas of Expertise</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkBaseOils" />
+                                <label for="chkBaseOils">Base Oils</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkAdditives" />
+                                <label for="chkAdditives">Lubricant Additives</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkIndustrial" />
+                                <label for="chkIndustrial">Industrial Lubrication</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkAutomotive" />
+                                <label for="chkAutomotive">Automotive & EV Fluids</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkSynthetic" />
+                                <label for="chkSynthetic">Synthetic and Bio-Based Lubricants</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkSustainability" />
+                                <label for="chkSustainability">Sustainability & Circularity</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkTribology" />
+                                <label for="chkTribology">Tribology & Wear Performance</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkMonitoring" />
+                                <label for="chkMonitoring">Condition Monitoring</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkRegulatory" />
+                                <label for="chkRegulatory">Regulatory Compliance</label>
+                            </div>
+                        </div>
+                        <asp:TextBox ID="txtOtherExpertise" runat="server" CssClass="form-control" placeholder="Other areas (please specify)" style="margin-top: 10px;"></asp:TextBox>
+                        <asp:HiddenField ID="hdnAreasOfExpertise" runat="server" />
                     </div>
                 </div>
 
-                <div class="form-row">
+                <!-- Section 3: Current Work & Projects -->
+                <div class="form-section">
+                    <h3><i class="fas fa-project-diagram"></i> Current Work & Projects</h3>
+
                     <div class="form-group">
-                        <label for="<%=txtMobile.ClientID%>">Mobile</label>
-                        <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Enter mobile number"></asp:TextBox>
+                        <label for="<%=txtCurrentWorkProjects.ClientID%>">Description of Current Projects/Research/Initiatives</label>
+                        <asp:TextBox ID="txtCurrentWorkProjects" runat="server" CssClass="form-control" TextMode="MultiLine" 
+                            Rows="4" placeholder="Describe your current work, projects, research or industry initiatives"
+                            onkeyup="updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount')"></asp:TextBox>
+                        <div id="workCharCount" class="char-counter">0 characters</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="<%=ddlStatus.ClientID%>">Status</label>
-                        <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
-                            <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
+                        <label for="<%=txtSuggestedTopics.ClientID%>">Suggested Topics/Themes (2-3 topics recommended)</label>
+                        <asp:TextBox ID="txtSuggestedTopics" runat="server" CssClass="form-control" TextMode="MultiLine" 
+                            Rows="3" placeholder="List 2-3 topics that reflect your current work or thought leadership areas"></asp:TextBox>
+                    </div>
+                </div>
+
+                <!-- Section 4: Discussion Format & Speaking Experience -->
+                <div class="form-section">
+                    <h3><i class="fas fa-comments"></i> Discussion Format & Speaking Experience</h3>
+
+                    <div class="form-group">
+                        <label>Preferred Discussion Format (Select all that apply)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkPanel" />
+                                <label for="chkPanel">Panel Discussion</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkPresentation" />
+                                <label for="chkPresentation">Technical Presentation</label>
+                            </div>
+                        </div>
+                        <asp:HiddenField ID="hdnPreferredFormat" runat="server" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="<%=txtPreviousSpeakingEngagements.ClientID%>">Previous Speaking Engagements</label>
+                        <asp:TextBox ID="txtPreviousSpeakingEngagements" runat="server" CssClass="form-control" TextMode="MultiLine" 
+                            Rows="4" placeholder="List any conferences, webinars or forums where you've recently spoken. Include links to recordings or published content if available."
+                            onkeyup="updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount')"></asp:TextBox>
+                        <div id="engagementsCharCount" class="char-counter">0 characters</div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Consent & Availability -->
+                <div class="form-section">
+                    <h3><i class="fas fa-check-circle"></i> Consent & Availability</h3>
+
+                    <div class="form-group">
+                        <label for="<%=ddlIsAvailable.ClientID%>">Are you available to speak during the scheduled event dates? <span style="color: red;">*</span></label>
+                        <asp:DropDownList ID="ddlIsAvailable" runat="server" CssClass="form-control">
+                            <asp:ListItem Text="Yes" Value="Yes" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="No" Value="No"></asp:ListItem>
+                            <asp:ListItem Text="Tentative" Value="Tentative"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
-                        <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
-                            ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
-                    </div>
 
                     <div class="form-group">
-                        <label for="<%=txtCompany.ClientID%>">Company <span style="color: red;">*</span></label>
-                        <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
-                            ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="SpeakerValidation"></asp:RequiredFieldValidator>
+                        <div class="checkbox-item">
+                            <asp:CheckBox ID="chkMarketingConsent" runat="server" />
+                            <label for="<%=chkMarketingConsent.ClientID%>">
+                                I consent to the use of my photo, name and bio in event marketing materials
+                            </label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
                     <asp:Button ID="btnSaveSpeaker" runat="server" Text="Save" CssClass="btn btn-primary"
-                        OnClick="btnSaveSpeaker_Click" ValidationGroup="SpeakerValidation" />
+                        OnClick="btnSaveSpeaker_Click" ValidationGroup="SpeakerValidation" OnClientClick="collectCheckboxData()" />
                 </div>
             </div>
         </div>
@@ -854,9 +1064,90 @@ table td:nth-child(8) {
         </div>
 
         <script type="text/javascript">
+            function updateCharCount(textboxId, counterId) {
+                var textbox = document.getElementById(textboxId);
+                var counter = document.getElementById(counterId);
+                if (textbox && counter) {
+                    counter.textContent = textbox.value.length + ' characters';
+                }
+            }
+
+            function collectCheckboxData() {
+                // Collect Areas of Expertise
+                var expertise = [];
+                if (document.getElementById('chkBaseOils').checked) expertise.push('Base Oils');
+                if (document.getElementById('chkAdditives').checked) expertise.push('Lubricant Additives');
+                if (document.getElementById('chkIndustrial').checked) expertise.push('Industrial Lubrication');
+                if (document.getElementById('chkAutomotive').checked) expertise.push('Automotive & EV Fluids');
+                if (document.getElementById('chkSynthetic').checked) expertise.push('Synthetic and Bio-Based Lubricants');
+                if (document.getElementById('chkSustainability').checked) expertise.push('Sustainability & Circularity');
+                if (document.getElementById('chkTribology').checked) expertise.push('Tribology & Wear Performance');
+                if (document.getElementById('chkMonitoring').checked) expertise.push('Condition Monitoring');
+                if (document.getElementById('chkRegulatory').checked) expertise.push('Regulatory Compliance');
+
+                var otherExpertise = document.getElementById('<%=txtOtherExpertise.ClientID%>').value.trim();
+                if (otherExpertise) {
+                    expertise.push('Other: ' + otherExpertise);
+                }
+
+                document.getElementById('<%=hdnAreasOfExpertise.ClientID%>').value = expertise.join(', ');
+
+                // Collect Preferred Discussion Format
+                var formats = [];
+                if (document.getElementById('chkPanel').checked) formats.push('Panel Discussion');
+                if (document.getElementById('chkPresentation').checked) formats.push('Technical Presentation');
+
+                document.getElementById('<%=hdnPreferredFormat.ClientID%>').value = formats.join(', ');
+
+                return true;
+            }
+
+            function setCheckboxValues(expertiseStr, formatStr) {
+                // Clear all checkboxes first
+                document.getElementById('chkBaseOils').checked = false;
+                document.getElementById('chkAdditives').checked = false;
+                document.getElementById('chkIndustrial').checked = false;
+                document.getElementById('chkAutomotive').checked = false;
+                document.getElementById('chkSynthetic').checked = false;
+                document.getElementById('chkSustainability').checked = false;
+                document.getElementById('chkTribology').checked = false;
+                document.getElementById('chkMonitoring').checked = false;
+                document.getElementById('chkRegulatory').checked = false;
+                document.getElementById('chkPanel').checked = false;
+                document.getElementById('chkPresentation').checked = false;
+                document.getElementById('<%=txtOtherExpertise.ClientID%>').value = '';
+
+                // Set Areas of Expertise
+                if (expertiseStr) {
+                    var expertiseArr = expertiseStr.split(', ');
+                    expertiseArr.forEach(function (item) {
+                        if (item === 'Base Oils') document.getElementById('chkBaseOils').checked = true;
+                        else if (item === 'Lubricant Additives') document.getElementById('chkAdditives').checked = true;
+                        else if (item === 'Industrial Lubrication') document.getElementById('chkIndustrial').checked = true;
+                        else if (item === 'Automotive & EV Fluids') document.getElementById('chkAutomotive').checked = true;
+                        else if (item === 'Synthetic and Bio-Based Lubricants') document.getElementById('chkSynthetic').checked = true;
+                        else if (item === 'Sustainability & Circularity') document.getElementById('chkSustainability').checked = true;
+                        else if (item === 'Tribology & Wear Performance') document.getElementById('chkTribology').checked = true;
+                        else if (item === 'Condition Monitoring') document.getElementById('chkMonitoring').checked = true;
+                        else if (item === 'Regulatory Compliance') document.getElementById('chkRegulatory').checked = true;
+                        else if (item.startsWith('Other: ')) {
+                            document.getElementById('<%=txtOtherExpertise.ClientID%>').value = item.substring(7);
+                        }
+                    });
+                }
+
+                // Set Preferred Format
+                if (formatStr) {
+                    var formatArr = formatStr.split(', ');
+                    formatArr.forEach(function (item) {
+                        if (item === 'Panel Discussion') document.getElementById('chkPanel').checked = true;
+                        else if (item === 'Technical Presentation') document.getElementById('chkPresentation').checked = true;
+                    });
+                }
+            }
+
             function toggleStatusSimple(checkbox) {
                 var row = checkbox.closest('tr');
-
                 if (!row) {
                     console.error('Row not found');
                     checkbox.checked = !checkbox.checked;
@@ -864,7 +1155,6 @@ table td:nth-child(8) {
                 }
 
                 var btn = row.querySelector('.toggle-button-hidden');
-
                 if (btn) {
                     btn.click();
                 } else {
@@ -874,7 +1164,7 @@ table td:nth-child(8) {
                 }
             }
 
-            function openModal(mode, id, name, email, mobile, designation, company, isActive) {
+            function openModal(mode, speakerData) {
                 var modal = document.getElementById('speakerModal');
                 var modalTitle = document.getElementById('modalTitle');
                 var hdnMode = document.getElementById('<%=hdnModalMode.ClientID%>');
@@ -884,22 +1174,53 @@ table td:nth-child(8) {
                     modalTitle.innerText = 'Add Speaker';
                     hdnMode.value = 'add';
                     hdnID.value = '0';
+
+                    // Clear all form fields
                     document.getElementById('<%=txtName.ClientID%>').value = '';
                     document.getElementById('<%=txtEmail.ClientID%>').value = '';
                     document.getElementById('<%=txtMobile.ClientID%>').value = '';
                     document.getElementById('<%=txtDesignation.ClientID%>').value = '';
+                    document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = '';
                     document.getElementById('<%=txtCompany.ClientID%>').value = '';
+                    document.getElementById('<%=txtProfessionalBio.ClientID%>').value = '';
+                    document.getElementById('<%=txtCurrentWorkProjects.ClientID%>').value = '';
+                    document.getElementById('<%=txtSuggestedTopics.ClientID%>').value = '';
+                    document.getElementById('<%=txtPreviousSpeakingEngagements.ClientID%>').value = '';
                     document.getElementById('<%=ddlStatus.ClientID%>').selectedIndex = 0;
-                } else if (mode === 'edit') {
+                    document.getElementById('<%=ddlIsAvailable.ClientID%>').selectedIndex = 0;
+                    document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = false;
+                    setCheckboxValues('', '');
+                    
+                    // Reset character counters
+                    updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
+                    updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
+                    updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
+                    
+                } else if (mode === 'edit' && speakerData) {
                     modalTitle.innerText = 'Edit Speaker';
                     hdnMode.value = 'edit';
-                    hdnID.value = id;
-                    document.getElementById('<%=txtName.ClientID%>').value = name;
-                    document.getElementById('<%=txtEmail.ClientID%>').value = email;
-                    document.getElementById('<%=txtMobile.ClientID%>').value = mobile;
-                    document.getElementById('<%=txtDesignation.ClientID%>').value = designation;
-                    document.getElementById('<%=txtCompany.ClientID%>').value = company;
-                    document.getElementById('<%=ddlStatus.ClientID%>').value = isActive;
+                    hdnID.value = speakerData.id;
+                    
+                    document.getElementById('<%=txtName.ClientID%>').value = speakerData.name || '';
+                    document.getElementById('<%=txtEmail.ClientID%>').value = speakerData.email || '';
+                    document.getElementById('<%=txtMobile.ClientID%>').value = speakerData.mobile || '';
+                    document.getElementById('<%=txtDesignation.ClientID%>').value = speakerData.designation || '';
+                    document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = speakerData.yearsOfExperience || '';
+                    document.getElementById('<%=txtCompany.ClientID%>').value = speakerData.company || '';
+                    document.getElementById('<%=txtProfessionalBio.ClientID%>').value = speakerData.professionalBio || '';
+                    document.getElementById('<%=txtCurrentWorkProjects.ClientID%>').value = speakerData.currentWorkProjects || '';
+                    document.getElementById('<%=txtSuggestedTopics.ClientID%>').value = speakerData.suggestedTopics || '';
+                    document.getElementById('<%=txtPreviousSpeakingEngagements.ClientID%>').value = speakerData.previousSpeakingEngagements || '';
+                    document.getElementById('<%=ddlStatus.ClientID%>').value = speakerData.isActive || '1';
+                    document.getElementById('<%=ddlIsAvailable.ClientID%>').value = speakerData.isAvailable || 'Yes';
+                    document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = speakerData.marketingConsent || false;
+                    
+                    setCheckboxValues(speakerData.areasOfExpertise || '', speakerData.preferredDiscussionFormat || '');
+                    
+                    // Update character counters
+                    updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
+                    updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
+                    updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
                 }
 
                 modal.classList.add('show');
@@ -971,6 +1292,11 @@ table td:nth-child(8) {
                 if (ddlApproval) {
                     ddlApproval.addEventListener('change', toggleRemarksRequired);
                 }
+
+                // Initialize character counters
+                updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
+                updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
+                updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
             });
         </script>
     </form>

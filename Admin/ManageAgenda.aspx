@@ -562,12 +562,16 @@
                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by day, track, title..."></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button type="button" class="btn btn-success" onclick="openModal('add')">
-                            <i class="fas fa-plus"></i> Add Agenda
-                        </button>
-                    </div>
+                   <div style="display: flex; gap: 10px;">
+                    <a href="/RegisterAgenda.aspx" class="btn btn-info" target="_blank">
+                        <i class="fas fa-link"></i>Get Registration Link
+                    </a>
+
+                    <button type="button" class="btn btn-success" onclick="openModal('add')">
+                        <i class="fas fa-plus"></i>Add Agenda
+                    </button>
                 </div>
+                                </div>
 
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>

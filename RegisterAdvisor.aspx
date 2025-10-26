@@ -29,8 +29,8 @@
         }
 
         .registration-container {
-            max-width: 800px;
-            width: 100%;
+            width: 900px;
+/*            width: 100%;*/
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 40px;

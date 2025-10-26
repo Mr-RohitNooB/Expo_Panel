@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text;
 
 namespace Expo_Panel.Admin
 {
@@ -129,6 +130,7 @@ namespace Expo_Panel.Admin
                 int speakerId = Convert.ToInt32(hdnSpeakerID.Value);
                 string mode = hdnModalMode.Value;
 
+                // Basic Information
                 string name = txtName.Text.Trim();
                 string email = txtEmail.Text.Trim();
                 string mobile = txtMobile.Text.Trim();
@@ -136,14 +138,44 @@ namespace Expo_Panel.Admin
                 string company = txtCompany.Text.Trim();
                 bool isActive = ddlStatus.SelectedValue == "1";
 
+                // New Fields
+                int? yearsOfExperience = null;
+                if (!string.IsNullOrEmpty(txtYearsOfExperience.Text.Trim()))
+                {
+                    yearsOfExperience = Convert.ToInt32(txtYearsOfExperience.Text.Trim());
+                }
+
+                // COMMENTED OUT FOR FUTURE USE
+                // string linkedInProfile = txtLinkedInProfile.Text.Trim();
+                string linkedInProfile = null;
+                string photoPath = null;
+                string logoPath = null;
+
+                string professionalBio = txtProfessionalBio.Text.Trim();
+                string areasOfExpertise = hdnAreasOfExpertise.Value;
+                string currentWorkProjects = txtCurrentWorkProjects.Text.Trim();
+                string suggestedTopics = txtSuggestedTopics.Text.Trim();
+                string preferredDiscussionFormat = hdnPreferredFormat.Value;
+                string previousSpeakingEngagements = txtPreviousSpeakingEngagements.Text.Trim();
+                string isAvailable = ddlIsAvailable.SelectedValue;
+                bool marketingConsent = chkMarketingConsent.Checked;
+
                 if (mode == "add")
                 {
-                    AddSpeaker(name, email, mobile, designation, company, isActive);
+                    AddSpeaker(name, email, mobile, designation, company, isActive,
+                        yearsOfExperience, linkedInProfile, photoPath, logoPath,
+                        professionalBio, areasOfExpertise, currentWorkProjects,
+                        suggestedTopics, preferredDiscussionFormat, previousSpeakingEngagements,
+                        isAvailable, marketingConsent);
                     Session["FlashMessage"] = "Speaker added successfully!";
                 }
                 else if (mode == "edit")
                 {
-                    UpdateSpeaker(speakerId, name, email, mobile, designation, company, isActive);
+                    UpdateSpeaker(speakerId, name, email, mobile, designation, company, isActive,
+                        yearsOfExperience, linkedInProfile, photoPath, logoPath,
+                        professionalBio, areasOfExpertise, currentWorkProjects,
+                        suggestedTopics, preferredDiscussionFormat, previousSpeakingEngagements,
+                        isAvailable, marketingConsent);
                     Session["FlashMessage"] = "Speaker updated successfully!";
                 }
 
@@ -342,22 +374,31 @@ namespace Expo_Panel.Admin
                             hdnSpeakerID.Value = speakerId.ToString();
                             hdnModalMode.Value = "edit";
 
-                            string name = reader["Name"].ToString();
-                            string email = reader["Email"].ToString();
-                            string mobile = reader["Mobile"].ToString();
-                            string designation = reader["Designation"].ToString();
-                            string company = reader["Company"].ToString();
-                            bool isActive = Convert.ToBoolean(reader["IS_ACTIVE"]);
+                            // Build JavaScript object for speaker data
+                            StringBuilder jsData = new StringBuilder();
+                            jsData.Append("{");
+                            jsData.AppendFormat("id: {0},", speakerId);
+                            jsData.AppendFormat("name: '{0}',", EscapeJsString(reader["Name"].ToString()));
+                            jsData.AppendFormat("email: '{0}',", EscapeJsString(reader["Email"].ToString()));
+                            jsData.AppendFormat("mobile: '{0}',", EscapeJsString(reader["Mobile"].ToString()));
+                            jsData.AppendFormat("designation: '{0}',", EscapeJsString(reader["Designation"].ToString()));
+                            jsData.AppendFormat("company: '{0}',", EscapeJsString(reader["Company"].ToString()));
+                            jsData.AppendFormat("isActive: '{0}',", Convert.ToBoolean(reader["IS_ACTIVE"]) ? "1" : "0");
 
-                            // Escape single quotes for JavaScript
-                            name = name.Replace("'", "\\'");
-                            email = email.Replace("'", "\\'");
-                            mobile = mobile.Replace("'", "\\'");
-                            designation = designation.Replace("'", "\\'");
-                            company = company.Replace("'", "\\'");
+                            // New fields
+                            jsData.AppendFormat("yearsOfExperience: '{0}',", reader["YearsOfExperience"] != DBNull.Value ? reader["YearsOfExperience"].ToString() : "");
+                            jsData.AppendFormat("professionalBio: '{0}',", EscapeJsString(reader["ProfessionalBio"].ToString()));
+                            jsData.AppendFormat("areasOfExpertise: '{0}',", EscapeJsString(reader["AreasOfExpertise"].ToString()));
+                            jsData.AppendFormat("currentWorkProjects: '{0}',", EscapeJsString(reader["CurrentWorkProjects"].ToString()));
+                            jsData.AppendFormat("suggestedTopics: '{0}',", EscapeJsString(reader["SuggestedTopics"].ToString()));
+                            jsData.AppendFormat("preferredDiscussionFormat: '{0}',", EscapeJsString(reader["PreferredDiscussionFormat"].ToString()));
+                            jsData.AppendFormat("previousSpeakingEngagements: '{0}',", EscapeJsString(reader["PreviousSpeakingEngagements"].ToString()));
+                            jsData.AppendFormat("isAvailable: '{0}',", EscapeJsString(reader["IsAvailable"].ToString()));
+                            jsData.AppendFormat("marketingConsent: {0}", reader["MarketingConsent"] != DBNull.Value && Convert.ToBoolean(reader["MarketingConsent"]) ? "true" : "false");
+                            jsData.Append("}");
 
                             // Register script to open modal with data
-                            string script = $"openModal('edit', {speakerId}, '{name}', '{email}', '{mobile}', '{designation}', '{company}', '{(isActive ? "1" : "0")}');";
+                            string script = $"openModal('edit', {jsData.ToString()});";
                             ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal", script, true);
                         }
 
@@ -398,12 +439,12 @@ namespace Expo_Panel.Admin
                             string remarks = reader["Remarks"].ToString();
 
                             // Escape single quotes for JavaScript
-                            name = name.Replace("'", "\\'");
-                            email = email.Replace("'", "\\'");
-                            regType = regType.Replace("'", "\\'");
-                            designation = designation.Replace("'", "\\'");
-                            company = company.Replace("'", "\\'");
-                            remarks = remarks.Replace("'", "\\'");
+                            name = EscapeJsString(name);
+                            email = EscapeJsString(email);
+                            regType = EscapeJsString(regType);
+                            designation = EscapeJsString(designation);
+                            company = EscapeJsString(company);
+                            remarks = EscapeJsString(remarks);
 
                             string script = $"openApprovalModal({speakerId}, '{name}', '{email}', '{regType}', '{designation}', '{company}', '{approvalStatus}', '{remarks}');";
                             ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal", script, true);
@@ -419,19 +460,39 @@ namespace Expo_Panel.Admin
             }
         }
 
-        private void AddSpeaker(string name, string email, string mobile, string designation, string company, bool isActive)
+        private void AddSpeaker(string name, string email, string mobile, string designation, string company, bool isActive,
+            int? yearsOfExperience, string linkedInProfile, string photoPath, string logoPath,
+            string professionalBio, string areasOfExpertise, string currentWorkProjects,
+            string suggestedTopics, string preferredDiscussionFormat, string previousSpeakingEngagements,
+            string isAvailable, bool marketingConsent)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("sp_AddSpeaker", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Basic fields
                     cmd.Parameters.AddWithValue("@Name", name);
                     cmd.Parameters.AddWithValue("@Email", email);
                     cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
                     cmd.Parameters.AddWithValue("@Designation", designation);
                     cmd.Parameters.AddWithValue("@Company", company);
                     cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+
+                    // New fields
+                    cmd.Parameters.AddWithValue("@YearsOfExperience", yearsOfExperience.HasValue ? (object)yearsOfExperience.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LinkedInProfile", string.IsNullOrEmpty(linkedInProfile) ? (object)DBNull.Value : linkedInProfile);
+                    cmd.Parameters.AddWithValue("@PhotoPath", string.IsNullOrEmpty(photoPath) ? (object)DBNull.Value : photoPath);
+                    cmd.Parameters.AddWithValue("@LogoPath", string.IsNullOrEmpty(logoPath) ? (object)DBNull.Value : logoPath);
+                    cmd.Parameters.AddWithValue("@ProfessionalBio", string.IsNullOrEmpty(professionalBio) ? (object)DBNull.Value : professionalBio);
+                    cmd.Parameters.AddWithValue("@AreasOfExpertise", string.IsNullOrEmpty(areasOfExpertise) ? (object)DBNull.Value : areasOfExpertise);
+                    cmd.Parameters.AddWithValue("@CurrentWorkProjects", string.IsNullOrEmpty(currentWorkProjects) ? (object)DBNull.Value : currentWorkProjects);
+                    cmd.Parameters.AddWithValue("@SuggestedTopics", string.IsNullOrEmpty(suggestedTopics) ? (object)DBNull.Value : suggestedTopics);
+                    cmd.Parameters.AddWithValue("@PreferredDiscussionFormat", string.IsNullOrEmpty(preferredDiscussionFormat) ? (object)DBNull.Value : preferredDiscussionFormat);
+                    cmd.Parameters.AddWithValue("@PreviousSpeakingEngagements", string.IsNullOrEmpty(previousSpeakingEngagements) ? (object)DBNull.Value : previousSpeakingEngagements);
+                    cmd.Parameters.AddWithValue("@IsAvailable", isAvailable);
+                    cmd.Parameters.AddWithValue("@MarketingConsent", marketingConsent);
 
                     SqlParameter outParam = new SqlParameter("@SpeakerID", SqlDbType.Int);
                     outParam.Direction = ParameterDirection.Output;
@@ -443,13 +504,19 @@ namespace Expo_Panel.Admin
             }
         }
 
-        private void UpdateSpeaker(int speakerId, string name, string email, string mobile, string designation, string company, bool isActive)
+        private void UpdateSpeaker(int speakerId, string name, string email, string mobile, string designation, string company, bool isActive,
+            int? yearsOfExperience, string linkedInProfile, string photoPath, string logoPath,
+            string professionalBio, string areasOfExpertise, string currentWorkProjects,
+            string suggestedTopics, string preferredDiscussionFormat, string previousSpeakingEngagements,
+            string isAvailable, bool marketingConsent)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateSpeaker", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Basic fields
                     cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
                     cmd.Parameters.AddWithValue("@Name", name);
                     cmd.Parameters.AddWithValue("@Email", email);
@@ -457,6 +524,20 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@Designation", designation);
                     cmd.Parameters.AddWithValue("@Company", company);
                     cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+
+                    // New fields
+                    cmd.Parameters.AddWithValue("@YearsOfExperience", yearsOfExperience.HasValue ? (object)yearsOfExperience.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LinkedInProfile", string.IsNullOrEmpty(linkedInProfile) ? (object)DBNull.Value : linkedInProfile);
+                    cmd.Parameters.AddWithValue("@PhotoPath", string.IsNullOrEmpty(photoPath) ? (object)DBNull.Value : photoPath);
+                    cmd.Parameters.AddWithValue("@LogoPath", string.IsNullOrEmpty(logoPath) ? (object)DBNull.Value : logoPath);
+                    cmd.Parameters.AddWithValue("@ProfessionalBio", string.IsNullOrEmpty(professionalBio) ? (object)DBNull.Value : professionalBio);
+                    cmd.Parameters.AddWithValue("@AreasOfExpertise", string.IsNullOrEmpty(areasOfExpertise) ? (object)DBNull.Value : areasOfExpertise);
+                    cmd.Parameters.AddWithValue("@CurrentWorkProjects", string.IsNullOrEmpty(currentWorkProjects) ? (object)DBNull.Value : currentWorkProjects);
+                    cmd.Parameters.AddWithValue("@SuggestedTopics", string.IsNullOrEmpty(suggestedTopics) ? (object)DBNull.Value : suggestedTopics);
+                    cmd.Parameters.AddWithValue("@PreferredDiscussionFormat", string.IsNullOrEmpty(preferredDiscussionFormat) ? (object)DBNull.Value : preferredDiscussionFormat);
+                    cmd.Parameters.AddWithValue("@PreviousSpeakingEngagements", string.IsNullOrEmpty(previousSpeakingEngagements) ? (object)DBNull.Value : previousSpeakingEngagements);
+                    cmd.Parameters.AddWithValue("@IsAvailable", isAvailable);
+                    cmd.Parameters.AddWithValue("@MarketingConsent", marketingConsent);
 
                     con.Open();
                     cmd.ExecuteNonQuery();
@@ -516,9 +597,19 @@ namespace Expo_Panel.Admin
             txtMobile.Text = "";
             txtDesignation.Text = "";
             txtCompany.Text = "";
+            txtYearsOfExperience.Text = "";
+            txtProfessionalBio.Text = "";
+            txtCurrentWorkProjects.Text = "";
+            txtSuggestedTopics.Text = "";
+            txtPreviousSpeakingEngagements.Text = "";
+            txtOtherExpertise.Text = "";
             ddlStatus.SelectedIndex = 0;
+            ddlIsAvailable.SelectedIndex = 0;
+            chkMarketingConsent.Checked = false;
             hdnSpeakerID.Value = "0";
             hdnModalMode.Value = "add";
+            hdnAreasOfExpertise.Value = "";
+            hdnPreferredFormat.Value = "";
         }
 
         private void ShowMessage(string message, string type)
@@ -531,6 +622,18 @@ namespace Expo_Panel.Admin
             <i class='fas {icon}'></i>
             {message}
         </div>";
+        }
+
+        private string EscapeJsString(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return "";
+
+            return input.Replace("\\", "\\\\")
+                       .Replace("'", "\\'")
+                       .Replace("\"", "\\\"")
+                       .Replace("\r", "\\r")
+                       .Replace("\n", "\\n");
         }
     }
 }

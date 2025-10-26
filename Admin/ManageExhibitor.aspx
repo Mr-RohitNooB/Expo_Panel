@@ -130,11 +130,11 @@
             }
 
         .btn-danger {
-    background: #ef4444;
-    color: white;
-    padding: 12.5px 12px;
-    font-size: 14px;
-}
+            background: #ef4444;
+            color: white;
+            padding: 12.5px 12px;
+            font-size: 14px;
+        }
 
             .btn-danger:hover {
                 background: #dc2626;
@@ -296,10 +296,12 @@
             background: white;
             border-radius: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 700px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: modalSlideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes modalSlideIn {
@@ -530,49 +532,53 @@
             border: 1px solid #bfdbfe;
         }
 
-                table th, table td {
-    padding-left: 8px;  /* Was 15px */
-    padding-right: 8px; /* Was 15px */
-}
+        table th, table td {
+            padding-left: 8px; /* Was 15px */
+            padding-right: 8px; /* Was 15px */
+        }
+
         table th {
-    white-space: nowrap;
-}
+            white-space: nowrap;
+        }
+
         table {
-    font-size: 13px; /* Reduce from default 14px */
-}
+            font-size: 13px; /* Reduce from default 14px */
+        }
 
-table th {
-    font-size: 13px;
-}
-table th:nth-child(4), /* Mobile */
-table td:nth-child(4) {
-    max-width: 100px;
-}
+            table th {
+                font-size: 13px;
+            }
 
-table th:nth-child(5), /* Designation */
-table td:nth-child(5) {
-    max-width: 90px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+                table th:nth-child(4), /* Mobile */
+                table td:nth-child(4) {
+                    max-width: 100px;
+                }
 
-table th:nth-child(6), /* Company */
-table td:nth-child(6) {
-    max-width: 120px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+                table th:nth-child(5), /* Designation */
+                table td:nth-child(5) {
+                    max-width: 90px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
 
-table th:nth-child(8), /* Approval */
-table td:nth-child(8) {
-    max-width: 90px;
-}
-.action-buttons .btn {
-    padding: 6px 10px;
-    font-size: 12px;
-}
+                table th:nth-child(6), /* Company */
+                table td:nth-child(6) {
+                    max-width: 120px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                table th:nth-child(8), /* Approval */
+                table td:nth-child(8) {
+                    max-width: 90px;
+                }
+
+        .action-buttons .btn {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -715,66 +721,72 @@ table td:nth-child(8) {
 
         <!-- Add/Edit Modal -->
         <div id="exhibitorModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="modalTitle">Add Exhibitor</h2>
-                    <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
-                </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Add Exhibitor</h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
 
-                <asp:HiddenField ID="hdnExhibitorID" runat="server" Value="0" />
-                <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
+        <asp:HiddenField ID="hdnExhibitorID" runat="server" Value="0" />
+        <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
 
-                <div class="form-group">
-                    <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter exhibitor name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
-                        ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="<%=txtName.ClientID%>">Name <span style="color: red;">*</span></label>
+                <asp:TextBox ID="txtName" runat="server" CssClass="form-control" placeholder="Enter exhibitor name"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
+                    ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
+            </div>
 
-                <div class="form-group">
-                    <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
-                        ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
-                        ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
-                        ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="ExhibitorValidation"></asp:RegularExpressionValidator>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtMobile.ClientID%>">Mobile</label>
-                    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Enter mobile number"></asp:TextBox>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
-                        ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtCompany.ClientID%>">Company <span style="color: red;">*</span></label>
-                    <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
-                        ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=ddlStatus.ClientID%>">Status</label>
-                    <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
-                        <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
-                    </asp:DropDownList>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-                    <asp:Button ID="btnSaveExhibitor" runat="server" Text="Save" CssClass="btn btn-primary"
-                        OnClick="btnSaveExhibitor_Click" ValidationGroup="ExhibitorValidation" />
-                </div>
+            <div class="form-group">
+                <label for="<%=txtEmail.ClientID%>">Email <span style="color: red;">*</span></label>
+                <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
+                    ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                    ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
+                    ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="ExhibitorValidation"></asp:RegularExpressionValidator>
             </div>
         </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="<%=txtMobile.ClientID%>">Mobile</label>
+                <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" placeholder="Enter mobile number"></asp:TextBox>
+            </div>
+
+            <div class="form-group">
+                <label for="<%=txtDesignation.ClientID%>">Designation <span style="color: red;">*</span></label>
+                <asp:TextBox ID="txtDesignation" runat="server" CssClass="form-control" placeholder="Enter designation"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
+                    ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="<%=txtCompany.ClientID%>">Company <span style="color: red;">*</span></label>
+                <asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" placeholder="Enter company name"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
+                    ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ExhibitorValidation"></asp:RequiredFieldValidator>
+            </div>
+
+            <div class="form-group">
+                <label for="<%=ddlStatus.ClientID%>">Status</label>
+                <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
+                    <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
+                </asp:DropDownList>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+            <asp:Button ID="btnSaveExhibitor" runat="server" Text="Save" CssClass="btn btn-primary"
+                OnClick="btnSaveExhibitor_Click" ValidationGroup="ExhibitorValidation" />
+        </div>
+    </div>
+</div>
         <!-- Approval/Rejection Modal -->
         <div id="approvalModal" class="modal">
             <div class="modal-content">
