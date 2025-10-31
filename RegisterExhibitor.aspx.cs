@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Expo_Panel
 {
@@ -23,8 +22,14 @@ namespace Expo_Panel
 
         protected void btnRegister_Click(object sender, EventArgs e)
         {
-            if (!Page.IsValid)
+            if (!Page.IsValid) return;
+
+            // Validate declaration checkbox
+            if (!chkDeclaration.Checked)
+            {
+                ShowMessage("Please accept the declaration to proceed.", "danger");
                 return;
+            }
 
             try
             {
@@ -33,15 +38,45 @@ namespace Expo_Panel
                 string mobile = txtMobile.Text.Trim();
                 string designation = txtDesignation.Text.Trim();
                 string company = txtCompany.Text.Trim();
-                string registrationType = "Online"; // Always set to Online for public registration
-                bool isActive = true; // Set to true by default
+                string headOffice = txtHeadOffice.Text.Trim();
+                string city = txtCity.Text.Trim();
+                string state = txtState.Text.Trim();
+                string country = txtCountry.Text.Trim();
+                string gstNumber = txtGSTNumber.Text.Trim();
+                string billingAddress = txtBillingAddress.Text.Trim();
 
-                // Add exhibitor to database
-                int exhibitorId = AddExhibitor(name, email, mobile, designation, company, isActive, registrationType);
+                // Get booth type
+                string boothType = string.Empty;
+                if (rbShellScheme.Checked) boothType = "Shell Scheme";
+                else if (rbRawSpace.Checked) boothType = "Raw Space";
+
+                decimal areaInSqm = 0;
+                if (!string.IsNullOrEmpty(txtAreaInSqm.Text.Trim()))
+                {
+                    decimal.TryParse(txtAreaInSqm.Text.Trim(), out areaInSqm);
+                }
+
+                bool interestedInConference = chkConference.Checked;
+                bool interestedInSponsorship = chkSponsorship.Checked;
+                bool interestedInAdvertising = chkAdvertising.Checked;
+                bool interestedInCustomPackage = chkCustomPackage.Checked;
+                bool acceptedDeclaration = chkDeclaration.Checked;
+
+                string registrationType = "Online";
+                bool isActive = true;
+
+                int exhibitorId = AddExhibitor(
+                    name, email, mobile, designation, company,
+                    headOffice, city, state, country, gstNumber, billingAddress,
+                    boothType, areaInSqm,
+                    interestedInConference, interestedInSponsorship,
+                    interestedInAdvertising, interestedInCustomPackage,
+                    acceptedDeclaration, isActive, registrationType
+                );
 
                 if (exhibitorId > 0)
                 {
-                    ShowMessage("Your registration has been submitted successfully!", "success");
+                    ShowMessage("Your registration has been submitted successfully! Our team will contact you shortly.", "success");
                     ClearForm();
                 }
                 else
@@ -67,21 +102,39 @@ namespace Expo_Panel
             }
         }
 
-        private int AddExhibitor(string name, string email, string mobile, string designation, string company, bool isActive, string registrationType)
+        private int AddExhibitor(string name, string email, string mobile, string designation,
+            string company, string headOffice, string city, string state, string country,
+            string gstNumber, string billingAddress, string boothType, decimal areaInSqm,
+            bool interestedInConference, bool interestedInSponsorship,
+            bool interestedInAdvertising, bool interestedInCustomPackage,
+            bool acceptedDeclaration, bool isActive, string registrationType)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("sp_AddExhibitor", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+
                     cmd.Parameters.AddWithValue("@Name", name);
                     cmd.Parameters.AddWithValue("@Email", email);
                     cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
                     cmd.Parameters.AddWithValue("@Designation", designation);
                     cmd.Parameters.AddWithValue("@Company", company);
+                    cmd.Parameters.AddWithValue("@HeadOfficeAddress", string.IsNullOrEmpty(headOffice) ? (object)DBNull.Value : headOffice);
+                    cmd.Parameters.AddWithValue("@City", string.IsNullOrEmpty(city) ? (object)DBNull.Value : city);
+                    cmd.Parameters.AddWithValue("@State", string.IsNullOrEmpty(state) ? (object)DBNull.Value : state);
+                    cmd.Parameters.AddWithValue("@Country", string.IsNullOrEmpty(country) ? (object)DBNull.Value : country);
+                    cmd.Parameters.AddWithValue("@GSTNumber", string.IsNullOrEmpty(gstNumber) ? (object)DBNull.Value : gstNumber);
+                    cmd.Parameters.AddWithValue("@BillingAddress", string.IsNullOrEmpty(billingAddress) ? (object)DBNull.Value : billingAddress);
+                    cmd.Parameters.AddWithValue("@BoothType", string.IsNullOrEmpty(boothType) ? (object)DBNull.Value : boothType);
+                    cmd.Parameters.AddWithValue("@AreaInSqm", areaInSqm > 0 ? (object)areaInSqm : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@InterestedInConference", interestedInConference);
+                    cmd.Parameters.AddWithValue("@InterestedInSponsorship", interestedInSponsorship);
+                    cmd.Parameters.AddWithValue("@InterestedInAdvertising", interestedInAdvertising);
+                    cmd.Parameters.AddWithValue("@InterestedInCustomPackage", interestedInCustomPackage);
+                    cmd.Parameters.AddWithValue("@AcceptedDeclaration", acceptedDeclaration);
                     cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
-                    // Note: sp_AddExhibitor doesn't have RegistrationType parameter, but it will default to "Admin" in the database
-                    // We'll need to update it after insertion
+                    cmd.Parameters.AddWithValue("@RegistrationType", registrationType);
 
                     SqlParameter outParam = new SqlParameter("@ExhibitorID", SqlDbType.Int)
                     {
@@ -92,26 +145,7 @@ namespace Expo_Panel
                     con.Open();
                     cmd.ExecuteNonQuery();
 
-                    // Update the registration type to "Online" since the stored procedure doesn't support it
-                    int exhibitorId = Convert.ToInt32(outParam.Value);
-                    UpdateRegistrationType(exhibitorId, registrationType);
-
-                    return exhibitorId;
-                }
-            }
-        }
-
-        private void UpdateRegistrationType(int exhibitorId, string registrationType)
-        {
-            using (SqlConnection con = new SqlConnection(ConnectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("UPDATE TBL.Exhibitor SET RegistrationType = @RegistrationType WHERE ExhibitorID = @ExhibitorID", con))
-                {
-                    cmd.Parameters.AddWithValue("@RegistrationType", registrationType);
-                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
-
-                    con.Open();
-                    cmd.ExecuteNonQuery();
+                    return Convert.ToInt32(outParam.Value);
                 }
             }
         }
@@ -123,6 +157,20 @@ namespace Expo_Panel
             txtMobile.Text = "";
             txtDesignation.Text = "";
             txtCompany.Text = "";
+            txtHeadOffice.Text = "";
+            txtCity.Text = "";
+            txtState.Text = "";
+            txtCountry.Text = "";
+            txtGSTNumber.Text = "";
+            txtBillingAddress.Text = "";
+            rbShellScheme.Checked = false;
+            rbRawSpace.Checked = false;
+            txtAreaInSqm.Text = "";
+            chkConference.Checked = false;
+            chkSponsorship.Checked = false;
+            chkAdvertising.Checked = false;
+            chkCustomPackage.Checked = false;
+            chkDeclaration.Checked = false;
         }
 
         private void ShowMessage(string message, string type)
@@ -131,10 +179,14 @@ namespace Expo_Panel
             string icon = type == "success" ? "fa-check-circle" : "fa-exclamation-circle";
 
             litMessage.Text = $@"
-                <div class='alert {cssClass}'>
-                    <i class='fas {icon}'></i>
-                    {message}
-                </div>";
+        <div class='alert {cssClass}' role='alert'>
+            <i class='fas {icon}'></i> {message}
+            <button type='button' class='close-btn' onclick='this.parentElement.style.display=""none""'>
+                &times;
+            </button>
+        </div>";
         }
+
+
     }
 }

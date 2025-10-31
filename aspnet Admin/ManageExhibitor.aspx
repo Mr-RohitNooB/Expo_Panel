@@ -1176,13 +1176,13 @@
                 document.getElementById('<%=txtCountry.ClientID%>').value = data.country || '';
                 document.getElementById('<%=txtGSTNumber.ClientID%>').value = data.gst || '';
                 document.getElementById('<%=txtBillingAddress.ClientID%>').value = data.billing || '';
-                
+
                 if (data.boothType === 'Shell Scheme') {
                     document.getElementById('<%=rbShellScheme.ClientID%>').checked = true;
                 } else if (data.boothType === 'Raw Space') {
                     document.getElementById('<%=rbRawSpace.ClientID%>').checked = true;
                 }
-                
+
                 document.getElementById('<%=txtAreaInSqm.ClientID%>').value = data.area || '';
                 document.getElementById('<%=chkConference.ClientID%>').checked = data.conference === 'True';
                 document.getElementById('<%=chkSponsorship.ClientID%>').checked = data.sponsorship === 'True';
@@ -1227,7 +1227,7 @@
                 var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
                 var remarksReq = document.getElementById('remarksRequired');
                 var passwordReq = document.getElementById('passwordRequired');
-                
+
                 if (status === 'Rejected') {
                     remarksReq.style.display = 'inline';
                     passwordReq.style.display = 'none';
@@ -1265,7 +1265,7 @@
             function togglePassword(fieldId) {
                 var field = document.getElementById(fieldId);
                 var icon = event.target;
-                
+
                 if (field.type === 'password') {
                     field.type = 'text';
                     icon.classList.remove('fa-eye');
