@@ -73,7 +73,6 @@
     <Content Include="Admin\ManageAgenda.aspx" />
     <Content Include="Admin\ManageExhibitor.aspx" />
     <Content Include="Admin\ManageSpeaker.aspx" />
-    <Content Include="aspnet Admin\ManageExhibitor.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="ExhibitorLogin.aspx" />
     <Content Include="PostApprovalExhibitor.aspx" />

@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -143,6 +144,7 @@ namespace Expo_Panel.Admin
                 int exhibitorId = Convert.ToInt32(hdnExhibitorID.Value);
                 string mode = hdnExhibitorModalMode.Value;
 
+                // Collect Pre-Approval Data
                 string name = txtName.Text.Trim();
                 string email = txtEmail.Text.Trim();
                 string mobile = txtMobile.Text.Trim();
@@ -172,18 +174,48 @@ namespace Expo_Panel.Admin
                 bool isActive = ddlStatus.SelectedValue == "1";
                 string registrationType = ddlRegistrationType.SelectedValue;
 
+                // Check if user has filled post-approval data
+                bool hasPostApprovalData = HasPostApprovalData();
+
+                // Validate post-approval fields if data is present
+                if (hasPostApprovalData && !ValidatePostApprovalFields())
+                {
+                    return;
+                }
+
                 if (mode == "add")
                 {
+                    // ADD MODE
                     AddExhibitor(name, email, mobile, designation, company, headOffice, city, state, country,
                         gstNumber, billingAddress, boothType, areaInSqm, conference, sponsorship, advertising,
                         customPackage, isActive, registrationType);
-                    Session["FlashMessage"] = "Exhibitor added successfully!";
+
+                    // Get the newly created exhibitor ID
+                    exhibitorId = GetExhibitorIdByEmail(email);
+
+                    // If post-approval data is present, create the profile
+                    if (hasPostApprovalData && exhibitorId > 0)
+                    {
+                        SavePostApprovalProfile(exhibitorId, mode);
+                    }
+
+                    Session["FlashMessage"] = hasPostApprovalData
+                        ? "Exhibitor and profile added successfully!"
+                        : "Exhibitor added successfully!";
                 }
                 else if (mode == "edit")
                 {
+                    // EDIT MODE
                     UpdateExhibitor(exhibitorId, name, email, mobile, designation, company, headOffice, city, state,
                         country, gstNumber, billingAddress, boothType, areaInSqm, conference, sponsorship,
                         advertising, customPackage, isActive);
+
+                    // Handle post-approval profile
+                    if (hasPostApprovalData)
+                    {
+                        SavePostApprovalProfile(exhibitorId, mode);
+                    }
+
                     Session["FlashMessage"] = "Exhibitor updated successfully!";
                 }
 
@@ -210,6 +242,251 @@ namespace Expo_Panel.Admin
             }
         }
 
+        private int GetExhibitorIdByEmail(string email)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                string query = "SELECT ExhibitorID FROM TBL.Exhibitor WHERE Email = @Email";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+        }
+
+        private bool PostApprovalProfileExists(int exhibitorId)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                string query = "SELECT COUNT(*) FROM TBL.PostApprovalExhibitor WHERE ExhibitorID = @ExhibitorID AND IS_ACTIVE = 1";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+                    con.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        private void SavePostApprovalProfile(int exhibitorId, string mode)
+        {
+            // Collect Post-Approval Data
+            string boothNo = txtBoothNo.Text.Trim();
+            string hallNo = txtHallNo.Text.Trim();
+            int yearOfEstablishment = Convert.ToInt32(txtYearOfEstablishment.Text.Trim());
+            string website = txtWebsite.Text.Trim();
+            string linkedIn = txtLinkedIn.Text.Trim();
+            string twitter = txtTwitter.Text.Trim();
+            string facebook = txtFacebook.Text.Trim();
+            string youtube = txtYouTube.Text.Trim();
+            string supportName = txtSupportName.Text.Trim();
+            string supportContact = txtSupportContact.Text.Trim();
+            string supportEmail = txtSupportEmail.Text.Trim();
+
+            string natureOfBusiness = GetNatureOfBusiness();
+            string companyCategory = GetCompanyCategory();
+            string marketsCatered = GetMarketsCatered();
+            string geographicReach = GetGeographicReach();
+            string participationObjectives = GetParticipationObjectives();
+
+            bool powerSupplyRequired = chkPowerSupply.Checked;
+            decimal? powerSupplyKwh = null;
+            if (powerSupplyRequired && !string.IsNullOrEmpty(txtPowerSupplyKwh.Text.Trim()))
+            {
+                powerSupplyKwh = Convert.ToDecimal(txtPowerSupplyKwh.Text.Trim());
+            }
+
+            bool internetRequired = chkInternet.Checked;
+            bool furnitureRequired = chkFurniture.Checked;
+            bool avEquipmentRequired = chkAVEquipment.Checked;
+            bool interpreterRequired = chkInterpreter.Checked;
+            string otherRequirements = chkReqOther.Checked ? txtReqOther.Text.Trim() : "";
+            string additionalNotes = txtAdditionalNotes.Text.Trim();
+
+            // Handle File Uploads
+            string productPicturePath = "";
+            string brochurePath = "";
+
+            if (fuProductPicture.HasFile || fuBrochure.HasFile)
+            {
+                string uploadFolder = Server.MapPath($"~/Uploads/Exhibitor_{exhibitorId}/");
+
+                if (!Directory.Exists(uploadFolder))
+                {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+
+                if (fuProductPicture.HasFile)
+                {
+                    string productFileName = "ProductPicture_" + DateTime.Now.Ticks + Path.GetExtension(fuProductPicture.FileName);
+                    string productFullPath = Path.Combine(uploadFolder, productFileName);
+                    fuProductPicture.SaveAs(productFullPath);
+                    productPicturePath = $"~/Uploads/Exhibitor_{exhibitorId}/{productFileName}";
+                }
+
+                if (fuBrochure.HasFile)
+                {
+                    string brochureFileName = "Brochure_" + DateTime.Now.Ticks + Path.GetExtension(fuBrochure.FileName);
+                    string brochureFullPath = Path.Combine(uploadFolder, brochureFileName);
+                    fuBrochure.SaveAs(brochureFullPath);
+                    brochurePath = $"~/Uploads/Exhibitor_{exhibitorId}/{brochureFileName}";
+                }
+            }
+
+            // Check if profile exists
+            bool profileExists = PostApprovalProfileExists(exhibitorId);
+
+            if (profileExists)
+            {
+                // UPDATE
+                int profileId = GetPostApprovalProfileId(exhibitorId);
+                UpdatePostApprovalProfile(profileId, boothNo, hallNo, yearOfEstablishment,
+                    website, linkedIn, twitter, facebook, youtube,
+                    supportName, supportContact, supportEmail,
+                    natureOfBusiness, companyCategory, marketsCatered, geographicReach,
+                    powerSupplyRequired, powerSupplyKwh, internetRequired, furnitureRequired,
+                    avEquipmentRequired, interpreterRequired, otherRequirements,
+                    participationObjectives, additionalNotes,
+                    productPicturePath, brochurePath);
+            }
+            else
+            {
+                // INSERT
+                AddPostApprovalProfile(exhibitorId, boothNo, hallNo, yearOfEstablishment,
+                    website, linkedIn, twitter, facebook, youtube,
+                    supportName, supportContact, supportEmail,
+                    natureOfBusiness, companyCategory, marketsCatered, geographicReach,
+                    powerSupplyRequired, powerSupplyKwh, internetRequired, furnitureRequired,
+                    avEquipmentRequired, interpreterRequired, otherRequirements,
+                    participationObjectives, additionalNotes,
+                    productPicturePath, brochurePath);
+            }
+        }
+
+        private int GetPostApprovalProfileId(int exhibitorId)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                string query = "SELECT ProfileID FROM TBL.PostApprovalExhibitor WHERE ExhibitorID = @ExhibitorID AND IS_ACTIVE = 1";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+        }
+
+        private void AddPostApprovalProfile(
+            int exhibitorId, string boothNo, string hallNo, int yearOfEstablishment,
+            string website, string linkedIn, string twitter, string facebook, string youtube,
+            string supportName, string supportContact, string supportEmail,
+            string natureOfBusiness, string companyCategory, string marketsCatered, string geographicReach,
+            bool powerSupplyRequired, decimal? powerSupplyKwh, bool internetRequired, bool furnitureRequired,
+            bool avEquipmentRequired, bool interpreterRequired, string otherRequirements,
+            string participationObjectives, string additionalNotes,
+            string productPicturePath, string brochurePath)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_AddPostApprovalExhibitorProfile", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+                    cmd.Parameters.AddWithValue("@BoothNo", boothNo);
+                    cmd.Parameters.AddWithValue("@HallNo", hallNo);
+                    cmd.Parameters.AddWithValue("@YearOfEstablishment", yearOfEstablishment);
+                    cmd.Parameters.AddWithValue("@Website", string.IsNullOrEmpty(website) ? (object)DBNull.Value : website);
+                    cmd.Parameters.AddWithValue("@LinkedIn", string.IsNullOrEmpty(linkedIn) ? (object)DBNull.Value : linkedIn);
+                    cmd.Parameters.AddWithValue("@Twitter", string.IsNullOrEmpty(twitter) ? (object)DBNull.Value : twitter);
+                    cmd.Parameters.AddWithValue("@Facebook", string.IsNullOrEmpty(facebook) ? (object)DBNull.Value : facebook);
+                    cmd.Parameters.AddWithValue("@YouTube", string.IsNullOrEmpty(youtube) ? (object)DBNull.Value : youtube);
+                    cmd.Parameters.AddWithValue("@CustomerSupportName", supportName);
+                    cmd.Parameters.AddWithValue("@CustomerSupportContact", supportContact);
+                    cmd.Parameters.AddWithValue("@CustomerSupportEmail", supportEmail);
+                    cmd.Parameters.AddWithValue("@NatureOfBusiness", natureOfBusiness);
+                    cmd.Parameters.AddWithValue("@CompanyCategory", companyCategory);
+                    cmd.Parameters.AddWithValue("@MarketsCateredTo", marketsCatered);
+                    cmd.Parameters.AddWithValue("@GeographicReach", geographicReach);
+                    cmd.Parameters.AddWithValue("@PowerSupplyRequired", powerSupplyRequired);
+                    cmd.Parameters.AddWithValue("@PowerSupplyKwh", powerSupplyKwh.HasValue ? (object)powerSupplyKwh.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@InternetRequired", internetRequired);
+                    cmd.Parameters.AddWithValue("@FurnitureRentalRequired", furnitureRequired);
+                    cmd.Parameters.AddWithValue("@AVEquipmentRequired", avEquipmentRequired);
+                    cmd.Parameters.AddWithValue("@InterpreterSupportRequired", interpreterRequired);
+                    cmd.Parameters.AddWithValue("@OtherRequirements", string.IsNullOrEmpty(otherRequirements) ? (object)DBNull.Value : otherRequirements);
+                    cmd.Parameters.AddWithValue("@ParticipationObjectives", participationObjectives);
+                    cmd.Parameters.AddWithValue("@AdditionalNotes", string.IsNullOrEmpty(additionalNotes) ? (object)DBNull.Value : additionalNotes);
+                    cmd.Parameters.AddWithValue("@ProductPicturePath", string.IsNullOrEmpty(productPicturePath) ? (object)DBNull.Value : productPicturePath);
+                    cmd.Parameters.AddWithValue("@BrochurePath", string.IsNullOrEmpty(brochurePath) ? (object)DBNull.Value : brochurePath);
+
+                    SqlParameter outParam = new SqlParameter("@ProfileID", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outParam);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void UpdatePostApprovalProfile(
+            int profileId, string boothNo, string hallNo, int yearOfEstablishment,
+            string website, string linkedIn, string twitter, string facebook, string youtube,
+            string supportName, string supportContact, string supportEmail,
+            string natureOfBusiness, string companyCategory, string marketsCatered, string geographicReach,
+            bool powerSupplyRequired, decimal? powerSupplyKwh, bool internetRequired, bool furnitureRequired,
+            bool avEquipmentRequired, bool interpreterRequired, string otherRequirements,
+            string participationObjectives, string additionalNotes,
+            string productPicturePath, string brochurePath)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_UpdatePostApprovalExhibitorProfile", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@ProfileID", profileId);
+                    cmd.Parameters.AddWithValue("@BoothNo", boothNo);
+                    cmd.Parameters.AddWithValue("@HallNo", hallNo);
+                    cmd.Parameters.AddWithValue("@YearOfEstablishment", yearOfEstablishment);
+                    cmd.Parameters.AddWithValue("@Website", string.IsNullOrEmpty(website) ? (object)DBNull.Value : website);
+                    cmd.Parameters.AddWithValue("@LinkedIn", string.IsNullOrEmpty(linkedIn) ? (object)DBNull.Value : linkedIn);
+                    cmd.Parameters.AddWithValue("@Twitter", string.IsNullOrEmpty(twitter) ? (object)DBNull.Value : twitter);
+                    cmd.Parameters.AddWithValue("@Facebook", string.IsNullOrEmpty(facebook) ? (object)DBNull.Value : facebook);
+                    cmd.Parameters.AddWithValue("@YouTube", string.IsNullOrEmpty(youtube) ? (object)DBNull.Value : youtube);
+                    cmd.Parameters.AddWithValue("@CustomerSupportName", supportName);
+                    cmd.Parameters.AddWithValue("@CustomerSupportContact", supportContact);
+                    cmd.Parameters.AddWithValue("@CustomerSupportEmail", supportEmail);
+                    cmd.Parameters.AddWithValue("@NatureOfBusiness", natureOfBusiness);
+                    cmd.Parameters.AddWithValue("@CompanyCategory", companyCategory);
+                    cmd.Parameters.AddWithValue("@MarketsCateredTo", marketsCatered);
+                    cmd.Parameters.AddWithValue("@GeographicReach", geographicReach);
+                    cmd.Parameters.AddWithValue("@PowerSupplyRequired", powerSupplyRequired);
+                    cmd.Parameters.AddWithValue("@PowerSupplyKwh", powerSupplyKwh.HasValue ? (object)powerSupplyKwh.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@InternetRequired", internetRequired);
+                    cmd.Parameters.AddWithValue("@FurnitureRentalRequired", furnitureRequired);
+                    cmd.Parameters.AddWithValue("@AVEquipmentRequired", avEquipmentRequired);
+                    cmd.Parameters.AddWithValue("@InterpreterSupportRequired", interpreterRequired);
+                    cmd.Parameters.AddWithValue("@OtherRequirements", string.IsNullOrEmpty(otherRequirements) ? (object)DBNull.Value : otherRequirements);
+                    cmd.Parameters.AddWithValue("@ParticipationObjectives", participationObjectives);
+                    cmd.Parameters.AddWithValue("@AdditionalNotes", string.IsNullOrEmpty(additionalNotes) ? (object)DBNull.Value : additionalNotes);
+                    cmd.Parameters.AddWithValue("@ProductPicturePath", string.IsNullOrEmpty(productPicturePath) ? (object)DBNull.Value : productPicturePath);
+                    cmd.Parameters.AddWithValue("@BrochurePath", string.IsNullOrEmpty(brochurePath) ? (object)DBNull.Value : brochurePath);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         protected void btnTriggerEdit_Click(object sender, EventArgs e)
         {
             try
@@ -305,6 +582,200 @@ namespace Expo_Panel.Admin
 
         #region Private Methods
 
+        // Add these methods after your existing private methods
+
+        private string GetNatureOfBusiness()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (chkManufacturer.Checked) sb.Append("Manufacturer,");
+            if (chkDistributor.Checked) sb.Append("Distributor / Dealer,");
+            if (chkImporter.Checked) sb.Append("Importer / Exporter,");
+            if (chkServiceProvider.Checked) sb.Append("Service Provider,");
+            if (chkTechnologyProvider.Checked) sb.Append("Technology Provider,");
+            if (chkRnDServices.Checked) sb.Append("R&D / Testing Services,");
+            if (chkConsultancy.Checked) sb.Append("Consultancy,");
+            if (chkIndustryAssociation.Checked) sb.Append("Industry Association,");
+            if (chkNatureOther.Checked && !string.IsNullOrEmpty(txtNatureOther.Text.Trim()))
+                sb.Append("Other: " + txtNatureOther.Text.Trim() + ",");
+
+            return sb.ToString().TrimEnd(',');
+        }
+
+        private string GetCompanyCategory()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (chkAutomotiveLubricants.Checked) sb.Append("Automotive Lubricants,");
+            if (chkIndustrialLubricants.Checked) sb.Append("Industrial Lubricants,");
+            if (chkBaseOils.Checked) sb.Append("Base Oils,");
+            if (chkAdditives.Checked) sb.Append("Additives,");
+            if (chkGreases.Checked) sb.Append("Greases,");
+            if (chkSpecialtyFluids.Checked) sb.Append("Specialty Fluids,");
+            if (chkBioBasedLubricants.Checked) sb.Append("Bio-based / Sustainable Lubricants,");
+            if (chkReRefinedOils.Checked) sb.Append("Re-refined Oils / Circular Solutions,");
+            if (chkPackaging.Checked) sb.Append("Packaging / Dispensing Equipment,");
+            if (chkLabEquipment.Checked) sb.Append("Laboratory / Testing Equipment,");
+            if (chkLubricationSystems.Checked) sb.Append("Lubrication Systems & Services,");
+            if (chkSoftwareAI.Checked) sb.Append("Software / AI Solutions for Lubricants,");
+            if (chkProductOther.Checked && !string.IsNullOrEmpty(txtProductOther.Text.Trim()))
+                sb.Append("Others: " + txtProductOther.Text.Trim() + ",");
+
+            return sb.ToString().TrimEnd(',');
+        }
+
+        private string GetMarketsCatered()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (chkAutomotive.Checked) sb.Append("Automotive,");
+            if (chkHeavyCommercial.Checked) sb.Append("Heavy Commercial Vehicles,");
+            if (chkRailways.Checked) sb.Append("Railways,");
+            if (chkMarine.Checked) sb.Append("Marine,");
+            if (chkAerospace.Checked) sb.Append("Aerospace,");
+            if (chkManufacturing.Checked) sb.Append("Manufacturing & Processing Industries,");
+            if (chkPowerEnergy.Checked) sb.Append("Power & Energy,");
+            if (chkConstruction.Checked) sb.Append("Construction & Mining,");
+            if (chkAgriculture.Checked) sb.Append("Agriculture,");
+            if (chkFMCG.Checked) sb.Append("FMCG / Food Processing,");
+            if (chkMarketOther.Checked && !string.IsNullOrEmpty(txtMarketOther.Text.Trim()))
+                sb.Append("Other: " + txtMarketOther.Text.Trim() + ",");
+
+            return sb.ToString().TrimEnd(',');
+        }
+
+        private string GetGeographicReach()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (chkIndiaOnly.Checked) sb.Append("India Only,");
+            if (chkSouthAsia.Checked) sb.Append("South Asia,");
+            if (chkAsiaPacific.Checked) sb.Append("Asia-Pacific,");
+            if (chkMiddleEast.Checked) sb.Append("Middle East,");
+            if (chkAfrica.Checked) sb.Append("Africa,");
+            if (chkEurope.Checked) sb.Append("Europe,");
+            if (chkGlobal.Checked) sb.Append("Global,");
+
+            return sb.ToString().TrimEnd(',');
+        }
+
+        private string GetParticipationObjectives()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (chkGenerateLeads.Checked) sb.Append("Generate Business Leads,");
+            if (chkLaunchProducts.Checked) sb.Append("Launch New Products,");
+            if (chkNetworking.Checked) sb.Append("Network with Industry Professionals,");
+            if (chkFindPartners.Checked) sb.Append("Find Distribution Partners,");
+            if (chkMarketResearch.Checked) sb.Append("Market Research,");
+            if (chkBrandVisibility.Checked) sb.Append("Brand Visibility,");
+            if (chkAttendConference.Checked) sb.Append("Attend Conference Sessions,");
+            if (chkRecruitTalent.Checked) sb.Append("Recruit Talent,");
+            if (chkObjectiveOther.Checked && !string.IsNullOrEmpty(txtObjectiveOther.Text.Trim()))
+                sb.Append("Other: " + txtObjectiveOther.Text.Trim() + ",");
+
+            return sb.ToString().TrimEnd(',');
+        }
+
+        private bool HasPostApprovalData()
+        {
+            // Check if any post-approval field has data
+            return !string.IsNullOrEmpty(txtBoothNo.Text.Trim()) ||
+                   !string.IsNullOrEmpty(txtHallNo.Text.Trim()) ||
+                   !string.IsNullOrEmpty(txtYearOfEstablishment.Text.Trim()) ||
+                   !string.IsNullOrEmpty(txtWebsite.Text.Trim()) ||
+                   !string.IsNullOrEmpty(txtSupportName.Text.Trim());
+        }
+
+        private bool ValidatePostApprovalFields()
+        {
+            // Only validate if user has started filling post-approval data
+            if (!HasPostApprovalData())
+                return true; // If no data entered, no validation needed
+
+            // If any post-approval data exists, validate required fields
+            if (string.IsNullOrEmpty(txtBoothNo.Text.Trim()))
+            {
+                ShowMessage("Booth No is required for post-approval profile.", "danger");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtHallNo.Text.Trim()))
+            {
+                ShowMessage("Hall No is required for post-approval profile.", "danger");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtYearOfEstablishment.Text.Trim()))
+            {
+                ShowMessage("Year of Establishment is required for post-approval profile.", "danger");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtWebsite.Text.Trim()))
+            {
+                ShowMessage("Website is required for post-approval profile.", "danger");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtSupportName.Text.Trim()))
+            {
+                ShowMessage("Customer Support Name is required for post-approval profile.", "danger");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtSupportContact.Text.Trim()))
+            {
+                ShowMessage("Customer Support Contact is required for post-approval profile.", "danger");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtSupportEmail.Text.Trim()))
+            {
+                ShowMessage("Customer Support Email is required for post-approval profile.", "danger");
+                return false;
+            }
+
+            // Validate checkbox groups
+            if (!chkManufacturer.Checked && !chkDistributor.Checked && !chkImporter.Checked &&
+                !chkServiceProvider.Checked && !chkTechnologyProvider.Checked && !chkRnDServices.Checked &&
+                !chkConsultancy.Checked && !chkIndustryAssociation.Checked && !chkNatureOther.Checked)
+            {
+                ShowMessage("Please select at least one Nature of Business.", "danger");
+                return false;
+            }
+
+            if (!chkAutomotiveLubricants.Checked && !chkIndustrialLubricants.Checked && !chkBaseOils.Checked &&
+                !chkAdditives.Checked && !chkGreases.Checked && !chkSpecialtyFluids.Checked &&
+                !chkBioBasedLubricants.Checked && !chkReRefinedOils.Checked && !chkPackaging.Checked &&
+                !chkLabEquipment.Checked && !chkLubricationSystems.Checked && !chkSoftwareAI.Checked &&
+                !chkProductOther.Checked)
+            {
+                ShowMessage("Please select at least one Company Category.", "danger");
+                return false;
+            }
+
+            if (!chkAutomotive.Checked && !chkHeavyCommercial.Checked && !chkRailways.Checked &&
+                !chkMarine.Checked && !chkAerospace.Checked && !chkManufacturing.Checked &&
+                !chkPowerEnergy.Checked && !chkConstruction.Checked && !chkAgriculture.Checked &&
+                !chkFMCG.Checked && !chkMarketOther.Checked)
+            {
+                ShowMessage("Please select at least one Market.", "danger");
+                return false;
+            }
+
+            if (!chkIndiaOnly.Checked && !chkSouthAsia.Checked && !chkAsiaPacific.Checked &&
+                !chkMiddleEast.Checked && !chkAfrica.Checked && !chkEurope.Checked && !chkGlobal.Checked)
+            {
+                ShowMessage("Please select at least one Geographic Reach.", "danger");
+                return false;
+            }
+
+            if (!chkGenerateLeads.Checked && !chkLaunchProducts.Checked && !chkNetworking.Checked &&
+                !chkFindPartners.Checked && !chkMarketResearch.Checked && !chkBrandVisibility.Checked &&
+                !chkAttendConference.Checked && !chkRecruitTalent.Checked && !chkObjectiveOther.Checked)
+            {
+                ShowMessage("Please select at least one Participation Objective.", "danger");
+                return false;
+            }
+
+            return true;
+        }
         private void LoadStatusCounts()
         {
             try
@@ -441,6 +912,7 @@ namespace Expo_Panel.Admin
                             hdnExhibitorID.Value = exhibitorId.ToString();
                             hdnExhibitorModalMode.Value = "edit";
 
+                            // Pre-Approval Fields
                             string name = reader["Name"] != DBNull.Value ? reader["Name"].ToString().Replace("'", "\\'") : "";
                             string designation = reader["Designation"] != DBNull.Value ? reader["Designation"].ToString().Replace("'", "\\'") : "";
                             string email = reader["Email"] != DBNull.Value ? reader["Email"].ToString().Replace("'", "\\'") : "";
@@ -460,6 +932,11 @@ namespace Expo_Panel.Admin
                             bool customPackage = reader["InterestedInCustomPackage"] != DBNull.Value ? Convert.ToBoolean(reader["InterestedInCustomPackage"]) : false;
                             bool isActive = reader["IS_ACTIVE"] != DBNull.Value ? Convert.ToBoolean(reader["IS_ACTIVE"]) : true;
                             string regType = reader["RegistrationType"] != DBNull.Value ? reader["RegistrationType"].ToString() : "Admin";
+
+                            reader.Close();
+
+                            // Load Post-Approval Data if exists
+                            string postApprovalData = LoadPostApprovalDataForEdit(exhibitorId);
 
                             StringBuilder sb = new StringBuilder();
                             sb.Append("openExhibitorModal('edit', {");
@@ -483,18 +960,113 @@ namespace Expo_Panel.Admin
                             sb.AppendFormat("customPackage: '{0}',", customPackage);
                             sb.AppendFormat("isActive: '{0}',", isActive ? "1" : "0");
                             sb.AppendFormat("regType: '{0}'", regType);
+
+                            // Append post-approval data if exists
+                            if (!string.IsNullOrEmpty(postApprovalData))
+                            {
+                                sb.Append(",");
+                                sb.Append(postApprovalData);
+                            }
+
                             sb.Append("});");
 
                             ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal", sb.ToString(), true);
                         }
-
-                        reader.Close();
                     }
                 }
             }
             catch (Exception ex)
             {
                 ShowMessage("Error loading exhibitor: " + ex.Message, "danger");
+            }
+        }
+
+        private string LoadPostApprovalDataForEdit(int exhibitorId)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetPostApprovalProfileByExhibitorID", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+
+                        con.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+                        if (dr.Read())
+                        {
+                            StringBuilder sb = new StringBuilder();
+
+                            // Booth Information
+                            sb.AppendFormat("boothNo: '{0}',", dr["BoothNo"] != DBNull.Value ? dr["BoothNo"].ToString().Replace("'", "\\'") : "");
+                            sb.AppendFormat("hallNo: '{0}',", dr["HallNo"] != DBNull.Value ? dr["HallNo"].ToString().Replace("'", "\\'") : "");
+
+                            // Company Profile
+                            sb.AppendFormat("yearOfEstablishment: '{0}',", dr["YearOfEstablishment"] != DBNull.Value ? dr["YearOfEstablishment"].ToString() : "");
+                            sb.AppendFormat("website: '{0}',", dr["Website"] != DBNull.Value ? dr["Website"].ToString().Replace("'", "\\'") : "");
+                            sb.AppendFormat("linkedIn: '{0}',", dr["LinkedIn"] != DBNull.Value ? dr["LinkedIn"].ToString().Replace("'", "\\'") : "");
+                            sb.AppendFormat("twitter: '{0}',", dr["Twitter"] != DBNull.Value ? dr["Twitter"].ToString().Replace("'", "\\'") : "");
+                            sb.AppendFormat("facebook: '{0}',", dr["Facebook"] != DBNull.Value ? dr["Facebook"].ToString().Replace("'", "\\'") : "");
+                            sb.AppendFormat("youtube: '{0}',", dr["YouTube"] != DBNull.Value ? dr["YouTube"].ToString().Replace("'", "\\'") : "");
+
+                            // Customer Support
+                            sb.AppendFormat("supportName: '{0}',", dr["CustomerSupportName"] != DBNull.Value ? dr["CustomerSupportName"].ToString().Replace("'", "\\'") : "");
+                            sb.AppendFormat("supportContact: '{0}',", dr["CustomerSupportContact"] != DBNull.Value ? dr["CustomerSupportContact"].ToString().Replace("'", "\\'") : "");
+                            sb.AppendFormat("supportEmail: '{0}',", dr["CustomerSupportEmail"] != DBNull.Value ? dr["CustomerSupportEmail"].ToString().Replace("'", "\\'") : "");
+
+                            // Checkboxes - Nature of Business
+                            string nature = dr["NatureOfBusiness"] != DBNull.Value ? dr["NatureOfBusiness"].ToString() : "";
+                            sb.AppendFormat("natureOfBusiness: '{0}',", nature.Replace("'", "\\'"));
+
+                            // Company Category
+                            string category = dr["CompanyCategory"] != DBNull.Value ? dr["CompanyCategory"].ToString() : "";
+                            sb.AppendFormat("companyCategory: '{0}',", category.Replace("'", "\\'"));
+
+                            // Markets
+                            string markets = dr["MarketsCateredTo"] != DBNull.Value ? dr["MarketsCateredTo"].ToString() : "";
+                            sb.AppendFormat("marketsCatered: '{0}',", markets.Replace("'", "\\'"));
+
+                            // Geographic Reach
+                            string geo = dr["GeographicReach"] != DBNull.Value ? dr["GeographicReach"].ToString() : "";
+                            sb.AppendFormat("geographicReach: '{0}',", geo.Replace("'", "\\'"));
+
+                            // Requirements
+                            sb.AppendFormat("powerSupply: '{0}',", dr["PowerSupplyRequired"] != DBNull.Value ? dr["PowerSupplyRequired"].ToString() : "False");
+                            sb.AppendFormat("powerKwh: '{0}',", dr["PowerSupplyKwh"] != DBNull.Value ? dr["PowerSupplyKwh"].ToString() : "");
+                            sb.AppendFormat("internet: '{0}',", dr["InternetRequired"] != DBNull.Value ? dr["InternetRequired"].ToString() : "False");
+                            sb.AppendFormat("furniture: '{0}',", dr["FurnitureRentalRequired"] != DBNull.Value ? dr["FurnitureRentalRequired"].ToString() : "False");
+                            sb.AppendFormat("avEquipment: '{0}',", dr["AVEquipmentRequired"] != DBNull.Value ? dr["AVEquipmentRequired"].ToString() : "False");
+                            sb.AppendFormat("interpreter: '{0}',", dr["InterpreterSupportRequired"] != DBNull.Value ? dr["InterpreterSupportRequired"].ToString() : "False");
+                            sb.AppendFormat("otherReq: '{0}',", dr["OtherRequirements"] != DBNull.Value ? dr["OtherRequirements"].ToString().Replace("'", "\\'") : "");
+
+                            // Objectives
+                            string objectives = dr["ParticipationObjectives"] != DBNull.Value ? dr["ParticipationObjectives"].ToString() : "";
+                            sb.AppendFormat("objectives: '{0}',", objectives.Replace("'", "\\'"));
+
+                            // Additional Notes
+                            string notes = dr["AdditionalNotes"] != DBNull.Value ? dr["AdditionalNotes"].ToString().Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", "") : "";
+                            sb.AppendFormat("additionalNotes: '{0}',", notes);
+
+                            // Files
+                            string productPic = dr["ProductPicturePath"] != DBNull.Value ? dr["ProductPicturePath"].ToString() : "";
+                            string brochure = dr["BrochurePath"] != DBNull.Value ? dr["BrochurePath"].ToString() : "";
+                            sb.AppendFormat("productPicture: '{0}',", productPic.Replace("'", "\\'"));
+                            sb.AppendFormat("brochure: '{0}'", brochure.Replace("'", "\\'"));
+
+                            dr.Close();
+                            return sb.ToString();
+                        }
+
+                        dr.Close();
+                        return "";
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return "";
             }
         }
 
@@ -791,6 +1363,7 @@ namespace Expo_Panel.Admin
 
         private void ClearExhibitorForm()
         {
+            // Pre-Approval Fields
             txtName.Text = "";
             txtDesignation.Text = "";
             txtEmail.Text = "";
@@ -811,6 +1384,98 @@ namespace Expo_Panel.Admin
             chkCustomPackage.Checked = false;
             ddlStatus.SelectedIndex = 0;
             ddlRegistrationType.SelectedIndex = 0;
+
+            // Post-Approval Fields
+            txtBoothNo.Text = "";
+            txtHallNo.Text = "";
+            txtYearOfEstablishment.Text = "";
+            txtWebsite.Text = "";
+            txtLinkedIn.Text = "";
+            txtTwitter.Text = "";
+            txtFacebook.Text = "";
+            txtYouTube.Text = "";
+            txtSupportName.Text = "";
+            txtSupportContact.Text = "";
+            txtSupportEmail.Text = "";
+
+            // Checkboxes - Nature of Business
+            chkManufacturer.Checked = false;
+            chkDistributor.Checked = false;
+            chkImporter.Checked = false;
+            chkServiceProvider.Checked = false;
+            chkTechnologyProvider.Checked = false;
+            chkRnDServices.Checked = false;
+            chkConsultancy.Checked = false;
+            chkIndustryAssociation.Checked = false;
+            chkNatureOther.Checked = false;
+            txtNatureOther.Text = "";
+
+            // Company Category
+            chkAutomotiveLubricants.Checked = false;
+            chkIndustrialLubricants.Checked = false;
+            chkBaseOils.Checked = false;
+            chkAdditives.Checked = false;
+            chkGreases.Checked = false;
+            chkSpecialtyFluids.Checked = false;
+            chkBioBasedLubricants.Checked = false;
+            chkReRefinedOils.Checked = false;
+            chkPackaging.Checked = false;
+            chkLabEquipment.Checked = false;
+            chkLubricationSystems.Checked = false;
+            chkSoftwareAI.Checked = false;
+            chkProductOther.Checked = false;
+            txtProductOther.Text = "";
+
+            // Markets
+            chkAutomotive.Checked = false;
+            chkHeavyCommercial.Checked = false;
+            chkRailways.Checked = false;
+            chkMarine.Checked = false;
+            chkAerospace.Checked = false;
+            chkManufacturing.Checked = false;
+            chkPowerEnergy.Checked = false;
+            chkConstruction.Checked = false;
+            chkAgriculture.Checked = false;
+            chkFMCG.Checked = false;
+            chkMarketOther.Checked = false;
+            txtMarketOther.Text = "";
+
+            // Geographic Reach
+            chkIndiaOnly.Checked = false;
+            chkSouthAsia.Checked = false;
+            chkAsiaPacific.Checked = false;
+            chkMiddleEast.Checked = false;
+            chkAfrica.Checked = false;
+            chkEurope.Checked = false;
+            chkGlobal.Checked = false;
+
+            // Requirements
+            chkPowerSupply.Checked = false;
+            txtPowerSupplyKwh.Text = "";
+            chkInternet.Checked = false;
+            chkFurniture.Checked = false;
+            chkAVEquipment.Checked = false;
+            chkInterpreter.Checked = false;
+            chkReqOther.Checked = false;
+            txtReqOther.Text = "";
+
+            // Objectives
+            chkGenerateLeads.Checked = false;
+            chkLaunchProducts.Checked = false;
+            chkNetworking.Checked = false;
+            chkFindPartners.Checked = false;
+            chkMarketResearch.Checked = false;
+            chkBrandVisibility.Checked = false;
+            chkAttendConference.Checked = false;
+            chkRecruitTalent.Checked = false;
+            chkObjectiveOther.Checked = false;
+            txtObjectiveOther.Text = "";
+
+            txtAdditionalNotes.Text = "";
+
+            lblProductPictureStatus.Visible = false;
+            lblBrochureStatus.Visible = false;
+
             hdnExhibitorID.Value = "0";
             hdnExhibitorModalMode.Value = "add";
         }
