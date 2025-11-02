@@ -525,6 +525,7 @@ namespace Expo_Panel.Admin
                 string remarks = txtApprovalRemarks.Text.Trim();
                 string password = txtPassword.Text.Trim();
 
+
                 if (approvalStatus == "Rejected" && string.IsNullOrEmpty(remarks))
                 {
                     ShowMessage("Remarks are required when rejecting an exhibitor.", "danger");
@@ -533,8 +534,8 @@ namespace Expo_Panel.Admin
 
                 if (approvalStatus == "Approved" && string.IsNullOrEmpty(password))
                 {
-                    ShowMessage("Password is required when approving an exhibitor.", "danger");
-                    return;
+                    // ...generate a random one instead of showing an error.
+                    password = GenerateRandomPassword();
                 }
 
                 UpdateApprovalStatus(exhibitorId, approvalStatus, remarks, password, CurrentAdminID);
@@ -1080,35 +1081,39 @@ namespace Expo_Panel.Admin
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
-
                         con.Open();
-                        SqlDataReader reader = cmd.ExecuteReader();
 
+                        SqlDataReader reader = cmd.ExecuteReader();
                         if (reader.Read())
                         {
                             hdnApprovalExhibitorID.Value = exhibitorId.ToString();
 
+                            // All of these are null-safe, which is critical
                             string name = reader["Name"] != DBNull.Value ? reader["Name"].ToString().Replace("'", "\\'") : "";
                             string email = reader["Email"] != DBNull.Value ? reader["Email"].ToString().Replace("'", "\\'") : "";
                             string company = reader["Company"] != DBNull.Value ? reader["Company"].ToString().Replace("'", "\\'") : "";
                             string regType = reader["RegistrationType"] != DBNull.Value ? reader["RegistrationType"].ToString().Replace("'", "\\'") : "Admin";
                             string approvalStatus = reader["ApprovalStatus"] != DBNull.Value ? reader["ApprovalStatus"].ToString() : "Pending";
                             string remarks = reader["Remarks"] != DBNull.Value ? reader["Remarks"].ToString().Replace("'", "\\'") : "";
+
+                            // This is the line that reads the password you added
                             string password = reader["Password"] != DBNull.Value ? reader["Password"].ToString().Replace("'", "\\'") : "";
 
+                            // Pass the password to the modal
                             string script = $"openApprovalModal({exhibitorId}, '{name}', '{email}', '{company}', '{regType}', '{approvalStatus}', '{remarks}', '{password}');";
                             ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal", script, true);
                         }
-
                         reader.Close();
                     }
                 }
             }
             catch (Exception ex)
             {
+                // This will now properly catch and display any errors
                 ShowMessage("Error loading exhibitor for approval: " + ex.Message, "danger");
             }
         }
+
 
         private void LoadPostApprovalProfile(int exhibitorId)
         {
@@ -1334,6 +1339,12 @@ namespace Expo_Panel.Admin
             }
         }
 
+        private string GenerateRandomPassword()
+        {
+            // This is a simple trick. It generates a random 8.3 filename (like "a1b2c3d4.e5f")
+            // and we just remove the dot to get an 11-character alphanumeric password.
+            return Path.GetRandomFileName().Replace(".", "");
+        }
         private void ToggleExhibitorStatus(int exhibitorId)
         {
             try

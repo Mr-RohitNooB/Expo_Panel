@@ -409,7 +409,7 @@
 
             <h2 class="section-title">Management Modules</h2>
             <div class="cards-grid">
-                <asp:HyperLink ID="lnkAgenda" runat="server" NavigateUrl="~/Admin/ManageAgenda.aspx" CssClass="card agenda-card">
+                <asp:HyperLink ID="lnkAgenda" runat="server" NavigateUrl="~/SuperAdmin/ManageAgenda.aspx" CssClass="card agenda-card">
                     <div class="card-header">
                         <div class="card-icon">
                             <i class="fas fa-calendar-alt"></i>
@@ -422,7 +422,7 @@
                     </div>
                 </asp:HyperLink>
 
-                <asp:HyperLink ID="lnkAdvisor" runat="server" NavigateUrl="~/Admin/ManageAdvisor.aspx" CssClass="card advisor-card">
+                <asp:HyperLink ID="lnkAdvisor" runat="server" NavigateUrl="~/SuperAdmin/ManageAdvisor.aspx" CssClass="card advisor-card">
                     <div class="card-header">
                         <div class="card-icon">
                             <i class="fas fa-users"></i>
@@ -435,7 +435,7 @@
                     </div>
                 </asp:HyperLink>
 
-                <asp:HyperLink ID="lnkSpeaker" runat="server" NavigateUrl="~/Admin/ManageSpeaker.aspx" CssClass="card speaker-card">
+                <asp:HyperLink ID="lnkSpeaker" runat="server" NavigateUrl="~/SuperAdmin/ManageSpeaker.aspx" CssClass="card speaker-card">
                     <div class="card-header">
                         <div class="card-icon">
                             <i class="fas fa-microphone"></i>
@@ -448,7 +448,7 @@
                     </div>
                 </asp:HyperLink>
 
-                <asp:HyperLink ID="lnkExhibitor" runat="server" NavigateUrl="~/Admin/ManageExhibitor.aspx" CssClass="card exhibitor-card">
+                <asp:HyperLink ID="lnkExhibitor" runat="server" NavigateUrl="~/SuperAdmin/ManageExhibitor.aspx" CssClass="card exhibitor-card">
                     <div class="card-header">
                         <div class="card-icon">
                             <i class="fas fa-store"></i>
@@ -461,7 +461,7 @@
                     </div>
                 </asp:HyperLink>
 
-                <asp:HyperLink ID="lnkInnovation" runat="server" NavigateUrl="~/Admin/ManageInnovation.aspx" CssClass="card innovation-card">
+                <asp:HyperLink ID="lnkInnovation" runat="server" NavigateUrl="~/SuperAdmin/ManageInnovation.aspx" CssClass="card innovation-card">
                     <div class="card-header">
                         <div class="card-icon">
                             <i class="fas fa-lightbulb"></i>

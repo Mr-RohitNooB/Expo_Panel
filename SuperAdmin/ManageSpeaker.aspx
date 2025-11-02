@@ -634,6 +634,65 @@
         .file-upload-section {
             display: none; /* Will be enabled later */
         }
+
+        .btn-view {
+            background: #06b6d4;
+            color: white;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+            .btn-view:hover {
+                background: #0891b2;
+            }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .star {
+            color: #fbbf24;
+        }
+
+        .section-divider {
+            margin: 30px 0 20px 0;
+            padding: 10px 0;
+            border-bottom: 2px solid #e2e8f0;
+            color: #38a169;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .truncate-cell {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: help;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+            .password-toggle:hover {
+                color: #38a169;
+            }
+
+        #passwordField {
+            display: none; /* Hidden by default, shown when Approved is selected */
+        }
     </style>
 </head>
 <body>
@@ -649,7 +708,7 @@
                         | Session Status:
                         <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
                     </span>
-                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
+                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
                         <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
                     <asp:Button ID="Button1" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
@@ -751,12 +810,14 @@
                                                 <asp:Button runat="server" Text="Edit" CommandName="EditSpeaker"
                                                     CommandArgument='<%# Eval("SpeakerID") %>'
                                                     CssClass="btn btn-edit" />
-                                                <asp:Button runat="server" Text="Approve/Reject" CommandName="ApprovalAction"
-                                                    CommandArgument='<%# Eval("SpeakerID") %>'
-                                                    CssClass="btn btn-warning" />
+                                                <button type="button" class="btn btn-warning"
+    onclick="handleApprovalClick(<%# Eval("SpeakerID") %>)">
+    <i class="fas fa-check-circle"></i> Approve/Reject
+</button>
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+
                                 </Columns>
                                 <EmptyDataTemplate>
                                     <div class="no-records">
@@ -781,10 +842,12 @@
 
                 <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
+                <asp:HiddenField ID="hdnApproveSpeakerID" runat="server" Value="0" />
+<asp:Button ID="btnTriggerApproval" runat="server" OnClick="btnTriggerApproval_Click" Style="display: none;" />
 
                 <!-- Section 1: Personal Information -->
                 <div class="form-section">
-                    <h3><i class="fas fa-user"></i> Personal Information</h3>
+                    <h3><i class="fas fa-user"></i>Personal Information</h3>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -864,12 +927,12 @@
 
                 <!-- Section 2: Professional Profile -->
                 <div class="form-section">
-                    <h3><i class="fas fa-briefcase"></i> Professional Profile</h3>
+                    <h3><i class="fas fa-briefcase"></i>Professional Profile</h3>
 
                     <div class="form-group">
                         <label for="<%=txtProfessionalBio.ClientID%>">Professional Bio (150-250 words recommended)</label>
-                        <asp:TextBox ID="txtProfessionalBio" runat="server" CssClass="form-control" TextMode="MultiLine" 
-                            Rows="5" placeholder="Enter professional bio for promotional and agenda material" 
+                        <asp:TextBox ID="txtProfessionalBio" runat="server" CssClass="form-control" TextMode="MultiLine"
+                            Rows="5" placeholder="Enter professional bio for promotional and agenda material"
                             onkeyup="updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount')"></asp:TextBox>
                         <div id="bioCharCount" class="char-counter">0 characters</div>
                     </div>
@@ -914,18 +977,18 @@
                                 <label for="chkRegulatory">Regulatory Compliance</label>
                             </div>
                         </div>
-                        <asp:TextBox ID="txtOtherExpertise" runat="server" CssClass="form-control" placeholder="Other areas (please specify)" style="margin-top: 10px;"></asp:TextBox>
+                        <asp:TextBox ID="txtOtherExpertise" runat="server" CssClass="form-control" placeholder="Other areas (please specify)" Style="margin-top: 10px;"></asp:TextBox>
                         <asp:HiddenField ID="hdnAreasOfExpertise" runat="server" />
                     </div>
                 </div>
 
                 <!-- Section 3: Current Work & Projects -->
                 <div class="form-section">
-                    <h3><i class="fas fa-project-diagram"></i> Current Work & Projects</h3>
+                    <h3><i class="fas fa-project-diagram"></i>Current Work & Projects</h3>
 
                     <div class="form-group">
                         <label for="<%=txtCurrentWorkProjects.ClientID%>">Description of Current Projects/Research/Initiatives</label>
-                        <asp:TextBox ID="txtCurrentWorkProjects" runat="server" CssClass="form-control" TextMode="MultiLine" 
+                        <asp:TextBox ID="txtCurrentWorkProjects" runat="server" CssClass="form-control" TextMode="MultiLine"
                             Rows="4" placeholder="Describe your current work, projects, research or industry initiatives"
                             onkeyup="updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount')"></asp:TextBox>
                         <div id="workCharCount" class="char-counter">0 characters</div>
@@ -933,14 +996,14 @@
 
                     <div class="form-group">
                         <label for="<%=txtSuggestedTopics.ClientID%>">Suggested Topics/Themes (2-3 topics recommended)</label>
-                        <asp:TextBox ID="txtSuggestedTopics" runat="server" CssClass="form-control" TextMode="MultiLine" 
+                        <asp:TextBox ID="txtSuggestedTopics" runat="server" CssClass="form-control" TextMode="MultiLine"
                             Rows="3" placeholder="List 2-3 topics that reflect your current work or thought leadership areas"></asp:TextBox>
                     </div>
                 </div>
 
                 <!-- Section 4: Discussion Format & Speaking Experience -->
                 <div class="form-section">
-                    <h3><i class="fas fa-comments"></i> Discussion Format & Speaking Experience</h3>
+                    <h3><i class="fas fa-comments"></i>Discussion Format & Speaking Experience</h3>
 
                     <div class="form-group">
                         <label>Preferred Discussion Format (Select all that apply)</label>
@@ -959,7 +1022,7 @@
 
                     <div class="form-group">
                         <label for="<%=txtPreviousSpeakingEngagements.ClientID%>">Previous Speaking Engagements</label>
-                        <asp:TextBox ID="txtPreviousSpeakingEngagements" runat="server" CssClass="form-control" TextMode="MultiLine" 
+                        <asp:TextBox ID="txtPreviousSpeakingEngagements" runat="server" CssClass="form-control" TextMode="MultiLine"
                             Rows="4" placeholder="List any conferences, webinars or forums where you've recently spoken. Include links to recordings or published content if available."
                             onkeyup="updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount')"></asp:TextBox>
                         <div id="engagementsCharCount" class="char-counter">0 characters</div>
@@ -968,7 +1031,7 @@
 
                 <!-- Section 5: Consent & Availability -->
                 <div class="form-section">
-                    <h3><i class="fas fa-check-circle"></i> Consent & Availability</h3>
+                    <h3><i class="fas fa-check-circle"></i>Consent & Availability</h3>
 
                     <div class="form-group">
                         <label for="<%=ddlIsAvailable.ClientID%>">Are you available to speak during the scheduled event dates? <span style="color: red;">*</span></label>
@@ -1043,6 +1106,19 @@
                     </asp:DropDownList>
                 </div>
 
+                <!-- In the Approval Modal, after the Remarks field -->
+                <div class="form-group" id="passwordField">
+    <label for="<%=txtPassword.ClientID%>">Password <span class="required" id="passwordRequired" style="display: none;">*</span></label>
+    <div class="password-field" style="position: relative;">
+        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="Enter password for approved speaker"></asp:TextBox>
+        <span class="password-toggle" onclick="togglePasswordField()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6b7280;">
+            <i class="fas fa-eye"></i>
+        </span>
+    </div>
+    <small style="color: #6b7280; font-size: 12px;">Password will be auto-generated if left empty on approval</small>
+</div>
+
+
                 <div class="form-group">
                     <label for="<%=txtApprovalRemarks.ClientID%>">Remarks <span style="color: red;" id="remarksRequired">*</span></label>
                     <asp:TextBox ID="txtApprovalRemarks" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" placeholder="Enter remarks (required for rejection)"></asp:TextBox>
@@ -1059,6 +1135,223 @@
                     <button type="button" class="btn btn-cancel" onclick="closeApprovalModal()">Cancel</button>
                     <asp:Button ID="btnSaveApproval" runat="server" Text="Save" CssClass="btn btn-primary"
                         OnClick="btnSaveApproval_Click" ValidationGroup="ApprovalValidation" />
+                </div>
+            </div>
+        </div>
+        <!-- Applications Modal -->
+        <div id="applicationsModal" class="modal">
+            <div class="modal-content" style="max-width: 1200px;">
+                <div class="modal-header">
+                    <h2>Speaker Applications</h2>
+                    <button type="button" class="close-btn" onclick="closeApplicationsModal()">&times;</button>
+                </div>
+
+                <asp:HiddenField ID="hdnViewSpeakerID" runat="server" Value="0" />
+
+                <div style="margin-bottom: 20px; padding: 15px; background: #f0fdf4; border-radius: 8px;">
+                    <strong>Speaker:</strong>
+                    <asp:Label ID="lblApplicationsSpeakerName" runat="server"></asp:Label><br />
+                    <strong>Email:</strong>
+                    <asp:Label ID="lblApplicationsSpeakerEmail" runat="server"></asp:Label>
+                </div>
+
+                <asp:UpdatePanel ID="UpdatePanelApplications" runat="server">
+                    <ContentTemplate>
+                        <asp:GridView ID="gvSpeakerApplications" runat="server" AutoGenerateColumns="False"
+                            OnRowCommand="gvSpeakerApplications_RowCommand"
+                            CssClass="agenda-grid" GridLines="None">
+                            <Columns>
+                                <asp:TemplateField HeaderText="Sr.">
+                                    <ItemTemplate>
+                                        <%# Container.DataItemIndex + 1 %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:BoundField DataField="Day" HeaderText="Day" />
+                                <asp:BoundField DataField="AgendaTitle" HeaderText="Topic" />
+                                <asp:BoundField DataField="Track" HeaderText="Track" />
+                                <asp:BoundField DataField="Time" HeaderText="Time" />
+
+                                <asp:TemplateField HeaderText="Motivation">
+                                    <ItemTemplate>
+                                        <span class="truncate-cell" title='<%# Eval("MotivationStatement") %>'>
+                                            <%# Eval("MotivationStatement") %>
+                                        </span>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Relevance">
+                                    <ItemTemplate>
+                                        <span class="truncate-cell" title='<%# Eval("RelevanceToExpertise") %>'>
+                                            <%# Eval("RelevanceToExpertise") %>
+                                        </span>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Advisory Rating">
+                                    <ItemTemplate>
+                                        <%# Eval("AdvisoryRating") != DBNull.Value ? 
+                                    string.Format("<div class='rating-display'>{0}/5 <i class='fas fa-star star'></i></div>", 
+                                    Math.Round(Convert.ToDecimal(Eval("AdvisoryRating")), 1)) : 
+                                    "<span style='color: #94a3b8;'>No Rating</span>" %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Status">
+                                    <ItemTemplate>
+                                        <span class='<%# "badge-status badge-" + Eval("Status").ToString().ToLower() %>'>
+                                            <%# Eval("Status") %>
+                                        </span>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:BoundField DataField="ApplicationDate" HeaderText="Applied On" DataFormatString="{0:dd MMM yyyy}" />
+
+                                <asp:TemplateField HeaderText="Actions">
+                                    <ItemTemplate>
+                                        <div class="action-buttons">
+                                            <asp:Button runat="server" Text="Review"
+                                                CommandName="ReviewApplication"
+                                                CommandArgument='<%# Eval("InterestID") %>'
+                                                CssClass="btn btn-warning" />
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <EmptyDataTemplate>
+                                <div class="no-records">
+                                    <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                                    This speaker has not applied for any topics yet.
+                                </div>
+                            </EmptyDataTemplate>
+                        </asp:GridView>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" onclick="closeApplicationsModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Review Modal -->
+        <div id="applicationReviewModal" class="modal">
+            <div class="modal-content" style="max-width: 900px;">
+                <div class="modal-header">
+                    <h2>Review Application</h2>
+                    <button type="button" class="close-btn" onclick="closeApplicationReviewModal()">&times;</button>
+                </div>
+
+                <asp:HiddenField ID="hdnReviewInterestID" runat="server" Value="0" />
+
+                <!-- Speaker Info -->
+                <div class="section-divider">
+                    <i class="fas fa-user"></i>Speaker Information
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Speaker Name</label>
+                        <asp:TextBox ID="txtReviewSpeakerName" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <asp:TextBox ID="txtReviewCompany" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Designation</label>
+                        <asp:TextBox ID="txtReviewDesignation" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label>Years of Experience</label>
+                        <asp:TextBox ID="txtReviewExperience" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Areas of Expertise</label>
+                    <asp:TextBox ID="txtReviewExpertise" runat="server" TextMode="MultiLine" Rows="2" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <!-- Agenda Info -->
+                <div class="section-divider">
+                    <i class="fas fa-calendar-alt"></i>Topic Information
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Day</label>
+                        <asp:TextBox ID="txtReviewDay" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label>Track</label>
+                        <asp:TextBox ID="txtReviewTrack" runat="server" ReadOnly="true"></asp:TextBox>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Topic Title</label>
+                    <asp:TextBox ID="txtReviewAgendaTitle" runat="server" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <div class="form-group">
+                    <label>Topic Brief</label>
+                    <asp:TextBox ID="txtReviewAgendaBrief" runat="server" TextMode="MultiLine" Rows="2" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <!-- Application Details -->
+                <div class="section-divider">
+                    <i class="fas fa-file-alt"></i>Application Details
+                </div>
+
+                <div class="form-group">
+                    <label>Why do they want to speak on this topic?</label>
+                    <asp:TextBox ID="txtReviewMotivation" runat="server" TextMode="MultiLine" Rows="4" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <div class="form-group">
+                    <label>How does this topic align with their expertise?</label>
+                    <asp:TextBox ID="txtReviewRelevance" runat="server" TextMode="MultiLine" Rows="4" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <div class="form-group">
+                    <label>Advisory Board Rating</label>
+                    <asp:TextBox ID="txtReviewRating" runat="server" ReadOnly="true"></asp:TextBox>
+                </div>
+
+                <!-- Admin Decision -->
+                <div class="section-divider">
+                    <i class="fas fa-check-circle"></i>Admin Decision
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=ddlApplicationStatus.ClientID%>">Status <span class="required">*</span></label>
+                    <asp:DropDownList ID="ddlApplicationStatus" runat="server">
+                        <asp:ListItem Text="Pending" Value="Pending"></asp:ListItem>
+                        <asp:ListItem Text="Approved" Value="Approved"></asp:ListItem>
+                        <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=txtApplicationRemarks.ClientID%>">Admin Remarks <span class="required" id="appRemarksRequired" style="display: none;">*</span></label>
+                    <asp:TextBox ID="txtApplicationRemarks" runat="server" TextMode="MultiLine" Rows="3"
+                        placeholder="Enter remarks (required for rejection)"></asp:TextBox>
+                    <asp:CustomValidator ID="cvApplicationRemarks" runat="server"
+                        ControlToValidate="txtApplicationRemarks"
+                        ClientValidationFunction="validateApplicationRemarks"
+                        OnServerValidate="cvApplicationRemarks_ServerValidate"
+                        ErrorMessage="Remarks are required for rejection"
+                        ForeColor="Red" Display="Dynamic"
+                        ValidationGroup="ApplicationReviewValidation"></asp:CustomValidator>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" onclick="closeApplicationReviewModal()">Cancel</button>
+                    <asp:Button ID="btnSaveApplicationReview" runat="server" Text="Save Decision"
+                        CssClass="btn btn-primary" OnClick="btnSaveApplicationReview_Click"
+                        ValidationGroup="ApplicationReviewValidation" />
                 </div>
             </div>
         </div>
@@ -1190,17 +1483,17 @@
                     document.getElementById('<%=ddlIsAvailable.ClientID%>').selectedIndex = 0;
                     document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = false;
                     setCheckboxValues('', '');
-                    
+
                     // Reset character counters
                     updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
                     updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
                     updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
-                    
+
                 } else if (mode === 'edit' && speakerData) {
                     modalTitle.innerText = 'Edit Speaker';
                     hdnMode.value = 'edit';
                     hdnID.value = speakerData.id;
-                    
+
                     document.getElementById('<%=txtName.ClientID%>').value = speakerData.name || '';
                     document.getElementById('<%=txtEmail.ClientID%>').value = speakerData.email || '';
                     document.getElementById('<%=txtMobile.ClientID%>').value = speakerData.mobile || '';
@@ -1214,9 +1507,9 @@
                     document.getElementById('<%=ddlStatus.ClientID%>').value = speakerData.isActive || '1';
                     document.getElementById('<%=ddlIsAvailable.ClientID%>').value = speakerData.isAvailable || 'Yes';
                     document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = speakerData.marketingConsent || false;
-                    
+
                     setCheckboxValues(speakerData.areasOfExpertise || '', speakerData.preferredDiscussionFormat || '');
-                    
+
                     // Update character counters
                     updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
                     updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
@@ -1231,21 +1524,23 @@
                 modal.classList.remove('show');
             }
 
-            function openApprovalModal(id, name, email, regType, designation, company, approvalStatus, remarks) {
+            function openApprovalModal(id, name, email, regType, designation, company, approvalStatus, remarks, password) {
                 document.getElementById('<%=hdnApprovalSpeakerID.ClientID%>').value = id;
                 document.getElementById('<%=txtApprovalName.ClientID%>').value = name;
                 document.getElementById('<%=txtApprovalEmail.ClientID%>').value = email;
                 document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
                 document.getElementById('<%=txtApprovalDesignation.ClientID%>').value = designation;
-                document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
-                document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
-                document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
+    document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
+    document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
+    document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
+                document.getElementById('<%=txtPassword.ClientID%>').value = password || '';
 
                 var modal = document.getElementById('approvalModal');
                 modal.classList.add('show');
 
                 toggleRemarksRequired();
             }
+
 
             function closeApprovalModal() {
                 var modal = document.getElementById('approvalModal');
@@ -1255,10 +1550,36 @@
             function toggleRemarksRequired() {
                 var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
                 var remarksReq = document.getElementById('remarksRequired');
+                var passwordReq = document.getElementById('passwordRequired');
+                var passwordField = document.getElementById('passwordField');
+
                 if (status === 'Rejected') {
-                    remarksReq.style.display = 'inline';
+                    if (remarksReq) remarksReq.style.display = 'inline';
+                    if (passwordReq) passwordReq.style.display = 'none';
+                    if (passwordField) passwordField.style.display = 'none';
+                } else if (status === 'Approved') {
+                    if (remarksReq) remarksReq.style.display = 'none';
+                    if (passwordReq) passwordReq.style.display = 'inline';
+                    if (passwordField) passwordField.style.display = 'block';
                 } else {
-                    remarksReq.style.display = 'none';
+                    if (remarksReq) remarksReq.style.display = 'none';
+                    if (passwordReq) passwordReq.style.display = 'none';
+                    if (passwordField) passwordField.style.display = 'none';
+                }
+            }
+
+            function togglePasswordField() {
+                var field = document.getElementById('<%=txtPassword.ClientID%>');
+                var icon = event.target.closest('.password-toggle').querySelector('i');
+
+                if (field.type === 'password') {
+                    field.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    field.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
                 }
             }
 
@@ -1277,6 +1598,8 @@
             window.onclick = function (event) {
                 var speakerModal = document.getElementById('speakerModal');
                 var approvalModal = document.getElementById('approvalModal');
+                var applicationsModal = document.getElementById('applicationsModal');
+                var applicationReviewModal = document.getElementById('applicationReviewModal');
 
                 if (event.target == speakerModal) {
                     closeModal();
@@ -1284,13 +1607,31 @@
                 if (event.target == approvalModal) {
                     closeApprovalModal();
                 }
+                if (event.target == applicationsModal) {
+                    closeApplicationsModal();
+                }
+                if (event.target == applicationReviewModal) {
+                    closeApplicationReviewModal();
+                }
             }
 
-            // Add onchange event to approval status dropdown
+
             document.addEventListener('DOMContentLoaded', function () {
+                // Handle Approval Modal dropdown change
                 var ddlApproval = document.getElementById('<%=ddlApprovalStatus.ClientID%>');
                 if (ddlApproval) {
                     ddlApproval.addEventListener('change', toggleRemarksRequired);
+                }
+
+                // Handle Application Review Modal dropdown change
+                var ddlAppStatus = document.getElementById('<%=ddlApplicationStatus.ClientID%>');
+                if (ddlAppStatus) {
+                    ddlAppStatus.addEventListener('change', toggleApplicationRemarksRequired);
+                }
+
+                // Initialize remarks and password visibility on page load
+                if (ddlApproval) {
+                    toggleRemarksRequired();
                 }
 
                 // Initialize character counters
@@ -1298,6 +1639,91 @@
                 updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
                 updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
             });
+
+            function openApplicationsModal() {
+                var modal = document.getElementById('applicationsModal');
+                modal.classList.add('show');
+            }
+
+            function closeApplicationsModal() {
+                var modal = document.getElementById('applicationsModal');
+                modal.classList.remove('show');
+            }
+
+            function openApplicationReviewModal() {
+                var modal = document.getElementById('applicationReviewModal');
+                modal.classList.add('show');
+                toggleApplicationRemarksRequired();
+            }
+
+            function closeApplicationReviewModal() {
+                var modal = document.getElementById('applicationReviewModal');
+                modal.classList.remove('show');
+            }
+
+            function toggleApplicationRemarksRequired() {
+                var status = document.getElementById('<%=ddlApplicationStatus.ClientID%>').value;
+                var remarksReq = document.getElementById('appRemarksRequired');
+                if (status === 'Rejected') {
+                    remarksReq.style.display = 'inline';
+                } else {
+                    remarksReq.style.display = 'none';
+                }
+            }
+
+            function validateApplicationRemarks(sender, args) {
+                var status = document.getElementById('<%=ddlApplicationStatus.ClientID%>').value;
+                var remarks = document.getElementById('<%=txtApplicationRemarks.ClientID%>').value.trim();
+
+                if (status === 'Rejected' && remarks === '') {
+                    args.IsValid = false;
+                } else {
+                    args.IsValid = true;
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var ddlApproval = document.getElementById('<%=ddlApprovalStatus.ClientID%>');
+                if (ddlApproval) {
+                    ddlApproval.addEventListener('change', toggleRemarksRequired);
+                }
+
+                var ddlAppStatus = document.getElementById('<%=ddlApplicationStatus.ClientID%>');
+                if (ddlAppStatus) {
+                    ddlAppStatus.addEventListener('change', toggleApplicationRemarksRequired);
+                }
+
+                // Initialize character counters
+                updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
+                updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
+                updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
+            });
+
+            function openApprovalModalDirect() {
+                var modal = document.getElementById('approvalModal');
+                if (modal) {
+                    modal.classList.add('show');
+                    toggleRemarksRequired();
+                } else {
+                    console.error('Approval modal not found');
+                }
+            }
+
+            function testModal() {
+                alert('Testing modal');
+                var modal = document.getElementById('approvalModal');
+                if (modal) {
+                    modal.classList.add('show');
+                    alert('Modal should be visible now');
+                } else {
+                    alert('Modal element not found!');
+                }
+            }
+
+            function handleApprovalClick(speakerId) {
+                document.getElementById('<%=hdnApproveSpeakerID.ClientID%>').value = speakerId;
+                document.getElementById('<%=btnTriggerApproval.ClientID%>').click();
+            }
         </script>
     </form>
 </body>

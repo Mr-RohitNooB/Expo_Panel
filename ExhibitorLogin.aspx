@@ -21,8 +21,7 @@
             align-items: center;
         }
         .login-container {
-            width: 100%;
-            max-width: 450px;
+            width: 450px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 40px;

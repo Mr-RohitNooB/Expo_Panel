@@ -72,7 +72,7 @@ namespace Expo_Panel
 
                 if (speakerId > 0)
                 {
-                    ShowMessage("Your registration has been submitted successfully! Our team will review your application and contact you soon.", "success");
+                    ShowMessage("Your registration has been submitted successfully!", "success");
                     ClearForm();
                 }
                 else

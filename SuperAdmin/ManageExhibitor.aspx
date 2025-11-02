@@ -19,7 +19,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+               background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -704,7 +704,7 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
                         <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label></span>
-                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
+                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
                         <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />

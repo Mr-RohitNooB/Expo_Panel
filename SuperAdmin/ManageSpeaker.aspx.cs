@@ -2,9 +2,9 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Text;
 
 namespace Expo_Panel.Admin
 {
@@ -73,6 +73,7 @@ namespace Expo_Panel.Admin
             Context.ApplicationInstance.CompleteRequest();
         }
 
+
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string searchText = txtSearch.Text.Trim();
@@ -114,12 +115,260 @@ namespace Expo_Panel.Admin
             {
                 ToggleSpeakerStatus(speakerId);
             }
-            else if (e.CommandName == "ApprovalAction")
+
+
+        }
+
+        private void LoadSpeakerApplications(int speakerId)
+        {
+            try
             {
-                LoadSpeakerForApproval(speakerId);
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    // First, get speaker details
+                    using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerById", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            hdnViewSpeakerID.Value = speakerId.ToString();
+                            lblApplicationsSpeakerName.Text = reader["Name"].ToString();
+                            lblApplicationsSpeakerEmail.Text = reader["Email"].ToString();
+                        }
+                        reader.Close();
+                    }
+
+                    // Then load applications - using query since we need to get data by SpeakerID
+                    string query = @"
+                SELECT 
+                    sai.InterestID,
+                    a.Day,
+                    a.Title AS AgendaTitle,
+                    a.Track,
+                    a.Time,
+                    sai.MotivationStatement,
+                    sai.RelevanceToExpertise,
+                    sai.AdvisoryRating,
+                    sai.Status,
+                    sai.ApplicationDate
+                FROM TBL.SpeakerAgendaInterest sai
+                INNER JOIN TBL.Agenda a ON sai.AgendaID = a.AgendaID
+                WHERE sai.SpeakerID = @SpeakerID
+                  AND sai.IS_ACTIVE = 1
+                ORDER BY sai.ApplicationDate DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+
+                        DataTable dt = new DataTable();
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            da.Fill(dt);
+                        }
+
+                        gvSpeakerApplications.DataSource = dt;
+                        gvSpeakerApplications.DataBind();
+                    }
+                }
+
+                // Open the modal
+                ScriptManager.RegisterStartupScript(this, GetType(), "openApplicationsModal", "openApplicationsModal();", true);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading applications: " + ex.Message, "danger");
             }
         }
 
+        protected void gvSpeakerApplications_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ReviewApplication")
+            {
+                int interestId = Convert.ToInt32(e.CommandArgument);
+                LoadApplicationForReview(interestId);
+            }
+        }
+
+        private void LoadApplicationForReview(int interestId)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    string query = @"
+                SELECT 
+                    sai.InterestID,
+                    s.Name AS SpeakerName,
+                    s.Company,
+                    s.Designation,
+                    s.YearsOfExperience,
+                    s.AreasOfExpertise,
+                    a.Day,
+                    a.Track,
+                    a.Title AS AgendaTitle,
+                    a.Brief AS AgendaBrief,
+                    sai.MotivationStatement,
+                    sai.RelevanceToExpertise,
+                    sai.AdvisoryRating,
+                    sai.Status,
+                    sai.AdminRemarks
+                FROM TBL.SpeakerAgendaInterest sai
+                INNER JOIN TBL.Speaker s ON sai.SpeakerID = s.SpeakerID
+                INNER JOIN TBL.Agenda a ON sai.AgendaID = a.AgendaID
+                WHERE sai.InterestID = @InterestID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@InterestID", interestId);
+
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            hdnReviewInterestID.Value = interestId.ToString();
+
+                            // Speaker Info
+                            txtReviewSpeakerName.Text = reader["SpeakerName"].ToString();
+                            txtReviewCompany.Text = reader["Company"].ToString();
+                            txtReviewDesignation.Text = reader["Designation"].ToString();
+                            txtReviewExperience.Text = reader["YearsOfExperience"] != DBNull.Value
+                                ? reader["YearsOfExperience"].ToString() + " years"
+                                : "N/A";
+                            txtReviewExpertise.Text = reader["AreasOfExpertise"].ToString();
+
+                            // Agenda Info
+                            txtReviewDay.Text = reader["Day"].ToString();
+                            txtReviewTrack.Text = reader["Track"].ToString();
+                            txtReviewAgendaTitle.Text = reader["AgendaTitle"].ToString();
+                            txtReviewAgendaBrief.Text = reader["AgendaBrief"].ToString();
+
+                            // Application Details
+                            txtReviewMotivation.Text = reader["MotivationStatement"].ToString();
+                            txtReviewRelevance.Text = reader["RelevanceToExpertise"].ToString();
+
+                            if (reader["AdvisoryRating"] != DBNull.Value)
+                            {
+                                decimal rating = Convert.ToDecimal(reader["AdvisoryRating"]);
+                                txtReviewRating.Text = $"{Math.Round(rating, 1)}/5 ⭐";
+                            }
+                            else
+                            {
+                                txtReviewRating.Text = "No Rating";
+                            }
+
+                            // Current Status
+                            ddlApplicationStatus.SelectedValue = reader["Status"].ToString();
+                            txtApplicationRemarks.Text = reader["AdminRemarks"] != DBNull.Value
+                                ? reader["AdminRemarks"].ToString()
+                                : "";
+                        }
+                        reader.Close();
+                    }
+                }
+
+                // Close the applications modal and open review modal
+                string script = @"
+            closeApplicationsModal();
+            setTimeout(function() { openApplicationReviewModal(); }, 300);
+        ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "openReviewModal", script, true);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading application details: " + ex.Message, "danger");
+            }
+        }
+        protected void btnSaveApplicationReview_Click(object sender, EventArgs e)
+        {
+            if (!Page.IsValid)
+                return;
+
+            try
+            {
+                int interestId = Convert.ToInt32(hdnReviewInterestID.Value);
+                string status = ddlApplicationStatus.SelectedValue;
+                string remarks = txtApplicationRemarks.Text.Trim();
+
+                if (status == "Rejected" && string.IsNullOrEmpty(remarks))
+                {
+                    ShowMessage("Remarks are required when rejecting an application.", "danger");
+                    return;
+                }
+
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    string updateQuery = @"
+                UPDATE TBL.SpeakerAgendaInterest
+                SET 
+                    Status = @Status,
+                    AdminRemarks = @AdminRemarks,
+                    ApprovedBy = @ApprovedBy,
+                    ApprovalDate = GETDATE(),
+                    ModifiedDate = GETDATE()
+                WHERE InterestID = @InterestID";
+
+                    using (SqlCommand cmd = new SqlCommand(updateQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@InterestID", interestId);
+                        cmd.Parameters.AddWithValue("@Status", status);
+                        cmd.Parameters.AddWithValue("@AdminRemarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
+                        cmd.Parameters.AddWithValue("@ApprovedBy", CurrentAdminID);
+
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // If approved, update the Agenda table to mark speaker as confirmed
+                    if (status == "Approved")
+                    {
+                        string agendaUpdateQuery = @"
+                    UPDATE TBL.Agenda
+                    SET IsSpeakerConfirmed = 1,
+                        ModifiedDate = GETDATE()
+                    WHERE AgendaID = (
+                        SELECT AgendaID FROM TBL.SpeakerAgendaInterest 
+                        WHERE InterestID = @InterestID
+                    )";
+
+                        using (SqlCommand cmd = new SqlCommand(agendaUpdateQuery, con))
+                        {
+                            cmd.Parameters.AddWithValue("@InterestID", interestId);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                Session["FlashMessage"] = $"Application {status.ToLower()} successfully!";
+                Response.Redirect(Request.RawUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error updating application: " + ex.Message, "danger");
+            }
+        }
+
+        protected void cvApplicationRemarks_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            string status = ddlApplicationStatus.SelectedValue;
+            string remarks = txtApplicationRemarks.Text.Trim();
+
+            if (status == "Rejected" && string.IsNullOrEmpty(remarks))
+            {
+                args.IsValid = false;
+            }
+            else
+            {
+                args.IsValid = true;
+            }
+        }
         protected void btnSaveSpeaker_Click(object sender, EventArgs e)
         {
             if (!Page.IsValid)
@@ -225,7 +474,11 @@ namespace Expo_Panel.Admin
 
                 UpdateApprovalStatus(speakerId, approvalStatus, remarks);
 
-                Session["FlashMessage"] = $"Speaker {approvalStatus.ToLower()} successfully!";
+                // Message is set in UpdateApprovalStatus method
+                if (Session["FlashMessage"] == null)
+                {
+                    Session["FlashMessage"] = $"Speaker {approvalStatus.ToLower()} successfully!";
+                }
 
                 Response.Redirect(Request.RawUrl, false);
                 Context.ApplicationInstance.CompleteRequest();
@@ -436,7 +689,22 @@ namespace Expo_Panel.Admin
                             string designation = reader["Designation"].ToString();
                             string company = reader["Company"].ToString();
                             string approvalStatus = reader["ApprovalStatus"].ToString();
-                            string remarks = reader["Remarks"].ToString();
+                            string remarks = reader["Remarks"] != DBNull.Value ? reader["Remarks"].ToString() : "";
+
+                            // Handle Password field safely - check if column exists
+                            string password = "";
+                            try
+                            {
+                                if (reader.GetOrdinal("Password") >= 0 && reader["Password"] != DBNull.Value)
+                                {
+                                    password = reader["Password"].ToString();
+                                }
+                            }
+                            catch
+                            {
+                                // Password column doesn't exist, use empty string
+                                password = "";
+                            }
 
                             // Escape single quotes for JavaScript
                             name = EscapeJsString(name);
@@ -445,9 +713,14 @@ namespace Expo_Panel.Admin
                             designation = EscapeJsString(designation);
                             company = EscapeJsString(company);
                             remarks = EscapeJsString(remarks);
+                            password = EscapeJsString(password);
 
-                            string script = $"openApprovalModal({speakerId}, '{name}', '{email}', '{regType}', '{designation}', '{company}', '{approvalStatus}', '{remarks}');";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal", script, true);
+                            string script = $@"
+                        setTimeout(function() {{
+                            openApprovalModal({speakerId}, '{name}', '{email}', '{regType}', '{designation}', '{company}', '{approvalStatus}', '{remarks}', '{password}');
+                        }}, 100);";
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal_" + speakerId, script, true);
                         }
 
                         reader.Close();
@@ -459,7 +732,11 @@ namespace Expo_Panel.Admin
                 ShowMessage("Error loading speaker for approval: " + ex.Message, "danger");
             }
         }
-
+        protected void btnTriggerApproval_Click(object sender, EventArgs e)
+        {
+            int speakerId = Convert.ToInt32(hdnApproveSpeakerID.Value);
+            LoadSpeakerForApproval(speakerId);
+        }
         private void AddSpeaker(string name, string email, string mobile, string designation, string company, bool isActive,
             int? yearsOfExperience, string linkedInProfile, string photoPath, string logoPath,
             string professionalBio, string areasOfExpertise, string currentWorkProjects,
@@ -576,6 +853,18 @@ namespace Expo_Panel.Admin
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
+                // Generate password if approving and no password provided
+                string password = txtPassword.Text.Trim();
+
+                if (approvalStatus == "Approved" && string.IsNullOrEmpty(password))
+                {
+                    password = GeneratePassword(8); // Auto-generate 8-character password
+
+                    // Store it back in the textbox so it can be displayed
+                    txtPassword.Text = password;
+                    txtPassword.TextMode = TextBoxMode.SingleLine; // Show the generated password
+                }
+
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateSpeakerApprovalStatus", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -583,11 +872,40 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
                     cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
                     cmd.Parameters.AddWithValue("@ApprovedBy", CurrentAdminID);
+                    cmd.Parameters.AddWithValue("@Password", string.IsNullOrEmpty(password) ? (object)DBNull.Value : password);
 
                     con.Open();
-                    cmd.ExecuteNonQuery();
+
+                    // Execute and get the email and name
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read() && approvalStatus == "Approved")
+                    {
+                        string email = reader["Email"].ToString();
+                        string name = reader["Name"].ToString();
+
+                        // Show success message with password
+                        Session["FlashMessage"] = $"Speaker approved successfully! Generated Password: <strong>{password}</strong>";
+                    }
+
+                    reader.Close();
                 }
             }
+        }
+
+        // Add this helper method to generate random passwords
+        private string GeneratePassword(int length = 8)
+        {
+            const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$";
+            Random random = new Random();
+            char[] chars = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                chars[i] = validChars[random.Next(validChars.Length)];
+            }
+
+            return new string(chars);
         }
 
         private void ClearForm()

@@ -76,7 +76,7 @@ namespace Expo_Panel
 
                 if (exhibitorId > 0)
                 {
-                    ShowMessage("Your registration has been submitted successfully! Our team will contact you shortly.", "success");
+                    ShowMessage("Your registration has been submitted successfully!", "success");
                     ClearForm();
                 }
                 else

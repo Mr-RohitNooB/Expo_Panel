@@ -67,12 +67,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Admin\Dashboard.aspx" />
-    <Content Include="Admin\Default.aspx" />
-    <Content Include="Admin\ManageAdvisor.aspx" />
-    <Content Include="Admin\ManageAgenda.aspx" />
-    <Content Include="Admin\ManageExhibitor.aspx" />
-    <Content Include="Admin\ManageSpeaker.aspx" />
+    <Content Include="PostSpeakerRegistration.aspx" />
+    <Content Include="SpeakerLogin.aspx" />
+    <Content Include="SuperAdmin\Dashboard.aspx" />
+    <Content Include="SuperAdmin\Default.aspx" />
+    <Content Include="SuperAdmin\ManageAdvisor.aspx" />
+    <Content Include="SuperAdmin\ManageAgenda.aspx" />
+    <Content Include="SuperAdmin\ManageExhibitor.aspx" />
+    <Content Include="SuperAdmin\ManageSpeaker.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="ExhibitorLogin.aspx" />
     <Content Include="PostApprovalExhibitor.aspx" />
@@ -83,46 +85,60 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin\Dashboard.aspx.cs">
+    <Compile Include="PostSpeakerRegistration.aspx.cs">
+      <DependentUpon>PostSpeakerRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PostSpeakerRegistration.aspx.designer.cs">
+      <DependentUpon>PostSpeakerRegistration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SpeakerLogin.aspx.cs">
+      <DependentUpon>SpeakerLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SpeakerLogin.aspx.designer.cs">
+      <DependentUpon>SpeakerLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SuperAdmin\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Dashboard.aspx.designer.cs">
+    <Compile Include="SuperAdmin\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Default.aspx.cs">
+    <Compile Include="SuperAdmin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Default.aspx.designer.cs">
+    <Compile Include="SuperAdmin\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageAdvisor.aspx.cs">
+    <Compile Include="SuperAdmin\ManageAdvisor.aspx.cs">
       <DependentUpon>ManageAdvisor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageAdvisor.aspx.designer.cs">
+    <Compile Include="SuperAdmin\ManageAdvisor.aspx.designer.cs">
       <DependentUpon>ManageAdvisor.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageAgenda.aspx.cs">
+    <Compile Include="SuperAdmin\ManageAgenda.aspx.cs">
       <DependentUpon>ManageAgenda.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageAgenda.aspx.designer.cs">
+    <Compile Include="SuperAdmin\ManageAgenda.aspx.designer.cs">
       <DependentUpon>ManageAgenda.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageExhibitor.aspx.cs">
+    <Compile Include="SuperAdmin\ManageExhibitor.aspx.cs">
       <DependentUpon>ManageExhibitor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageExhibitor.aspx.designer.cs">
+    <Compile Include="SuperAdmin\ManageExhibitor.aspx.designer.cs">
       <DependentUpon>ManageExhibitor.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageSpeaker.aspx.cs">
+    <Compile Include="SuperAdmin\ManageSpeaker.aspx.cs">
       <DependentUpon>ManageSpeaker.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageSpeaker.aspx.designer.cs">
+    <Compile Include="SuperAdmin\ManageSpeaker.aspx.designer.cs">
       <DependentUpon>ManageSpeaker.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">

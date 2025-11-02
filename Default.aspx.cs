@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Expo_Panel
 {
@@ -11,7 +6,7 @@ namespace Expo_Panel
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("/Admin/Default.aspx");
+            Response.Redirect("/SuperAdmin/Default.aspx");
         }
     }
 }

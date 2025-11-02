@@ -540,7 +540,7 @@
                         | Session Status:
                         <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
                     </span>
-                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
+                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
                         <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />

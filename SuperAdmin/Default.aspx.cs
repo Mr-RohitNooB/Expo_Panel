@@ -11,13 +11,14 @@ namespace Expo_Panel.Admin
         {
             if (!IsPostBack)
             {
+                // Check if already logged in
                 if (Session["IsAdminLoggedIn"] != null && (bool)Session["IsAdminLoggedIn"])
                 {
-                    // If already logged in, redirect to dashboard automatically
-                    Response.Redirect("~/Admin/Dashboard.aspx", false);
+                    Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
 
+                // Set focus to username field
                 txtUsername.Focus();
             }
         }
@@ -31,19 +32,19 @@ namespace Expo_Panel.Admin
 
                 if (ValidateAdmin(username, password))
                 {
-                    // ✅ FIXED: Set BOTH session variables that are checked across the application
+                    // Set all required session variables
                     Session["AdminUsername"] = username;
                     Session["IsAdminLoggedIn"] = true;
-                    Session["IsAuthenticated"] = true;  // ← ADD THIS LINE
+                    Session["IsAuthenticated"] = true;
 
-                    // ✅ Redirect properly to dashboard
-                    Response.Redirect("~/Admin/Dashboard.aspx", false);
+                    // Redirect to dashboard
+                    Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
                     ShowError("Invalid username or password. Please try again.");
-                    txtPassword.Text = string.Empty; // Clear password on failure
+                    txtPassword.Text = string.Empty;
                     txtUsername.Focus();
                 }
             }

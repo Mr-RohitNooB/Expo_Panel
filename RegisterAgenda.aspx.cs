@@ -42,7 +42,7 @@ namespace Expo_Panel
 
                 if (agendaId > 0)
                 {
-                    ShowMessage("Your agenda item has been submitted successfully! It will be reviewed by our team.", "success");
+                    ShowMessage("Your agenda item has been submitted successfully!", "success");
                     ClearForm();
                 }
                 else
