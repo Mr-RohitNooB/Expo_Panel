@@ -25,7 +25,7 @@
         }
 
         .registration-container {
-            width: 1000px;
+            max-width: 1000px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -38,17 +38,17 @@
             margin-bottom: 30px;
         }
 
-            .header h1 {
-                color: #38a169;
-                font-size: 32px;
-                font-weight: 600;
-                margin-bottom: 10px;
-            }
+        .header h1 {
+            color: #38a169;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
 
-            .header p {
-                color: #64748b;
-                font-size: 16px;
-            }
+        .header p {
+            color: #64748b;
+            font-size: 16px;
+        }
 
         .form-section {
             margin-bottom: 35px;
@@ -56,18 +56,18 @@
             border-bottom: 2px solid #e2e8f0;
         }
 
-            .form-section:last-of-type {
-                border-bottom: none;
-            }
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
 
-            .form-section h3 {
-                color: #38a169;
-                font-size: 20px;
-                margin-bottom: 20px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+        .form-section h3 {
+            color: #38a169;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
         .form-row {
             display: grid;
@@ -87,36 +87,90 @@
             margin-bottom: 20px;
         }
 
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: #475569;
-                font-weight: 500;
-            }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #475569;
+            font-weight: 500;
+        }
 
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                width: 100%;
-                padding: 12px 15px;
-                border: 2px solid #e2e8f0;
-                border-radius: 8px;
-                font-size: 14px;
-                font-family: 'Poppins', sans-serif;
-                transition: all 0.3s;
-            }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
 
-                .form-group input:focus,
-                .form-group select:focus,
-                .form-group textarea:focus {
-                    outline: none;
-                    border-color: #48bb78;
-                }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #48bb78;
+        }
 
-            .form-group textarea {
-                resize: vertical;
-                min-height: 100px;
-            }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-input {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-label:hover {
+            background: #f1f5f9;
+            border-color: #48bb78;
+        }
+
+        .file-upload-label i {
+            color: #48bb78;
+            font-size: 20px;
+        }
+
+        .file-name {
+            margin-top: 8px;
+            color: #38a169;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .photo-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .photo-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            border: 3px solid #48bb78;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
         .checkbox-group {
             display: grid;
@@ -131,18 +185,218 @@
             gap: 10px;
         }
 
-            .checkbox-item input[type="checkbox"] {
-                width: 20px;
-                height: 20px;
-                cursor: pointer;
-            }
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
 
-            .checkbox-item label {
-                margin: 0;
-                cursor: pointer;
-                font-weight: 400;
-                color: #475569;
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+            color: #475569;
+        }
+
+        .agenda-table-wrapper {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .agenda-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .agenda-table thead {
+            background: #f8fafc;
+        }
+
+        .agenda-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .agenda-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .agenda-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .agenda-table tbody tr.selected {
+            background: #f0fdf4;
+        }
+
+        .agenda-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .btn-view {
+            padding: 6px 12px;
+            background: #38a169;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-view:hover {
+            background: #2f855a;
+            transform: translateY(-1px);
+        }
+
+        .selection-counter {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #92400e;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .selection-counter i {
+            font-size: 18px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
             }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .agenda-detail-row {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .agenda-detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .agenda-detail-label {
+            font-weight: 600;
+            color: #38a169;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .agenda-detail-value {
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.6;
+        }
 
         .char-counter {
             font-size: 12px;
@@ -169,20 +423,16 @@
             color: white;
         }
 
-            .btn-primary:hover {
-                background: #2f855a;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(56, 161, 105, 0.4);
-            }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #475569;
+        .btn-primary:hover:not(:disabled) {
+            background: #2f855a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(56, 161, 105, 0.4);
         }
 
-            .btn-secondary:hover {
-                background: #cbd5e1;
-            }
+        .btn-primary:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
 
         .form-footer {
             display: flex;
@@ -202,9 +452,9 @@
             gap: 8px;
         }
 
-            .back-link:hover {
-                text-decoration: underline;
-            }
+        .back-link:hover {
+            text-decoration: underline;
+        }
 
         .alert {
             padding: 15px 20px;
@@ -238,11 +488,6 @@
             margin-top: 5px;
         }
 
-        /* Commented out for future use */
-        .file-upload-section {
-            display: none;
-        }
-
         @media (max-width: 768px) {
             .form-row,
             .form-row-three {
@@ -265,11 +510,25 @@
             .header h1 {
                 font-size: 24px;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .agenda-table {
+                font-size: 12px;
+            }
+
+            .agenda-table th,
+            .agenda-table td {
+                padding: 8px 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" enctype="multipart/form-data">
         <div class="registration-container">
             <div class="header">
                 <h1><i class="fas fa-microphone"></i> Register as Speaker</h1>
@@ -326,29 +585,46 @@
                     <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
                         ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
-
-                <!-- COMMENTED OUT FOR FUTURE USE -->
-                <!--
-                <div class="form-group file-upload-section">
-                    <label for="<%=txtLinkedInProfile.ClientID%>">LinkedIn Profile</label>
-                    <asp:TextBox ID="txtLinkedInProfile" runat="server" placeholder="https://linkedin.com/in/username"></asp:TextBox>
-                </div>
-
-                <div class="form-row file-upload-section">
-                    <div class="form-group">
-                        <label>Recent Photo</label>
-                        <asp:FileUpload ID="fuPhoto" runat="server" />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Company Logo (High Resolution)</label>
-                        <asp:FileUpload ID="fuLogo" runat="server" />
-                    </div>
-                </div>
-                -->
             </div>
 
-            <!-- Section 2: Professional Profile -->
+            <!-- Section 2: Profile & Media -->
+            <div class="form-section">
+                <h3><i class="fas fa-id-card"></i> Profile & Media</h3>
+
+                <div class="form-group">
+                    <label for="fuPhoto">Upload Your Photo <span class="required">*</span></label>
+                    <p class="info-text">Please upload a professional headshot (JPG, PNG - Max 2MB)</p>
+                    <div class="file-upload-wrapper">
+                        <asp:FileUpload ID="fuPhoto" runat="server" CssClass="file-upload-input" 
+                            accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'photoFileName', 'photoPreview')" />
+                        <label for="<%=fuPhoto.ClientID%>" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Choose Photo</span>
+                        </label>
+                    </div>
+                    <div id="photoFileName" class="file-name"></div>
+                    <div id="photoPreview" class="photo-preview">
+                        <img id="photoPreviewImg" src="" alt="Photo Preview" />
+                    </div>
+                    <asp:RequiredFieldValidator ID="rfvPhoto" runat="server" ControlToValidate="fuPhoto"
+                        ErrorMessage="Photo is required" ForeColor="Red" Display="Dynamic" 
+                        ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                </div>
+
+                <div class="form-group">
+                    <label for="<%=txtLinkedIn.ClientID%>">LinkedIn Profile URL <span class="required">*</span></label>
+                    <asp:TextBox ID="txtLinkedIn" runat="server" placeholder="https://linkedin.com/in/yourprofile"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
+                        ErrorMessage="LinkedIn profile is required" ForeColor="Red" Display="Dynamic" 
+                        ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="revLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
+                        ErrorMessage="Please enter a valid LinkedIn URL" ForeColor="Red" Display="Dynamic"
+                        ValidationExpression="^https?://(www\.)?linkedin\.com/.*$" 
+                        ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+
+            <!-- Section 3: Professional Profile -->
             <div class="form-section">
                 <h3><i class="fas fa-briefcase"></i> Professional Profile</h3>
 
@@ -406,7 +682,7 @@
                 </div>
             </div>
 
-            <!-- Section 3: Current Work & Projects -->
+            <!-- Section 4: Current Work & Projects -->
             <div class="form-section">
                 <h3><i class="fas fa-project-diagram"></i> Current Work & Projects</h3>
 
@@ -426,7 +702,7 @@
                 </div>
             </div>
 
-            <!-- Section 4: Discussion Format & Speaking Experience -->
+            <!-- Section 5: Discussion Format & Speaking Experience -->
             <div class="form-section">
                 <h3><i class="fas fa-comments"></i> Discussion Format & Speaking Experience</h3>
 
@@ -448,14 +724,35 @@
 
                 <div class="form-group">
                     <label for="<%=txtPreviousSpeakingEngagements.ClientID%>">Previous Speaking Engagements</label>
-                    <p class="info-text">Please list any conferences, webinars or forums where you've recently spoken (Include links to recordings or published content if available)</p>
+                    <p class="info-text">Please list any conferences, webinars or forums where you've recently spoken</p>
                     <asp:TextBox ID="txtPreviousSpeakingEngagements" runat="server" TextMode="MultiLine" Rows="4"
                         placeholder="List your speaking engagements with links if available"></asp:TextBox>
                     <div id="engagementsCharCount" class="char-counter">0 characters</div>
                 </div>
             </div>
 
-            <!-- Section 5: Consent & Availability -->
+            <!-- Section 6: Select Agenda Topics -->
+            <div class="form-section">
+                <h3><i class="fas fa-calendar-check"></i> Select Topics You'd Like to Speak On</h3>
+                
+                <div class="selection-counter">
+                    <i class="fas fa-info-circle"></i>
+                    <span>You can select up to 3 topics. Currently selected: <strong><span id="selectedCount">0</span>/3</strong></span>
+                </div>
+
+                <div class="agenda-table-wrapper">
+                    <asp:Literal ID="litAgendaTable" runat="server"></asp:Literal>
+                </div>
+
+                <asp:HiddenField ID="hdnSelectedAgendas" runat="server" />
+                <asp:CustomValidator ID="cvAgendaSelection" runat="server"
+                    ErrorMessage="Please select at least 1 topic (maximum 3)" ForeColor="Red" Display="Dynamic"
+                    ClientValidationFunction="validateAgendaSelection" 
+                    OnServerValidate="cvAgendaSelection_ServerValidate"
+                    ValidationGroup="RegistrationValidation"></asp:CustomValidator>
+            </div>
+
+            <!-- Section 7: Consent & Availability -->
             <div class="form-section">
                 <h3><i class="fas fa-check-circle"></i> Consent & Availability</h3>
 
@@ -483,11 +780,70 @@
                     <i class="fas fa-arrow-left"></i>Back to Home
                 </a>
                 <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary"
-                    OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" OnClientClick="return collectCheckboxData();" />
+                    OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" OnClientClick="return collectFormData();" />
+            </div>
+        </div>
+
+        <!-- Agenda Details Modal -->
+        <div id="agendaModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-info-circle"></i> Agenda Details</h2>
+                    <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
             </div>
         </div>
 
         <script type="text/javascript">
+            // Photo preview function
+            function displayFileName(input, displayId, previewId) {
+                var display = document.getElementById(displayId);
+                var preview = document.getElementById(previewId);
+                var previewImg = document.getElementById(previewId + 'Img');
+                
+                if (input.files && input.files[0]) {
+                    var file = input.files[0];
+                    var fileName = file.name;
+                    var fileSize = (file.size / 1024 / 1024).toFixed(2);
+                    
+                    // Validate file size
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('File size must be less than 2MB');
+                        input.value = '';
+                        display.innerHTML = '';
+                        preview.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Validate file type
+                    var fileType = file.type;
+                    if (fileType !== 'image/jpeg' && fileType !== 'image/png' && fileType !== 'image/jpg') {
+                        alert('Only JPG and PNG files are allowed');
+                        input.value = '';
+                        display.innerHTML = '';
+                        preview.style.display = 'none';
+                        return;
+                    }
+                    
+                    display.innerHTML = '<i class="fas fa-check-circle"></i> ' + fileName + ' (' + fileSize + ' MB)';
+                    
+                    // Show preview
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    display.innerHTML = '';
+                    preview.style.display = 'none';
+                }
+            }
+
+            // Character counter
             function updateCharCount(textboxId, counterId) {
                 var textbox = document.getElementById(textboxId);
                 var counter = document.getElementById(counterId);
@@ -496,7 +852,87 @@
                 }
             }
 
-            function collectCheckboxData() {
+            // Agenda selection
+            function toggleAgendaSelection(checkbox) {
+                var row = checkbox.closest('tr');
+                var selectedCount = document.querySelectorAll('.agenda-checkbox:checked').length;
+                
+                if (checkbox.checked) {
+                    if (selectedCount > 3) {
+                        checkbox.checked = false;
+                        alert('You can only select up to 3 topics.');
+                        return false;
+                    }
+                    row.classList.add('selected');
+                } else {
+                    row.classList.remove('selected');
+                }
+                
+                updateSelectedCount();
+            }
+
+            function updateSelectedCount() {
+                var selectedCount = document.querySelectorAll('.agenda-checkbox:checked').length;
+                document.getElementById('selectedCount').textContent = selectedCount;
+            }
+
+            // View agenda details in modal
+            function viewAgenda(agendaId, day, track, time, title, brief, synopsis) {
+                var modalBody = document.getElementById('modalBody');
+                
+                var html = '';
+                html += '<div class="agenda-detail-row">';
+                html += '<div class="agenda-detail-label"><i class="fas fa-calendar"></i> Day</div>';
+                html += '<div class="agenda-detail-value">' + day + '</div>';
+                html += '</div>';
+                
+                html += '<div class="agenda-detail-row">';
+                html += '<div class="agenda-detail-label"><i class="fas fa-map-marker-alt"></i> Track</div>';
+                html += '<div class="agenda-detail-value">' + track + '</div>';
+                html += '</div>';
+                
+                html += '<div class="agenda-detail-row">';
+                html += '<div class="agenda-detail-label"><i class="fas fa-clock"></i> Time</div>';
+                html += '<div class="agenda-detail-value">' + time + '</div>';
+                html += '</div>';
+                
+                html += '<div class="agenda-detail-row">';
+                html += '<div class="agenda-detail-label"><i class="fas fa-heading"></i> Title</div>';
+                html += '<div class="agenda-detail-value">' + title + '</div>';
+                html += '</div>';
+                
+                if (brief) {
+                    html += '<div class="agenda-detail-row">';
+                    html += '<div class="agenda-detail-label"><i class="fas fa-align-left"></i> Brief</div>';
+                    html += '<div class="agenda-detail-value">' + brief + '</div>';
+                    html += '</div>';
+                }
+                
+                if (synopsis) {
+                    html += '<div class="agenda-detail-row">';
+                    html += '<div class="agenda-detail-label"><i class="fas fa-file-alt"></i> Full Synopsis</div>';
+                    html += '<div class="agenda-detail-value">' + synopsis + '</div>';
+                    html += '</div>';
+                }
+                
+                modalBody.innerHTML = html;
+                document.getElementById('agendaModal').style.display = 'block';
+            }
+
+            function closeModal() {
+                document.getElementById('agendaModal').style.display = 'none';
+            }
+
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                var modal = document.getElementById('agendaModal');
+                if (event.target == modal) {
+                    closeModal();
+                }
+            };
+
+            // Collect all form data before submission
+            function collectFormData() {
                 // Collect Areas of Expertise
                 var expertise = [];
                 if (document.getElementById('chkBaseOils').checked) expertise.push('Base Oils');
@@ -523,12 +959,28 @@
 
                 document.getElementById('<%=hdnPreferredFormat.ClientID%>').value = formats.join(', ');
 
-                return true; // Allow form submission
+                // Collect Selected Agendas
+                var checkboxes = document.querySelectorAll('.agenda-checkbox:checked');
+                var selectedIds = [];
+                
+                checkboxes.forEach(function(cb) {
+                    selectedIds.push(cb.value);
+                });
+                
+                document.getElementById('<%=hdnSelectedAgendas.ClientID%>').value = selectedIds.join(',');
+
+                return true;
             }
 
-            // Initialize character counters on page load - use window.onload for better compatibility
+            function validateAgendaSelection(sender, args) {
+                var checkboxes = document.querySelectorAll('.agenda-checkbox:checked');
+                var count = checkboxes.length;
+                args.IsValid = (count >= 1 && count <= 3);
+            }
+
+            // Initialize on page load
             window.onload = function() {
-                // Initialize counters
+                // Initialize character counters
                 updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
                 updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
                 updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
@@ -554,6 +1006,9 @@
                         updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
                     });
                 }
+
+                // Initialize selected count
+                updateSelectedCount();
             };
         </script>
     </form>

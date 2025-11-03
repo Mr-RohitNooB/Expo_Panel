@@ -186,6 +186,24 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.Button btnTriggerApproval;
 
         /// <summary>
+        /// hdnEditSpeakerID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnEditSpeakerID;
+
+        /// <summary>
+        /// btnTriggerEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnTriggerEdit;
+
+        /// <summary>
         /// txtName control.
         /// </summary>
         /// <remarks>
@@ -400,6 +418,24 @@ namespace Expo_Panel.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkMarketingConsent;
+
+        /// <summary>
+        /// rptAvailableAgendas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptAvailableAgendas;
+
+        /// <summary>
+        /// hdnSelectedAgendas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnSelectedAgendas;
 
         /// <summary>
         /// btnSaveSpeaker control.

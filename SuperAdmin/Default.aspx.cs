@@ -30,6 +30,7 @@ namespace Expo_Panel.Admin
                 string username = txtUsername.Text.Trim();
                 string password = txtPassword.Text.Trim();
 
+
                 if (ValidateAdmin(username, password))
                 {
                     // Set all required session variables
@@ -52,6 +53,7 @@ namespace Expo_Panel.Admin
 
         private bool ValidateAdmin(string username, string password)
         {
+            //return true;
             bool isValid = false;
             string connectionString = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
 

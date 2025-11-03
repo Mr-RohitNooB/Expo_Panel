@@ -21,41 +21,39 @@
         }
 
         html {
-    scroll-behavior: smooth;
-    height: 100%;
-    background: #667eea; /* Fallback solid color */
-}
+            scroll-behavior: smooth;
+            height: 100%;
+            background: #667eea; /* Fallback solid color */
+        }
 
         /* Add to the body styles (around line 26) */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    background-attachment: fixed;
-    background-repeat: no-repeat; /* Add this */
-    background-size: 100% 100%; /* Add this - stretches to full page */
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    position: relative;
-    overflow-x: hidden;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            background-repeat: no-repeat; /* Add this */
+            background-size: 100% 100%; /* Add this - stretches to full page */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-/* Update the login-wrapper to prevent overflow (around line 40) */
-.login-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Add this to clip decorative elements */
-}
+        /* Update the login-wrapper to prevent overflow (around line 40) */
+        .login-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Add this to clip decorative elements */
+        }
 
         /* Login Container */
         .login-container {
@@ -532,25 +530,25 @@ body {
                     </div>
 
                     <!-- Password Field -->
-<div class="form-group">
-    <label for="txtPassword" class="form-label">
-        <span class="label-icon"><i class="fas fa-lock"></i></span>
-        Password
-    </label>
-    <div class="password-container">
-        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" 
-                     CssClass="form-control" placeholder="Enter your password" 
-                     MaxLength="255"></asp:TextBox>
-        <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
-            <i class="fas fa-eye toggle-icon"></i>
-        </button>
-    </div>
-    <asp:RequiredFieldValidator ID="rfvPassword" runat="server" 
-                                ControlToValidate="txtPassword" 
-                                ErrorMessage="Password is required" 
-                                CssClass="error-message"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-</div>
+                    <div class="form-group">
+                        <label for="txtPassword" class="form-label">
+                            <span class="label-icon"><i class="fas fa-lock"></i></span>
+                            Password
+                        </label>
+                        <div class="password-container">
+                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
+                                CssClass="form-control" placeholder="Enter your password"
+                                MaxLength="255"></asp:TextBox>
+                            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
+                                <i class="fas fa-eye toggle-icon"></i>
+                            </button>
+                        </div>
+                        <asp:RequiredFieldValidator ID="rfvPassword" runat="server"
+                            ControlToValidate="txtPassword"
+                            ErrorMessage="Password is required"
+                            CssClass="error-message"
+                            Display="Dynamic"></asp:RequiredFieldValidator>
+                    </div>
 
                     <!-- Login Button -->
                     <asp:Button ID="btnLogin" runat="server" Text="Sign In"

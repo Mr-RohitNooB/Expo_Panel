@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Speakers - Expo Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
@@ -453,34 +453,6 @@
             display: none;
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .form-row-three {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-            .form-section:last-child {
-                border-bottom: none;
-            }
-
-            .form-section h3 {
-                color: #38a169;
-                font-size: 18px;
-                margin-bottom: 15px;
-            }
-
         .checkbox-group {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -693,6 +665,242 @@
         #passwordField {
             display: none; /* Hidden by default, shown when Approved is selected */
         }
+
+        /* Add these CSS fixes to your existing style section */
+
+        /* Ensure all form controls have consistent styling */
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="number"],
+        .form-group input[type="password"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+            .form-group input[type="text"]:focus,
+            .form-group input[type="email"]:focus,
+            .form-group input[type="number"]:focus,
+            .form-group input[type="password"]:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                outline: none;
+                border-color: #48bb78;
+            }
+
+        /* Fix form row grid layout */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 0;
+        }
+
+        .form-row-three {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 0;
+        }
+
+        /* Ensure form groups have proper spacing */
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #475569;
+                font-weight: 500;
+                font-size: 14px;
+            }
+
+        /* Fix modal content width and padding */
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* Fix modal footer alignment */
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+            /* Ensure buttons have consistent sizing */
+            .modal-footer .btn {
+                padding: 12px 24px;
+                font-size: 14px;
+                min-width: 100px;
+            }
+
+        /* Fix checkbox group alignment */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .checkbox-item input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+                flex-shrink: 0;
+            }
+
+            .checkbox-item label {
+                margin: 0;
+                cursor: pointer;
+                font-weight: 400;
+                font-size: 14px;
+            }
+
+        /* Fix form section spacing */
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+            .form-section:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+
+            .form-section h3 {
+                color: #38a169;
+                font-size: 18px;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+        /* Fix text area styling */
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Fix character counter */
+        .char-counter {
+            font-size: 12px;
+            color: #64748b;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        /* Fix password field container */
+        .password-field {
+            position: relative;
+            width: 100%;
+        }
+
+            .password-field input {
+                width: 100%;
+                padding-right: 45px;
+            }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6b7280;
+            transition: color 0.3s;
+        }
+
+            .password-toggle:hover {
+                color: #38a169;
+            }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-row,
+            .form-row-three {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .modal-footer {
+                flex-direction: column-reverse;
+            }
+
+                .modal-footer .btn {
+                    width: 100%;
+                }
+        }
+
+        /* Fix validation message styling */
+        span[style*="color:Red"],
+        span[style*="color: Red"],
+        span[style*="color: red"] {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #ef4444 !important;
+        }
+
+        /* Fix dropdown styling */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 35px;
+        }
+
+        /* Fix required field indicator */
+        span[style*="color: red"] {
+            color: #ef4444;
+            margin-left: 3px;
+        }
+
+        /* Ensure proper box-sizing for all elements */
+        .modal-content *,
+        .modal-content *::before,
+        .modal-content *::after {
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -704,12 +912,12 @@
                 <h1><i class="fas fa-microphone"></i>Manage Speakers</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
-                        <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
+                            <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
                         | Session Status:
-                        <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
+                            <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
                     </span>
                     <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
-                        <i class="fas fa-arrow-left"></i> Back
+                            <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
                     <asp:Button ID="Button1" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
                 </div>
@@ -807,13 +1015,15 @@
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
                                             <div class="action-buttons">
-                                                <asp:Button runat="server" Text="Edit" CommandName="EditSpeaker"
-                                                    CommandArgument='<%# Eval("SpeakerID") %>'
-                                                    CssClass="btn btn-edit" />
+                                                <button type="button" class="btn btn-edit"
+                                                    onclick="handleEditClick(<%# Eval("SpeakerID") %>)">
+                                                    <i class="fas fa-edit"></i>Edit
+                                                </button>
+
                                                 <button type="button" class="btn btn-warning"
-    onclick="handleApprovalClick(<%# Eval("SpeakerID") %>)">
-    <i class="fas fa-check-circle"></i> Approve/Reject
-</button>
+                                                    onclick="handleApprovalClick(<%# Eval("SpeakerID") %>)">
+                                                    <i class="fas fa-check-circle"></i>Approve/Reject
+                                                </button>
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -843,8 +1053,9 @@
                 <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
                 <asp:HiddenField ID="hdnApproveSpeakerID" runat="server" Value="0" />
-<asp:Button ID="btnTriggerApproval" runat="server" OnClick="btnTriggerApproval_Click" Style="display: none;" />
-
+                <asp:Button ID="btnTriggerApproval" runat="server" OnClick="btnTriggerApproval_Click" Style="display: none;" />
+                <asp:HiddenField ID="hdnEditSpeakerID" runat="server" Value="0" />
+                <asp:Button ID="btnTriggerEdit" runat="server" OnClick="btnTriggerEdit_Click" Style="display: none;" />
                 <!-- Section 1: Personal Information -->
                 <div class="form-section">
                     <h3><i class="fas fa-user"></i>Personal Information</h3>
@@ -906,23 +1117,23 @@
 
                     <!-- COMMENTED OUT FOR FUTURE USE -->
                     <!--
-                    <div class="form-row file-upload-section">
-                        <div class="form-group">
-                            <label for="<%=txtLinkedInProfile.ClientID%>">LinkedIn Profile</label>
-                            <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control" placeholder="https://linkedin.com/in/username"></asp:TextBox>
+                        <div class="form-row file-upload-section">
+                            <div class="form-group">
+                                <label for="<%=txtLinkedInProfile.ClientID%>">LinkedIn Profile</label>
+                                <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control" placeholder="https://linkedin.com/in/username"></asp:TextBox>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Recent Photo</label>
+                                <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control" />
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Recent Photo</label>
-                            <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control" />
+                        <div class="form-group file-upload-section">
+                            <label>Company Logo (High Resolution)</label>
+                            <asp:FileUpload ID="fuLogo" runat="server" CssClass="form-control" />
                         </div>
-                    </div>
-
-                    <div class="form-group file-upload-section">
-                        <label>Company Logo (High Resolution)</label>
-                        <asp:FileUpload ID="fuLogo" runat="server" CssClass="form-control" />
-                    </div>
-                    -->
+                        -->
                 </div>
 
                 <!-- Section 2: Professional Profile -->
@@ -1052,6 +1263,53 @@
                     </div>
                 </div>
 
+                <!-- Section 6: Topic Selection -->
+                <div class="form-section">
+                    <h3><i class="fas fa-list"></i>Topic Selection</h3>
+
+                    <div class="form-group">
+                        <label>Select Topics You'd Like to Speak On</label>
+                        <p style="font-size: 12px; color: #64748b; margin-bottom: 10px;">
+                            You can select up to 3 topics. Currently selected: <span id="topicCount">0</span>/3
+                        </p>
+                        <div style="max-height: 300px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px;">
+                            <asp:Repeater ID="rptAvailableAgendas" runat="server">
+                                <HeaderTemplate>
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead style="position: sticky; top: 0; background-color: #f8fafc; z-index: 1;">
+                                            <tr>
+                                                <th style="width: 50px; padding: 10px; text-align: center; border-bottom: 2px solid #e2e8f0;">Select</th>
+                                                <th style="padding: 10px; border-bottom: 2px solid #e2e8f0;">Topic Title</th>
+                                                <th style="padding: 10px; border-bottom: 2px solid #e2e8f0;">Day & Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <tr>
+                                        <td style="text-align: center; padding: 10px; border-bottom: 1px solid #e2e8f0;">
+                                            <input type="checkbox" class="agenda-checkbox" value='<%# Eval("AgendaID") %>' data-title='<%# Eval("Title") %>' />
+                                        </td>
+                                        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
+                                            <strong><%# Eval("Title") %></strong>
+                                            <br />
+                                            <small style="color: #64748b;"><%# Eval("Description") %></small>
+                                        </td>
+                                        <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
+                                            <small><%# Eval("StartTime") %></small>
+                                        </td>
+                                    </tr>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    </tbody>
+                                    </table>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                        </div>
+                        <asp:HiddenField ID="hdnSelectedAgendas" runat="server" />
+                    </div>
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
                     <asp:Button ID="btnSaveSpeaker" runat="server" Text="Save" CssClass="btn btn-primary"
@@ -1108,15 +1366,15 @@
 
                 <!-- In the Approval Modal, after the Remarks field -->
                 <div class="form-group" id="passwordField">
-    <label for="<%=txtPassword.ClientID%>">Password <span class="required" id="passwordRequired" style="display: none;">*</span></label>
-    <div class="password-field" style="position: relative;">
-        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="Enter password for approved speaker"></asp:TextBox>
-        <span class="password-toggle" onclick="togglePasswordField()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6b7280;">
-            <i class="fas fa-eye"></i>
-        </span>
-    </div>
-    <small style="color: #6b7280; font-size: 12px;">Password will be auto-generated if left empty on approval</small>
-</div>
+                    <label for="<%=txtPassword.ClientID%>">Password <span class="required" id="passwordRequired" style="display: none;">*</span></label>
+                    <div class="password-field" style="position: relative;">
+                        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="Enter password for approved speaker"></asp:TextBox>
+                        <span class="password-toggle" onclick="togglePasswordField()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6b7280;">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                    <small style="color: #6b7280; font-size: 12px;">Password will be auto-generated if left empty on approval</small>
+                </div>
 
 
                 <div class="form-group">
@@ -1191,9 +1449,9 @@
                                 <asp:TemplateField HeaderText="Advisory Rating">
                                     <ItemTemplate>
                                         <%# Eval("AdvisoryRating") != DBNull.Value ? 
-                                    string.Format("<div class='rating-display'>{0}/5 <i class='fas fa-star star'></i></div>", 
-                                    Math.Round(Convert.ToDecimal(Eval("AdvisoryRating")), 1)) : 
-                                    "<span style='color: #94a3b8;'>No Rating</span>" %>
+                                        string.Format("<div class='rating-display'>{0}/5 <i class='fas fa-star star'></i></div>", 
+                                        Math.Round(Convert.ToDecimal(Eval("AdvisoryRating")), 1)) : 
+                                        "<span style='color: #94a3b8;'>No Rating</span>" %>
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
@@ -1365,35 +1623,41 @@
                 }
             }
 
+
             function collectCheckboxData() {
                 // Collect Areas of Expertise
-                var expertise = [];
-                if (document.getElementById('chkBaseOils').checked) expertise.push('Base Oils');
-                if (document.getElementById('chkAdditives').checked) expertise.push('Lubricant Additives');
-                if (document.getElementById('chkIndustrial').checked) expertise.push('Industrial Lubrication');
-                if (document.getElementById('chkAutomotive').checked) expertise.push('Automotive & EV Fluids');
-                if (document.getElementById('chkSynthetic').checked) expertise.push('Synthetic and Bio-Based Lubricants');
-                if (document.getElementById('chkSustainability').checked) expertise.push('Sustainability & Circularity');
-                if (document.getElementById('chkTribology').checked) expertise.push('Tribology & Wear Performance');
-                if (document.getElementById('chkMonitoring').checked) expertise.push('Condition Monitoring');
-                if (document.getElementById('chkRegulatory').checked) expertise.push('Regulatory Compliance');
+                var expertiseCheckboxes = ['chkBaseOils', 'chkAdditives', 'chkIndustrial', 'chkAutomotive',
+                    'chkSynthetic', 'chkSustainability', 'chkTribology', 'chkMonitoring', 'chkRegulatory'];
+                var selectedExpertise = [];
+
+                expertiseCheckboxes.forEach(function (id) {
+                    var checkbox = document.getElementById(id);
+                    if (checkbox && checkbox.checked) {
+                        selectedExpertise.push(checkbox.nextElementSibling.textContent);
+                    }
+                });
 
                 var otherExpertise = document.getElementById('<%=txtOtherExpertise.ClientID%>').value.trim();
                 if (otherExpertise) {
-                    expertise.push('Other: ' + otherExpertise);
+                    selectedExpertise.push(otherExpertise);
                 }
 
-                document.getElementById('<%=hdnAreasOfExpertise.ClientID%>').value = expertise.join(', ');
+                document.getElementById('<%=hdnAreasOfExpertise.ClientID%>').value = selectedExpertise.join(', ');
 
-                // Collect Preferred Discussion Format
-                var formats = [];
-                if (document.getElementById('chkPanel').checked) formats.push('Panel Discussion');
-                if (document.getElementById('chkPresentation').checked) formats.push('Technical Presentation');
+                // Collect Preferred Format
+                var formatCheckboxes = ['chkPanel', 'chkPresentation'];
+                var selectedFormats = [];
 
-                document.getElementById('<%=hdnPreferredFormat.ClientID%>').value = formats.join(', ');
+                formatCheckboxes.forEach(function (id) {
+                    var checkbox = document.getElementById(id);
+                    if (checkbox && checkbox.checked) {
+                        selectedFormats.push(checkbox.nextElementSibling.textContent);
+                    }
+                });
 
-                return true;
+                document.getElementById('<%=hdnPreferredFormat.ClientID%>').value = selectedFormats.join(', ');
             }
+
 
             function setCheckboxValues(expertiseStr, formatStr) {
                 // Clear all checkboxes first
@@ -1460,46 +1724,43 @@
             function openModal(mode, speakerData) {
                 var modal = document.getElementById('speakerModal');
                 var modalTitle = document.getElementById('modalTitle');
-                var hdnMode = document.getElementById('<%=hdnModalMode.ClientID%>');
-                var hdnID = document.getElementById('<%=hdnSpeakerID.ClientID%>');
 
                 if (mode === 'add') {
-                    modalTitle.innerText = 'Add Speaker';
-                    hdnMode.value = 'add';
-                    hdnID.value = '0';
+                    modalTitle.textContent = 'Add Speaker';
+                    document.getElementById('<%=hdnSpeakerID.ClientID%>').value = '0';
+                    document.getElementById('<%=hdnModalMode.ClientID%>').value = 'add';
 
                     // Clear all form fields
                     document.getElementById('<%=txtName.ClientID%>').value = '';
                     document.getElementById('<%=txtEmail.ClientID%>').value = '';
                     document.getElementById('<%=txtMobile.ClientID%>').value = '';
                     document.getElementById('<%=txtDesignation.ClientID%>').value = '';
-                    document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = '';
                     document.getElementById('<%=txtCompany.ClientID%>').value = '';
+                    document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = '';
                     document.getElementById('<%=txtProfessionalBio.ClientID%>').value = '';
                     document.getElementById('<%=txtCurrentWorkProjects.ClientID%>').value = '';
                     document.getElementById('<%=txtSuggestedTopics.ClientID%>').value = '';
                     document.getElementById('<%=txtPreviousSpeakingEngagements.ClientID%>').value = '';
-                    document.getElementById('<%=ddlStatus.ClientID%>').selectedIndex = 0;
-                    document.getElementById('<%=ddlIsAvailable.ClientID%>').selectedIndex = 0;
+                    document.getElementById('<%=ddlStatus.ClientID%>').value = '1';
+                    document.getElementById('<%=ddlIsAvailable.ClientID%>').value = 'Yes';
                     document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = false;
-                    setCheckboxValues('', '');
 
-                    // Reset character counters
-                    updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
-                    updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
-                    updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
+                    // Clear checkboxes
+                    document.querySelectorAll('.agenda-checkbox').forEach(cb => cb.checked = false);
+                    document.getElementById('topicCount').textContent = '0';
 
                 } else if (mode === 'edit' && speakerData) {
-                    modalTitle.innerText = 'Edit Speaker';
-                    hdnMode.value = 'edit';
-                    hdnID.value = speakerData.id;
+                    modalTitle.textContent = 'Edit Speaker';
+                    document.getElementById('<%=hdnSpeakerID.ClientID%>').value = speakerData.id;
+                    document.getElementById('<%=hdnModalMode.ClientID%>').value = 'edit';
 
+                    // Populate form fields
                     document.getElementById('<%=txtName.ClientID%>').value = speakerData.name || '';
                     document.getElementById('<%=txtEmail.ClientID%>').value = speakerData.email || '';
                     document.getElementById('<%=txtMobile.ClientID%>').value = speakerData.mobile || '';
                     document.getElementById('<%=txtDesignation.ClientID%>').value = speakerData.designation || '';
-                    document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = speakerData.yearsOfExperience || '';
                     document.getElementById('<%=txtCompany.ClientID%>').value = speakerData.company || '';
+                    document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = speakerData.yearsOfExperience || '';
                     document.getElementById('<%=txtProfessionalBio.ClientID%>').value = speakerData.professionalBio || '';
                     document.getElementById('<%=txtCurrentWorkProjects.ClientID%>').value = speakerData.currentWorkProjects || '';
                     document.getElementById('<%=txtSuggestedTopics.ClientID%>').value = speakerData.suggestedTopics || '';
@@ -1508,14 +1769,13 @@
                     document.getElementById('<%=ddlIsAvailable.ClientID%>').value = speakerData.isAvailable || 'Yes';
                     document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = speakerData.marketingConsent || false;
 
-                    setCheckboxValues(speakerData.areasOfExpertise || '', speakerData.preferredDiscussionFormat || '');
-
                     // Update character counters
                     updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
                     updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
                     updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
                 }
 
+                // Show the modal
                 modal.classList.add('show');
             }
 
@@ -1524,15 +1784,16 @@
                 modal.classList.remove('show');
             }
 
+
             function openApprovalModal(id, name, email, regType, designation, company, approvalStatus, remarks, password) {
                 document.getElementById('<%=hdnApprovalSpeakerID.ClientID%>').value = id;
                 document.getElementById('<%=txtApprovalName.ClientID%>').value = name;
                 document.getElementById('<%=txtApprovalEmail.ClientID%>').value = email;
                 document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
                 document.getElementById('<%=txtApprovalDesignation.ClientID%>').value = designation;
-    document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
-    document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
-    document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
+                document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
+                document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
+                document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
                 document.getElementById('<%=txtPassword.ClientID%>').value = password || '';
 
                 var modal = document.getElementById('approvalModal');
@@ -1724,6 +1985,57 @@
                 document.getElementById('<%=hdnApproveSpeakerID.ClientID%>').value = speakerId;
                 document.getElementById('<%=btnTriggerApproval.ClientID%>').click();
             }
+
+            // Topic Selection Handler
+            $(document).on('change', '.agenda-checkbox', function () {
+                var checkedCount = $('.agenda-checkbox:checked').length;
+                $('#topicCount').text(checkedCount);
+
+                if (checkedCount >= 3) {
+                    $('.agenda-checkbox:not(:checked)').prop('disabled', true);
+                } else {
+                    $('.agenda-checkbox').prop('disabled', false);
+                }
+
+                // Update hidden field with selected agenda IDs
+                var selectedIds = [];
+                $('.agenda-checkbox:checked').each(function () {
+                    selectedIds.push($(this).val());
+                });
+                $('#<%= hdnSelectedAgendas.ClientID %>').val(selectedIds.join(','));
+            });
+
+            // Reset topic selection when modal opens
+            function resetTopicSelection() {
+                $('.agenda-checkbox').prop('checked', false).prop('disabled', false);
+                $('#topicCount').text('0');
+                $('#<%= hdnSelectedAgendas.ClientID %>').val('');
+            }
+
+            // Call this in your showAddModal function
+            function showAddModal() {
+                $('#modalTitle').text('Add New Speaker');
+                $('#<%= hdnSpeakerID.ClientID %>').val('0');
+                $('#<%= txtName.ClientID %>').val('');
+                $('#<%= txtEmail.ClientID %>').val('');
+                $('#<%= txtMobile.ClientID %>').val('');
+                $('#<%= txtProfessionalBio.ClientID %>').val('');
+                $('#<%= ddlIsAvailable.ClientID %>').val('');
+                $('#<%= chkMarketingConsent.ClientID %>').prop('checked', false);
+                resetTopicSelection();
+                $('#speakerModal').modal('show');
+            }
+
+            function handleEditClick(speakerId) {
+                // Set the speaker ID in hidden field
+                document.getElementById('<%=hdnApproveSpeakerID.ClientID%>').value = speakerId;
+
+                // Trigger server-side button to load speaker data
+                document.getElementById('<%=btnTriggerEdit.ClientID%>').click();
+            }
+
+
+
         </script>
     </form>
 </body>

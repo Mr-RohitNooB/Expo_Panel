@@ -422,18 +422,18 @@
                     </div>
                 </asp:HyperLink>
 
-                <asp:HyperLink ID="lnkAdvisor" runat="server" NavigateUrl="~/SuperAdmin/ManageAdvisor.aspx" CssClass="card advisor-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <i class="fas fa-arrow-right card-arrow"></i>
-                    </div>
-                    <div class="card-body">
-                        <h3>Manage Advisors</h3>
-                        <p>Add, edit, and manage advisory board members. View advisor profiles and maintain contact information.</p>
-                    </div>
-                </asp:HyperLink>
+                <asp:HyperLink ID="lnkAdvisorRating" runat="server" NavigateUrl="~/SuperAdmin/AdvisoryRatingDashboard.aspx" CssClass="card advisor-card">
+    <div class="card-header">
+        <div class="card-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <i class="fas fa-arrow-right card-arrow"></i>
+    </div>
+    <div class="card-body">
+        <h3>Advisory Rating Dashboard</h3>
+        <p>Review speaker profiles and submit your ratings for the selected agendas.</p>
+    </div>
+</asp:HyperLink>
 
                 <asp:HyperLink ID="lnkSpeaker" runat="server" NavigateUrl="~/SuperAdmin/ManageSpeaker.aspx" CssClass="card speaker-card">
                     <div class="card-header">

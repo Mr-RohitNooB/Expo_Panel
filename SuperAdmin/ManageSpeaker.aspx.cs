@@ -55,6 +55,7 @@ namespace Expo_Panel.Admin
                 LoadStatusCounts();
                 LoadSpeakers(txtSearch.Text.Trim(), "Pending");
                 SetActiveFilterButton("Pending");
+                LoadAvailableAgendas();
             }
 
             // Handle flash messages
@@ -117,6 +118,12 @@ namespace Expo_Panel.Admin
             }
 
 
+        }
+
+        protected void btnTriggerEdit_Click(object sender, EventArgs e)
+        {
+            int speakerId = Convert.ToInt32(hdnApproveSpeakerID.Value);
+            LoadSpeakerForEdit(speakerId);
         }
 
         private void LoadSpeakerApplications(int speakerId)
@@ -612,6 +619,9 @@ namespace Expo_Panel.Admin
         {
             try
             {
+                // Reload agendas to ensure they're available in the modal
+                LoadAvailableAgendas();
+
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerById", con))
@@ -626,6 +636,11 @@ namespace Expo_Panel.Admin
                         {
                             hdnSpeakerID.Value = speakerId.ToString();
                             hdnModalMode.Value = "edit";
+
+                            // Read values from database
+                            string isAvailable = reader["IsAvailable"].ToString();
+                            bool marketingConsent = reader["MarketingConsent"] != DBNull.Value && Convert.ToBoolean(reader["MarketingConsent"]);
+                            string selectedAgendaIds = reader["SelectedAgendaIDs"] != DBNull.Value ? reader["SelectedAgendaIDs"].ToString() : "";
 
                             // Build JavaScript object for speaker data
                             StringBuilder jsData = new StringBuilder();
@@ -646,16 +661,48 @@ namespace Expo_Panel.Admin
                             jsData.AppendFormat("suggestedTopics: '{0}',", EscapeJsString(reader["SuggestedTopics"].ToString()));
                             jsData.AppendFormat("preferredDiscussionFormat: '{0}',", EscapeJsString(reader["PreferredDiscussionFormat"].ToString()));
                             jsData.AppendFormat("previousSpeakingEngagements: '{0}',", EscapeJsString(reader["PreviousSpeakingEngagements"].ToString()));
-                            jsData.AppendFormat("isAvailable: '{0}',", EscapeJsString(reader["IsAvailable"].ToString()));
-                            jsData.AppendFormat("marketingConsent: {0}", reader["MarketingConsent"] != DBNull.Value && Convert.ToBoolean(reader["MarketingConsent"]) ? "true" : "false");
+                            jsData.AppendFormat("isAvailable: '{0}',", EscapeJsString(isAvailable));
+                            jsData.AppendFormat("marketingConsent: {0},", marketingConsent ? "true" : "false");
+                            jsData.AppendFormat("selectedAgendaIds: '{0}'", EscapeJsString(selectedAgendaIds));
                             jsData.Append("}");
 
-                            // Register script to open modal with data
-                            string script = $"openModal('edit', {jsData.ToString()});";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal", script, true);
-                        }
+                            reader.Close();
 
-                        reader.Close();
+                            // Build additional script for agenda selection
+                            StringBuilder agendaScript = new StringBuilder();
+
+                            // Handle selected agendas
+                            if (!string.IsNullOrEmpty(selectedAgendaIds))
+                            {
+                                agendaScript.AppendFormat("$('#{0}').val('{1}');", hdnSelectedAgendas.ClientID, selectedAgendaIds);
+
+                                // Check the corresponding checkboxes
+                                string[] agendaIdArray = selectedAgendaIds.Split(',');
+                                foreach (string agendaId in agendaIdArray)
+                                {
+                                    agendaScript.AppendFormat("$('.agenda-checkbox[value=\"{0}\"]').prop('checked', true);", agendaId.Trim());
+                                }
+
+                                // Update count
+                                agendaScript.AppendFormat("$('#topicCount').text('{0}');", agendaIdArray.Length);
+
+                                // Disable unchecked if 3 are selected
+                                if (agendaIdArray.Length >= 3)
+                                {
+                                    agendaScript.Append("$('.agenda-checkbox:not(:checked)').prop('disabled', true);");
+                                }
+                            }
+
+                            // Register script to open modal with data
+                            string fullScript = $@"
+                        openModal('edit', {jsData.ToString()});
+                        setTimeout(function() {{
+                            {agendaScript.ToString()}
+                        }}, 500);
+                    ";
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal", fullScript, true);
+                        }
                     }
                 }
             }
@@ -664,6 +711,7 @@ namespace Expo_Panel.Admin
                 ShowMessage("Error loading speaker: " + ex.Message, "danger");
             }
         }
+
 
         private void LoadSpeakerForApproval(int speakerId)
         {
@@ -953,5 +1001,41 @@ namespace Expo_Panel.Admin
                        .Replace("\r", "\\r")
                        .Replace("\n", "\\n");
         }
+
+        private void LoadAvailableAgendas()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    string query = @"
+                SELECT 
+                    AgendaID, 
+                    Title, 
+                    Brief AS Description,
+                    Time AS StartTime,
+                    Time AS EndTime
+                FROM TBL.Agenda 
+                WHERE IS_ACTIVE = 1 
+                ORDER BY Day, Time";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        con.Open();
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+
+                        rptAvailableAgendas.DataSource = dt;
+                        rptAvailableAgendas.DataBind();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading agendas: " + ex.Message, "danger");
+            }
+        }
+
     }
 }

@@ -132,15 +132,6 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCompany;
 
         /// <summary>
-        /// txtLinkedInProfile control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLinkedInProfile;
-
-        /// <summary>
         /// fuPhoto control.
         /// </summary>
         /// <remarks>
@@ -150,13 +141,40 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.FileUpload fuPhoto;
 
         /// <summary>
-        /// fuLogo control.
+        /// rfvPhoto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fuLogo;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPhoto;
+
+        /// <summary>
+        /// txtLinkedIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLinkedIn;
+
+        /// <summary>
+        /// rfvLinkedIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvLinkedIn;
+
+        /// <summary>
+        /// revLinkedIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revLinkedIn;
 
         /// <summary>
         /// txtProfessionalBio control.
@@ -220,6 +238,33 @@ namespace Expo_Panel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPreviousSpeakingEngagements;
+
+        /// <summary>
+        /// litAgendaTable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litAgendaTable;
+
+        /// <summary>
+        /// hdnSelectedAgendas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnSelectedAgendas;
+
+        /// <summary>
+        /// cvAgendaSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvAgendaSelection;
 
         /// <summary>
         /// ddlIsAvailable control.
