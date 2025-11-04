@@ -403,15 +403,10 @@
             transition: all 0.2s;
         }
 
-           .star.active,
-        .star.hover { /* We changed :hover to .hover */
-            color: #fbbf24;
-        }
-
-        /* This part is optional, but adds a nice little "pop" */
-        .star:hover {
-            transform: scale(1.1);
-        }
+            .star:hover,
+            .star.active {
+                color: #fbbf24;
+            }
 
         .form-group {
             margin-bottom: 15px;
@@ -543,53 +538,6 @@
                                 </EmptyDataTemplate>
                             </asp:GridView>
                         </div>
-                        <div id="ratingModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2><i class="fas fa-star"></i>Rate Speaker</h2>
-            <button type="button" class="close-btn" onclick="closeRatingModal()">&times;</button>
-        </div>
-
-        <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
-
-        <!-- Speaker Information -->
-        <div class="speaker-info">
-            <h3><i class="fas fa-user"></i>Speaker Information</h3>
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-label">Name</span>
-                    <span class="info-value" id="spanSpeakerName"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Email</span>
-                    <span class="info-value" id="spanSpeakerEmail"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Designation</span>
-                    <span class="info-value" id="spanDesignation"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Company</span>
-                    <span class="info-value" id="spanCompany"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Experience</span>
-                    <span class="info-value" id="spanExperience"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Expertise</span>
-                    <span class="info-value" id="spanExpertise"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Agendas Section -->
-        <div class="agenda-section">
-            <h3 style="margin-bottom: 15px;"><i class="fas fa-calendar"></i>Selected Agendas & Ratings</h3>
-            <asp:Literal ID="litAgendaCards" runat="server"></asp:Literal>
-        </div>
-    </div>
-</div>
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="btnNotRated" EventName="Click" />
@@ -600,7 +548,57 @@
         </div>
 
         <!-- Rating Modal -->
-        
+        <div id="ratingModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-star"></i>Rate Speaker</h2>
+                    <button type="button" class="close-btn" onclick="closeRatingModal()">&times;</button>
+                </div>
+
+                <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
+
+                <!-- Speaker Information -->
+                <div class="speaker-info">
+                    <h3><i class="fas fa-user"></i>Speaker Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Name</span>
+                            <span class="info-value" id="spanSpeakerName"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email</span>
+                            <span class="info-value" id="spanSpeakerEmail"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Designation</span>
+                            <span class="info-value" id="spanDesignation"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Company</span>
+                            <span class="info-value" id="spanCompany"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Experience</span>
+                            <span class="info-value" id="spanExperience"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Expertise</span>
+                            <span class="info-value" id="spanExpertise"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agendas Section -->
+              <asp:UpdatePanel ID="upModalAgendas" runat="server" UpdateMode="Conditional">
+    <ContentTemplate>
+        <div class="agenda-section">
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-calendar"></i>Selected Agendas & Ratings</h3>
+            <asp:Literal ID="litAgendaCards" runat="server"></asp:Literal>
+        </div>
+    </ContentTemplate>
+</asp:UpdatePanel>
+            </div>
+        </div>
 
         <script type="text/javascript">
             function openRatingModal(speakerId, name, email, designation, company, experience, expertise) {
@@ -613,49 +611,6 @@
                 document.getElementById('spanExpertise').innerText = expertise || 'Not specified';
 
                 document.getElementById('ratingModal').classList.add('show');
-
-                // --- NEW CODE STARTS HERE ---
-                // We must re-attach listeners every time the modal is opened,
-                // because the star content is dynamically regenerated.
-
-                var stars = document.querySelectorAll('#ratingModal .star');
-
-                stars.forEach(function (star) {
-
-                    // Attach CLICK listener
-                    star.addEventListener('click', function () {
-                        var rating = this.dataset.rating;
-                        var agendaId = this.dataset.agendaId;
-                        setRating(agendaId, rating); // Call your existing helper
-                    });
-
-                    // Attach MOUSEOVER listener
-                    star.addEventListener('mouseover', function () {
-                        var currentRating = this.dataset.rating;
-                        var agendaId = this.dataset.agendaId;
-                        var groupStars = document.querySelectorAll('.star-group-' + agendaId + ' .star');
-
-                        groupStars.forEach(function (s) {
-                            if (s.dataset.rating <= currentRating) {
-                                s.classList.add('hover'); // Add our new 'hover' class
-                            } else {
-                                s.classList.remove('hover');
-                            }
-                        });
-                    });
-
-                    // Attach MOUSEOUT listener
-                    star.addEventListener('mouseout', function () {
-                        var agendaId = this.dataset.agendaId;
-                        var groupStars = document.querySelectorAll('.star-group-' + agendaId + ' .star');
-
-                        // Remove 'hover' from all stars in this group
-                        groupStars.forEach(function (s) {
-                            s.classList.remove('hover');
-                        });
-                    });
-                });
-                // --- NEW CODE ENDS HERE ---
             }
 
             function closeRatingModal() {
@@ -663,14 +618,6 @@
             }
 
             function setRating(agendaId, rating) {
-                console.log('Setting rating:', agendaId, rating);
-
-                // Update hidden field
-                var hiddenField = document.getElementById('hdnRating_' + agendaId);
-                if (hiddenField) {
-                    hiddenField.value = rating;
-                }
-
                 // Update star display
                 var stars = document.querySelectorAll('.star-group-' + agendaId + ' .star');
                 stars.forEach(function (star, index) {
@@ -680,6 +627,9 @@
                         star.classList.remove('active');
                     }
                 });
+
+                // Set hidden field value
+                document.getElementById('hdnRating_' + agendaId).value = rating;
             }
 
             window.onclick = function (event) {

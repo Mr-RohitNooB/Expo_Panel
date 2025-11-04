@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -27,34 +28,21 @@ namespace Expo_Panel.SuperAdmin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            System.Diagnostics.Debug.WriteLine("=== SESSION DEBUG ===");
-            System.Diagnostics.Debug.WriteLine($"Session.SessionID: {Session?.SessionID}");
-            System.Diagnostics.Debug.WriteLine($"Session['AdminID']: {Session?["AdminID"]}");
-            System.Diagnostics.Debug.WriteLine($"Session['IsAdminLoggedIn']: {Session?["IsAdminLoggedIn"]}");
-            System.Diagnostics.Debug.WriteLine($"CurrentAdminID Property: {CurrentAdminID}");
-            // Handle AJAX rating submission FIRST, before anything else
-            if (Request.Form["action"] == "submitRating")
-            {
-                HandleAjaxRatingSubmission();
-                return; // Stop further processing
-            }
-
             // FIXED: More robust authentication check with detailed logging
             if (!IsAdminLoggedIn())
             {
                 System.Diagnostics.Debug.WriteLine("Authentication failed - redirecting to login");
                 System.Diagnostics.Debug.WriteLine($"Session IsAdminLoggedIn: {Session["IsAdminLoggedIn"]}");
                 System.Diagnostics.Debug.WriteLine($"Session AdminID: {Session["AdminID"]}");
-                Response.Redirect("~/Default.aspx", false);
+
+                // Use the correct login page path - update this to your actual login page
+                Response.Redirect("~/Default.aspx", false);  // Change this to your actual login page
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
 
             if (!IsPostBack)
             {
-                System.Diagnostics.Debug.WriteLine("=== Page_Load - Initial Load ===");
-
                 // Set admin name
                 if (Session["AdminUsername"] != null)
                 {
@@ -72,28 +60,15 @@ namespace Expo_Panel.SuperAdmin
                 LoadStatusCounts();
                 LoadSpeakers(string.Empty, "NotRated");
                 SetActiveFilterButton("NotRated");
-
-                System.Diagnostics.Debug.WriteLine($"Initial load complete - Filter: {hdnCurrentFilter.Value}");
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("=== Page_Load - PostBack ===");
-
                 // IMPORTANT: On postback, maintain the current filter
                 string currentFilter = hdnCurrentFilter.Value;
                 if (string.IsNullOrEmpty(currentFilter))
                 {
-                    currentFilter = "NotRated";
-                    hdnCurrentFilter.Value = currentFilter;
+                    hdnCurrentFilter.Value = "NotRated";
                 }
-
-                System.Diagnostics.Debug.WriteLine($"PostBack - Current Filter: {currentFilter}");
-
-                // CRITICAL FIX: Reload data on postback with current filter
-                // This ensures grid shows data after any postback
-                LoadStatusCounts();
-                LoadSpeakers(string.Empty, currentFilter);
-                SetActiveFilterButton(currentFilter);
             }
 
             // Handle flash messages
@@ -103,6 +78,7 @@ namespace Expo_Panel.SuperAdmin
                 Session.Remove("FlashMessage");
             }
         }
+
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             Session.Clear();
@@ -213,19 +189,14 @@ namespace Expo_Panel.SuperAdmin
         {
             try
             {
-                int currentAdminId = CurrentAdminID;
-
-                System.Diagnostics.Debug.WriteLine($"=== LoadSpeakers Debug ===");
-                System.Diagnostics.Debug.WriteLine($"CurrentAdminID: {currentAdminId}");
-                System.Diagnostics.Debug.WriteLine($"SearchText: '{searchText}'");
-                System.Diagnostics.Debug.WriteLine($"RatingFilter: '{ratingFilter}'");
+                System.Diagnostics.Debug.WriteLine($"LoadSpeakers called - SearchText: '{searchText}', Filter: '{ratingFilter}', AdminID: {CurrentAdminID}");
 
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand("sp_GetApplicationsForAdvisoryRating", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@AdvisorID", currentAdminId);
+                        cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdminID);
                         cmd.Parameters.AddWithValue("@SearchText", string.IsNullOrEmpty(searchText) ? (object)DBNull.Value : searchText);
                         cmd.Parameters.AddWithValue("@AgendaFilter", DBNull.Value);
                         cmd.Parameters.AddWithValue("@RatingFilter", string.IsNullOrEmpty(ratingFilter) ? (object)DBNull.Value : ratingFilter);
@@ -239,36 +210,20 @@ namespace Expo_Panel.SuperAdmin
 
                         System.Diagnostics.Debug.WriteLine($"Rows returned: {dt.Rows.Count}");
 
-                        // Debug: Print ALL column names
+                        // Debug: Log columns and first few rows
                         if (dt.Columns.Count > 0)
                         {
-                            System.Diagnostics.Debug.WriteLine("=== Columns ===");
-                            foreach (DataColumn col in dt.Columns)
-                            {
-                                System.Diagnostics.Debug.WriteLine($"  {col.ColumnName}");
-                            }
+                            System.Diagnostics.Debug.WriteLine("Columns: " + string.Join(", ",
+                                Array.ConvertAll(dt.Columns.Cast<DataColumn>().ToArray(), c => c.ColumnName)));
                         }
 
-                        // Debug: Print first 3 rows if they exist
                         if (dt.Rows.Count > 0)
                         {
-                            System.Diagnostics.Debug.WriteLine("=== Data Sample ===");
-                            for (int i = 0; i < Math.Min(3, dt.Rows.Count); i++)
-                            {
-                                DataRow row = dt.Rows[i];
-                                System.Diagnostics.Debug.WriteLine($"Row {i + 1}:");
-                                System.Diagnostics.Debug.WriteLine($"  SpeakerID: {row["SpeakerID"]}");
-                                System.Diagnostics.Debug.WriteLine($"  SpeakerName: {row["SpeakerName"]}");
-                                System.Diagnostics.Debug.WriteLine($"  SelectedAgendas: {row["SelectedAgendas"]}");
-                                System.Diagnostics.Debug.WriteLine($"  HasRated: {row["HasRated"]}");
-                                System.Diagnostics.Debug.WriteLine($"  AgendaCount: {row["AgendaCount"]}");
-                            }
+                            System.Diagnostics.Debug.WriteLine($"Sample data - First speaker: {dt.Rows[0]["SpeakerName"]}");
                         }
 
                         gvSpeakers.DataSource = dt;
                         gvSpeakers.DataBind();
-
-                        System.Diagnostics.Debug.WriteLine($"GridView RowCount after bind: {gvSpeakers.Rows.Count}");
 
                         // Show message if no data
                         if (dt.Rows.Count == 0)
@@ -276,12 +231,6 @@ namespace Expo_Panel.SuperAdmin
                             string filterText = ratingFilter == "NotRated" ? "not rated" : "rated";
                             ShowMessage($"No {filterText} speakers found.", "info");
                         }
-                        else
-                        {
-                            litMessage.Text = string.Empty;
-                        }
-
-                        UpdatePanel1.Update();
                     }
                 }
             }
@@ -290,11 +239,12 @@ namespace Expo_Panel.SuperAdmin
                 ShowMessage("Error loading speakers: " + ex.Message, "danger");
                 System.Diagnostics.Debug.WriteLine("LoadSpeakers Error: " + ex.ToString());
 
+                // Bind empty data to show empty template
                 gvSpeakers.DataSource = new DataTable();
                 gvSpeakers.DataBind();
-                UpdatePanel1.Update();
             }
         }
+
         private void LoadSpeakerForRating(int speakerId)
         {
             try
@@ -340,12 +290,12 @@ namespace Expo_Panel.SuperAdmin
                     string experience = speaker["YearsOfExperience"] != DBNull.Value ? speaker["YearsOfExperience"].ToString() : "N/A";
                     string expertise = speaker["AreasOfExpertise"] != DBNull.Value ? speaker["AreasOfExpertise"].ToString() : "Not specified";
 
-                    // Escape for JavaScript - proper escaping
-                    name = System.Web.HttpUtility.JavaScriptStringEncode(name);
-                    email = System.Web.HttpUtility.JavaScriptStringEncode(email);
-                    designation = System.Web.HttpUtility.JavaScriptStringEncode(designation);
-                    company = System.Web.HttpUtility.JavaScriptStringEncode(company);
-                    expertise = System.Web.HttpUtility.JavaScriptStringEncode(expertise);
+                    // Escape for JavaScript
+                    name = name.Replace("'", "\\'").Replace("\"", "\\\"");
+                    email = email.Replace("'", "\\'").Replace("\"", "\\\"");
+                    designation = designation.Replace("'", "\\'").Replace("\"", "\\\"");
+                    company = company.Replace("'", "\\'").Replace("\"", "\\\"");
+                    expertise = expertise.Replace("'", "\\'").Replace("\"", "\\\"");
 
                     // Build agenda cards HTML
                     StringBuilder agendaHtml = new StringBuilder();
@@ -363,95 +313,89 @@ namespace Expo_Panel.SuperAdmin
                             int currentRating = agenda["MyRating"] != DBNull.Value ? Convert.ToInt32(agenda["MyRating"]) : 0;
                             string currentComments = agenda["MyComments"] != DBNull.Value ? Server.HtmlEncode(agenda["MyComments"].ToString()) : "";
 
-                            // Start agenda card
-                            agendaHtml.Append("<div class='agenda-card'>");
+                            agendaHtml.Append("<div class='agenda-card' style='border: 1px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 5px;'>");
 
                             // Agenda Header
-                            agendaHtml.Append("<div class='agenda-header'>");
-                            agendaHtml.Append("<div>");
-                            agendaHtml.Append($"<div class='agenda-title'>{title}</div>");
-                            agendaHtml.Append("<div class='agenda-meta'>");
-                            agendaHtml.Append($"<span><i class='fas fa-calendar-day'></i> {day}</span>");
-                            agendaHtml.Append($"<span><i class='fas fa-layer-group'></i> {track}</span>");
-                            agendaHtml.Append($"<span><i class='fas fa-clock'></i> {time}</span>");
-                            agendaHtml.Append("</div>");
+                            agendaHtml.Append("<div class='agenda-header' style='margin-bottom: 10px;'>");
+                            agendaHtml.Append($"<h5 style='margin: 0;'>{title}</h5>");
+                            agendaHtml.Append($"<small style='color: #666;'><strong>Day:</strong> {day} | <strong>Track:</strong> {track} | <strong>Time:</strong> {time}</small>");
                             agendaHtml.Append("</div>");
 
-                            // Current rating badge
-                            if (currentRating > 0)
-                            {
-                                agendaHtml.Append("<div class='current-rating'>");
-                                agendaHtml.Append($"<i class='fas fa-star'></i> {currentRating}/5");
-                                agendaHtml.Append("</div>");
-                            }
-                            else
-                            {
-                                agendaHtml.Append("<div class='current-rating'>");
-                                agendaHtml.Append("<i class='fas fa-star'></i> 0/5");
-                                agendaHtml.Append("</div>");
-                            }
-
-                            agendaHtml.Append("</div>"); // end agenda-header
-
-                            // Agenda Brief
+                            // Agenda Details
                             if (!string.IsNullOrEmpty(brief))
                             {
-                                agendaHtml.Append($"<p style='color: #64748b; font-size: 14px; margin: 10px 0;'>{brief}</p>");
+                                agendaHtml.Append("<div class='agenda-details' style='margin-bottom: 15px;'>");
+                                agendaHtml.Append($"<p><strong>Brief:</strong> {brief}</p>");
+                                agendaHtml.Append("</div>");
                             }
 
-                            // Rating Section
-                            agendaHtml.Append("<div class='rating-section'>");
-                            agendaHtml.Append("<label style='display: block; margin-bottom: 8px; color: #475569; font-weight: 500;'>Rate this session:</label>");
-
-                            // Star Rating - IMPORTANT: Use star-group-{agendaId} class
-                            agendaHtml.Append($"<div class='star-rating star-group-{agendaId}'>");
+                            // Rating Section with Stars
+                            agendaHtml.Append("<div class='rating-section' style='background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>");
+                            agendaHtml.Append("<label style='display: block; margin-bottom: 8px;'><strong>Your Rating:</strong></label>");
+                            agendaHtml.Append($"<div class='star-rating' id='stars_{agendaId}' style='font-size: 28px; display: flex; gap: 5px;'>");
 
                             for (int i = 1; i <= 5; i++)
                             {
-                                string activeClass = i <= currentRating ? "active" : "";
-                                // We remove the 'onclick' and add 'data-' attributes for the JavaScript to read
-                                agendaHtml.Append($"<span class='star {activeClass}' data-rating='{i}' data-agenda-id='{agendaId}'>★</span>");
+                                string activeClass = i <= currentRating ? "style='color: #ffc107;'" : "style='color: #ddd;'";
+                                agendaHtml.Append($"<span class='star' data-rating='{i}' data-agenda='{agendaId}' {activeClass} onclick='setRating(this, {agendaId}, {i})' style='cursor: pointer; transition: color 0.2s;'>★</span>");
                             }
 
-                            agendaHtml.Append("</div>"); // end star-rating
+                            agendaHtml.Append("</div>");
                             agendaHtml.Append($"<input type='hidden' id='hdnRating_{agendaId}' value='{currentRating}' />");
 
-                            // Comments
-                            agendaHtml.Append("<div class='form-group' style='margin-top: 15px;'>");
-                            agendaHtml.Append("<label>Comments (Optional):</label>");
-                            agendaHtml.Append($"<textarea id='txtComments_{agendaId}' rows='3' placeholder='Share your feedback about this session...'>{currentComments}</textarea>");
+                            if (currentRating > 0)
+                            {
+                                agendaHtml.Append($"<p style='color: #28a745; font-weight: bold; margin: 8px 0;'>Current Rating: {currentRating}/5</p>");
+                            }
+                            agendaHtml.Append("</div>");
+
+                            // Comments Section
+                            agendaHtml.Append("<div class='comments-section' style='margin-bottom: 15px;'>");
+                            agendaHtml.Append($"<label for='txtComments_{agendaId}' style='display: block; margin-bottom: 5px;'><strong>Comments (Optional):</strong></label>");
+                            agendaHtml.Append($"<textarea id='txtComments_{agendaId}' class='form-control' rows='2' placeholder='Add your comments here...' style='width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;'>{currentComments}</textarea>");
                             agendaHtml.Append("</div>");
 
                             // Submit Button
-                            string buttonText = currentRating > 0 ? "Update Rating" : "Submit Rating";
-                            string buttonIcon = currentRating > 0 ? "fa-edit" : "fa-paper-plane";
-                            string buttonClass = currentRating > 0 ? "btn btn-warning" : "btn btn-primary";
-
-                            agendaHtml.Append($"<button type='button' class='{buttonClass}' onclick='submitRating({speakerId}, {agendaId})' style='margin-top: 10px;'>");
-                            agendaHtml.Append($"<i class='fas {buttonIcon}'></i> {buttonText}");
+                            agendaHtml.Append("<div class='rating-actions'>");
+                            agendaHtml.Append($"<button class='btn btn-primary' type='button' onclick='submitRating({speakerId}, {agendaId})' style='padding: 8px 16px;'>");
+                            agendaHtml.Append(currentRating > 0 ? "Update Rating" : "Submit Rating");
                             agendaHtml.Append("</button>");
+                            agendaHtml.Append("</div>");
 
-                            agendaHtml.Append("</div>"); // end rating-section
                             agendaHtml.Append("</div>"); // end agenda-card
                         }
                     }
                     else
                     {
-                        agendaHtml.Append("<div class='alert alert-info'>");
-                        agendaHtml.Append("<i class='fas fa-info-circle'></i> ");
+                        agendaHtml.Append("<div class='alert alert-info' style='padding: 10px; background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 4px; color: #0c5460;'>");
                         agendaHtml.Append("This speaker has not selected any agendas yet.");
                         agendaHtml.Append("</div>");
                     }
 
                     litAgendaCards.Text = agendaHtml.ToString();
 
-                    // Register JavaScript for rating submission
+                    // Register JavaScript functions
                     string script = @"
+                function setRating(element, agendaId, rating) {
+                    // Update hidden field
+                    document.getElementById('hdnRating_' + agendaId).value = rating;
+                    
+                    // Update all stars for this agenda
+                    var starsContainer = document.getElementById('stars_' + agendaId);
+                    var stars = starsContainer.querySelectorAll('.star');
+                    
+                    stars.forEach(function(star, index) {
+                        if (index < rating) {
+                            star.style.color = '#ffc107';
+                        } else {
+                            star.style.color = '#ddd';
+                        }
+                    });
+                }
+
                 function submitRating(speakerId, agendaId) {
                     var rating = document.getElementById('hdnRating_' + agendaId).value;
                     var comments = document.getElementById('txtComments_' + agendaId).value;
-                    
-                    console.log('Submitting rating:', {speakerId, agendaId, rating, comments});
                     
                     if (!rating || rating == '0') {
                         alert('Please select a rating (1-5 stars)');
@@ -471,42 +415,27 @@ namespace Expo_Panel.SuperAdmin
                     })
                     .then(response => response.text())
                     .then(data => {
-                        console.log('Response:', data);
                         if(data.includes('Success')) {
                             alert('Rating submitted successfully!');
                             closeRatingModal();
                             window.location.reload();
                         } else {
-                            alert('Error submitting rating. Please try again.');
-                            console.error(data);
+                            alert('Error: ' + data);
                         }
                     })
                     .catch(error => {
                         alert('Error submitting rating: ' + error);
-                        console.error(error);
                     });
                 }
             ";
 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ratingFunctions", script, true);
-
-                    // Open the modal - Call the function from ASPX
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ratingFunctions_" + speakerId, script, true);
                     string modalScript = $@"
-                openRatingModal(
-                    {speakerId}, 
-                    '{name}', 
-                    '{email}', 
-                    '{designation}', 
-                    '{company}', 
-                    '{experience}', 
-                    '{expertise}'
-                );
-            ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "openModal", modalScript, true);
-                }
-                else
-                {
-                    ShowMessage("Speaker not found.", "danger");
+            openRatingModal({speakerId}, '{name}', '{email}', '{designation}', '{company}', '{experience}', '{expertise}');
+        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "openModal_" + speakerId, modalScript, true);
+                    upModalAgendas.Update();
+
                 }
             }
             catch (Exception ex)
@@ -516,34 +445,32 @@ namespace Expo_Panel.SuperAdmin
             }
         }
 
-        // Handle AJAX rating submission - NEW METHOD
-        private void HandleAjaxRatingSubmission()
+
+
+        // Handle AJAX rating submission
+        protected void Page_PreRender(object sender, EventArgs e)
         {
-            try
+            if (Request.Form["action"] == "submitRating")
             {
-                int speakerId = Convert.ToInt32(Request.Form["speakerId"]);
-                int agendaId = Convert.ToInt32(Request.Form["agendaId"]);
-                int rating = Convert.ToInt32(Request.Form["rating"]);
-                string comments = Request.Form["comments"] ?? string.Empty;
+                try
+                {
+                    int speakerId = Convert.ToInt32(Request.Form["speakerId"]);
+                    int agendaId = Convert.ToInt32(Request.Form["agendaId"]);
+                    int rating = Convert.ToInt32(Request.Form["rating"]);
+                    string comments = Request.Form["comments"];
 
-                System.Diagnostics.Debug.WriteLine($"AJAX Rating: Speaker={speakerId}, Agenda={agendaId}, Rating={rating}");
+                    SubmitRating(speakerId, agendaId, rating, comments);
 
-                SubmitRating(speakerId, agendaId, rating, comments);
-
-                Response.Clear();
-                Response.ContentType = "text/plain";
-                Response.Write("Success");
-                Response.Flush();
-                Response.End();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("AJAX Error: " + ex.ToString());
-                Response.Clear();
-                Response.ContentType = "text/plain";
-                Response.Write("Error: " + ex.Message);
-                Response.Flush();
-                Response.End();
+                    Response.Clear();
+                    Response.Write("Success");
+                    Response.End();
+                }
+                catch (Exception ex)
+                {
+                    Response.Clear();
+                    Response.Write("Error: " + ex.Message);
+                    Response.End();
+                }
             }
         }
 

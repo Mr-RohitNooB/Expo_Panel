@@ -312,15 +312,6 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
 
         /// <summary>
-        /// txtLinkedInProfile control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLinkedInProfile;
-
-        /// <summary>
         /// fuPhoto control.
         /// </summary>
         /// <remarks>
@@ -330,13 +321,31 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.FileUpload fuPhoto;
 
         /// <summary>
-        /// fuLogo control.
+        /// lblCurrentPhoto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fuLogo;
+        protected global::System.Web.UI.WebControls.Label lblCurrentPhoto;
+
+        /// <summary>
+        /// txtLinkedInProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLinkedInProfile;
+
+        /// <summary>
+        /// rfvLinkedIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvLinkedIn;
 
         /// <summary>
         /// txtProfessionalBio control.

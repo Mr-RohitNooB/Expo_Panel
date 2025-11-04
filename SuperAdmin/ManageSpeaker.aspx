@@ -29,6 +29,7 @@
             margin: 0 auto;
         }
 
+        /* Header Styles */
         .header {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -46,6 +47,7 @@
                 font-weight: 600;
             }
 
+        /* Dashboard Card */
         .dashboard-card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -53,6 +55,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
+        /* Toolbar */
         .toolbar {
             display: flex;
             justify-content: space-between;
@@ -69,6 +72,7 @@
             max-width: 500px;
         }
 
+        /* Form Controls */
         .form-control {
             padding: 10px 15px;
             border: 2px solid #e2e8f0;
@@ -83,6 +87,7 @@
                 border-color: #48bb78;
             }
 
+        /* Buttons */
         .btn {
             padding: 10px 20px;
             border: none;
@@ -173,6 +178,49 @@
                 background: #d97706;
             }
 
+        .btn-view {
+            background: #06b6d4;
+            color: white;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+            .btn-view:hover {
+                background: #0891b2;
+            }
+
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+            .btn-cancel:hover {
+                background: #cbd5e1;
+            }
+
+        .btn-filter {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            color: #475569;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+            .btn-filter:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+            }
+
+            .btn-filter.active {
+                background: #38a169;
+                color: white;
+                border-color: #38a169;
+            }
+
+        /* Table Styles */
         .grid-container {
             overflow-x: auto;
         }
@@ -207,7 +255,33 @@
                 background: #f8fafc;
             }
 
-        /* Toggle Switch Styles */
+            table th:nth-child(4),
+            table td:nth-child(4) {
+                max-width: 100px;
+            }
+
+            table th:nth-child(5),
+            table td:nth-child(5) {
+                max-width: 90px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            table th:nth-child(6),
+            table td:nth-child(6) {
+                max-width: 120px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            table th:nth-child(8),
+            table td:nth-child(8) {
+                max-width: 90px;
+            }
+
+        /* Toggle Switch */
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -272,6 +346,11 @@
             margin-left: auto;
         }
 
+        .toggle-button-hidden {
+            display: none;
+        }
+
+        /* Action Buttons */
         .action-buttons {
             display: flex;
             gap: 8px;
@@ -282,6 +361,7 @@
                 font-size: 12px;
             }
 
+        /* Alert Styles */
         .alert {
             padding: 15px 20px;
             border-radius: 8px;
@@ -338,7 +418,14 @@
             animation: modalSlideIn 0.3s ease-out;
             max-height: 90vh;
             overflow-y: auto;
+            box-sizing: border-box;
         }
+
+            .modal-content *,
+            .modal-content *::before,
+            .modal-content *::after {
+                box-sizing: border-box;
+            }
 
         @keyframes modalSlideIn {
             from {
@@ -382,18 +469,33 @@
                 color: #ef4444;
             }
 
+        /* Form Styles */
         .form-group {
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
             .form-group label {
-                display: block;
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
                 margin-bottom: 8px;
                 color: #475569;
                 font-weight: 500;
+                font-size: 13px;
+                line-height: 1.4;
             }
 
-            .form-group input,
+                .form-group label span {
+                    display: inline;
+                    white-space: nowrap;
+                }
+
+            .form-group input[type="text"],
+            .form-group input[type="email"],
+            .form-group input[type="number"],
+            .form-group input[type="password"],
             .form-group select,
             .form-group textarea {
                 width: 100%;
@@ -402,6 +504,7 @@
                 border-radius: 8px;
                 font-size: 14px;
                 font-family: 'Poppins', sans-serif;
+                box-sizing: border-box;
             }
 
                 .form-group input:focus,
@@ -413,50 +516,72 @@
 
             .form-group textarea {
                 resize: vertical;
-                min-height: 80px;
+                min-height: 100px;
             }
 
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 0;
+        }
+
+        .form-row-three {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 0;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+            .form-section:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+
+            .form-section h3 {
+                color: #38a169;
+                font-size: 18px;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+        /* Modal Footer */
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
             margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
         }
 
-        .btn-cancel {
-            background: #e2e8f0;
-            color: #475569;
-        }
-
-            .btn-cancel:hover {
-                background: #cbd5e1;
+            .modal-footer .btn {
+                padding: 12px 24px;
+                font-size: 14px;
+                min-width: 100px;
             }
 
-        .no-records {
-            text-align: center;
-            padding: 40px;
-            color: #94a3b8;
-            font-size: 16px;
-        }
-
-        .inactive-row td {
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        .inactive-row .action-buttons .btn {
-            font-style: normal;
-            opacity: 0.6;
-        }
-
-        .toggle-button-hidden {
-            display: none;
-        }
-
+        /* Checkbox Styles */
         .checkbox-group {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
+            gap: 12px;
+            margin-top: 10px;
         }
 
         .checkbox-item {
@@ -469,14 +594,17 @@
                 width: 18px;
                 height: 18px;
                 cursor: pointer;
+                flex-shrink: 0;
             }
 
             .checkbox-item label {
                 margin: 0;
                 cursor: pointer;
                 font-weight: 400;
+                font-size: 14px;
             }
 
+        /* Character Counter */
         .char-counter {
             font-size: 12px;
             color: #64748b;
@@ -484,45 +612,14 @@
             margin-top: 5px;
         }
 
-        @media (max-width: 768px) {
-            .form-row, .form-row-three {
-                grid-template-columns: 1fr;
-            }
-
-            .checkbox-group {
-                grid-template-columns: 1fr;
-            }
-        }
-
+        /* Status Filters */
         .status-filters {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
         }
 
-        .btn-filter {
-            padding: 10px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            color: #475569;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-            .btn-filter:hover {
-                background: #f8fafc;
-                border-color: #cbd5e1;
-            }
-
-            .btn-filter.active {
-                background: #38a169;
-                color: white;
-                border-color: #38a169;
-            }
-
+        /* Badges */
         .badge-admin {
             background: #dbeafe;
             color: #1e40af;
@@ -563,6 +660,7 @@
             color: #991b1b;
         }
 
+        /* Cell Styles */
         .remarks-cell {
             display: block;
             max-width: 200px;
@@ -570,71 +668,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             cursor: help;
-        }
-
-        #remarksRequired {
-            display: none;
-        }
-
-        table th:nth-child(4),
-        table td:nth-child(4) {
-            max-width: 100px;
-        }
-
-        table th:nth-child(5),
-        table td:nth-child(5) {
-            max-width: 90px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        table th:nth-child(6),
-        table td:nth-child(6) {
-            max-width: 120px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        table th:nth-child(8),
-        table td:nth-child(8) {
-            max-width: 90px;
-        }
-
-        /* Commented out for future use */
-        .file-upload-section {
-            display: none; /* Will be enabled later */
-        }
-
-        .btn-view {
-            background: #06b6d4;
-            color: white;
-            padding: 6px 12px;
-            font-size: 13px;
-        }
-
-            .btn-view:hover {
-                background: #0891b2;
-            }
-
-        .rating-display {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .star {
-            color: #fbbf24;
-        }
-
-        .section-divider {
-            margin: 30px 0 20px 0;
-            padding: 10px 0;
-            border-bottom: 2px solid #e2e8f0;
-            color: #38a169;
-            font-size: 16px;
-            font-weight: 600;
         }
 
         .truncate-cell {
@@ -645,182 +678,7 @@
             cursor: help;
         }
 
-        .password-field {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #6b7280;
-        }
-
-            .password-toggle:hover {
-                color: #38a169;
-            }
-
-        #passwordField {
-            display: none; /* Hidden by default, shown when Approved is selected */
-        }
-
-        /* Add these CSS fixes to your existing style section */
-
-        /* Ensure all form controls have consistent styling */
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="number"],
-        .form-group input[type="password"],
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Poppins', sans-serif;
-            box-sizing: border-box;
-        }
-
-            .form-group input[type="text"]:focus,
-            .form-group input[type="email"]:focus,
-            .form-group input[type="number"]:focus,
-            .form-group input[type="password"]:focus,
-            .form-group select:focus,
-            .form-group textarea:focus {
-                outline: none;
-                border-color: #48bb78;
-            }
-
-        /* Fix form row grid layout */
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 0;
-        }
-
-        .form-row-three {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 0;
-        }
-
-        /* Ensure form groups have proper spacing */
-        .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: #475569;
-                font-weight: 500;
-                font-size: 14px;
-            }
-
-        /* Fix modal content width and padding */
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 900px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: modalSlideIn 0.3s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-sizing: border-box;
-        }
-
-        /* Fix modal footer alignment */
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 12px;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
-        }
-
-            /* Ensure buttons have consistent sizing */
-            .modal-footer .btn {
-                padding: 12px 24px;
-                font-size: 14px;
-                min-width: 100px;
-            }
-
-        /* Fix checkbox group alignment */
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-            .checkbox-item input[type="checkbox"] {
-                width: 18px;
-                height: 18px;
-                cursor: pointer;
-                flex-shrink: 0;
-            }
-
-            .checkbox-item label {
-                margin: 0;
-                cursor: pointer;
-                font-weight: 400;
-                font-size: 14px;
-            }
-
-        /* Fix form section spacing */
-        .form-section {
-            margin-bottom: 30px;
-            padding-bottom: 25px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-            .form-section:last-child {
-                border-bottom: none;
-                margin-bottom: 0;
-            }
-
-            .form-section h3 {
-                color: #38a169;
-                font-size: 18px;
-                margin-bottom: 20px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-        /* Fix text area styling */
-        textarea.form-control {
-            resize: vertical;
-            min-height: 100px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        /* Fix character counter */
-        .char-counter {
-            font-size: 12px;
-            color: #64748b;
-            text-align: right;
-            margin-top: 5px;
-        }
-
-        /* Fix password field container */
+        /* Password Field */
         .password-field {
             position: relative;
             width: 100%;
@@ -845,7 +703,80 @@
                 color: #38a169;
             }
 
-        /* Responsive adjustments */
+        #passwordField {
+            display: none;
+        }
+
+        #remarksRequired {
+            display: none;
+        }
+
+        /* Other Styles */
+        .no-records {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .inactive-row td {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .inactive-row .action-buttons .btn {
+            font-style: normal;
+            opacity: 0.6;
+        }
+
+        .file-upload-section {
+            display: none;
+        }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .star {
+            color: #fbbf24;
+        }
+
+        .section-divider {
+            margin: 30px 0 20px 0;
+            padding: 10px 0;
+            border-bottom: 2px solid #e2e8f0;
+            color: #38a169;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Validation Messages */
+        span[style*="color:Red"],
+        span[style*="color: Red"],
+        span[style*="color: red"] {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #ef4444 !important;
+        }
+
+        span[style*="color: red"] {
+            color: #ef4444;
+            margin-left: 3px;
+        }
+
+        /* Dropdown Styling */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 35px;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             .form-row,
             .form-row-three {
@@ -868,38 +799,6 @@
                 .modal-footer .btn {
                     width: 100%;
                 }
-        }
-
-        /* Fix validation message styling */
-        span[style*="color:Red"],
-        span[style*="color: Red"],
-        span[style*="color: red"] {
-            display: block;
-            margin-top: 5px;
-            font-size: 12px;
-            color: #ef4444 !important;
-        }
-
-        /* Fix dropdown styling */
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 35px;
-        }
-
-        /* Fix required field indicator */
-        span[style*="color: red"] {
-            color: #ef4444;
-            margin-left: 3px;
-        }
-
-        /* Ensure proper box-sizing for all elements */
-        .modal-content *,
-        .modal-content *::before,
-        .modal-content *::after {
-            box-sizing: border-box;
         }
     </style>
 </head>
@@ -1115,26 +1014,30 @@
                         </div>
                     </div>
 
-                    <!-- COMMENTED OUT FOR FUTURE USE -->
-                    <!--
-                        <div class="form-row file-upload-section">
-                            <div class="form-group">
-                                <label for="<%=txtLinkedInProfile.ClientID%>">LinkedIn Profile</label>
-                                <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control" placeholder="https://linkedin.com/in/username"></asp:TextBox>
-                            </div>
 
-                            <div class="form-group">
-                                <label>Recent Photo</label>
-                                <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="form-group file-upload-section">
-                            <label>Company Logo (High Resolution)</label>
-                            <asp:FileUpload ID="fuLogo" runat="server" CssClass="form-control" />
-                        </div>
-                        -->
                 </div>
+
+                <!-- Profile & Media Section -->
+                <div class="form-section">
+                    <h4>Profile & Media</h4>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Upload Your Photo</label>
+                            <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control-file" />
+                            <small class="form-text text-muted">JPG, PNG - Max 2MB</small>
+                            <asp:Label ID="lblCurrentPhoto" runat="server" CssClass="text-info mt-2" Visible="false"></asp:Label>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtLinkedInProfile">LinkedIn Profile URL <span class="text-danger">*</span></label>
+                            <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control"
+                                placeholder="https://www.linkedin.com/in/yourprofile"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvLinkedIn" runat="server"
+                                ControlToValidate="txtLinkedInProfile" ErrorMessage="LinkedIn URL is required"
+                                CssClass="text-danger" Display="Dynamic" ValidationGroup="SpeakerForm"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Section 2: Professional Profile -->
                 <div class="form-section">

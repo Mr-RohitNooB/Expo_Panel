@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -438,9 +439,10 @@ namespace Expo_Panel.Admin
 
                 // COMMENTED OUT FOR FUTURE USE
                 // string linkedInProfile = txtLinkedInProfile.Text.Trim();
-                string linkedInProfile = null;
+                string linkedInProfile = txtLinkedInProfile.Text.Trim();
                 string photoPath = null;
                 string logoPath = null;
+
 
                 string professionalBio = txtProfessionalBio.Text.Trim();
                 string areasOfExpertise = hdnAreasOfExpertise.Value;
@@ -451,6 +453,16 @@ namespace Expo_Panel.Admin
                 string isAvailable = ddlIsAvailable.SelectedValue;
                 bool marketingConsent = chkMarketingConsent.Checked;
 
+
+                if (fuPhoto.HasFile)
+                {
+                    photoPath = UploadPhoto();
+                    if (string.IsNullOrEmpty(photoPath))
+                    {
+                        ShowMessage("Error uploading photo. Please try again.", "danger");
+                        return;
+                    }
+                }
                 if (mode == "add")
                 {
                     AddSpeaker(name, email, mobile, designation, company, isActive,
@@ -552,6 +564,43 @@ namespace Expo_Panel.Admin
             else
             {
                 args.IsValid = true;
+            }
+        }
+
+        private string UploadPhoto()
+        {
+            try
+            {
+                if (!fuPhoto.HasFile)
+                    return null;
+
+                string fileExtension = Path.GetExtension(fuPhoto.FileName).ToLower();
+                if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png")
+                {
+                    ShowMessage("Only JPG and PNG files are allowed.", "danger");
+                    return null;
+                }
+
+                if (fuPhoto.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
+                {
+                    ShowMessage("File size must be less than 2MB.", "danger");
+                    return null;
+                }
+
+                string uploadsFolder = Server.MapPath("~/Uploads/SpeakerPhotos/");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                string fileName = $"SPK_{DateTime.Now:yyyyMMddHHmmss}_{Path.GetFileName(fuPhoto.FileName)}";
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                fuPhoto.SaveAs(filePath);
+
+                return "~/Uploads/SpeakerPhotos/" + fileName;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error uploading photo: " + ex.Message, "danger");
+                return null;
             }
         }
 
@@ -707,8 +756,11 @@ namespace Expo_Panel.Admin
                             jsData.AppendFormat("previousSpeakingEngagements: '{0}',", EscapeJsString(reader["PreviousSpeakingEngagements"].ToString()));
                             jsData.AppendFormat("isAvailable: '{0}',", EscapeJsString(isAvailable));
                             jsData.AppendFormat("marketingConsent: {0},", marketingConsent ? "true" : "false");
+                            jsData.AppendFormat("linkedInProfile: '{0}',", EscapeJsString(reader["LinkedInProfile"].ToString() ?? ""));
+                            jsData.AppendFormat("photoPath: '{0}',", EscapeJsString(reader["PhotoPath"].ToString() ?? ""));
                             jsData.AppendFormat("selectedAgendaIds: '{0}'", EscapeJsString(selectedAgendaIds));
                             jsData.Append("}");
+
 
                             reader.Close();
 
@@ -1020,6 +1072,10 @@ namespace Expo_Panel.Admin
             hdnModalMode.Value = "add";
             hdnAreasOfExpertise.Value = "";
             hdnPreferredFormat.Value = "";
+            txtLinkedInProfile.Text = "";
+            lblCurrentPhoto.Visible = false;
+            lblCurrentPhoto.Text = "";
+
         }
 
         private void ShowMessage(string message, string type)

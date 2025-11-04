@@ -38,17 +38,17 @@
             margin-bottom: 30px;
         }
 
-        .header h1 {
-            color: #38a169;
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+            .header h1 {
+                color: #38a169;
+                font-size: 32px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
 
-        .header p {
-            color: #64748b;
-            font-size: 16px;
-        }
+            .header p {
+                color: #64748b;
+                font-size: 16px;
+            }
 
         .form-section {
             margin-bottom: 35px;
@@ -56,18 +56,18 @@
             border-bottom: 2px solid #e2e8f0;
         }
 
-        .form-section:last-of-type {
-            border-bottom: none;
-        }
+            .form-section:last-of-type {
+                border-bottom: none;
+            }
 
-        .form-section h3 {
-            color: #38a169;
-            font-size: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+            .form-section h3 {
+                color: #38a169;
+                font-size: 20px;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
 
         .form-row {
             display: grid;
@@ -87,36 +87,36 @@
             margin-bottom: 20px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #475569;
-            font-weight: 500;
-        }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #475569;
+                font-weight: 500;
+            }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s;
-        }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 12px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                font-family: 'Poppins', sans-serif;
+                transition: all 0.3s;
+            }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #48bb78;
-        }
+                .form-group input:focus,
+                .form-group select:focus,
+                .form-group textarea:focus {
+                    outline: none;
+                    border-color: #48bb78;
+                }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+            .form-group textarea {
+                resize: vertical;
+                min-height: 100px;
+            }
 
         .file-upload-wrapper {
             position: relative;
@@ -142,15 +142,15 @@
             transition: all 0.3s;
         }
 
-        .file-upload-label:hover {
-            background: #f1f5f9;
-            border-color: #48bb78;
-        }
+            .file-upload-label:hover {
+                background: #f1f5f9;
+                border-color: #48bb78;
+            }
 
-        .file-upload-label i {
-            color: #48bb78;
-            font-size: 20px;
-        }
+            .file-upload-label i {
+                color: #48bb78;
+                font-size: 20px;
+            }
 
         .file-name {
             margin-top: 8px;
@@ -164,13 +164,13 @@
             display: none;
         }
 
-        .photo-preview img {
-            max-width: 200px;
-            max-height: 200px;
-            border-radius: 10px;
-            border: 3px solid #48bb78;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+            .photo-preview img {
+                max-width: 200px;
+                max-height: 200px;
+                border-radius: 10px;
+                border: 3px solid #48bb78;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
 
         .checkbox-group {
             display: grid;
@@ -185,18 +185,18 @@
             gap: 10px;
         }
 
-        .checkbox-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
+            .checkbox-item input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+            }
 
-        .checkbox-item label {
-            margin: 0;
-            cursor: pointer;
-            font-weight: 400;
-            color: #475569;
-        }
+            .checkbox-item label {
+                margin: 0;
+                cursor: pointer;
+                font-weight: 400;
+                color: #475569;
+            }
 
         .agenda-table-wrapper {
             overflow-x: auto;
@@ -211,33 +211,33 @@
             background: white;
         }
 
-        .agenda-table thead {
-            background: #f8fafc;
-        }
+            .agenda-table thead {
+                background: #f8fafc;
+            }
 
-        .agenda-table th {
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #475569;
-            border-bottom: 2px solid #e2e8f0;
-            font-size: 14px;
-        }
+            .agenda-table th {
+                padding: 12px 15px;
+                text-align: left;
+                font-weight: 600;
+                color: #475569;
+                border-bottom: 2px solid #e2e8f0;
+                font-size: 14px;
+            }
 
-        .agenda-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 14px;
-            color: #475569;
-        }
+            .agenda-table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid #e2e8f0;
+                font-size: 14px;
+                color: #475569;
+            }
 
-        .agenda-table tbody tr:hover {
-            background: #f8fafc;
-        }
+            .agenda-table tbody tr:hover {
+                background: #f8fafc;
+            }
 
-        .agenda-table tbody tr.selected {
-            background: #f0fdf4;
-        }
+            .agenda-table tbody tr.selected {
+                background: #f0fdf4;
+            }
 
         .agenda-checkbox {
             width: 20px;
@@ -260,10 +260,10 @@
             gap: 5px;
         }
 
-        .btn-view:hover {
-            background: #2f855a;
-            transform: translateY(-1px);
-        }
+            .btn-view:hover {
+                background: #2f855a;
+                transform: translateY(-1px);
+            }
 
         .selection-counter {
             background: #fef3c7;
@@ -279,9 +279,9 @@
             font-weight: 500;
         }
 
-        .selection-counter i {
-            font-size: 18px;
-        }
+            .selection-counter i {
+                font-size: 18px;
+            }
 
         .modal {
             display: none;
@@ -297,8 +297,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .modal-content {
@@ -321,6 +326,7 @@
                 transform: translateY(-50px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -337,11 +343,11 @@
             align-items: center;
         }
 
-        .modal-header h2 {
-            font-size: 22px;
-            font-weight: 600;
-            margin: 0;
-        }
+            .modal-header h2 {
+                font-size: 22px;
+                font-weight: 600;
+                margin: 0;
+            }
 
         .modal-close {
             background: rgba(255, 255, 255, 0.2);
@@ -358,10 +364,10 @@
             transition: all 0.3s;
         }
 
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
-        }
+            .modal-close:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: rotate(90deg);
+            }
 
         .modal-body {
             padding: 30px;
@@ -375,10 +381,10 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
-        .agenda-detail-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
+            .agenda-detail-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
 
         .agenda-detail-label {
             font-weight: 600;
@@ -423,16 +429,16 @@
             color: white;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            background: #2f855a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(56, 161, 105, 0.4);
-        }
+            .btn-primary:hover:not(:disabled) {
+                background: #2f855a;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(56, 161, 105, 0.4);
+            }
 
-        .btn-primary:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-        }
+            .btn-primary:disabled {
+                background: #cbd5e1;
+                cursor: not-allowed;
+            }
 
         .form-footer {
             display: flex;
@@ -452,9 +458,9 @@
             gap: 8px;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
+            .back-link:hover {
+                text-decoration: underline;
+            }
 
         .alert {
             padding: 15px 20px;
@@ -520,10 +526,10 @@
                 font-size: 12px;
             }
 
-            .agenda-table th,
-            .agenda-table td {
-                padding: 8px 10px;
-            }
+                .agenda-table th,
+                .agenda-table td {
+                    padding: 8px 10px;
+                }
         }
     </style>
 </head>
@@ -531,7 +537,7 @@
     <form id="form1" runat="server" enctype="multipart/form-data">
         <div class="registration-container">
             <div class="header">
-                <h1><i class="fas fa-microphone"></i> Register as Speaker</h1>
+                <h1><i class="fas fa-microphone"></i>Register as Speaker</h1>
                 <p>Share your expertise and insights as a speaker at our expo</p>
             </div>
 
@@ -539,7 +545,7 @@
 
             <!-- Section 1: Personal Information -->
             <div class="form-section">
-                <h3><i class="fas fa-user"></i> Personal Information</h3>
+                <h3><i class="fas fa-user"></i>Personal Information</h3>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -587,15 +593,36 @@
                 </div>
             </div>
 
+            <!-- Profile & Media Section -->
+<div class="form-section">
+    <h4>Profile & Media</h4>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Upload Your Photo</label>
+            <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-control-file" />
+            <small class="form-text text-muted">JPG, PNG - Max 2MB</small>
+            <asp:Label ID="lblCurrentPhoto" runat="server" CssClass="text-info mt-2" Visible="false"></asp:Label>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="txtLinkedInProfile">LinkedIn Profile URL <span class="text-danger">*</span></label>
+            <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control" 
+                placeholder="https://www.linkedin.com/in/yourprofile"></asp:TextBox>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                ControlToValidate="txtLinkedInProfile" ErrorMessage="LinkedIn URL is required" 
+                CssClass="text-danger" Display="Dynamic" ValidationGroup="SpeakerForm"></asp:RequiredFieldValidator>
+        </div>
+    </div>
+</div>
+
             <!-- Section 2: Profile & Media -->
             <div class="form-section">
-                <h3><i class="fas fa-id-card"></i> Profile & Media</h3>
+                <h3><i class="fas fa-id-card"></i>Profile & Media</h3>
 
                 <div class="form-group">
                     <label for="fuPhoto">Upload Your Photo <span class="required">*</span></label>
                     <p class="info-text">Please upload a professional headshot (JPG, PNG - Max 2MB)</p>
                     <div class="file-upload-wrapper">
-                        <asp:FileUpload ID="fuPhoto" runat="server" CssClass="file-upload-input" 
+                        <asp:FileUpload ID="fuPhoto" runat="server" CssClass="file-upload-input"
                             accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'photoFileName', 'photoPreview')" />
                         <label for="<%=fuPhoto.ClientID%>" class="file-upload-label">
                             <i class="fas fa-cloud-upload-alt"></i>
@@ -607,7 +634,7 @@
                         <img id="photoPreviewImg" src="" alt="Photo Preview" />
                     </div>
                     <asp:RequiredFieldValidator ID="rfvPhoto" runat="server" ControlToValidate="fuPhoto"
-                        ErrorMessage="Photo is required" ForeColor="Red" Display="Dynamic" 
+                        ErrorMessage="Photo is required" ForeColor="Red" Display="Dynamic"
                         ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
 
@@ -615,18 +642,18 @@
                     <label for="<%=txtLinkedIn.ClientID%>">LinkedIn Profile URL <span class="required">*</span></label>
                     <asp:TextBox ID="txtLinkedIn" runat="server" placeholder="https://linkedin.com/in/yourprofile"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
-                        ErrorMessage="LinkedIn profile is required" ForeColor="Red" Display="Dynamic" 
+                        ErrorMessage="LinkedIn profile is required" ForeColor="Red" Display="Dynamic"
                         ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator ID="revLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
                         ErrorMessage="Please enter a valid LinkedIn URL" ForeColor="Red" Display="Dynamic"
-                        ValidationExpression="^https?://(www\.)?linkedin\.com/.*$" 
+                        ValidationExpression="^https?://(www\.)?linkedin\.com/.*$"
                         ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
                 </div>
             </div>
 
             <!-- Section 3: Professional Profile -->
             <div class="form-section">
-                <h3><i class="fas fa-briefcase"></i> Professional Profile</h3>
+                <h3><i class="fas fa-briefcase"></i>Professional Profile</h3>
 
                 <div class="form-group">
                     <label for="<%=txtProfessionalBio.ClientID%>">Professional Bio (150-250 words recommended)</label>
@@ -677,14 +704,14 @@
                             <label for="chkRegulatory">Regulatory Compliance & Standards</label>
                         </div>
                     </div>
-                    <asp:TextBox ID="txtOtherExpertise" runat="server" placeholder="Other areas (please specify)" style="margin-top: 12px;"></asp:TextBox>
+                    <asp:TextBox ID="txtOtherExpertise" runat="server" placeholder="Other areas (please specify)" Style="margin-top: 12px;"></asp:TextBox>
                     <asp:HiddenField ID="hdnAreasOfExpertise" runat="server" />
                 </div>
             </div>
 
             <!-- Section 4: Current Work & Projects -->
             <div class="form-section">
-                <h3><i class="fas fa-project-diagram"></i> Current Work & Projects</h3>
+                <h3><i class="fas fa-project-diagram"></i>Current Work & Projects</h3>
 
                 <div class="form-group">
                     <label for="<%=txtCurrentWorkProjects.ClientID%>">Current Work & Projects</label>
@@ -704,7 +731,7 @@
 
             <!-- Section 5: Discussion Format & Speaking Experience -->
             <div class="form-section">
-                <h3><i class="fas fa-comments"></i> Discussion Format & Speaking Experience</h3>
+                <h3><i class="fas fa-comments"></i>Discussion Format & Speaking Experience</h3>
 
                 <div class="form-group">
                     <label>Preferred Discussion Format</label>
@@ -733,8 +760,8 @@
 
             <!-- Section 6: Select Agenda Topics -->
             <div class="form-section">
-                <h3><i class="fas fa-calendar-check"></i> Select Topics You'd Like to Speak On</h3>
-                
+                <h3><i class="fas fa-calendar-check"></i>Select Topics You'd Like to Speak On</h3>
+
                 <div class="selection-counter">
                     <i class="fas fa-info-circle"></i>
                     <span>You can select up to 3 topics. Currently selected: <strong><span id="selectedCount">0</span>/3</strong></span>
@@ -747,14 +774,14 @@
                 <asp:HiddenField ID="hdnSelectedAgendas" runat="server" />
                 <asp:CustomValidator ID="cvAgendaSelection" runat="server"
                     ErrorMessage="Please select at least 1 topic (maximum 3)" ForeColor="Red" Display="Dynamic"
-                    ClientValidationFunction="validateAgendaSelection" 
+                    ClientValidationFunction="validateAgendaSelection"
                     OnServerValidate="cvAgendaSelection_ServerValidate"
                     ValidationGroup="RegistrationValidation"></asp:CustomValidator>
             </div>
 
             <!-- Section 7: Consent & Availability -->
             <div class="form-section">
-                <h3><i class="fas fa-check-circle"></i> Consent & Availability</h3>
+                <h3><i class="fas fa-check-circle"></i>Consent & Availability</h3>
 
                 <div class="form-group">
                     <label for="<%=ddlIsAvailable.ClientID%>">Are you available to speak during the scheduled event dates? <span class="required">*</span></label>
@@ -788,7 +815,7 @@
         <div id="agendaModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2><i class="fas fa-info-circle"></i> Agenda Details</h2>
+                    <h2><i class="fas fa-info-circle"></i>Agenda Details</h2>
                     <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
                 </div>
                 <div class="modal-body" id="modalBody">
@@ -803,12 +830,12 @@
                 var display = document.getElementById(displayId);
                 var preview = document.getElementById(previewId);
                 var previewImg = document.getElementById(previewId + 'Img');
-                
+
                 if (input.files && input.files[0]) {
                     var file = input.files[0];
                     var fileName = file.name;
                     var fileSize = (file.size / 1024 / 1024).toFixed(2);
-                    
+
                     // Validate file size
                     if (file.size > 2 * 1024 * 1024) {
                         alert('File size must be less than 2MB');
@@ -817,7 +844,7 @@
                         preview.style.display = 'none';
                         return;
                     }
-                    
+
                     // Validate file type
                     var fileType = file.type;
                     if (fileType !== 'image/jpeg' && fileType !== 'image/png' && fileType !== 'image/jpg') {
@@ -827,12 +854,12 @@
                         preview.style.display = 'none';
                         return;
                     }
-                    
+
                     display.innerHTML = '<i class="fas fa-check-circle"></i> ' + fileName + ' (' + fileSize + ' MB)';
-                    
+
                     // Show preview
                     var reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         previewImg.src = e.target.result;
                         preview.style.display = 'block';
                     };
@@ -856,7 +883,7 @@
             function toggleAgendaSelection(checkbox) {
                 var row = checkbox.closest('tr');
                 var selectedCount = document.querySelectorAll('.agenda-checkbox:checked').length;
-                
+
                 if (checkbox.checked) {
                     if (selectedCount > 3) {
                         checkbox.checked = false;
@@ -867,7 +894,7 @@
                 } else {
                     row.classList.remove('selected');
                 }
-                
+
                 updateSelectedCount();
             }
 
@@ -879,42 +906,42 @@
             // View agenda details in modal
             function viewAgenda(agendaId, day, track, time, title, brief, synopsis) {
                 var modalBody = document.getElementById('modalBody');
-                
+
                 var html = '';
                 html += '<div class="agenda-detail-row">';
                 html += '<div class="agenda-detail-label"><i class="fas fa-calendar"></i> Day</div>';
                 html += '<div class="agenda-detail-value">' + day + '</div>';
                 html += '</div>';
-                
+
                 html += '<div class="agenda-detail-row">';
                 html += '<div class="agenda-detail-label"><i class="fas fa-map-marker-alt"></i> Track</div>';
                 html += '<div class="agenda-detail-value">' + track + '</div>';
                 html += '</div>';
-                
+
                 html += '<div class="agenda-detail-row">';
                 html += '<div class="agenda-detail-label"><i class="fas fa-clock"></i> Time</div>';
                 html += '<div class="agenda-detail-value">' + time + '</div>';
                 html += '</div>';
-                
+
                 html += '<div class="agenda-detail-row">';
                 html += '<div class="agenda-detail-label"><i class="fas fa-heading"></i> Title</div>';
                 html += '<div class="agenda-detail-value">' + title + '</div>';
                 html += '</div>';
-                
+
                 if (brief) {
                     html += '<div class="agenda-detail-row">';
                     html += '<div class="agenda-detail-label"><i class="fas fa-align-left"></i> Brief</div>';
                     html += '<div class="agenda-detail-value">' + brief + '</div>';
                     html += '</div>';
                 }
-                
+
                 if (synopsis) {
                     html += '<div class="agenda-detail-row">';
                     html += '<div class="agenda-detail-label"><i class="fas fa-file-alt"></i> Full Synopsis</div>';
                     html += '<div class="agenda-detail-value">' + synopsis + '</div>';
                     html += '</div>';
                 }
-                
+
                 modalBody.innerHTML = html;
                 document.getElementById('agendaModal').style.display = 'block';
             }
@@ -924,7 +951,7 @@
             }
 
             // Close modal when clicking outside
-            window.onclick = function(event) {
+            window.onclick = function (event) {
                 var modal = document.getElementById('agendaModal');
                 if (event.target == modal) {
                     closeModal();
@@ -962,11 +989,11 @@
                 // Collect Selected Agendas
                 var checkboxes = document.querySelectorAll('.agenda-checkbox:checked');
                 var selectedIds = [];
-                
-                checkboxes.forEach(function(cb) {
+
+                checkboxes.forEach(function (cb) {
                     selectedIds.push(cb.value);
                 });
-                
+
                 document.getElementById('<%=hdnSelectedAgendas.ClientID%>').value = selectedIds.join(',');
 
                 return true;
@@ -979,7 +1006,7 @@
             }
 
             // Initialize on page load
-            window.onload = function() {
+            window.onload = function () {
                 // Initialize character counters
                 updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
                 updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
@@ -988,21 +1015,21 @@
                 // Add event listeners for real-time updates
                 var bioTextbox = document.getElementById('<%=txtProfessionalBio.ClientID%>');
                 if (bioTextbox) {
-                    bioTextbox.addEventListener('input', function() {
+                    bioTextbox.addEventListener('input', function () {
                         updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
                     });
                 }
 
                 var workTextbox = document.getElementById('<%=txtCurrentWorkProjects.ClientID%>');
                 if (workTextbox) {
-                    workTextbox.addEventListener('input', function() {
+                    workTextbox.addEventListener('input', function () {
                         updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
                     });
                 }
 
                 var engagementsTextbox = document.getElementById('<%=txtPreviousSpeakingEngagements.ClientID%>');
                 if (engagementsTextbox) {
-                    engagementsTextbox.addEventListener('input', function() {
+                    engagementsTextbox.addEventListener('input', function () {
                         updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
                     });
                 }
