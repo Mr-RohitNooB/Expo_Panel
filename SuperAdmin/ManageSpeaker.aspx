@@ -1625,6 +1625,8 @@
 
 
             function collectCheckboxData() {
+                console.log('collectCheckboxData called'); // Debug log
+
                 // Collect Areas of Expertise
                 var expertiseCheckboxes = ['chkBaseOils', 'chkAdditives', 'chkIndustrial', 'chkAutomotive',
                     'chkSynthetic', 'chkSustainability', 'chkTribology', 'chkMonitoring', 'chkRegulatory'];
@@ -1639,10 +1641,11 @@
 
                 var otherExpertise = document.getElementById('<%=txtOtherExpertise.ClientID%>').value.trim();
                 if (otherExpertise) {
-                    selectedExpertise.push(otherExpertise);
+                    selectedExpertise.push('Other: ' + otherExpertise);
                 }
 
                 document.getElementById('<%=hdnAreasOfExpertise.ClientID%>').value = selectedExpertise.join(', ');
+                console.log('Areas of Expertise:', selectedExpertise.join(', ')); // Debug log
 
                 // Collect Preferred Format
                 var formatCheckboxes = ['chkPanel', 'chkPresentation'];
@@ -1656,7 +1659,25 @@
                 });
 
                 document.getElementById('<%=hdnPreferredFormat.ClientID%>').value = selectedFormats.join(', ');
+                console.log('Preferred Format:', selectedFormats.join(', ')); // Debug log
+
+                // ✅ CRITICAL FIX: Collect Selected Agendas
+                var selectedAgendaIds = [];
+                var agendaCheckboxes = document.querySelectorAll('.agenda-checkbox:checked');
+
+                agendaCheckboxes.forEach(function (checkbox) {
+                    selectedAgendaIds.push(checkbox.value);
+                });
+
+                var selectedAgendasStr = selectedAgendaIds.join(',');
+                document.getElementById('<%=hdnSelectedAgendas.ClientID%>').value = selectedAgendasStr;
+
+                console.log('Selected Agenda IDs:', selectedAgendasStr); // Debug log
+                console.log('Total selected agendas:', selectedAgendaIds.length); // Debug log
+
+                return true; // Allow form submission to continue
             }
+
 
 
             function setCheckboxValues(expertiseStr, formatStr) {
@@ -1878,27 +1899,33 @@
 
 
             document.addEventListener('DOMContentLoaded', function () {
-                // Handle Approval Modal dropdown change
-                var ddlApproval = document.getElementById('<%=ddlApprovalStatus.ClientID%>');
-                if (ddlApproval) {
-                    ddlApproval.addEventListener('change', toggleRemarksRequired);
-                }
+                // Use event delegation for agenda checkboxes
+                document.addEventListener('change', function (e) {
+                    if (e.target.classList.contains('agenda-checkbox')) {
+                        var checkedCount = document.querySelectorAll('.agenda-checkbox:checked').length;
+                        document.getElementById('topicCount').textContent = checkedCount;
 
-                // Handle Application Review Modal dropdown change
-                var ddlAppStatus = document.getElementById('<%=ddlApplicationStatus.ClientID%>');
-                if (ddlAppStatus) {
-                    ddlAppStatus.addEventListener('change', toggleApplicationRemarksRequired);
-                }
+                        // Disable unchecked boxes if 3 are selected
+                        if (checkedCount >= 3) {
+                            document.querySelectorAll('.agenda-checkbox:not(:checked)').forEach(function (cb) {
+                                cb.disabled = true;
+                            });
+                        } else {
+                            document.querySelectorAll('.agenda-checkbox').forEach(function (cb) {
+                                cb.disabled = false;
+                            });
+                        }
 
-                // Initialize remarks and password visibility on page load
-                if (ddlApproval) {
-                    toggleRemarksRequired();
-                }
+                        // Update hidden field immediately
+                        var selectedIds = [];
+                        document.querySelectorAll('.agenda-checkbox:checked').forEach(function (cb) {
+                            selectedIds.push(cb.value);
+                        });
+                        document.getElementById('<%=hdnSelectedAgendas.ClientID%>').value = selectedIds.join(',');
 
-                // Initialize character counters
-                updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
-                updateCharCount('<%=txtCurrentWorkProjects.ClientID%>', 'workCharCount');
-                updateCharCount('<%=txtPreviousSpeakingEngagements.ClientID%>', 'engagementsCharCount');
+                        console.log('Agenda selection changed. Current selection:', selectedIds.join(',')); // Debug log
+                    }
+                });
             });
 
             function openApplicationsModal() {

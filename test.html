@@ -1,0 +1,601 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rating Modal Test - Debug Version</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .test-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+        }
+
+        .debug-panel {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .debug-panel div {
+            margin: 5px 0;
+            padding: 3px 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            color: #4f46e5;
+            font-size: 22px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #ef4444;
+        }
+
+        .speaker-info {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .speaker-info h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .agenda-section {
+            margin-top: 20px;
+        }
+
+        .agenda-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .agenda-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .agenda-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .agenda-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .rating-section {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .star {
+            font-size: 32px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #fbbf24;
+            transform: scale(1.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .current-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef3c7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .current-rating i {
+            color: #fbbf24;
+        }
+
+        .success-msg {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-controls">
+            <h2 style="margin-bottom: 15px;">Rating Modal Debug Test</h2>
+            <button class="btn" onclick="testOpenModal()">
+                <i class="fas fa-star"></i> Test: Open Rating Modal
+            </button>
+            <button class="btn" onclick="testStarClick()" style="background: #10b981; margin-left: 10px;">
+                <i class="fas fa-mouse-pointer"></i> Test: Star Click
+            </button>
+            <button class="btn" onclick="clearDebug()" style="background: #ef4444; margin-left: 10px;">
+                <i class="fas fa-trash"></i> Clear Debug
+            </button>
+            
+            <div class="debug-panel" id="debugPanel">
+                <div><strong>Debug Console:</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-star"></i> Rate Speaker</h2>
+                <button type="button" class="close-btn" onclick="closeRatingModal()">&times;</button>
+            </div>
+
+            <!-- Speaker Information -->
+            <div class="speaker-info">
+                <h3><i class="fas fa-user"></i> Speaker Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Name</span>
+                        <span class="info-value" id="spanSpeakerName">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email</span>
+                        <span class="info-value" id="spanSpeakerEmail">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Designation</span>
+                        <span class="info-value" id="spanDesignation">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Company</span>
+                        <span class="info-value" id="spanCompany">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Experience</span>
+                        <span class="info-value" id="spanExperience">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Expertise</span>
+                        <span class="info-value" id="spanExpertise">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agendas Section -->
+            <div class="agenda-section">
+                <h3 style="margin-bottom: 15px;"><i class="fas fa-calendar"></i> Selected Agendas & Ratings</h3>
+                
+                <!-- Sample Agenda Card 1 -->
+                <div class="agenda-card">
+                    <div class="agenda-header">
+                        <div>
+                            <div class="agenda-title">Advanced AI & Machine Learning Workshop</div>
+                            <div class="agenda-meta">
+                                <span><i class="fas fa-calendar-day"></i> Day 1</span>
+                                <span><i class="fas fa-layer-group"></i> Track A</span>
+                                <span><i class="fas fa-clock"></i> 10:00 AM - 11:30 AM</span>
+                            </div>
+                        </div>
+                        <div class="current-rating">
+                            <i class="fas fa-star"></i> 0/5
+                        </div>
+                    </div>
+
+                    <p style="color: #64748b; font-size: 14px; margin: 10px 0;">
+                        Deep dive into modern machine learning techniques and their practical applications in business.
+                    </p>
+
+                    <div class="rating-section">
+                        <label style="display: block; margin-bottom: 8px; color: #475569; font-weight: 500;">
+                            Rate this session:
+                        </label>
+                        
+                        <div class="star-rating star-group-1" id="starGroup1">
+                            <span class="star" onclick="setRating(1, 1)" data-rating="1">★</span>
+                            <span class="star" onclick="setRating(1, 2)" data-rating="2">★</span>
+                            <span class="star" onclick="setRating(1, 3)" data-rating="3">★</span>
+                            <span class="star" onclick="setRating(1, 4)" data-rating="4">★</span>
+                            <span class="star" onclick="setRating(1, 5)" data-rating="5">★</span>
+                        </div>
+                        <input type="hidden" id="hdnRating_1" value="0" />
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Comments (Optional):</label>
+                            <textarea id="txtComments_1" rows="3" placeholder="Share your feedback about this session..."></textarea>
+                        </div>
+
+                        <button type="button" class="btn" onclick="submitRating(101, 1)" style="margin-top: 10px;">
+                            <i class="fas fa-paper-plane"></i> Submit Rating
+                        </button>
+                        <div class="success-msg" id="success_1">
+                            <i class="fas fa-check-circle"></i> Rating submitted successfully!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample Agenda Card 2 -->
+                <div class="agenda-card">
+                    <div class="agenda-header">
+                        <div>
+                            <div class="agenda-title">Cloud Computing Best Practices</div>
+                            <div class="agenda-meta">
+                                <span><i class="fas fa-calendar-day"></i> Day 2</span>
+                                <span><i class="fas fa-layer-group"></i> Track B</span>
+                                <span><i class="fas fa-clock"></i> 2:00 PM - 3:30 PM</span>
+                            </div>
+                        </div>
+                        <div class="current-rating">
+                            <i class="fas fa-star"></i> 4/5
+                        </div>
+                    </div>
+
+                    <p style="color: #64748b; font-size: 14px; margin: 10px 0;">
+                        Learn about scalable cloud architectures and cost optimization strategies.
+                    </p>
+
+                    <div class="rating-section">
+                        <label style="display: block; margin-bottom: 8px; color: #475569; font-weight: 500;">
+                            Rate this session:
+                        </label>
+                        
+                        <div class="star-rating star-group-2" id="starGroup2">
+                            <span class="star active" onclick="setRating(2, 1)" data-rating="1">★</span>
+                            <span class="star active" onclick="setRating(2, 2)" data-rating="2">★</span>
+                            <span class="star active" onclick="setRating(2, 3)" data-rating="3">★</span>
+                            <span class="star active" onclick="setRating(2, 4)" data-rating="4">★</span>
+                            <span class="star" onclick="setRating(2, 5)" data-rating="5">★</span>
+                        </div>
+                        <input type="hidden" id="hdnRating_2" value="4" />
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Comments (Optional):</label>
+                            <textarea id="txtComments_2" rows="3" placeholder="Share your feedback about this session...">Great session with practical examples!</textarea>
+                        </div>
+
+                        <button type="button" class="btn" onclick="submitRating(101, 2)" style="margin-top: 10px; background: #f59e0b;">
+                            <i class="fas fa-edit"></i> Update Rating
+                        </button>
+                        <div class="success-msg" id="success_2">
+                            <i class="fas fa-check-circle"></i> Rating updated successfully!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Debug logging function
+        function debugLog(message) {
+            const panel = document.getElementById('debugPanel');
+            const div = document.createElement('div');
+            const timestamp = new Date().toLocaleTimeString();
+            div.innerHTML = `[${timestamp}] ${message}`;
+            panel.appendChild(div);
+            panel.scrollTop = panel.scrollHeight;
+            console.log(message);
+        }
+
+        function clearDebug() {
+            const panel = document.getElementById('debugPanel');
+            panel.innerHTML = '<div><strong>Debug Console:</strong></div>';
+            debugLog('Debug console cleared');
+        }
+
+        // Open modal function
+        function openRatingModal(speakerId, name, email, designation, company, experience, expertise) {
+            debugLog(`Opening modal for speaker ID: ${speakerId}`);
+            debugLog(`Setting speaker name: ${name}`);
+            
+            document.getElementById('spanSpeakerName').innerText = name;
+            document.getElementById('spanSpeakerEmail').innerText = email;
+            document.getElementById('spanDesignation').innerText = designation;
+            document.getElementById('spanCompany').innerText = company;
+            document.getElementById('spanExperience').innerText = experience + ' years';
+            document.getElementById('spanExpertise').innerText = expertise || 'Not specified';
+
+            const modal = document.getElementById('ratingModal');
+            modal.classList.add('show');
+            debugLog('Modal opened successfully');
+            
+            // Check if stars are visible
+            setTimeout(() => {
+                const stars = document.querySelectorAll('.star');
+                debugLog(`Total stars found in modal: ${stars.length}`);
+                stars.forEach((star, index) => {
+                    const computed = window.getComputedStyle(star);
+                    debugLog(`Star ${index + 1}: color=${computed.color}, fontSize=${computed.fontSize}, cursor=${computed.cursor}`);
+                });
+            }, 100);
+        }
+
+        // Close modal function
+        function closeRatingModal() {
+            debugLog('Closing modal');
+            document.getElementById('ratingModal').classList.remove('show');
+        }
+
+        // Set rating function
+        function setRating(agendaId, rating) {
+            debugLog(`Setting rating for agenda ${agendaId}: ${rating} stars`);
+            
+            // Update hidden field
+            const hiddenField = document.getElementById('hdnRating_' + agendaId);
+            if (hiddenField) {
+                hiddenField.value = rating;
+                debugLog(`Hidden field updated: ${hiddenField.value}`);
+            } else {
+                debugLog(`ERROR: Hidden field not found for agenda ${agendaId}`);
+            }
+            
+            // Update star display
+            const stars = document.querySelectorAll('.star-group-' + agendaId + ' .star');
+            debugLog(`Found ${stars.length} stars for agenda ${agendaId}`);
+            
+            stars.forEach(function(star, index) {
+                if (index < rating) {
+                    star.classList.add('active');
+                    debugLog(`Star ${index + 1}: Added 'active' class`);
+                } else {
+                    star.classList.remove('active');
+                    debugLog(`Star ${index + 1}: Removed 'active' class`);
+                }
+            });
+
+            // Update current rating badge
+            const badge = document.querySelector('.star-group-' + agendaId).closest('.agenda-card').querySelector('.current-rating');
+            if (badge) {
+                badge.innerHTML = `<i class="fas fa-star"></i> ${rating}/5`;
+            }
+        }
+
+        // Submit rating function
+        function submitRating(speakerId, agendaId) {
+            const rating = document.getElementById('hdnRating_' + agendaId).value;
+            const comments = document.getElementById('txtComments_' + agendaId).value;
+            
+            debugLog(`Submitting rating for speaker ${speakerId}, agenda ${agendaId}`);
+            debugLog(`Rating: ${rating}/5`);
+            debugLog(`Comments: ${comments || 'None'}`);
+            
+            if (!rating || rating == '0') {
+                alert('Please select a rating (1-5 stars)');
+                debugLog('ERROR: No rating selected');
+                return;
+            }
+            
+            // Simulate successful submission
+            debugLog('Rating submitted successfully (simulated)');
+            const successMsg = document.getElementById('success_' + agendaId);
+            successMsg.style.display = 'block';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        // Test functions
+        function testOpenModal() {
+            debugLog('=== TEST: Opening Modal ===');
+            openRatingModal(
+                101,
+                'Dr. Jane Smith',
+                'jane.smith@techcorp.com',
+                'Senior Data Scientist',
+                'TechCorp Inc.',
+                '12',
+                'AI, Machine Learning, Data Analytics'
+            );
+        }
+
+        function testStarClick() {
+            debugLog('=== TEST: Simulating Star Click ===');
+            const firstStar = document.querySelector('.star');
+            if (firstStar) {
+                debugLog('First star found, triggering click');
+                firstStar.click();
+            } else {
+                debugLog('ERROR: No stars found on page');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('ratingModal');
+            if (event.target == modal) {
+                closeRatingModal();
+            }
+        }
+
+        // Initial debug info
+        window.addEventListener('DOMContentLoaded', () => {
+            debugLog('Page loaded successfully');
+            debugLog('Font Awesome loaded: ' + (document.querySelector('i.fas') !== null));
+            debugLog('Stars in DOM: ' + document.querySelectorAll('.star').length);
+        });
+    </script>
+</body>
+</html>

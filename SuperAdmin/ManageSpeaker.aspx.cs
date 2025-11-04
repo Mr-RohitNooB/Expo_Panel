@@ -376,6 +376,41 @@ namespace Expo_Panel.Admin
                 args.IsValid = true;
             }
         }
+
+        private void UpdateSpeakerAgendas(int speakerId, string agendaIds)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+
+                con.Open();
+
+                string updateQuery = @"
+            UPDATE TBL.Speaker
+            SET SelectedAgendas = @SelectedAgendas,
+                ModifiedDate = GETDATE()
+            WHERE SpeakerID = @SpeakerID";
+
+                using (SqlCommand cmd = new SqlCommand(updateQuery, con))
+                {
+                    cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    cmd.Parameters.AddWithValue("@SelectedAgendas", agendaIds);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Then delete old agenda interests (they'll be recreated when approved)
+                string deleteQuery = @"
+            DELETE FROM TBL.SpeakerAgendaInterest
+            WHERE SpeakerID = @SpeakerID
+            AND Status = 'Pending'";
+
+                using (SqlCommand cmd = new SqlCommand(deleteQuery, con))
+                {
+                    cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         protected void btnSaveSpeaker_Click(object sender, EventArgs e)
         {
             if (!Page.IsValid)
@@ -432,8 +467,17 @@ namespace Expo_Panel.Admin
                         professionalBio, areasOfExpertise, currentWorkProjects,
                         suggestedTopics, preferredDiscussionFormat, previousSpeakingEngagements,
                         isAvailable, marketingConsent);
+
+                    // ✅ ADD THIS - Update SelectedAgendaIDs
+                    string selectedAgendaIds = hdnSelectedAgendas.Value; // Get from hidden field
+                    if (!string.IsNullOrEmpty(selectedAgendaIds))
+                    {
+                        UpdateSpeakerAgendas(speakerId, selectedAgendaIds);
+                    }
+
                     Session["FlashMessage"] = "Speaker updated successfully!";
                 }
+
 
                 // Clear form
                 ClearForm();
