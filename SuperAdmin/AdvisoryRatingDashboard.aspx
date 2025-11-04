@@ -595,6 +595,11 @@
             <h3 style="margin-bottom: 15px;"><i class="fas fa-calendar"></i>Selected Agendas & Ratings</h3>
             <asp:Literal ID="litAgendaCards" runat="server"></asp:Literal>
         </div>
+        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+            <button type="button" class="btn btn-cancel" onclick="closeRatingModal()" style="background: #e2e8f0; color: #475569;">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="submitAllRatings()">Submit All Ratings</button>
+        </div>
+        </div> </div>
     </ContentTemplate>
 </asp:UpdatePanel>
             </div>

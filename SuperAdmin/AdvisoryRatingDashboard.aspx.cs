@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -313,7 +314,7 @@ namespace Expo_Panel.SuperAdmin
                             int currentRating = agenda["MyRating"] != DBNull.Value ? Convert.ToInt32(agenda["MyRating"]) : 0;
                             string currentComments = agenda["MyComments"] != DBNull.Value ? Server.HtmlEncode(agenda["MyComments"].ToString()) : "";
 
-                            agendaHtml.Append("<div class='agenda-card' style='border: 1px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 5px;'>");
+                            agendaHtml.Append($"<div class='agenda-card' data-agenda-id='{agendaId}' style='border: 1px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 5px;'>");
 
                             // Agenda Header
                             agendaHtml.Append("<div class='agenda-header' style='margin-bottom: 10px;'>");
@@ -365,12 +366,7 @@ namespace Expo_Panel.SuperAdmin
                             agendaHtml.Append($"<textarea id='txtComments_{agendaId}' class='form-control' rows='2' placeholder='Add your comments here...' style='width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;'>{currentComments}</textarea>");
                             agendaHtml.Append("</div>");
 
-                            // Submit Button
-                            agendaHtml.Append("<div class='rating-actions'>");
-                            agendaHtml.Append($"<button class='btn btn-primary' type='button' onclick='submitRating({speakerId}, {agendaId})' style='padding: 8px 16px;'>");
-                            agendaHtml.Append(currentRating > 0 ? "Update Rating" : "Submit Rating");
-                            agendaHtml.Append("</button>");
-                            agendaHtml.Append("</div>");
+
 
                             agendaHtml.Append("</div>"); // end agenda-card
                         }
@@ -386,8 +382,9 @@ namespace Expo_Panel.SuperAdmin
 
                     // Register JavaScript functions
                     // Register JavaScript functions
+                    // Register JavaScript functions
                     string script = $@"
-    // Sets the 'active' class on stars when clicked
+    // (These three functions are for the stars UI)
     function setRating(agendaId, rating) {{
         document.getElementById('hdnRating_' + agendaId).value = rating;
         var stars = document.getElementById('stars_' + agendaId).querySelectorAll('.star');
@@ -401,20 +398,18 @@ namespace Expo_Panel.SuperAdmin
         }});
     }}
 
-    // Shows a preview of the rating on hover
     function hoverStars(agendaId, rating) {{
         var stars = document.getElementById('stars_' + agendaId).querySelectorAll('.star');
 
         stars.forEach(function(star, index) {{
             if (index < rating) {{
-                star.classList.add('active'); // Use .active class for hover
+                star.classList.add('active');
             }} else {{
                 star.classList.remove('active');
             }}
         }});
     }}
 
-    // Resets the stars to the last saved (clicked) rating
     function resetStars(agendaId) {{
         var rating = parseInt(document.getElementById('hdnRating_' + agendaId).value) || 0;
         var stars = document.getElementById('stars_' + agendaId).querySelectorAll('.star');
@@ -428,22 +423,53 @@ namespace Expo_Panel.SuperAdmin
         }});
     }}
 
-    // Submits the rating (this function is unchanged)
-    function submitRating(speakerId, agendaId) {{
-        var rating = document.getElementById('hdnRating_' + agendaId).value;
-        var comments = document.getElementById('txtComments_' + agendaId).value;
+    // ▼▼▼ THIS IS THE NEW SUBMIT FUNCTION ▼▼▼
+    function submitAllRatings() {{
+        // Get the SpeakerID from the hidden field we set when opening the modal
+        var speakerId = document.getElementById('{hdnSpeakerID.ClientID}').value;
+        var ratingsData = [];
 
-        if (!rating || rating == '0') {{
-            alert('Please select a rating (1-5 stars)');
+        var agendaCards = document.querySelectorAll('#upModalAgendas .agenda-card');
+        var allValid = true;
+        var firstInvalidCard = null;
+
+        // Loop through each agenda card in the modal
+        agendaCards.forEach(function(card) {{
+            var agendaId = card.getAttribute('data-agenda-id');
+            var rating = document.getElementById('hdnRating_' + agendaId).value;
+            var comments = document.getElementById('txtComments_' + agendaId).value;
+
+            // Validate: Check if a rating was given
+            if (!rating || rating == '0') {{
+                allValid = false;
+                if(firstInvalidCard == null) {{
+                    firstInvalidCard = card;
+                }}
+            }}
+
+            // Add this agenda's data to our array
+            ratingsData.push({{
+                AgendaID: agendaId,
+                Rating: rating,
+                Comments: comments
+            }});
+        }});
+
+        // If any agenda is not rated, show an error and stop
+        if (!allValid) {{
+            alert('Please provide a rating (1-5 stars) for all agendas before submitting.');
+            if(firstInvalidCard) {{
+                // Scroll the modal to the first agenda that needs a rating
+                firstInvalidCard.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+            }}
             return;
         }}
 
+        // All good, prepare the data for sending
         var formData = new FormData();
-        formData.append('action', 'submitRating');
+        formData.append('action', 'submitAllRatings'); // New action name
         formData.append('speakerId', speakerId);
-        formData.append('agendaId', agendaId);
-        formData.append('rating', rating);
-        formData.append('comments', comments);
+        formData.append('ratingsData', JSON.stringify(ratingsData)); // Send all ratings as a JSON string
 
         fetch(window.location.href, {{
             method: 'POST',
@@ -452,15 +478,16 @@ namespace Expo_Panel.SuperAdmin
         .then(response => response.text())
         .then(data => {{
             if(data.includes('Success')) {{
-                alert('Rating submitted successfully!');
+                alert('All ratings submitted successfully!');
                 closeRatingModal();
-                window.location.reload();
+                // __doPostBack('UpdatePanel1', ''); // This will trigger the UpdatePanel to refresh
+                window.location.reload(); // Easiest way to ensure grid is fresh
             }} else {{
                 alert('Error: ' + data);
             }}
         }})
         .catch(error => {{
-            alert('Error submitting rating: ' + error);
+            alert('Error submitting ratings: ' + error);
         }});
     }}
 ";
@@ -484,21 +511,34 @@ namespace Expo_Panel.SuperAdmin
 
 
         // Handle AJAX rating submission
+        // Handle AJAX rating submission
         protected void Page_PreRender(object sender, EventArgs e)
         {
-            if (Request.Form["action"] == "submitRating")
+            // Check for the new 'submitAllRatings' action
+            if (Request.Form["action"] == "submitAllRatings")
             {
                 try
                 {
                     int speakerId = Convert.ToInt32(Request.Form["speakerId"]);
-                    int agendaId = Convert.ToInt32(Request.Form["agendaId"]);
-                    int rating = Convert.ToInt32(Request.Form["rating"]);
-                    string comments = Request.Form["comments"];
+                    string ratingsDataJson = Request.Form["ratingsData"];
 
-                    SubmitRating(speakerId, agendaId, rating, comments);
+                    // Deserialize the JSON array from the client
+                    var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    var ratings = serializer.Deserialize<List<AgendaRatingData>>(ratingsDataJson);
+
+                    // Loop through each rating submitted
+                    foreach (var rating in ratings)
+                    {
+                        // Only submit if a rating was actually given
+                        if (rating.Rating > 0)
+                        {
+                            // Call our existing DB method for each rating
+                            SubmitRating(speakerId, rating.AgendaID, rating.Rating, rating.Comments);
+                        }
+                    }
 
                     Response.Clear();
-                    Response.Write("Success");
+                    Response.Write("Success"); // Send one success message after all are done
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 catch (Exception ex)
@@ -562,6 +602,14 @@ namespace Expo_Panel.SuperAdmin
             }
 
             return isLoggedIn;
+        }
+
+        // Helper class for deserializing JSON
+        public class AgendaRatingData
+        {
+            public int AgendaID { get; set; }
+            public int Rating { get; set; }
+            public string Comments { get; set; }
         }
     }
 }
