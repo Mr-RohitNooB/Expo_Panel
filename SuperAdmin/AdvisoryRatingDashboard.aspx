@@ -474,17 +474,18 @@
             <div class="dashboard-card">
                 <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
 
-                <div class="status-filters">
-                    <asp:Button ID="btnNotRated" runat="server" Text="Not Rated (0)" CssClass="btn-filter active"
-                        OnClick="btnStatusFilter_Click" CommandArgument="NotRated" />
-                    <asp:Button ID="btnRated" runat="server" Text="Rated (0)" CssClass="btn-filter"
-                        OnClick="btnStatusFilter_Click" CommandArgument="Rated" />
-                    <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="NotRated" />
-                </div>
+           
 
 
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
+                             <div class="status-filters">
+         <asp:Button ID="btnNotRated" runat="server" Text="Not Rated (0)" CssClass="btn-filter active"
+             OnClick="btnStatusFilter_Click" CommandArgument="NotRated" />
+         <asp:Button ID="btnRated" runat="server" Text="Rated (0)" CssClass="btn-filter"
+             OnClick="btnStatusFilter_Click" CommandArgument="Rated" />
+         <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="NotRated" />
+     </div>
                         <div class="toolbar">
                             <div class="search-box">
                                 <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control"
