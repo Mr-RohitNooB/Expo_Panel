@@ -334,11 +334,21 @@ namespace Expo_Panel.SuperAdmin
                             agendaHtml.Append("<label style='display: block; margin-bottom: 8px;'><strong>Your Rating:</strong></label>");
                             agendaHtml.Append($"<div class='star-rating' id='stars_{agendaId}' style='font-size: 28px; display: flex; gap: 5px;'>");
 
+                            // ...
                             for (int i = 1; i <= 5; i++)
                             {
-                                string activeClass = i <= currentRating ? "style='color: #ffc107;'" : "style='color: #ddd;'";
-                                agendaHtml.Append($"<span class='star' data-rating='{i}' data-agenda='{agendaId}' {activeClass} onclick='setRating(this, {agendaId}, {i})' style='cursor: pointer; transition: color 0.2s;'>★</span>");
+                                // 1. Use 'active' class, not an inline style
+                                string activeClass = i <= currentRating ? "active" : "";
+
+                                // 2. Build the span with new JS events and no inline style
+                                agendaHtml.Append($"<span class='star {activeClass}'");
+                                agendaHtml.Append($" data-rating='{i}' data-agenda='{agendaId}'");
+                                agendaHtml.Append($" onclick='setRating({agendaId}, {i})'"); // 3. Simplified onclick
+                                agendaHtml.Append($" onmouseover='hoverStars({agendaId}, {i})'"); // 4. Added mouseover
+                                agendaHtml.Append($" onmouseout='resetStars({agendaId})'"); // 5. Added mouseout
+                                agendaHtml.Append(">★</span>");
                             }
+                            // ...
 
                             agendaHtml.Append("</div>");
                             agendaHtml.Append($"<input type='hidden' id='hdnRating_{agendaId}' value='{currentRating}' />");
@@ -375,59 +385,85 @@ namespace Expo_Panel.SuperAdmin
                     litAgendaCards.Text = agendaHtml.ToString();
 
                     // Register JavaScript functions
-                    string script = @"
-                function setRating(element, agendaId, rating) {
-                    // Update hidden field
-                    document.getElementById('hdnRating_' + agendaId).value = rating;
-                    
-                    // Update all stars for this agenda
-                    var starsContainer = document.getElementById('stars_' + agendaId);
-                    var stars = starsContainer.querySelectorAll('.star');
-                    
-                    stars.forEach(function(star, index) {
-                        if (index < rating) {
-                            star.style.color = '#ffc107';
-                        } else {
-                            star.style.color = '#ddd';
-                        }
-                    });
-                }
+                    // Register JavaScript functions
+                    string script = $@"
+    // Sets the 'active' class on stars when clicked
+    function setRating(agendaId, rating) {{
+        document.getElementById('hdnRating_' + agendaId).value = rating;
+        var stars = document.getElementById('stars_' + agendaId).querySelectorAll('.star');
 
-                function submitRating(speakerId, agendaId) {
-                    var rating = document.getElementById('hdnRating_' + agendaId).value;
-                    var comments = document.getElementById('txtComments_' + agendaId).value;
-                    
-                    if (!rating || rating == '0') {
-                        alert('Please select a rating (1-5 stars)');
-                        return;
-                    }
-                    
-                    var formData = new FormData();
-                    formData.append('action', 'submitRating');
-                    formData.append('speakerId', speakerId);
-                    formData.append('agendaId', agendaId);
-                    formData.append('rating', rating);
-                    formData.append('comments', comments);
-                    
-                    fetch(window.location.href, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        if(data.includes('Success')) {
-                            alert('Rating submitted successfully!');
-                            closeRatingModal();
-                            window.location.reload();
-                        } else {
-                            alert('Error: ' + data);
-                        }
-                    })
-                    .catch(error => {
-                        alert('Error submitting rating: ' + error);
-                    });
-                }
-            ";
+        stars.forEach(function(star, index) {{
+            if (index < rating) {{
+                star.classList.add('active');
+            }} else {{
+                star.classList.remove('active');
+            }}
+        }});
+    }}
+
+    // Shows a preview of the rating on hover
+    function hoverStars(agendaId, rating) {{
+        var stars = document.getElementById('stars_' + agendaId).querySelectorAll('.star');
+
+        stars.forEach(function(star, index) {{
+            if (index < rating) {{
+                star.classList.add('active'); // Use .active class for hover
+            }} else {{
+                star.classList.remove('active');
+            }}
+        }});
+    }}
+
+    // Resets the stars to the last saved (clicked) rating
+    function resetStars(agendaId) {{
+        var rating = parseInt(document.getElementById('hdnRating_' + agendaId).value) || 0;
+        var stars = document.getElementById('stars_' + agendaId).querySelectorAll('.star');
+
+        stars.forEach(function(star, index) {{
+            if (index < rating) {{
+                star.classList.add('active');
+            }} else {{
+                star.classList.remove('active');
+            }}
+        }});
+    }}
+
+    // Submits the rating (this function is unchanged)
+    function submitRating(speakerId, agendaId) {{
+        var rating = document.getElementById('hdnRating_' + agendaId).value;
+        var comments = document.getElementById('txtComments_' + agendaId).value;
+
+        if (!rating || rating == '0') {{
+            alert('Please select a rating (1-5 stars)');
+            return;
+        }}
+
+        var formData = new FormData();
+        formData.append('action', 'submitRating');
+        formData.append('speakerId', speakerId);
+        formData.append('agendaId', agendaId);
+        formData.append('rating', rating);
+        formData.append('comments', comments);
+
+        fetch(window.location.href, {{
+            method: 'POST',
+            body: formData
+        }})
+        .then(response => response.text())
+        .then(data => {{
+            if(data.includes('Success')) {{
+                alert('Rating submitted successfully!');
+                closeRatingModal();
+                window.location.reload();
+            }} else {{
+                alert('Error: ' + data);
+            }}
+        }})
+        .catch(error => {{
+            alert('Error submitting rating: ' + error);
+        }});
+    }}
+";
 
                     ScriptManager.RegisterStartupScript(this, GetType(), "ratingFunctions_" + speakerId, script, true);
                     string modalScript = $@"
@@ -463,13 +499,13 @@ namespace Expo_Panel.SuperAdmin
 
                     Response.Clear();
                     Response.Write("Success");
-                    Response.End();
+                    Context.ApplicationInstance.CompleteRequest();
                 }
                 catch (Exception ex)
                 {
                     Response.Clear();
                     Response.Write("Error: " + ex.Message);
-                    Response.End();
+                    Context.ApplicationInstance.CompleteRequest();
                 }
             }
         }
