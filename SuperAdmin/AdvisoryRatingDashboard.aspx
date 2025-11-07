@@ -7,9 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Advisory Rating Dashboard - Expo Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Light Mode Favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+<!-- Dark Mode Favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+<!-- Android / PWA -->
+<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
+<!-- Theme Colors -->
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+<!-- Windows Tile Support -->
+<meta name="msapplication-TileColor" content="#ffffff" />
+
     <style>
         * {
             box-sizing: border-box;
@@ -467,6 +491,9 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
                         <asp:Label ID="lblAdvisorName" runat="server" Text=""></asp:Label></span>
+                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
+        <i class="fas fa-arrow-left"></i> Back
+</asp:HyperLink>
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
                 </div>
             </div>
@@ -474,18 +501,18 @@
             <div class="dashboard-card">
                 <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
 
-           
+
 
 
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                             <div class="status-filters">
-         <asp:Button ID="btnNotRated" runat="server" Text="Not Rated (0)" CssClass="btn-filter active"
-             OnClick="btnStatusFilter_Click" CommandArgument="NotRated" />
-         <asp:Button ID="btnRated" runat="server" Text="Rated (0)" CssClass="btn-filter"
-             OnClick="btnStatusFilter_Click" CommandArgument="Rated" />
-         <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="NotRated" />
-     </div>
+                        <div class="status-filters">
+                            <asp:Button ID="btnNotRated" runat="server" Text="Not Rated (0)" CssClass="btn-filter active"
+                                OnClick="btnStatusFilter_Click" CommandArgument="NotRated" />
+                            <asp:Button ID="btnRated" runat="server" Text="Rated (0)" CssClass="btn-filter"
+                                OnClick="btnStatusFilter_Click" CommandArgument="Rated" />
+                            <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="NotRated" />
+                        </div>
                         <div class="toolbar">
                             <div class="search-box">
                                 <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control"
@@ -590,19 +617,19 @@
                 </div>
 
                 <!-- Agendas Section -->
-              <asp:UpdatePanel ID="upModalAgendas" runat="server" UpdateMode="Conditional">
-    <ContentTemplate>
-        <div class="agenda-section">
-            <h3 style="margin-bottom: 15px;"><i class="fas fa-calendar"></i>Selected Agendas & Ratings</h3>
-            <asp:Literal ID="litAgendaCards" runat="server"></asp:Literal>
-        </div>
-        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-            <button type="button" class="btn btn-cancel" onclick="closeRatingModal()" style="background: #e2e8f0; color: #475569;">Cancel</button>
-            <button type="button" class="btn btn-primary" onclick="submitAllRatings()">Submit All Ratings</button>
-        </div>
-        </div> </div>
-    </ContentTemplate>
-</asp:UpdatePanel>
+                <asp:UpdatePanel ID="upModalAgendas" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <div class="agenda-section">
+                            <h3 style="margin-bottom: 15px;"><i class="fas fa-calendar"></i>Selected Agendas & Ratings</h3>
+                            <asp:Literal ID="litAgendaCards" runat="server"></asp:Literal>
+                        </div>
+                        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                            <button type="button" class="btn btn-cancel" onclick="closeRatingModal()" style="background: #e2e8f0; color: #475569;">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="submitAllRatings()">Submit All Ratings</button>
+                        </div>
+                        </div> </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
             </div>
         </div>
 

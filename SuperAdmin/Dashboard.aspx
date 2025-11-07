@@ -3,9 +3,33 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Admin Dashboard - Expo Panel</title>
+    <title>Admin Dashboard - Lubricant India Expo Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <!-- Light Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
+
     <style>
         * {
             margin: 0;
@@ -38,10 +62,10 @@
             gap: 15px;
         }
 
-        .header-left h1 {
-            font-size: 24px;
-            font-weight: 600;
-        }
+            .header-left h1 {
+                font-size: 24px;
+                font-weight: 600;
+            }
 
         .header-right {
             display: flex;
@@ -99,10 +123,10 @@
             gap: 8px;
         }
 
-        .btn-logout:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-        }
+            .btn-logout:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: translateY(-1px);
+            }
 
         .container {
             max-width: 1400px;
@@ -183,50 +207,50 @@
             cursor: pointer;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
 
-        .card.advisor-card {
-            border-left-color: #667eea;
-        }
+            .card.advisor-card {
+                border-left-color: #667eea;
+            }
 
-        .card.advisor-card .card-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
+                .card.advisor-card .card-icon {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                }
 
-        .card.speaker-card {
-            border-left-color: #48bb78;
-        }
+            .card.speaker-card {
+                border-left-color: #48bb78;
+            }
 
-        .card.speaker-card .card-icon {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        }
+                .card.speaker-card .card-icon {
+                    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+                }
 
-        .card.exhibitor-card {
-            border-left-color: #ed8936;
-        }
+            .card.exhibitor-card {
+                border-left-color: #ed8936;
+            }
 
-        .card.exhibitor-card .card-icon {
-            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
-        }
+                .card.exhibitor-card .card-icon {
+                    background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+                }
 
-        .card.innovation-card {
-            border-left-color: #f56565;
-        }
+            .card.innovation-card {
+                border-left-color: #f56565;
+            }
 
-        .card.innovation-card .card-icon {
-            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-        }
+                .card.innovation-card .card-icon {
+                    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+                }
 
-        .card.agenda-card {
-            border-left-color: #3b82f6;
-        }
+            .card.agenda-card {
+                border-left-color: #3b82f6;
+            }
 
-        .card.agenda-card .card-icon {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
+                .card.agenda-card .card-icon {
+                    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                }
 
         .card-header {
             display: flex;
@@ -245,10 +269,10 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .card-icon i {
-            font-size: 26px;
-            color: white;
-        }
+            .card-icon i {
+                font-size: 26px;
+                color: white;
+            }
 
         .card-arrow {
             color: #cbd5e0;
@@ -281,11 +305,11 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
-        .quick-actions h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #2d3748;
-        }
+            .quick-actions h3 {
+                font-size: 18px;
+                margin-bottom: 20px;
+                color: #2d3748;
+            }
 
         .action-buttons {
             display: flex;
@@ -307,12 +331,12 @@
             gap: 8px;
         }
 
-        .btn-action:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-            transform: translateY(-2px);
-        }
+            .btn-action:hover {
+                background: #667eea;
+                color: white;
+                border-color: #667eea;
+                transform: translateY(-2px);
+            }
 
         @media (max-width: 768px) {
             .header {
@@ -354,7 +378,8 @@
     <form id="form1" runat="server">
         <div class="header">
             <div class="header-left">
-                <h1><i class="fas fa-tachometer-alt"></i> Expo Panel Admin</h1>
+                <img src="../Images/Lubricant_India_Expo_Cropped.png" style="height: 60px;"/>
+                <h1>Lubricant India Expo Super Admin Panel</h1>
             </div>
             <div class="header-right">
                 <div class="user-info">
@@ -368,7 +393,7 @@
                         <span class="user-role">Administrator</span>
                     </div>
                 </div>
-                <asp:Button ID="btnLogout" runat="server" CssClass="btn-logout" 
+                <asp:Button ID="btnLogout" runat="server" CssClass="btn-logout"
                     Text="Logout" OnClick="btnLogout_Click" />
             </div>
         </div>
@@ -376,7 +401,8 @@
         <div class="container">
             <div class="welcome-section">
                 <div class="welcome-content">
-                    <h2>Welcome back, <asp:Label ID="lblWelcomeUser" runat="server"></asp:Label>!</h2>
+                    <h2>Welcome back,
+                        <asp:Label ID="lblWelcomeUser" runat="server"></asp:Label>!</h2>
                     <p>Manage your expo panel system efficiently from here.</p>
                 </div>
                 <div class="welcome-stats">
@@ -433,7 +459,7 @@
         <h3>Advisory Rating Dashboard</h3>
         <p>Review speaker profiles and submit your ratings for the selected agendas.</p>
     </div>
-</asp:HyperLink>
+                </asp:HyperLink>
 
                 <asp:HyperLink ID="lnkSpeaker" runat="server" NavigateUrl="~/SuperAdmin/ManageSpeaker.aspx" CssClass="card speaker-card">
                     <div class="card-header">
@@ -476,22 +502,22 @@
             </div>
 
             <div class="quick-actions">
-                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                <h3><i class="fas fa-bolt"></i>Quick Actions</h3>
                 <div class="action-buttons">
                     <button type="button" class="btn-action" onclick="window.location='ManageAgenda.aspx'">
-                        <i class="fas fa-calendar-plus"></i> Add Agenda Item
+                        <i class="fas fa-calendar-plus"></i>Add Agenda Item
                     </button>
                     <button type="button" class="btn-action" onclick="window.location='ManageAdvisor.aspx'">
-                        <i class="fas fa-user-plus"></i> Add New Advisor
+                        <i class="fas fa-user-plus"></i>Add New Advisor
                     </button>
                     <button type="button" class="btn-action" onclick="window.location='ManageSpeaker.aspx'">
-                        <i class="fas fa-user-tie"></i> Add New Speaker
+                        <i class="fas fa-user-tie"></i>Add New Speaker
                     </button>
                     <button type="button" class="btn-action" onclick="window.location='ManageExhibitor.aspx'">
-                        <i class="fas fa-building"></i> Add New Exhibitor
+                        <i class="fas fa-building"></i>Add New Exhibitor
                     </button>
                     <button type="button" class="btn-action" onclick="window.location='ManageInnovation.aspx'">
-                        <i class="fas fa-rocket"></i> Add Innovation Entry
+                        <i class="fas fa-rocket"></i>Add Innovation Entry
                     </button>
                 </div>
             </div>

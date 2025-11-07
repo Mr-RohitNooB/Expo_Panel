@@ -8,6 +8,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Login to Lubricant India Expo and Smart Lubricants Summit 2026 Admin Panel" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Light Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
+
     <style>
         /* ============================================
    Lubricant India Expo - Admin Login Stylesheet
@@ -114,9 +138,9 @@
         .header-brand h1 {
             font-size: 32px;
             font-weight: 700;
-            margin-bottom: 8px;
             letter-spacing: -0.5px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: -50px;
         }
 
         .header-brand p {
@@ -130,7 +154,7 @@
             font-size: 13px;
             color: rgba(255, 255, 255, 0.8);
             font-style: italic;
-            margin-top: 8px;
+            margin-top: -50px;
         }
 
         /* Body Styles */
@@ -501,7 +525,7 @@
                 <div class="login-header">
                     <div class="header-brand">
                         <h1>Super Admin Panel</h1>
-                        <p>Lubricant India Expo</p>
+                        <img src="../Images/Expo_logo_Full.png" />
                         <p class="tagline">Smart Lubricants Summit 2026</p>
                     </div>
                 </div>

@@ -10,6 +10,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Light Mode Favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+<!-- Dark Mode Favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+<!-- Android / PWA -->
+<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
+<!-- Theme Colors -->
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+<!-- Windows Tile Support -->
+<meta name="msapplication-TileColor" content="#ffffff" />
+
     <style>
         * {
             box-sizing: border-box;
@@ -1216,7 +1243,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
                     <asp:Button ID="btnSaveSpeaker" runat="server" Text="Save" CssClass="btn btn-primary"
-                        OnClick="btnSaveSpeaker_Click" ValidationGroup="SpeakerValidation" OnClientClick="collectCheckboxData()" />
+    OnClick="btnSaveSpeaker_Click" ValidationGroup="SpeakerValidation" 
+    OnClientClick="collectCheckboxData()" />
                 </div>
             </div>
         </div>
@@ -1673,7 +1701,8 @@
                     document.querySelectorAll('.agenda-checkbox').forEach(cb => cb.checked = false);
                     document.getElementById('topicCount').textContent = '0';
 
-                } else if (mode === 'edit' && speakerData) {
+                }
+                else if (mode === 'edit' && speakerData) {
                     modalTitle.textContent = 'Edit Speaker';
                     document.getElementById('<%=hdnSpeakerID.ClientID%>').value = speakerData.id;
                     document.getElementById('<%=hdnModalMode.ClientID%>').value = 'edit';
@@ -1692,6 +1721,12 @@
                     document.getElementById('<%=ddlStatus.ClientID%>').value = speakerData.isActive || '1';
                     document.getElementById('<%=ddlIsAvailable.ClientID%>').value = speakerData.isAvailable || 'Yes';
                     document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = speakerData.marketingConsent || false;
+
+                    // ✅ FIX 1: POPULATE THE 'AREAS OF EXPERTISE' CHECKBOXES
+                    setCheckboxValues(speakerData.areasOfExpertise, speakerData.preferredDiscussionFormat);
+
+                    // ✅ FIX 2: RESET THE 'AGENDAS' LIST (so the C# script can re-check the correct ones)
+                    resetTopicSelection();
 
                     // Update character counters
                     updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');

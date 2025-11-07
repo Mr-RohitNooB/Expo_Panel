@@ -7,9 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Exhibitors - Expo Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Light Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
+
     <style>
         * {
             box-sizing: border-box;
@@ -19,7 +43,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-               background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -1863,7 +1887,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeApprovalModal()">Cancel</button>
                     <asp:Button ID="btnSaveApproval" runat="server" Text="Save"
-    CssClass="btn btn-primary" OnClick="btnSaveApproval_Click" />
+                        CssClass="btn btn-primary" OnClick="btnSaveApproval_Click" />
                 </div>
             </div>
         </div>

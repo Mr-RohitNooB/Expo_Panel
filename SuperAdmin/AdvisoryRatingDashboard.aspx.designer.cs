@@ -42,6 +42,15 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Label lblAdvisorName;
 
         /// <summary>
+        /// hlBack control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlBack;
+
+        /// <summary>
         /// btnLogout control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace Expo_Panel.SuperAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litMessage;
+
+        /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
         /// btnNotRated control.
@@ -85,15 +103,6 @@ namespace Expo_Panel.SuperAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCurrentFilter;
-
-        /// <summary>
-        /// UpdatePanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
         /// txtSearch control.

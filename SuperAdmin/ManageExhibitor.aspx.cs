@@ -934,10 +934,13 @@ namespace Expo_Panel.Admin
                             bool isActive = reader["IS_ACTIVE"] != DBNull.Value ? Convert.ToBoolean(reader["IS_ACTIVE"]) : true;
                             string regType = reader["RegistrationType"] != DBNull.Value ? reader["RegistrationType"].ToString() : "Admin";
 
+                            // --- MODIFICATION ---
+                            // Must close the first reader *before* executing the second command
                             reader.Close();
 
-                            // Load Post-Approval Data if exists
-                            string postApprovalData = LoadPostApprovalDataForEdit(exhibitorId);
+                            // MODIFIED: Load Post-Approval Data using the *same connection*
+                            string postApprovalData = LoadPostApprovalDataForEdit(exhibitorId, con);
+                            // --- END MODIFICATION ---
 
                             StringBuilder sb = new StringBuilder();
                             sb.Append("openExhibitorModal('edit', {");
@@ -972,6 +975,11 @@ namespace Expo_Panel.Admin
                             sb.Append("});");
 
                             ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal", sb.ToString(), true);
+                        }
+                        else
+                        {
+                            // Close the reader even if no exhibitor was found
+                            reader.Close();
                         }
                     }
                 }
@@ -1115,120 +1123,91 @@ namespace Expo_Panel.Admin
         }
 
 
-        private void LoadPostApprovalProfile(int exhibitorId)
+        // MODIFIED: Added 'SqlConnection con' parameter and removed the 'using' block for the connection
+        private string LoadPostApprovalDataForEdit(int exhibitorId, SqlConnection con)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                // The connection is now passed in and is already open
+                using (SqlCommand cmd = new SqlCommand("sp_GetPostApprovalProfileByExhibitorID", con))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_GetPostApprovalProfileByExhibitorID", con))
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+                        StringBuilder sb = new StringBuilder();
 
-                        con.Open();
-                        SqlDataReader reader = cmd.ExecuteReader();
+                        // Booth Information
+                        sb.AppendFormat("boothNo: '{0}',", dr["BoothNo"] != DBNull.Value ? dr["BoothNo"].ToString().Replace("'", "\\'") : "");
+                        sb.AppendFormat("hallNo: '{0}',", dr["HallNo"] != DBNull.Value ? dr["HallNo"].ToString().Replace("'", "\\'") : "");
 
-                        if (reader.Read())
-                        {
-                            StringBuilder profileHtml = new StringBuilder();
+                        // Company Profile
+                        sb.AppendFormat("yearOfEstablishment: '{0}',", dr["YearOfEstablishment"] != DBNull.Value ? dr["YearOfEstablishment"].ToString() : "");
+                        sb.AppendFormat("website: '{0}',", dr["Website"] != DBNull.Value ? dr["Website"].ToString().Replace("'", "\\'") : "");
+                        sb.AppendFormat("linkedIn: '{0}',", dr["LinkedIn"] != DBNull.Value ? dr["LinkedIn"].ToString().Replace("'", "\\'") : "");
+                        sb.AppendFormat("twitter: '{0}',", dr["Twitter"] != DBNull.Value ? dr["Twitter"].ToString().Replace("'", "\\'") : "");
+                        sb.AppendFormat("facebook: '{0}',", dr["Facebook"] != DBNull.Value ? dr["Facebook"].ToString().Replace("'", "\\'") : "");
+                        sb.AppendFormat("youtube: '{0}',", dr["YouTube"] != DBNull.Value ? dr["YouTube"].ToString().Replace("'", "\\'") : "");
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-building'></i> Exhibitor Information</div>");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Exhibitor Name:</div><div class='info-value'>{0}</div></div>", reader["ExhibitorName"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Company:</div><div class='info-value'>{0}</div></div>", reader["Company"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Email:</div><div class='info-value'>{0}</div></div>", reader["ExhibitorEmail"]);
-                            profileHtml.Append("</div>");
+                        // Customer Support
+                        sb.AppendFormat("supportName: '{0}',", dr["CustomerSupportName"] != DBNull.Value ? dr["CustomerSupportName"].ToString().Replace("'", "\\'") : "");
+                        sb.AppendFormat("supportContact: '{0}',", dr["CustomerSupportContact"] != DBNull.Value ? dr["CustomerSupportContact"].ToString().Replace("'", "\\'") : "");
+                        sb.AppendFormat("supportEmail: '{0}',", dr["CustomerSupportEmail"] != DBNull.Value ? dr["CustomerSupportEmail"].ToString().Replace("'", "\\'") : "");
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-map-marker-alt'></i> Booth Information</div>");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Booth No:</div><div class='info-value'>{0}</div></div>", reader["BoothNo"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Hall No:</div><div class='info-value'>{0}</div></div>", reader["HallNo"]);
-                            profileHtml.Append("</div>");
+                        // Checkboxes - Nature of Business
+                        string nature = dr["NatureOfBusiness"] != DBNull.Value ? dr["NatureOfBusiness"].ToString() : "";
+                        sb.AppendFormat("natureOfBusiness: '{0}',", nature.Replace("'", "\\'"));
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-info-circle'></i> Company Profile</div>");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Year of Establishment:</div><div class='info-value'>{0}</div></div>", reader["YearOfEstablishment"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Website:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["Website"]);
-                            profileHtml.Append("</div>");
+                        // Company Category
+                        string category = dr["CompanyCategory"] != DBNull.Value ? dr["CompanyCategory"].ToString() : "";
+                        sb.AppendFormat("companyCategory: '{0}',", category.Replace("'", "\\'"));
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-share-alt'></i> Social Media</div>");
-                            if (reader["LinkedIn"] != DBNull.Value && !string.IsNullOrEmpty(reader["LinkedIn"].ToString()))
-                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>LinkedIn:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["LinkedIn"]);
-                            if (reader["Twitter"] != DBNull.Value && !string.IsNullOrEmpty(reader["Twitter"].ToString()))
-                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Twitter:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["Twitter"]);
-                            if (reader["Facebook"] != DBNull.Value && !string.IsNullOrEmpty(reader["Facebook"].ToString()))
-                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Facebook:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["Facebook"]);
-                            if (reader["YouTube"] != DBNull.Value && !string.IsNullOrEmpty(reader["YouTube"].ToString()))
-                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>YouTube:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["YouTube"]);
-                            profileHtml.Append("</div>");
+                        // Markets
+                        string markets = dr["MarketsCateredTo"] != DBNull.Value ? dr["MarketsCateredTo"].ToString() : "";
+                        sb.AppendFormat("marketsCatered: '{0}',", markets.Replace("'", "\\'"));
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-headset'></i> Customer Support</div>");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Contact Person:</div><div class='info-value'>{0}</div></div>", reader["CustomerSupportName"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Contact Number:</div><div class='info-value'>{0}</div></div>", reader["CustomerSupportContact"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Email:</div><div class='info-value'>{0}</div></div>", reader["CustomerSupportEmail"]);
-                            profileHtml.Append("</div>");
+                        // Geographic Reach
+                        string geo = dr["GeographicReach"] != DBNull.Value ? dr["GeographicReach"].ToString() : "";
+                        sb.AppendFormat("geographicReach: '{0}',", geo.Replace("'", "\\'"));
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-briefcase'></i> Business Details</div>");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Nature of Business:</div><div class='info-value'>{0}</div></div>", reader["NatureOfBusiness"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Company Category:</div><div class='info-value'>{0}</div></div>", reader["CompanyCategory"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Markets Catered:</div><div class='info-value'>{0}</div></div>", reader["MarketsCateredTo"]);
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Geographic Reach:</div><div class='info-value'>{0}</div></div>", reader["GeographicReach"]);
-                            profileHtml.Append("</div>");
+                        // Requirements
+                        sb.AppendFormat("powerSupply: '{0}',", dr["PowerSupplyRequired"] != DBNull.Value ? dr["PowerSupplyRequired"].ToString() : "False");
+                        sb.AppendFormat("powerKwh: '{0}',", dr["PowerSupplyKwh"] != DBNull.Value ? dr["PowerSupplyKwh"].ToString() : "");
+                        sb.AppendFormat("internet: '{0}',", dr["InternetRequired"] != DBNull.Value ? dr["InternetRequired"].ToString() : "False");
+                        sb.AppendFormat("furniture: '{0}',", dr["FurnitureRentalRequired"] != DBNull.Value ? dr["FurnitureRentalRequired"].ToString() : "False");
+                        sb.AppendFormat("avEquipment: '{0}',", dr["AVEquipmentRequired"] != DBNull.Value ? dr["AVEquipmentRequired"].ToString() : "False");
+                        sb.AppendFormat("interpreter: '{0}',", dr["InterpreterSupportRequired"] != DBNull.Value ? dr["InterpreterSupportRequired"].ToString() : "False");
+                        sb.AppendFormat("otherReq: '{0}',", dr["OtherRequirements"] != DBNull.Value ? dr["OtherRequirements"].ToString().Replace("'", "\\'") : "");
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-cogs'></i> Requirements</div>");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Power Supply:</div><div class='info-value'>{0}</div></div>",
-                                Convert.ToBoolean(reader["PowerSupplyRequired"]) ? $"Yes ({reader["PowerSupplyKwh"]} Kwh)" : "No");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Internet:</div><div class='info-value'>{0}</div></div>",
-                                Convert.ToBoolean(reader["InternetRequired"]) ? "Yes" : "No");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Furniture Rental:</div><div class='info-value'>{0}</div></div>",
-                                Convert.ToBoolean(reader["FurnitureRentalRequired"]) ? "Yes" : "No");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>AV Equipment:</div><div class='info-value'>{0}</div></div>",
-                                Convert.ToBoolean(reader["AVEquipmentRequired"]) ? "Yes" : "No");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Interpreter Support:</div><div class='info-value'>{0}</div></div>",
-                                Convert.ToBoolean(reader["InterpreterSupportRequired"]) ? "Yes" : "No");
-                            if (reader["OtherRequirements"] != DBNull.Value && !string.IsNullOrEmpty(reader["OtherRequirements"].ToString()))
-                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Other Requirements:</div><div class='info-value'>{0}</div></div>", reader["OtherRequirements"]);
-                            profileHtml.Append("</div>");
+                        // Objectives
+                        string objectives = dr["ParticipationObjectives"] != DBNull.Value ? dr["ParticipationObjectives"].ToString() : "";
+                        sb.AppendFormat("objectives: '{0}',", objectives.Replace("'", "\\'"));
 
-                            profileHtml.Append("<div class='profile-section'>");
-                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-bullseye'></i> Participation Objectives</div>");
-                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Objectives:</div><div class='info-value'>{0}</div></div>", reader["ParticipationObjectives"]);
-                            profileHtml.Append("</div>");
+                        // Additional Notes
+                        string notes = dr["AdditionalNotes"] != DBNull.Value ? dr["AdditionalNotes"].ToString().Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", "") : "";
+                        sb.AppendFormat("additionalNotes: '{0}',", notes);
 
-                            if (reader["AdditionalNotes"] != DBNull.Value && !string.IsNullOrEmpty(reader["AdditionalNotes"].ToString()))
-                            {
-                                profileHtml.Append("<div class='profile-section'>");
-                                profileHtml.Append("<div class='profile-section-title'><i class='fas fa-file'></i> Documents</div>");
-                                if (reader["ProductPicturePath"] != DBNull.Value && !string.IsNullOrEmpty(reader["ProductPicturePath"].ToString()))
-                                    profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Product Picture:</div><div class='info-value'><a href='{0}' target='_blank'>View Document</a></div></div>", reader["ProductPicturePath"]);
-                                if (reader["BrochurePath"] != DBNull.Value && !string.IsNullOrEmpty(reader["BrochurePath"].ToString()))
-                                    profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Brochure:</div><div class='info-value'><a href='{0}' target='_blank'>View Document</a></div></div>", reader["BrochurePath"]);
-                                profileHtml.Append("</div>");
-                            }
+                        // Files
+                        string productPic = dr["ProductPicturePath"] != DBNull.Value ? dr["ProductPicturePath"].ToString() : "";
+                        string brochure = dr["BrochurePath"] != DBNull.Value ? dr["BrochurePath"].ToString() : "";
+                        sb.AppendFormat("productPicture: '{0}',", productPic.Replace("'", "\\'"));
+                        sb.AppendFormat("brochure: '{0}'", brochure.Replace("'", "\\'"));
 
-                            pnlProfileDetails.Controls.Clear();
-                            pnlProfileDetails.Controls.Add(new Literal { Text = profileHtml.ToString() });
-
-                            string script = "openProfileModal();";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "openProfileModal", script, true);
-                        }
-                        else
-                        {
-                            ShowMessage("Profile not found for this exhibitor.", "danger");
-                        }
-
-                        reader.Close();
+                        dr.Close();
+                        return sb.ToString();
                     }
+
+                    dr.Close();
+                    return "";
                 }
             }
             catch (Exception ex)
             {
-                ShowMessage("Error loading profile: " + ex.Message, "danger");
+                // Throw the exception so the outer method can display it
+                throw new Exception("Error in LoadPostApprovalDataForEdit: " + ex.Message, ex);
             }
         }
 
@@ -1491,6 +1470,123 @@ namespace Expo_Panel.Admin
             hdnExhibitorModalMode.Value = "add";
         }
 
+        private void LoadPostApprovalProfile(int exhibitorId)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetPostApprovalProfileByExhibitorID", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            StringBuilder profileHtml = new StringBuilder();
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-building'></i> Exhibitor Information</div>");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Exhibitor Name:</div><div class='info-value'>{0}</div></div>", reader["ExhibitorName"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Company:</div><div class='info-value'>{0}</div></div>", reader["Company"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Email:</div><div class='info-value'>{0}</div></div>", reader["ExhibitorEmail"]);
+                            profileHtml.Append("</div>");
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-map-marker-alt'></i> Booth Information</div>");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Booth No:</div><div class='info-value'>{0}</div></div>", reader["BoothNo"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Hall No:</div><div class='info-value'>{0}</div></div>", reader["HallNo"]);
+                            profileHtml.Append("</div>");
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-info-circle'></i> Company Profile</div>");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Year of Establishment:</div><div class='info-value'>{0}</div></div>", reader["YearOfEstablishment"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Website:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["Website"]);
+                            profileHtml.Append("</div>");
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-share-alt'></i> Social Media</div>");
+                            if (reader["LinkedIn"] != DBNull.Value && !string.IsNullOrEmpty(reader["LinkedIn"].ToString()))
+                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>LinkedIn:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["LinkedIn"]);
+                            if (reader["Twitter"] != DBNull.Value && !string.IsNullOrEmpty(reader["Twitter"].ToString()))
+                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Twitter:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["Twitter"]);
+                            if (reader["Facebook"] != DBNull.Value && !string.IsNullOrEmpty(reader["Facebook"].ToString()))
+                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Facebook:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["Facebook"]);
+                            if (reader["YouTube"] != DBNull.Value && !string.IsNullOrEmpty(reader["YouTube"].ToString()))
+                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>YouTube:</div><div class='info-value'><a href='{0}' target='_blank'>{0}</a></div></div>", reader["YouTube"]);
+                            profileHtml.Append("</div>");
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-headset'></i> Customer Support</div>");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Contact Person:</div><div class='info-value'>{0}</div></div>", reader["CustomerSupportName"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Contact Number:</div><div class='info-value'>{0}</div></div>", reader["CustomerSupportContact"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Email:</div><div class='info-value'>{0}</div></div>", reader["CustomerSupportEmail"]);
+                            profileHtml.Append("</div>");
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-briefcase'></i> Business Details</div>");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Nature of Business:</div><div class='info-value'>{0}</div></div>", reader["NatureOfBusiness"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Company Category:</div><div class='info-value'>{0}</div></div>", reader["CompanyCategory"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Markets Catered:</div><div class='info-value'>{0}</div></div>", reader["MarketsCateredTo"]);
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Geographic Reach:</div><div class='info-value'>{0}</div></div>", reader["GeographicReach"]);
+                            profileHtml.Append("</div>");
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-cogs'></i> Requirements</div>");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Power Supply:</div><div class='info-value'>{0}</div></div>",
+                                Convert.ToBoolean(reader["PowerSupplyRequired"]) ? $"Yes ({reader["PowerSupplyKwh"]} Kwh)" : "No");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Internet:</div><div class='info-value'>{0}</div></div>",
+                                Convert.ToBoolean(reader["InternetRequired"]) ? "Yes" : "No");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Furniture Rental:</div><div class='info-value'>{0}</div></div>",
+                                Convert.ToBoolean(reader["FurnitureRentalRequired"]) ? "Yes" : "No");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>AV Equipment:</div><div class='info-value'>{0}</div></div>",
+                                Convert.ToBoolean(reader["AVEquipmentRequired"]) ? "Yes" : "No");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Interpreter Support:</div><div class='info-value'>{0}</div></div>",
+                                Convert.ToBoolean(reader["InterpreterSupportRequired"]) ? "Yes" : "No");
+                            if (reader["OtherRequirements"] != DBNull.Value && !string.IsNullOrEmpty(reader["OtherRequirements"].ToString()))
+                                profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Other Requirements:</div><div class='info-value'>{0}</div></div>", reader["OtherRequirements"]);
+                            profileHtml.Append("</div>");
+
+                            profileHtml.Append("<div class='profile-section'>");
+                            profileHtml.Append("<div class='profile-section-title'><i class='fas fa-bullseye'></i> Participation Objectives</div>");
+                            profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Objectives:</div><div class='info-value'>{0}</div></div>", reader["ParticipationObjectives"]);
+                            profileHtml.Append("</div>");
+
+                            if (reader["AdditionalNotes"] != DBNull.Value && !string.IsNullOrEmpty(reader["AdditionalNotes"].ToString()))
+                            {
+                                // This section was named "Documents" in your original file, so I kept it
+                                profileHtml.Append("<div class='profile-section'>");
+                                profileHtml.Append("<div class='profile-section-title'><i class='fas fa-file'></i> Documents</div>");
+                                if (reader["ProductPicturePath"] != DBNull.Value && !string.IsNullOrEmpty(reader["ProductPicturePath"].ToString()))
+                                    profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Product Picture:</div><div class='info-value'><a href='{0}' target='_blank'>View Document</a></div></div>", Page.ResolveUrl(reader["ProductPicturePath"].ToString()));
+                                if (reader["BrochurePath"] != DBNull.Value && !string.IsNullOrEmpty(reader["BrochurePath"].ToString()))
+                                    profileHtml.AppendFormat("<div class='info-row'><div class='info-label'>Brochure:</div><div class='info-value'><a href='{0}' target='_blank'>View Document</a></div></div>", Page.ResolveUrl(reader["BrochurePath"].ToString()));
+                                profileHtml.Append("</div>");
+                            }
+
+                            pnlProfileDetails.Controls.Clear();
+                            pnlProfileDetails.Controls.Add(new Literal { Text = profileHtml.ToString() });
+
+                            string script = "openProfileModal();";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "openProfileModal", script, true);
+                        }
+                        else
+                        {
+                            ShowMessage("Profile not found for this exhibitor.", "danger");
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading profile: " + ex.Message, "danger");
+            }
+        }
         private void ShowMessage(string message, string type)
         {
             string cssClass = type == "success" ? "alert-success" : (type == "info" ? "alert-info" : "alert-danger");

@@ -51,9 +51,9 @@ namespace Expo_Panel.Admin
             }
         }
 
+        // *** REPLACE THIS FUNCTION IN Default.aspx.cs ***
         private bool ValidateAdmin(string username, string password)
         {
-            //return true;
             bool isValid = false;
             string connectionString = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
 
@@ -61,10 +61,20 @@ namespace Expo_Panel.Admin
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT AdminID, IsActive 
-                                   FROM TBL.Admin 
-                                   WHERE Username = @Username 
-                                   AND Password = @Password";
+                    // This query now joins to TBL.Advisory to find the "bridge"
+                    string query = @"
+                SELECT 
+                    a.AdminID, 
+                    a.IsActive,
+                    adv.AdvisorID AS LinkedAdvisorID,
+                    adv.Name AS AdvisorName
+                FROM 
+                    TBL.Admin a
+                LEFT JOIN 
+                    TBL.Advisory adv ON a.AdminID = adv.LinkedAdminID AND adv.IS_ACTIVE = 1
+                WHERE 
+                    a.Username = @Username 
+                    AND a.Password = @Password";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -81,7 +91,19 @@ namespace Expo_Panel.Admin
 
                                 if (isActive)
                                 {
-                                    Session["AdminID"] = adminId;
+                                    Session["AdminID"] = adminId; // Standard Admin ID
+
+                                    // *** NEW CODE (The "Bridge") ***
+                                    // Check if we found a linked advisor profile
+                                    if (reader["LinkedAdvisorID"] != DBNull.Value)
+                                    {
+                                        // This is your "Advisor Hat" session
+                                        Session["AdminAdvisorID"] = Convert.ToInt32(reader["LinkedAdvisorID"]);
+                                        Session["AdvisorUsername"] = reader["AdvisorName"].ToString();
+                                        Session["IsAdvisorLoggedIn"] = true; // This is the key for the rating page
+                                    }
+                                    // *** END NEW CODE ***
+
                                     isValid = true;
                                 }
                                 else

@@ -433,16 +433,11 @@ namespace Expo_Panel.Admin
                 // New Fields
                 int? yearsOfExperience = null;
                 if (!string.IsNullOrEmpty(txtYearsOfExperience.Text.Trim()))
-                {
                     yearsOfExperience = Convert.ToInt32(txtYearsOfExperience.Text.Trim());
-                }
 
-                // COMMENTED OUT FOR FUTURE USE
-                // string linkedInProfile = txtLinkedInProfile.Text.Trim();
                 string linkedInProfile = txtLinkedInProfile.Text.Trim();
                 string photoPath = null;
                 string logoPath = null;
-
 
                 string professionalBio = txtProfessionalBio.Text.Trim();
                 string areasOfExpertise = hdnAreasOfExpertise.Value;
@@ -453,7 +448,6 @@ namespace Expo_Panel.Admin
                 string isAvailable = ddlIsAvailable.SelectedValue;
                 bool marketingConsent = chkMarketingConsent.Checked;
 
-
                 if (fuPhoto.HasFile)
                 {
                     photoPath = UploadPhoto();
@@ -463,14 +457,33 @@ namespace Expo_Panel.Admin
                         return;
                     }
                 }
+
                 if (mode == "add")
                 {
-                    AddSpeaker(name, email, mobile, designation, company, isActive,
+                    int newSpeakerId = AddSpeaker(name, email, mobile, designation, company, isActive,
                         yearsOfExperience, linkedInProfile, photoPath, logoPath,
                         professionalBio, areasOfExpertise, currentWorkProjects,
                         suggestedTopics, preferredDiscussionFormat, previousSpeakingEngagements,
                         isAvailable, marketingConsent);
-                    Session["FlashMessage"] = "Speaker added successfully!";
+
+                    // DEBUG: show new id so you can confirm the stored proc completed
+                    ShowMessage($"DEBUG: AddSpeaker returned ID = {newSpeakerId}", "info");
+
+                    if (newSpeakerId > 0)
+                    {
+                        string selectedAgendaIds = hdnSelectedAgendas.Value;
+                        if (!string.IsNullOrEmpty(selectedAgendaIds))
+                        {
+                            UpdateSpeakerAgendas(newSpeakerId, selectedAgendaIds);
+                        }
+
+                        Session["FlashMessage"] = "Speaker added successfully!";
+                    }
+                    else
+                    {
+                        ShowMessage("Could not create speaker. Please try again.", "danger");
+                        return;
+                    }
                 }
                 else if (mode == "edit")
                 {
@@ -480,8 +493,7 @@ namespace Expo_Panel.Admin
                         suggestedTopics, preferredDiscussionFormat, previousSpeakingEngagements,
                         isAvailable, marketingConsent);
 
-                    // ✅ ADD THIS - Update SelectedAgendaIDs
-                    string selectedAgendaIds = hdnSelectedAgendas.Value; // Get from hidden field
+                    string selectedAgendaIds = hdnSelectedAgendas.Value;
                     if (!string.IsNullOrEmpty(selectedAgendaIds))
                     {
                         UpdateSpeakerAgendas(speakerId, selectedAgendaIds);
@@ -489,7 +501,6 @@ namespace Expo_Panel.Admin
 
                     Session["FlashMessage"] = "Speaker updated successfully!";
                 }
-
 
                 // Clear form
                 ClearForm();
@@ -517,6 +528,7 @@ namespace Expo_Panel.Admin
                 ClearForm();
             }
         }
+
 
         protected void btnSaveApproval_Click(object sender, EventArgs e)
         {
@@ -733,7 +745,10 @@ namespace Expo_Panel.Admin
                             // Read values from database
                             string isAvailable = reader["IsAvailable"].ToString();
                             bool marketingConsent = reader["MarketingConsent"] != DBNull.Value && Convert.ToBoolean(reader["MarketingConsent"]);
-                            string selectedAgendaIds = reader["SelectedAgendaIDs"] != DBNull.Value ? reader["SelectedAgendaIDs"].ToString() : "";
+                            string selectedAgendaIds = reader["SelectedAgendas"] != DBNull.Value ? reader["SelectedAgendas"].ToString() : "";
+
+
+
 
                             // Build JavaScript object for speaker data
                             StringBuilder jsData = new StringBuilder();
@@ -881,7 +896,7 @@ namespace Expo_Panel.Admin
             int speakerId = Convert.ToInt32(hdnApproveSpeakerID.Value);
             LoadSpeakerForApproval(speakerId);
         }
-        private void AddSpeaker(string name, string email, string mobile, string designation, string company, bool isActive,
+        private int AddSpeaker(string name, string email, string mobile, string designation, string company, bool isActive,
             int? yearsOfExperience, string linkedInProfile, string photoPath, string logoPath,
             string professionalBio, string areasOfExpertise, string currentWorkProjects,
             string suggestedTopics, string preferredDiscussionFormat, string previousSpeakingEngagements,
@@ -921,8 +936,13 @@ namespace Expo_Panel.Admin
 
                     con.Open();
                     cmd.ExecuteNonQuery();
+                    if (outParam.Value != DBNull.Value && outParam.Value != null)
+                    {
+                        return Convert.ToInt32(outParam.Value);
+                    }
                 }
             }
+            return 0;
         }
 
         private void UpdateSpeaker(int speakerId, string name, string email, string mobile, string designation, string company, bool isActive,

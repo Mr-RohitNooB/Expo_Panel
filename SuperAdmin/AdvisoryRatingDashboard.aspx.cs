@@ -17,54 +17,57 @@ namespace Expo_Panel.SuperAdmin
             get { return ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString; }
         }
 
-        private int CurrentAdminID
+        // *** NEW "SMART" PROPERTY ***
+        private int CurrentAdvisorID
         {
             get
             {
-                if (Session["AdminID"] != null)
-                    return Convert.ToInt32(Session["AdminID"]);
-                return 0;
+                // 1. Check for a normal advisor login (from AdvisoryLogin.aspx)
+                if (Session["AdvisorID"] != null)
+                    return Convert.ToInt32(Session["AdvisorID"]);
+
+                // 2. Check for an Admin's linked advisor ID (from Default.aspx)
+                if (Session["AdminAdvisorID"] != null)
+                    return Convert.ToInt32(Session["AdminAdvisorID"]);
+
+                return 0; // No valid ID found
             }
         }
 
+        // *** REPLACE Page_Load ***
         protected void Page_Load(object sender, EventArgs e)
         {
-            // FIXED: More robust authentication check with detailed logging
-            if (!IsAdminLoggedIn())
+            // MODIFIED: This now calls the new advisor check
+            if (!IsAdvisorLoggedIn()) // <-- Calls new function
             {
-                System.Diagnostics.Debug.WriteLine("Authentication failed - redirecting to login");
-                System.Diagnostics.Debug.WriteLine($"Session IsAdminLoggedIn: {Session["IsAdminLoggedIn"]}");
-                System.Diagnostics.Debug.WriteLine($"Session AdminID: {Session["AdminID"]}");
-
-                // Use the correct login page path - update this to your actual login page
-                Response.Redirect("~/Default.aspx", false);  // Change this to your actual login page
+                System.Diagnostics.Debug.WriteLine("Authentication failed - redirecting to ADVISOR login");
+                // MODIFIED: Redirect to the NEW advisor login page
+                Response.Redirect("~/User/AdvisoryLogin.aspx", false);  // <-- CHANGED
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
 
             if (!IsPostBack)
             {
-                // Set admin name
-                if (Session["AdminUsername"] != null)
+                // MODIFIED: Set advisor name from the new session
+                if (Session["AdvisorUsername"] != null)
                 {
-                    lblAdvisorName.Text = Session["AdminUsername"].ToString();
+                    lblAdvisorName.Text = Session["AdvisorUsername"].ToString();
                 }
                 else
                 {
                     lblAdvisorName.Text = "Unknown";
                 }
 
-                // Initialize filter
+                // The rest of this is your original code
                 hdnCurrentFilter.Value = "NotRated";
-
-                // Load initial data
                 LoadStatusCounts();
                 LoadSpeakers(string.Empty, "NotRated");
                 SetActiveFilterButton("NotRated");
             }
             else
             {
-                // IMPORTANT: On postback, maintain the current filter
+                // This is your original code
                 string currentFilter = hdnCurrentFilter.Value;
                 if (string.IsNullOrEmpty(currentFilter))
                 {
@@ -72,7 +75,7 @@ namespace Expo_Panel.SuperAdmin
                 }
             }
 
-            // Handle flash messages
+            // This is your original code
             if (Session["FlashMessage"] != null)
             {
                 ShowMessage(Session["FlashMessage"].ToString(), "success");
@@ -80,11 +83,25 @@ namespace Expo_Panel.SuperAdmin
             }
         }
 
+        // *** NEW LOGOUT LOGIC ***
         protected void btnLogout_Click(object sender, EventArgs e)
         {
+            // Check if this was an admin *before* we clear the session
+            bool wasAdmin = (Session["AdminID"] != null);
+
             Session.Clear();
             Session.Abandon();
-            Response.Redirect("~/Default.aspx", false);  // Change to your actual login page
+
+            if (wasAdmin)
+            {
+                // If they were an Admin, send them to Admin login
+                Response.Redirect("~/Admin/Default.aspx", false);
+            }
+            else
+            {
+                // If they were just an Advisor, send them to Advisor login
+                Response.Redirect("~/User/AdvisoryLogin.aspx", false);
+            }
             Context.ApplicationInstance.CompleteRequest();
         }
 
@@ -144,7 +161,7 @@ namespace Expo_Panel.SuperAdmin
                     using (SqlCommand cmd = new SqlCommand("sp_GetAdvisoryRatingStatusCounts", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdminID);
+                        cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdvisorID);
 
                         con.Open();
                         SqlDataReader reader = cmd.ExecuteReader();
@@ -190,14 +207,14 @@ namespace Expo_Panel.SuperAdmin
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine($"LoadSpeakers called - SearchText: '{searchText}', Filter: '{ratingFilter}', AdminID: {CurrentAdminID}");
+                System.Diagnostics.Debug.WriteLine($"LoadSpeakers called - SearchText: '{searchText}', Filter: '{ratingFilter}', AdvisorID: {CurrentAdvisorID}");
 
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand("sp_GetApplicationsForAdvisoryRating", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdminID);
+                        cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdvisorID);
                         cmd.Parameters.AddWithValue("@SearchText", string.IsNullOrEmpty(searchText) ? (object)DBNull.Value : searchText);
                         cmd.Parameters.AddWithValue("@AgendaFilter", DBNull.Value);
                         cmd.Parameters.AddWithValue("@RatingFilter", string.IsNullOrEmpty(ratingFilter) ? (object)DBNull.Value : ratingFilter);
@@ -271,7 +288,7 @@ namespace Expo_Panel.SuperAdmin
                     using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerAgendasWithRatings", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdminID);
+                        cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdvisorID);
                         cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
                         agendasDt = new DataTable();
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -557,7 +574,7 @@ namespace Expo_Panel.SuperAdmin
                 using (SqlCommand cmd = new SqlCommand("sp_SubmitAdvisorySpeakerRating", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdminID);
+                    cmd.Parameters.AddWithValue("@AdvisorID", CurrentAdvisorID);
                     cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
                     cmd.Parameters.AddWithValue("@AgendaID", agendaId);
                     cmd.Parameters.AddWithValue("@Rating", rating);
@@ -584,25 +601,31 @@ namespace Expo_Panel.SuperAdmin
         }
 
         // IMPROVED: More detailed authentication check
-        private bool IsAdminLoggedIn()
+        // *** REPLACE IsAdminLoggedIn ***
+        // (This function is RENAMED and MODIFIED)
+        private bool IsAdvisorLoggedIn()
         {
-            bool isLoggedIn = Session != null &&
-                   Session["IsAdminLoggedIn"] != null &&
-                   Session["IsAdminLoggedIn"].ToString() == "True" &&
-                   Session["AdminID"] != null;
-
-            System.Diagnostics.Debug.WriteLine($"IsAdminLoggedIn check: {isLoggedIn}");
-
-            if (!isLoggedIn && Session != null)
+            // Check if this was a direct advisor login
+            if (Session != null &&
+                Session["IsAdvisorLoggedIn"] != null &&
+                Session["IsAdvisorLoggedIn"].ToString() == "True" &&
+                Session["AdvisorID"] != null)
             {
-                System.Diagnostics.Debug.WriteLine("Session exists but authentication failed");
-                System.Diagnostics.Debug.WriteLine($"  IsAdminLoggedIn: {Session["IsAdminLoggedIn"]}");
-                System.Diagnostics.Debug.WriteLine($"  AdminID: {Session["AdminID"]}");
-                System.Diagnostics.Debug.WriteLine($"  AdminUsername: {Session["AdminUsername"]}");
+                return true;
             }
 
-            return isLoggedIn;
+            // Check if this is an ADMIN accessing as an advisor
+            if (Session != null &&
+                Session["IsAdminLoggedIn"] != null &&
+                Session["IsAdminLoggedIn"].ToString() == "True" &&
+                Session["AdminAdvisorID"] != null)
+            {
+                return true;
+            }
+
+            return false;
         }
+
 
         // Helper class for deserializing JSON
         public class AgendaRatingData
