@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
@@ -118,6 +119,91 @@ namespace Expo_Panel.Admin
 
             return false;
         }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            if (Request.Form["action"] == "addAdvisor")
+            {
+                try
+                {
+                    string name = Request.Form["name"];
+                    string email = Request.Form["email"];
+                    string mobile = Request.Form["mobile"];
+                    string designation = Request.Form["designation"];
+                    string company = Request.Form["company"];
+                    string password = Request.Form["password"];
+                    bool linkToAdmin = Request.Form["linkToAdmin"] == "1";
+                    string approvalStatus = Request.Form["status"];
+                    string remarks = Request.Form["remarks"];
+                    int isActive = Convert.ToInt32(Request.Form["isActive"]);
+
+                    // Get current Admin ID from session
+                    int adminID = Session["AdminID"] != null ? Convert.ToInt32(Session["AdminID"]) : 0;
+
+                    // Add the advisor with password and admin linking
+                    AddAdvisorWithLogin(name, email, mobile, designation, company, password,
+                                       linkToAdmin, adminID, approvalStatus, remarks, isActive);
+
+                    Response.Clear();
+                    Response.Write("Success");
+                    Context.ApplicationInstance.CompleteRequest();
+                }
+                catch (Exception ex)
+                {
+                    Response.Clear();
+                    Response.Write("Error: " + ex.Message);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
+            }
+        }
+
+        private void AddAdvisorWithLogin(string name, string email, string mobile, string designation,
+     string company, string password, bool linkToAdmin, int adminID, string approvalStatus,
+     string remarks, int isActive)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_AddAdvisorWithLogin", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Basic Information
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
+                    cmd.Parameters.AddWithValue("@Designation", string.IsNullOrEmpty(designation) ? (object)DBNull.Value : designation);
+                    cmd.Parameters.AddWithValue("@Company", string.IsNullOrEmpty(company) ? (object)DBNull.Value : company);
+
+                    // Login & Linking
+                    cmd.Parameters.AddWithValue("@Password", password);
+                    cmd.Parameters.AddWithValue("@LinkedAdminID", linkToAdmin ? (object)adminID : DBNull.Value);
+
+                    // Status & Approval
+                    cmd.Parameters.AddWithValue("@IS_ACTIVE", isActive);
+                    cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
+                    cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
+                    cmd.Parameters.AddWithValue("@RegistrationType", "Admin");
+                    cmd.Parameters.AddWithValue("@ApprovedBy", adminID);
+                    cmd.Parameters.AddWithValue("@ApprovalDate", DateTime.Now);
+
+                    // Output parameter
+                    SqlParameter advisorIDParam = new SqlParameter("@AdvisorID", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(advisorIDParam);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+
+                    int newAdvisorID = (int)advisorIDParam.Value;
+
+                    System.Diagnostics.Debug.WriteLine($"New Advisor Created - ID: {newAdvisorID}, Email: {email}, Linked to Admin: {linkToAdmin}");
+                }
+            }
+        }
+
+
 
         private bool TableExists(SqlConnection con, string schema, string table)
         {

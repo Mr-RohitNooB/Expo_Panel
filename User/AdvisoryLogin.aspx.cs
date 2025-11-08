@@ -24,7 +24,7 @@ namespace Expo_Panel.Admin
                 // Check if already logged in as an ADVISOR
                 if (Session["IsAdvisorLoggedIn"] != null && (bool)Session["IsAdvisorLoggedIn"])
                 {
-                    Response.Redirect("~/SuperAdmin/AdvisoryRatingDashboard.aspx", false);
+                    Response.Redirect("~/User/AdvisoryRatingDashboard.aspx", false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 txtUsername.Focus();
@@ -51,7 +51,7 @@ namespace Expo_Panel.Admin
                     Session["IsAuthenticated"] = true; // You can use this if other pages just check this
 
                     // Redirect to the rating dashboard
-                    Response.Redirect("~/SuperAdmin/AdvisoryRatingDashboard.aspx", false);
+                    Response.Redirect("~/User/AdvisoryRatingDashboard.aspx", false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 else

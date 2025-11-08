@@ -1017,16 +1017,32 @@ namespace Expo_Panel.Admin
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-                // Generate password if approving and no password provided
-                string password = txtPassword.Text.Trim();
+                // Generate password if approving and no password exists
+                string password = null;
 
-                if (approvalStatus == "Approved" && string.IsNullOrEmpty(password))
+                if (approvalStatus == "Approved")
                 {
-                    password = GeneratePassword(8); // Auto-generate 8-character password
+                    // Check if password already exists
+                    string checkQuery = "SELECT Password FROM TBL.Speaker WHERE SpeakerID = @SpeakerID";
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, con))
+                    {
+                        checkCmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                        con.Open();
+                        object existingPassword = checkCmd.ExecuteScalar();
 
-                    // Store it back in the textbox so it can be displayed
-                    txtPassword.Text = password;
-                    txtPassword.TextMode = TextBoxMode.SingleLine; // Show the generated password
+                        if (existingPassword == DBNull.Value || existingPassword == null ||
+                            string.IsNullOrEmpty(existingPassword.ToString()))
+                        {
+                            // Generate new password (8 characters)
+                            password = GeneratePassword(8);
+                        }
+                        else
+                        {
+                            // Use existing password
+                            password = existingPassword.ToString();
+                        }
+                        con.Close();
+                    }
                 }
 
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateSpeakerApprovalStatus", con))
@@ -1038,24 +1054,29 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@ApprovedBy", CurrentAdminID);
                     cmd.Parameters.AddWithValue("@Password", string.IsNullOrEmpty(password) ? (object)DBNull.Value : password);
 
-                    con.Open();
+                    if (con.State != ConnectionState.Open)
+                        con.Open();
 
-                    // Execute and get the email and name
                     SqlDataReader reader = cmd.ExecuteReader();
-
                     if (reader.Read() && approvalStatus == "Approved")
                     {
                         string email = reader["Email"].ToString();
                         string name = reader["Name"].ToString();
 
                         // Show success message with password
-                        Session["FlashMessage"] = $"Speaker approved successfully! Generated Password: <strong>{password}</strong>";
+                        Session["FlashMessage"] = $@"
+                    <strong>Speaker Approved Successfully!</strong><br/>
+                    <strong>Login Credentials:</strong><br/>
+                    Email: {email}<br/>
+                    Password: <span style='color: #dc3545; font-weight: bold;'>{password}</span><br/>";
                     }
-
                     reader.Close();
                 }
             }
         }
+
+
+
 
         // Add this helper method to generate random passwords
         private string GeneratePassword(int length = 8)

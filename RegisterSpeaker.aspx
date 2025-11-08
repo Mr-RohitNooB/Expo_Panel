@@ -11,28 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- Light Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
 
-<!-- Dark Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
 
-<!-- Android / PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
-<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
 
-<!-- Theme Colors -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
-<!-- Windows Tile Support -->
-<meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
         * {
@@ -555,6 +555,103 @@
                     padding: 8px 10px;
                 }
         }
+
+        /* Current File Display Styles */
+.current-file-display {
+    background: #f0fdf4;
+    border: 2px solid #86efac;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.current-file-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.current-photo-thumb,
+.current-logo-thumb {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #38a169;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.current-logo-thumb {
+    object-fit: contain;
+    background: white;
+    padding: 10px;
+}
+
+.current-file-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.current-file-label {
+    color: #166534;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.current-file-label i {
+    color: #22c55e;
+    font-size: 16px;
+}
+
+.btn-remove-file {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+}
+
+.btn-remove-file:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.btn-remove-file::before {
+    content: '\f1f8';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+}
+
+@media (max-width: 768px) {
+    .current-file-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .current-file-details {
+        align-items: center;
+    }
+}
+
+.alert-info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+}
     </style>
 </head>
 <body>
@@ -617,27 +714,6 @@
                 </div>
             </div>
 
-            <!-- Profile & Media Section -->
-<div class="form-section">
-    <h4>Profile & Media</h4>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label>Upload Your Photo</label>
-            <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-control-file" />
-            <small class="form-text text-muted">JPG, PNG - Max 2MB</small>
-            <asp:Label ID="lblCurrentPhoto" runat="server" CssClass="text-info mt-2" Visible="false"></asp:Label>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="txtLinkedInProfile">LinkedIn Profile URL <span class="text-danger">*</span></label>
-            <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control" 
-                placeholder="https://www.linkedin.com/in/yourprofile"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                ControlToValidate="txtLinkedInProfile" ErrorMessage="LinkedIn URL is required" 
-                CssClass="text-danger" Display="Dynamic" ValidationGroup="SpeakerForm"></asp:RequiredFieldValidator>
-        </div>
-    </div>
-</div>
-
             <!-- Section 2: Profile & Media -->
             <div class="form-section">
                 <h3><i class="fas fa-id-card"></i>Profile & Media</h3>
@@ -645,21 +721,78 @@
                 <div class="form-group">
                     <label for="fuPhoto">Upload Your Photo <span class="required">*</span></label>
                     <p class="info-text">Please upload a professional headshot (JPG, PNG - Max 2MB)</p>
-                    <div class="file-upload-wrapper">
-                        <asp:FileUpload ID="fuPhoto" runat="server" CssClass="file-upload-input"
-                            accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'photoFileName', 'photoPreview')" />
-                        <label for="<%=fuPhoto.ClientID%>" class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>Choose Photo</span>
-                        </label>
-                    </div>
-                    <div id="photoFileName" class="file-name"></div>
-                    <div id="photoPreview" class="photo-preview">
-                        <img id="photoPreviewImg" src="" alt="Photo Preview" />
-                    </div>
+
+                    <!-- Current Photo Display -->
+                    <asp:Panel ID="pnlCurrentPhoto" runat="server" Visible="false" CssClass="current-file-display">
+                        <div class="current-file-info">
+                            <asp:Image ID="imgCurrentPhoto" runat="server" CssClass="current-photo-thumb" />
+                            <div class="current-file-details">
+                                <span class="current-file-label"><i class="fas fa-check-circle"></i>Current Photo</span>
+                                <asp:Button ID="btnRemovePhoto" runat="server" Text="Remove & Upload New"
+                                    CssClass="btn-remove-file" OnClick="btnRemovePhoto_Click"
+                                    OnClientClick="return confirm('Are you sure you want to remove the current photo? You will need to upload a new one.');"
+                                    CausesValidation="false" />
+                            </div>
+                        </div>
+                    </asp:Panel>
+
+                    <!-- Upload New Photo -->
+                    <asp:Panel ID="pnlUploadPhoto" runat="server">
+                        <div class="file-upload-wrapper">
+                            <asp:FileUpload ID="fuPhoto" runat="server" CssClass="file-upload-input"
+                                accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'photoFileName', 'photoPreview')" />
+                            <label for="<%=fuPhoto.ClientID%>" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Choose Photo</span>
+                            </label>
+                        </div>
+                        <div id="photoFileName" class="file-name"></div>
+                        <div id="photoPreview" class="photo-preview">
+                            <img id="photoPreviewImg" src="" alt="Photo Preview" />
+                        </div>
+                    </asp:Panel>
+
                     <asp:RequiredFieldValidator ID="rfvPhoto" runat="server" ControlToValidate="fuPhoto"
                         ErrorMessage="Photo is required" ForeColor="Red" Display="Dynamic"
                         ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                    <asp:HiddenField ID="hdnCurrentPhotoPath" runat="server" />
+                </div>
+
+                <div class="form-group">
+                    <label>Company Logo <span class="text-muted">(Optional)</span></label>
+                    <p class="info-text">High resolution logo (JPG, PNG - Max 5MB)</p>
+
+                    <!-- Current Logo Display -->
+                    <asp:Panel ID="pnlCurrentLogo" runat="server" Visible="false" CssClass="current-file-display">
+                        <div class="current-file-info">
+                            <asp:Image ID="imgCurrentLogo" runat="server" CssClass="current-logo-thumb" />
+                            <div class="current-file-details">
+                                <span class="current-file-label"><i class="fas fa-check-circle"></i>Current Logo</span>
+                                <asp:Button ID="btnRemoveLogo" runat="server" Text="Remove & Upload New"
+                                    CssClass="btn-remove-file" OnClick="btnRemoveLogo_Click"
+                                    OnClientClick="return confirm('Are you sure you want to remove the current logo?');"
+                                    CausesValidation="false" />
+                            </div>
+                        </div>
+                    </asp:Panel>
+
+                    <!-- Upload New Logo -->
+                    <asp:Panel ID="pnlUploadLogo" runat="server">
+                        <div class="file-upload-wrapper">
+                            <asp:FileUpload ID="fuLogo" runat="server" CssClass="file-upload-input"
+                                accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'logoFileName', 'logoPreview')" />
+                            <label for="<%=fuLogo.ClientID%>" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Choose Logo</span>
+                            </label>
+                        </div>
+                        <div id="logoFileName" class="file-name"></div>
+                        <div id="logoPreview" class="photo-preview">
+                            <img id="logoPreviewImg" src="" alt="Logo Preview" />
+                        </div>
+                    </asp:Panel>
+
+                    <asp:HiddenField ID="hdnCurrentLogoPath" runat="server" />
                 </div>
 
                 <div class="form-group">
@@ -674,6 +807,7 @@
                         ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
                 </div>
             </div>
+
 
             <!-- Section 3: Professional Profile -->
             <div class="form-section">
@@ -827,29 +961,29 @@
             </div>
 
             <div class="form-footer">
-                <a href="Default.aspx" class="back-link">
+               <%-- <a href="Default.aspx" class="back-link">
                     <i class="fas fa-arrow-left"></i>Back to Home
-                </a>
+                </a>--%>
                 <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary"
                     OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" OnClientClick="return collectFormData();" />
             </div>
-        </div>
 
-        <!-- Agenda Details Modal -->
-        <div id="agendaModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2><i class="fas fa-info-circle"></i>Agenda Details</h2>
-                    <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
-                </div>
-                <div class="modal-body" id="modalBody">
-                    <!-- Dynamic content will be loaded here -->
+            <!-- Agenda Details Modal -->
+            <div id="agendaModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-info-circle"></i>Agenda Details</h2>
+                        <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
                 </div>
             </div>
         </div>
-
         <script type="text/javascript">
             // Photo preview function
+            // Add this after the displayFileName function
             function displayFileName(input, displayId, previewId) {
                 var display = document.getElementById(displayId);
                 var preview = document.getElementById(previewId);
@@ -860,9 +994,13 @@
                     var fileName = file.name;
                     var fileSize = (file.size / 1024 / 1024).toFixed(2);
 
+                    // Determine max size based on file type
+                    var maxSize = displayId.includes('logo') ? 5 : 2; // 5MB for logo, 2MB for photo
+                    var fileTypeName = displayId.includes('logo') ? 'Logo' : 'Photo';
+
                     // Validate file size
-                    if (file.size > 2 * 1024 * 1024) {
-                        alert('File size must be less than 2MB');
+                    if (file.size > maxSize * 1024 * 1024) {
+                        alert(fileTypeName + ' file size must be less than ' + maxSize + 'MB');
                         input.value = '';
                         display.innerHTML = '';
                         preview.style.display = 'none';
@@ -1061,6 +1199,166 @@
                 // Initialize selected count
                 updateSelectedCount();
             };
+
+            // Preselect agendas for logged-in speakers
+            function preselectAgendas(agendaIds, hasModifiedAgenda) {
+                console.log('Preselecting agendas:', agendaIds);
+                console.log('Has modified agenda:', hasModifiedAgenda);
+
+                if (!agendaIds) return;
+
+                var ids = agendaIds.split(',');
+                var selectedCount = 0;
+
+                // Loop through agenda IDs and check the corresponding checkboxes
+                ids.forEach(function (id) {
+                    id = id.trim();
+                    if (id) {
+                        // Find checkbox by value (AgendaID)
+                        var checkbox = document.querySelector('input.agenda-checkbox[value="' + id + '"]');
+
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            selectedCount++;
+                            console.log('Checked agenda ID:', id);
+                        } else {
+                            console.log('Checkbox not found for agenda ID:', id);
+                        }
+                    }
+                });
+
+                // Update hidden field and counter
+                document.getElementById('<%= hdnSelectedAgendas.ClientID %>').value = agendaIds;
+
+                var counter = document.getElementById('topicCount');
+                if (counter) {
+                    counter.textContent = selectedCount;
+                }
+
+                // If speaker has already modified agenda, disable all checkboxes
+                if (hasModifiedAgenda) {
+                    disableAgendaSelection();
+                } else {
+                    // If max topics selected, disable unchecked boxes
+                    if (selectedCount >= 3) {
+                        var allCheckboxes = document.querySelectorAll('.agenda-checkbox');
+                        allCheckboxes.forEach(function (cb) {
+                            if (!cb.checked) {
+                                cb.disabled = true;
+                            }
+                        });
+                    }
+                }
+            }
+
+
+            function disableAgendaSelection() {
+                console.log('Disabling agenda selection...');
+
+                var allCheckboxes = document.querySelectorAll('.agenda-checkbox');
+                allCheckboxes.forEach(function (checkbox) {
+                    checkbox.disabled = true;
+                    var row = checkbox.closest('tr');
+                    if (row) {
+                        row.style.opacity = '0.6';
+                        row.style.cursor = 'not-allowed';
+                    }
+                });
+
+                // Add notice message
+                var agendaSection = document.getElementById('agendaSection');
+                if (agendaSection && !document.getElementById('agendaModifiedNotice')) {
+                    var notice = document.createElement('div');
+                    notice.id = 'agendaModifiedNotice';
+                    notice.className = 'alert alert-info';
+                    notice.style.marginBottom = '15px';
+                    notice.innerHTML = '<i class="fas fa-info-circle"></i> You have already modified your agenda selection. No further changes are allowed.';
+
+                    agendaSection.insertBefore(notice, agendaSection.firstChild);
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                var agendaCheckboxes = document.querySelectorAll('.agenda-checkbox');
+                var hiddenField = document.getElementById('<%= hdnSelectedAgendas.ClientID %>');
+                var counter = document.getElementById('topicCount');
+
+                agendaCheckboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('change', function () {
+                        updateAgendaSelection();
+                    });
+                });
+
+                function updateAgendaSelection() {
+                    var selectedAgendas = [];
+                    agendaCheckboxes.forEach(function (checkbox) {
+                        if (checkbox.checked) {
+                            selectedAgendas.push(checkbox.value);
+                        }
+                    });
+
+                    hiddenField.value = selectedAgendas.join(',');
+
+                    if (counter) {
+                        counter.textContent = selectedAgendas.length;
+                    }
+
+                    // Disable/enable checkboxes based on selection count
+                    if (selectedAgendas.length >= 3) {
+                        agendaCheckboxes.forEach(function (checkbox) {
+                            if (!checkbox.checked) {
+                                checkbox.disabled = true;
+                            }
+                        });
+                    } else {
+                        agendaCheckboxes.forEach(function (checkbox) {
+                            if (!checkbox.disabled) {
+                                checkbox.disabled = false;
+                            }
+                        });
+                    }
+                }
+            });
+
+            // Function to preselect expertise and format checkboxes
+            function preselectCheckboxes() {
+                // Preselect Areas of Expertise
+                var expertise = document.getElementById('<%=hdnAreasOfExpertise.ClientID%>').value;
+                if (expertise) {
+                    var expertiseItems = expertise.split(', ');
+                    expertiseItems.forEach(function (item) {
+                        item = item.trim();
+
+                        if (item === 'Base Oils') document.getElementById('chkBaseOils').checked = true;
+                        if (item === 'Lubricant Additives') document.getElementById('chkAdditives').checked = true;
+                        if (item === 'Industrial Lubrication') document.getElementById('chkIndustrial').checked = true;
+                        if (item === 'Automotive & EV Fluids') document.getElementById('chkAutomotive').checked = true;
+                        if (item === 'Synthetic and Bio-Based Lubricants') document.getElementById('chkSynthetic').checked = true;
+                        if (item === 'Sustainability & Circularity') document.getElementById('chkSustainability').checked = true;
+                        if (item === 'Tribology & Wear Performance') document.getElementById('chkTribology').checked = true;
+                        if (item === 'Condition Monitoring & Smart Maintenance') document.getElementById('chkMonitoring').checked = true;
+                        if (item === 'Regulatory Compliance & Standards') document.getElementById('chkRegulatory').checked = true;
+
+                        // Handle "Other" items
+                        if (item.startsWith('Other: ')) {
+                            var otherText = item.replace('Other: ', '');
+                            document.getElementById('<%=txtOtherExpertise.ClientID%>').value = otherText;
+                        }
+                    });
+                }
+
+                // Preselect Preferred Discussion Format
+                var format = document.getElementById('<%=hdnPreferredFormat.ClientID%>').value;
+                if (format) {
+                    var formatItems = format.split(', ');
+                    formatItems.forEach(function (item) {
+                        item = item.trim();
+
+                        if (item === 'Panel Discussion') document.getElementById('chkPanel').checked = true;
+                        if (item === 'Technical Presentation') document.getElementById('chkPresentation').checked = true;
+                    });
+                }
+            }
+
         </script>
     </form>
 </body>

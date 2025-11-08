@@ -372,13 +372,294 @@
                 width: 100%;
             }
         }
+
+        /* Modern Modal Styling */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+            padding: 20px; /* Add padding for mobile */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto; /* Changed from 0 to auto */
+            padding: 0;
+            border: none;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative; /* Add this */
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+            .modal-header h2 {
+                margin: 0;
+                color: #ffffff;
+                font-size: 22px;
+                font-weight: 600;
+            }
+
+        .close-btn {
+            font-size: 28px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+            .close-btn:hover {
+                color: #ffffff;
+                background: rgba(255, 255, 255, 0.1);
+                transform: rotate(90deg);
+            }
+
+        .modal-body {
+            padding: 30px;
+            margin: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+            /* Custom Scrollbar */
+            .modal-body::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .modal-body::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            .modal-body::-webkit-scrollbar-thumb {
+                background: #cbd5e0;
+                border-radius: 4px;
+            }
+
+                .modal-body::-webkit-scrollbar-thumb:hover {
+                    background: #a0aec0;
+                }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 30px;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+                color: #2d3748;
+                font-size: 14px;
+            }
+
+            .form-group small {
+                display: block;
+                margin-top: 6px;
+                color: #718096;
+                font-size: 12px;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2d3748;
+            transition: all 0.2s ease;
+            background: #ffffff;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+            .form-control:hover {
+                border-color: #cbd5e0;
+            }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        select.form-control {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232d3748' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+            appearance: none;
+        }
+
+        /* Checkbox Styling */
+        .form-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .form-group label:has(input[type="checkbox"]) {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Button Styling */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            }
+
+            .btn-primary:active {
+                transform: translateY(0);
+            }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+            .btn-secondary:hover {
+                background-color: #f7fafc;
+                border-color: #cbd5e0;
+            }
+
+
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
+                border-radius: 12px;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+                .modal-header h2 {
+                    font-size: 18px;
+                }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .modal-footer {
+                padding: 16px 20px;
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Red asterisk for required fields */
+
+
+        .form-group label > span,
+        .form-group label::after {
+            color: #f56565;
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
+
         <div class="header">
             <div class="header-left">
-                <img src="../Images/Lubricant_India_Expo_Cropped.png" style="height: 60px;"/>
+                <img src="../Images/Lubricant_India_Expo_Cropped.png" style="height: 60px;" />
                 <h1>Lubricant India Expo Super Admin Panel</h1>
             </div>
             <div class="header-right">
@@ -501,15 +782,20 @@
                 </asp:HyperLink>
             </div>
 
+            <!-- Replace your Quick Actions section with this fixed version -->
+
             <div class="quick-actions">
                 <h3><i class="fas fa-bolt"></i>Quick Actions</h3>
                 <div class="action-buttons">
                     <button type="button" class="btn-action" onclick="window.location='ManageAgenda.aspx'">
                         <i class="fas fa-calendar-plus"></i>Add Agenda Item
                     </button>
-                    <button type="button" class="btn-action" onclick="window.location='ManageAdvisor.aspx'">
+
+                    <button type="button" class="btn-action" onclick="openAddAdvisorModal();" id="btnAddAdvisor">
                         <i class="fas fa-user-plus"></i>Add New Advisor
                     </button>
+
+
                     <button type="button" class="btn-action" onclick="window.location='ManageSpeaker.aspx'">
                         <i class="fas fa-user-tie"></i>Add New Speaker
                     </button>
@@ -522,6 +808,203 @@
                 </div>
             </div>
         </div>
+
+        <div id="addAdvisorModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add New Advisor</h2>
+                    <span class="close-btn" onclick="closeAddAdvisorModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="addAdvisorForm">
+                        <div class="form-group">
+                            <label for="txtName">Full Name *</label>
+                            <input type="text" id="txtName" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtEmail">Email Address *</label>
+                            <input type="email" id="txtEmail" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtMobile">Mobile Number</label>
+                            <input type="tel" id="txtMobile" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtDesignation">Designation</label>
+                            <input type="text" id="txtDesignation" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtCompany">Company</label>
+                            <input type="text" id="txtCompany" class="form-control">
+                        </div>
+
+                        <!-- NEW: PASSWORD FIELD -->
+                        <div class="form-group">
+                            <label for="txtPassword">Password *</label>
+                            <input type="password" id="txtPassword" class="form-control" required>
+                            <small style="color: #666;">This will be used for advisor login</small>
+                        </div>
+
+                        <!-- NEW: LINK TO ADMIN CHECKBOX -->
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="chkLinkToAdmin">
+                                Link this advisor to my admin account
+                            </label>
+                            <small style="display: block; color: #666; margin-top: 5px;">If checked, you can login to Advisor Panel using your admin credentials
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ddlStatus">Approval Status *</label>
+                            <select id="ddlStatus" class="form-control" required>
+                                <option value="">-- Select Status --</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved" selected>Approved</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtRemarks">Remarks</label>
+                            <textarea id="txtRemarks" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="chkActive" checked>
+                                Active
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddAdvisorModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitAddAdvisor()">Add Advisor</button>
+                </div>
+            </div>
+        </div>
     </form>
+
+    <script type="text/javascript">
+        function openAddAdvisorModal() {
+            try {
+                document.getElementById('addAdvisorForm').reset();
+                // Set default approval status to Approved
+                document.getElementById('ddlStatus').value = 'Approved';
+                document.getElementById('addAdvisorModal').style.display = 'block';
+                return false;
+            } catch (e) {
+                console.error('Error opening modal:', e);
+                return false;
+            }
+        }
+
+        function closeAddAdvisorModal() {
+            document.getElementById('addAdvisorModal').style.display = 'none';
+        }
+
+        function submitAddAdvisor() {
+            const name = document.getElementById('txtName').value.trim();
+            const email = document.getElementById('txtEmail').value.trim();
+            const mobile = document.getElementById('txtMobile').value.trim();
+            const designation = document.getElementById('txtDesignation').value.trim();
+            const company = document.getElementById('txtCompany').value.trim();
+            const password = document.getElementById('txtPassword').value.trim();
+            const linkToAdmin = document.getElementById('chkLinkToAdmin').checked;
+            const status = document.getElementById('ddlStatus').value;
+            const remarks = document.getElementById('txtRemarks').value.trim();
+            const isActive = document.getElementById('chkActive').checked ? 1 : 0;
+
+            // Validation
+            if (!name) {
+                alert('Please enter Full Name');
+                return false;
+            }
+
+            if (!email) {
+                alert('Please enter Email Address');
+                return false;
+            }
+
+            if (!password) {
+                alert('Please enter Password');
+                return false;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return false;
+            }
+
+            if (!status) {
+                alert('Please select Approval Status');
+                return false;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return false;
+            }
+
+            // Send data to server
+            const formData = new FormData();
+            formData.append('action', 'addAdvisor');
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('mobile', mobile);
+            formData.append('designation', designation);
+            formData.append('company', company);
+            formData.append('password', password);
+            formData.append('linkToAdmin', linkToAdmin ? '1' : '0');
+            formData.append('status', status);
+            formData.append('remarks', remarks);
+            formData.append('isActive', isActive);
+
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if (data.includes('Success')) {
+                        alert('Advisor added successfully!\n\nLogin Credentials:\nEmail: ' + email + '\nPassword: ' + password);
+                        closeAddAdvisorModal();
+                        window.location.reload();
+                    } else {
+                        alert('Error: ' + data);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+
+            return false;
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('addAdvisorModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function openAddAdvisorModal() {
+            document.getElementById("addAdvisorModal").style.display = "block";
+        }
+
+        function closeAddAdvisorModal() {
+            document.getElementById("addAdvisorModal").style.display = "none";
+        }
+
+    </script>
+
 </body>
 </html>

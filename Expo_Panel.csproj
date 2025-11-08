@@ -67,12 +67,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SpeakerLogin.aspx" />
     <Content Include="User\AdvisoryLogin.aspx" />
     <Content Include="Images\Expo_logo_Full.png" />
     <Content Include="Images\Lubricant_India_Expo_Cropped.png" />
     <Content Include="Images\Lubricant_India_Expo_Logo.jpg" />
     <Content Include="Index.aspx" />
-    <Content Include="SuperAdmin\AdvisoryRatingDashboard.aspx" />
+    <Content Include="User\AdvisoryRatingDashboard.aspx" />
     <Content Include="SuperAdmin\Dashboard.aspx" />
     <Content Include="SuperAdmin\Default.aspx" />
     <Content Include="SuperAdmin\ManageAgenda.aspx" />
@@ -88,6 +89,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SpeakerLogin.aspx.cs">
+      <DependentUpon>SpeakerLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SpeakerLogin.aspx.designer.cs">
+      <DependentUpon>SpeakerLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="User\AdvisoryLogin.aspx.cs">
       <DependentUpon>AdvisoryLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -102,11 +110,11 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SuperAdmin\AdvisoryRatingDashboard.aspx.cs">
+    <Compile Include="User\AdvisoryRatingDashboard.aspx.cs">
       <DependentUpon>AdvisoryRatingDashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SuperAdmin\AdvisoryRatingDashboard.aspx.designer.cs">
+    <Compile Include="User\AdvisoryRatingDashboard.aspx.designer.cs">
       <DependentUpon>AdvisoryRatingDashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="SuperAdmin\Dashboard.aspx.cs">

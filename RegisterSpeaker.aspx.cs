@@ -21,8 +21,23 @@ namespace Expo_Panel
             if (!IsPostBack)
             {
                 LoadAvailableAgendas();
+
+                // Check if speaker is logged in (Edit Mode)
+                if (Session["IsSpeakerLoggedIn"] != null && (bool)Session["IsSpeakerLoggedIn"])
+                {
+                    int speakerId = Convert.ToInt32(Session["SpeakerID"]);
+                    LoadSpeakerData(speakerId);
+
+                    // Change button text to "Update Profile"
+                    btnRegister.Text = "Update Profile";
+
+                    // Add logout button (you can add this in your ASPX as well)
+                    // Show welcome message
+                    ShowMessage($"Welcome back, {Session["SpeakerName"]}! You can update your profile below.", "info");
+                }
             }
         }
+
 
         protected void btnRegister_Click(object sender, EventArgs e)
         {
@@ -31,34 +46,80 @@ namespace Expo_Panel
 
             try
             {
-                // Validate photo upload
-                if (!fuPhoto.HasFile)
+                // Check if this is Edit Mode (logged-in speaker)
+                bool isEditMode = Session["IsSpeakerLoggedIn"] != null && (bool)Session["IsSpeakerLoggedIn"];
+                int speakerId = isEditMode ? Convert.ToInt32(Session["SpeakerID"]) : 0;
+
+                // Handle Photo Upload
+                string photoPath = null;
+
+                if (isEditMode)
                 {
-                    ShowMessage("Please upload your photo.", "danger");
-                    return;
+                    // In edit mode, check if there's an existing photo or new upload
+                    if (!string.IsNullOrEmpty(hdnCurrentPhotoPath.Value))
+                    {
+                        // Keep existing photo
+                        photoPath = hdnCurrentPhotoPath.Value;
+                    }
+                    else if (fuPhoto.HasFile)
+                    {
+                        // Upload new photo
+                        photoPath = UploadPhoto();
+                    }
+                    else
+                    {
+                        ShowMessage("Please upload a photo.", "danger");
+                        return;
+                    }
+                }
+                else
+                {
+                    // New registration - photo is required
+                    if (!fuPhoto.HasFile)
+                    {
+                        ShowMessage("Please upload your photo.", "danger");
+                        return;
+                    }
+
+                    photoPath = UploadPhoto();
+                    if (string.IsNullOrEmpty(photoPath))
+                    {
+                        ShowMessage("Error uploading photo. Please try again.", "danger");
+                        return;
+                    }
                 }
 
-                // Validate file type and size
-                string fileExtension = Path.GetExtension(fuPhoto.FileName).ToLower();
-                if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png")
+                // Handle Company Logo Upload
+                string logoPath = null;
+
+                if (isEditMode)
                 {
-                    ShowMessage("Only JPG and PNG files are allowed.", "danger");
-                    return;
+                    // In edit mode, check if there's an existing logo or new upload
+                    if (!string.IsNullOrEmpty(hdnCurrentLogoPath.Value))
+                    {
+                        // Keep existing logo
+                        logoPath = hdnCurrentLogoPath.Value;
+                    }
+                    else if (fuLogo.HasFile)
+                    {
+                        // Upload new logo
+                        logoPath = UploadLogo();
+                    }
+                }
+                else
+                {
+                    // New registration - logo is optional
+                    if (fuLogo.HasFile)
+                    {
+                        logoPath = UploadLogo();
+                        if (string.IsNullOrEmpty(logoPath))
+                        {
+                            ShowMessage("Error uploading company logo. Please try again.", "danger");
+                            return;
+                        }
+                    }
                 }
 
-                if (fuPhoto.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
-                {
-                    ShowMessage("File size must be less than 2MB.", "danger");
-                    return;
-                }
-
-                // Upload photo
-                string photoPath = UploadPhoto();
-                if (string.IsNullOrEmpty(photoPath))
-                {
-                    ShowMessage("Error uploading photo. Please try again.", "danger");
-                    return;
-                }
 
                 // Basic Information
                 string name = txtName.Text.Trim();
@@ -108,27 +169,65 @@ namespace Expo_Panel
                 string isAvailable = ddlIsAvailable.SelectedValue;
                 bool marketingConsent = chkMarketingConsent.Checked;
 
-                // Registration Settings
-                string registrationType = "Online"; // Always set to Online for public registration
-                bool isActive = true; // Set to true by default
-
-                // Add speaker to database
-                int speakerId = AddSpeaker(
-                    name, email, mobile, designation, company, isActive, registrationType,
-                    yearsOfExperience, linkedIn, photoPath, null, // logoPath is null
-                    professionalBio, areasOfExpertise, currentWorkProjects,
-                    suggestedTopics, preferredDiscussionFormat, previousSpeakingEngagements,
-                    isAvailable, marketingConsent, selectedAgendas
-                );
-
-                if (speakerId > 0)
+                if (isEditMode)
                 {
-                    ShowMessage("Your registration has been submitted successfully! Our team will review your application and get back to you soon.", "success");
-                    ClearForm();
+                    // Determine if we're updating photo/logo
+                    bool updatePhoto = photoPath != hdnCurrentPhotoPath.Value;
+                    bool updateLogo = logoPath != hdnCurrentLogoPath.Value;
+
+                    // UPDATE MODE
+                    UpdateSpeakerProfile(
+                        speakerId,
+                        name,
+                        mobile,
+                        designation,
+                        company,
+                        yearsOfExperience,
+                        linkedIn,
+                        photoPath,
+                        updatePhoto,    // NEW parameter
+                        logoPath,
+                        updateLogo,     // NEW parameter
+                        professionalBio,
+                        areasOfExpertise,
+                        currentWorkProjects,
+                        suggestedTopics,
+                        preferredDiscussionFormat,
+                        previousSpeakingEngagements,
+                        isAvailable,
+                        marketingConsent,
+                        selectedAgendas
+                    );
+
+                    ShowMessage("Your profile has been updated successfully!", "success");
+
+                    // Reload the page to show updated data
+                    Response.Redirect(Request.RawUrl);
                 }
                 else
                 {
-                    ShowMessage("Registration failed. Please try again.", "danger");
+                    // REGISTER MODE - Add new speaker
+                    string registrationType = "Online";
+                    bool isActive = true;
+
+                    int newSpeakerId = AddSpeaker(
+                name, email, mobile, designation, company, isActive,
+                registrationType, yearsOfExperience, linkedIn, photoPath,
+                logoPath, professionalBio, areasOfExpertise, currentWorkProjects,
+                suggestedTopics, preferredDiscussionFormat,
+                previousSpeakingEngagements, isAvailable, marketingConsent,
+                selectedAgendas
+            );
+
+                    if (newSpeakerId > 0)
+                    {
+                        ShowMessage("Your registration has been submitted successfully! Our team will review your application and get back to you soon.", "success");
+                        ClearForm();
+                    }
+                    else
+                    {
+                        ShowMessage("Registration failed. Please try again.", "danger");
+                    }
                 }
             }
             catch (SqlException sqlEx)
@@ -146,6 +245,144 @@ namespace Expo_Panel
             catch (Exception ex)
             {
                 ShowMessage("Error: " + ex.Message, "danger");
+            }
+        }
+
+
+
+        private void UpdateSpeakerProfile(
+    int speakerId,
+    string name,
+    string mobile,
+    string designation,
+    string company,
+    int? yearsOfExperience,
+    string linkedInProfile,
+    string photoPath,
+    bool updatePhoto,      // NEW: Flag to indicate if photo should be updated
+    string logoPath,
+    bool updateLogo,       // NEW: Flag to indicate if logo should be updated
+    string professionalBio,
+    string areasOfExpertise,
+    string currentWorkProjects,
+    string suggestedTopics,
+    string preferredDiscussionFormat,
+    string previousSpeakingEngagements,
+    string isAvailable,
+    bool marketingConsent,
+    string selectedAgendas)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                // Check if speaker has already modified agenda
+                string checkQuery = "SELECT HasModifiedAgenda FROM TBL.Speaker WHERE SpeakerID = @SpeakerID";
+                bool hasModifiedAgenda = false;
+
+                using (SqlCommand checkCmd = new SqlCommand(checkQuery, con))
+                {
+                    checkCmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    con.Open();
+                    object result = checkCmd.ExecuteScalar();
+                    if (result != DBNull.Value && result != null)
+                        hasModifiedAgenda = Convert.ToBoolean(result);
+                }
+
+                // Build update query - ONLY update PhotoPath/LogoPath if flags are true
+                string updateQuery = @"
+            UPDATE TBL.Speaker
+            SET 
+                Name = @Name,
+                Mobile = @Mobile,
+                Designation = @Designation,
+                Company = @Company,
+                YearsOfExperience = @YearsOfExperience,
+                LinkedInProfile = @LinkedInProfile,
+                " + (updatePhoto ? "PhotoPath = @PhotoPath," : "") + @"
+                " + (updateLogo ? "LogoPath = @LogoPath," : "") + @"
+                ProfessionalBio = @ProfessionalBio,
+                AreasOfExpertise = @AreasOfExpertise,
+                CurrentWorkProjects = @CurrentWorkProjects,
+                SuggestedTopics = @SuggestedTopics,
+                PreferredDiscussionFormat = @PreferredDiscussionFormat,
+                PreviousSpeakingEngagements = @PreviousSpeakingEngagements,
+                IsAvailable = @IsAvailable,
+                MarketingConsent = @MarketingConsent,
+                " + (!hasModifiedAgenda ? "SelectedAgendas = @SelectedAgendas, HasModifiedAgenda = 1," : "") + @"
+                ModifiedDate = GETDATE()
+            WHERE SpeakerID = @SpeakerID";
+
+                using (SqlCommand cmd = new SqlCommand(updateQuery, con))
+                {
+                    cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Mobile", string.IsNullOrEmpty(mobile) ? (object)DBNull.Value : mobile);
+                    cmd.Parameters.AddWithValue("@Designation", designation);
+                    cmd.Parameters.AddWithValue("@Company", company);
+                    cmd.Parameters.AddWithValue("@YearsOfExperience", yearsOfExperience.HasValue ? (object)yearsOfExperience.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LinkedInProfile", string.IsNullOrEmpty(linkedInProfile) ? (object)DBNull.Value : linkedInProfile);
+
+                    if (updatePhoto)
+                        cmd.Parameters.AddWithValue("@PhotoPath", photoPath);
+
+                    if (updateLogo)
+                        cmd.Parameters.AddWithValue("@LogoPath", logoPath);
+
+                    cmd.Parameters.AddWithValue("@ProfessionalBio", string.IsNullOrEmpty(professionalBio) ? (object)DBNull.Value : professionalBio);
+                    cmd.Parameters.AddWithValue("@AreasOfExpertise", string.IsNullOrEmpty(areasOfExpertise) ? (object)DBNull.Value : areasOfExpertise);
+                    cmd.Parameters.AddWithValue("@CurrentWorkProjects", string.IsNullOrEmpty(currentWorkProjects) ? (object)DBNull.Value : currentWorkProjects);
+                    cmd.Parameters.AddWithValue("@SuggestedTopics", string.IsNullOrEmpty(suggestedTopics) ? (object)DBNull.Value : suggestedTopics);
+                    cmd.Parameters.AddWithValue("@PreferredDiscussionFormat", string.IsNullOrEmpty(preferredDiscussionFormat) ? (object)DBNull.Value : preferredDiscussionFormat);
+                    cmd.Parameters.AddWithValue("@PreviousSpeakingEngagements", string.IsNullOrEmpty(previousSpeakingEngagements) ? (object)DBNull.Value : previousSpeakingEngagements);
+                    cmd.Parameters.AddWithValue("@IsAvailable", isAvailable);
+                    cmd.Parameters.AddWithValue("@MarketingConsent", marketingConsent);
+
+                    if (!hasModifiedAgenda)
+                        cmd.Parameters.AddWithValue("@SelectedAgendas", selectedAgendas);
+
+                    if (con.State != ConnectionState.Open)
+                        con.Open();
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        private string UploadLogo()
+        {
+            try
+            {
+                if (!fuLogo.HasFile)
+                    return null;
+
+                string logoExtension = Path.GetExtension(fuLogo.FileName).ToLower();
+                if (logoExtension != ".jpg" && logoExtension != ".jpeg" && logoExtension != ".png")
+                {
+                    throw new Exception("Company logo: Only JPG and PNG files are allowed.");
+                }
+
+                if (fuLogo.PostedFile.ContentLength > 5 * 1024 * 1024) // 5MB
+                {
+                    throw new Exception("Company logo file size must be less than 5MB.");
+                }
+
+                string fileName = Path.GetFileName(fuLogo.FileName);
+                string uniqueFileName = "Logo_" + Guid.NewGuid().ToString() + logoExtension;
+
+                string uploadFolder = Server.MapPath("~/Uploads/Logos/");
+                if (!Directory.Exists(uploadFolder))
+                {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+
+                string filePath = Path.Combine(uploadFolder, uniqueFileName);
+                fuLogo.SaveAs(filePath);
+
+                return "~/Uploads/Logos/" + uniqueFileName;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error uploading company logo: " + ex.Message);
             }
         }
 
@@ -274,10 +511,187 @@ namespace Expo_Panel
             }
         }
 
+        private void LoadSpeakerData(int speakerId)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    string query = @"
+                SELECT 
+                    Name, Email, Mobile, Designation, Company,
+                    YearsOfExperience, LinkedInProfile, PhotoPath, LogoPath,
+                    ProfessionalBio, AreasOfExpertise, CurrentWorkProjects,
+                    SuggestedTopics, PreferredDiscussionFormat,
+                    PreviousSpeakingEngagements, IsAvailable,
+                    MarketingConsent, SelectedAgendas, HasModifiedAgenda
+                FROM TBL.Speaker
+                WHERE SpeakerID = @SpeakerID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            // Populate form fields
+                            txtName.Text = reader["Name"].ToString();
+                            txtEmail.Text = reader["Email"].ToString();
+                            txtEmail.Enabled = false;
+                            txtEmail.CssClass += " bg-light";
+
+                            txtMobile.Text = reader["Mobile"].ToString();
+                            txtDesignation.Text = reader["Designation"].ToString();
+                            txtCompany.Text = reader["Company"].ToString();
+
+                            if (reader["YearsOfExperience"] != DBNull.Value)
+                                txtYearsOfExperience.Text = reader["YearsOfExperience"].ToString();
+
+                            txtLinkedIn.Text = reader["LinkedInProfile"].ToString();
+                            txtProfessionalBio.Text = reader["ProfessionalBio"].ToString();
+                            txtCurrentWorkProjects.Text = reader["CurrentWorkProjects"].ToString();
+                            txtSuggestedTopics.Text = reader["SuggestedTopics"].ToString();
+                            txtPreviousSpeakingEngagements.Text = reader["PreviousSpeakingEngagements"].ToString();
+
+                            // Hidden fields
+                            hdnAreasOfExpertise.Value = reader["AreasOfExpertise"].ToString();
+                            hdnPreferredFormat.Value = reader["PreferredDiscussionFormat"].ToString();
+
+                            // Dropdowns
+                            ddlIsAvailable.SelectedValue = reader["IsAvailable"].ToString();
+                            chkMarketingConsent.Checked = reader["MarketingConsent"] != DBNull.Value &&
+                                                          Convert.ToBoolean(reader["MarketingConsent"]);
+
+                            // Handle Photo Display
+                            if (reader["PhotoPath"] != DBNull.Value && !string.IsNullOrEmpty(reader["PhotoPath"].ToString()))
+                            {
+                                string photoPath = reader["PhotoPath"].ToString();
+                                hdnCurrentPhotoPath.Value = photoPath;
+
+                                // Show current photo
+                                pnlCurrentPhoto.Visible = true;
+                                imgCurrentPhoto.ImageUrl = ResolveUrl(photoPath);
+
+                                // Hide upload section and disable validator
+                                pnlUploadPhoto.Visible = false;
+                                rfvPhoto.Enabled = false;
+                            }
+                            else
+                            {
+                                pnlCurrentPhoto.Visible = false;
+                                pnlUploadPhoto.Visible = true;
+                                rfvPhoto.Enabled = true;
+                            }
+
+                            // Handle Logo Display
+                            if (reader["LogoPath"] != DBNull.Value && !string.IsNullOrEmpty(reader["LogoPath"].ToString()))
+                            {
+                                string logoPath = reader["LogoPath"].ToString();
+                                hdnCurrentLogoPath.Value = logoPath;
+
+                                // Show current logo
+                                pnlCurrentLogo.Visible = true;
+                                imgCurrentLogo.ImageUrl = ResolveUrl(logoPath);
+
+                                // Hide upload section
+                                pnlUploadLogo.Visible = false;
+                            }
+                            else
+                            {
+                                pnlCurrentLogo.Visible = false;
+                                pnlUploadLogo.Visible = true;
+                            }
+
+                            // Agenda selection
+                            string selectedAgendas = reader["SelectedAgendas"].ToString();
+                            hdnSelectedAgendas.Value = selectedAgendas;
+
+                            bool hasModifiedAgenda = reader["HasModifiedAgenda"] != DBNull.Value &&
+                                                    Convert.ToBoolean(reader["HasModifiedAgenda"]);
+
+                            // Register JavaScript to preselect ALL checkboxes (agendas, expertise, format)
+                            string script = $@"
+                        window.addEventListener('DOMContentLoaded', function() {{
+                            // Preselect agendas if available
+                            {(!string.IsNullOrEmpty(selectedAgendas) ? $"preselectAgendas('{selectedAgendas}', {hasModifiedAgenda.ToString().ToLower()});" : "")}
+                            
+                            // Preselect expertise and format checkboxes
+                            preselectCheckboxes();
+                        }});
+                    ";
+
+                            ClientScript.RegisterStartupScript(this.GetType(), "PreselectAll", script, true);
+                        }
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading your data: " + ex.Message, "danger");
+            }
+        }
+
+
+        protected void btnRemovePhoto_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Clear the current photo path
+                hdnCurrentPhotoPath.Value = "";
+
+                // Show upload section, hide current photo
+                pnlCurrentPhoto.Visible = false;
+                pnlUploadPhoto.Visible = true;
+
+                // Enable photo validator
+                rfvPhoto.Enabled = true;
+
+                ShowMessage("Photo removed. Please upload a new photo before updating your profile.", "info");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error removing photo: " + ex.Message, "danger");
+            }
+        }
+        protected void btnRemoveLogo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Clear the current logo path
+                hdnCurrentLogoPath.Value = "";
+
+                // Show upload section, hide current logo
+                pnlCurrentLogo.Visible = false;
+                pnlUploadLogo.Visible = true;
+
+                ShowMessage("Logo removed. You can upload a new logo or update without one.", "info");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error removing logo: " + ex.Message, "danger");
+            }
+        }
         private string UploadPhoto()
         {
             try
             {
+                if (!fuPhoto.HasFile)
+                    return null;
+
+                string fileExtension = Path.GetExtension(fuPhoto.FileName).ToLower();
+                if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png")
+                {
+                    throw new Exception("Photo: Only JPG and PNG files are allowed.");
+                }
+
+                if (fuPhoto.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
+                {
+                    throw new Exception("Photo file size must be less than 2MB.");
+                }
+
                 // Create upload directory if it doesn't exist
                 string uploadFolder = Server.MapPath("~/Uploads/Speakers/Photos/");
                 if (!Directory.Exists(uploadFolder))
@@ -286,7 +700,6 @@ namespace Expo_Panel
                 }
 
                 // Generate unique filename
-                string fileExtension = Path.GetExtension(fuPhoto.FileName);
                 string fileName = $"Speaker_{DateTime.Now.Ticks}{fileExtension}";
                 string filePath = Path.Combine(uploadFolder, fileName);
 
@@ -394,14 +807,34 @@ namespace Expo_Panel
 
         private void ShowMessage(string message, string type)
         {
-            string cssClass = type == "success" ? "alert-success" : "alert-danger";
-            string icon = type == "success" ? "fa-check-circle" : "fa-exclamation-circle";
+            string cssClass = "";
+            string icon = "";
+
+            switch (type.ToLower())
+            {
+                case "success":
+                    cssClass = "alert-success";
+                    icon = "fa-check-circle";
+                    break;
+                case "danger":
+                    cssClass = "alert-danger";
+                    icon = "fa-exclamation-circle";
+                    break;
+                case "info":
+                    cssClass = "alert alert-info";
+                    icon = "fa-info-circle";
+                    break;
+                default:
+                    cssClass = "alert-danger";
+                    icon = "fa-exclamation-circle";
+                    break;
+            }
 
             litMessage.Text = $@"
-                <div class='alert {cssClass}'>
-                    <i class='fas {icon}'></i>
-                    {message}
-                </div>";
+        <div class='alert {cssClass}'>
+            <i class='fas {icon}'></i>
+            {message}
+        </div>";
         }
 
         #endregion

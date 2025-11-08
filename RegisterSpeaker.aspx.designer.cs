@@ -132,40 +132,40 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCompany;
 
         /// <summary>
-        /// FileUpload1 control.
+        /// pnlCurrentPhoto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
+        protected global::System.Web.UI.WebControls.Panel pnlCurrentPhoto;
 
         /// <summary>
-        /// lblCurrentPhoto control.
+        /// imgCurrentPhoto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCurrentPhoto;
+        protected global::System.Web.UI.WebControls.Image imgCurrentPhoto;
 
         /// <summary>
-        /// txtLinkedInProfile control.
+        /// btnRemovePhoto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLinkedInProfile;
+        protected global::System.Web.UI.WebControls.Button btnRemovePhoto;
 
         /// <summary>
-        /// RequiredFieldValidator1 control.
+        /// pnlUploadPhoto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        protected global::System.Web.UI.WebControls.Panel pnlUploadPhoto;
 
         /// <summary>
         /// fuPhoto control.
@@ -184,6 +184,69 @@ namespace Expo_Panel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPhoto;
+
+        /// <summary>
+        /// hdnCurrentPhotoPath control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnCurrentPhotoPath;
+
+        /// <summary>
+        /// pnlCurrentLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlCurrentLogo;
+
+        /// <summary>
+        /// imgCurrentLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgCurrentLogo;
+
+        /// <summary>
+        /// btnRemoveLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnRemoveLogo;
+
+        /// <summary>
+        /// pnlUploadLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlUploadLogo;
+
+        /// <summary>
+        /// fuLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuLogo;
+
+        /// <summary>
+        /// hdnCurrentLogoPath control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnCurrentLogoPath;
 
         /// <summary>
         /// txtLinkedIn control.

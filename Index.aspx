@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lubricant India Expo 2026 | 24-26 September 2026 | Yashoobhumi, New Delhi</title>
+    <title>Lubricant India Expo 2026</title>
     <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png">
     <link rel="apple-touch-icon" href="Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png">
@@ -35,11 +35,11 @@
             border-bottom: 3px solid #D94A2B;
         }
 
-        .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
+            .navbar.scrolled {
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            }
 
         .nav-container {
             max-width: 1200px;
@@ -56,10 +56,10 @@
             align-items: center;
         }
 
-        .logo img {
-            height: 60px;
-            width: auto;
-        }
+            .logo img {
+                height: 60px;
+                width: auto;
+            }
 
         .nav-menu {
             display: flex;
@@ -83,10 +83,10 @@
             font-weight: 500;
         }
 
-        .nav-link:hover {
-            background: rgba(217, 74, 43, 0.1);
-            color: #D94A2B;
-        }
+            .nav-link:hover {
+                background: rgba(217, 74, 43, 0.1);
+                color: #D94A2B;
+            }
 
         .dropdown {
             position: relative;
@@ -116,6 +116,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -130,11 +131,11 @@
             transition: all 0.3s ease;
         }
 
-        .dropdown-content a:hover {
-            background: rgba(217, 74, 43, 0.1);
-            color: #D94A2B;
-            padding-left: 25px;
-        }
+            .dropdown-content a:hover {
+                background: rgba(217, 74, 43, 0.1);
+                color: #D94A2B;
+                padding-left: 25px;
+            }
 
         .mobile-menu-toggle {
             display: none;
@@ -155,16 +156,16 @@
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(217,74,43,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-            opacity: 0.5;
-        }
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(217,74,43,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+                opacity: 0.5;
+            }
 
         .hero-content {
             position: relative;
@@ -206,10 +207,10 @@
             backdrop-filter: blur(10px);
         }
 
-        .event-detail-item i {
-            font-size: 24px;
-            color: #D94A2B;
-        }
+            .event-detail-item i {
+                font-size: 24px;
+                color: #D94A2B;
+            }
 
         .cta-button {
             display: inline-block;
@@ -224,10 +225,10 @@
             box-shadow: 0 4px 15px rgba(217, 74, 43, 0.4);
         }
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(217, 74, 43, 0.6);
-        }
+            .cta-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(217, 74, 43, 0.6);
+            }
 
         /* Sections */
         .section {
@@ -245,17 +246,17 @@
             padding-bottom: 15px;
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(135deg, #D94A2B 0%, #FF6B4A 100%);
-            border-radius: 2px;
-        }
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 4px;
+                background: linear-gradient(135deg, #D94A2B 0%, #FF6B4A 100%);
+                border-radius: 2px;
+            }
 
         /* Agenda Preview */
         .agenda-grid {
@@ -272,10 +273,10 @@
             transition: all 0.3s ease;
         }
 
-        .agenda-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(217, 74, 43, 0.3);
-        }
+            .agenda-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(217, 74, 43, 0.3);
+            }
 
         .agenda-day {
             font-size: 14px;
@@ -323,10 +324,10 @@
             transition: all 0.3s ease;
         }
 
-        .speaker-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(217, 74, 43, 0.3);
-        }
+            .speaker-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(217, 74, 43, 0.3);
+            }
 
         .speaker-avatar {
             width: 120px;
@@ -382,11 +383,11 @@
             gap: 15px;
         }
 
-        .venue-info-item i {
-            font-size: 24px;
-            color: #D94A2B;
-            margin-top: 5px;
-        }
+            .venue-info-item i {
+                font-size: 24px;
+                color: #D94A2B;
+                margin-top: 5px;
+            }
 
         .venue-info-text h3 {
             font-size: 18px;
@@ -420,15 +421,15 @@
             flex-wrap: wrap;
         }
 
-        .footer-links a {
-            color: #fff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+            .footer-links a {
+                color: #fff;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
 
-        .footer-links a:hover {
-            color: #D94A2B;
-        }
+                .footer-links a:hover {
+                    color: #D94A2B;
+                }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
@@ -445,9 +446,9 @@
                 border-top: 2px solid #D94A2B;
             }
 
-            .nav-menu.active {
-                display: flex;
-            }
+                .nav-menu.active {
+                    display: flex;
+                }
 
             .mobile-menu-toggle {
                 display: block;
@@ -493,7 +494,9 @@
         <nav class="navbar" id="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <img src="Images/Expo_logo.png" alt="Lubricant India Expo 2026">
+                    <a href="/Index.aspx">
+                        <img src="Images/Expo_logo.png" alt="Lubricant India Expo 2026">
+                    </a>
                 </div>
                 <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                     <i class="fas fa-bars"></i>
@@ -506,7 +509,7 @@
                             <a href="RegisterExhibitor.aspx">Register as Exhibitor</a>
                             <a href="RegisterSpeaker.aspx">Register as Speaker</a>
                             <%--<a href="RegisterAdvisor.aspx">Register as Advisor</a>--%>
-                            <a href="RegisterAgenda.aspx">Register for Agenda</a>
+                            <%--  <a href="RegisterAgenda.aspx">Register for Agenda</a>--%>
                         </div>
                     </li>
                     <li class="nav-item"><a href="#agenda" class="nav-link">Agenda</a></li>
@@ -516,7 +519,9 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Login <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
+                            <a href="User/AdvisoryLogin.aspx">Advisory committee</a>
                             <a href="ExhibitorLogin.aspx">Exhibitor Login - Post Approval</a>
+                            <a href="SpeakerLogin.aspx">Speaker Login (After Approval)</a>
                         </div>
                     </li>
                 </ul>
@@ -560,7 +565,7 @@
             <h2 class="section-title">Event Agenda Highlights</h2>
             <div class="agenda-grid">
                 <div class="agenda-card">
-                  <%--  <div class="agenda-day">Day 1 - September 24</div>
+                    <%--  <div class="agenda-day">Day 1 - September 24</div>
                     <div class="agenda-time">09:30 - 10:30</div>
                     <div class="agenda-title">Leadership Panel – Global Markets</div>
                     <p style="color: #64748b; font-size: 14px; margin: 15px 0;">The lubricants industry has always been closely impacted by complex political dynamics and macroeconomic fluctuations.</p>--%>
@@ -568,34 +573,34 @@
                 </div>
                 <div class="agenda-card">
                     <div class="agenda-day">Day 1 - September 24</div>
-                   <%-- <div class="agenda-time">10:45 - 11:45</div>
+                    <%-- <div class="agenda-time">10:45 - 11:45</div>
                     <div class="agenda-title">Driving Innovation in the Lubricants Sector</div>
                     <p style="color: #64748b; font-size: 14px; margin: 15px 0;">As industries demand higher performance, sustainability, and efficiency, lubricant developers are pushing boundaries.</p>--%>
                     <span class="agenda-track">Track 1</span>
                 </div>
                 <div class="agenda-card">
-                  <%--  <div class="agenda-day">Day 1 - September 24</div>
+                    <%--  <div class="agenda-day">Day 1 - September 24</div>
                     <div class="agenda-time">12:00 - 13:00</div>
                     <div class="agenda-title">Evolving Landscape of Rerefined Base Oils</div>
                     <p style="color: #64748b; font-size: 14px; margin: 15px 0;">Sustainability and circular economy goals move to the forefront of the lubricants industry.</p>
                     <span class="agenda-track">Track 1</span>--%>
                 </div>
                 <div class="agenda-card">
-                   <%-- <div class="agenda-day">Day 2 - September 25</div>
+                    <%-- <div class="agenda-day">Day 2 - September 25</div>
                     <div class="agenda-time">09:30 - 10:45</div>
                     <div class="agenda-title">Building a Sustainable Lubricants Sector</div>
                     <p style="color: #64748b; font-size: 14px; margin: 15px 0;">From packaging to product passports, preparing for transformative regulations.</p>
                     <span class="agenda-track">Track 1</span>--%>
                 </div>
                 <div class="agenda-card">
-           <%--         <div class="agenda-day">Day 2 - September 25</div>
+                    <%--         <div class="agenda-day">Day 2 - September 25</div>
                     <div class="agenda-time">11:15 - 12:30</div>
                     <div class="agenda-title">Avoided Emissions: Product Carbon Handprint</div>
                     <p style="color: #64748b; font-size: 14px; margin: 15px 0;">Focusing on avoided emissions during the use phase of lubricants.</p>
                     <span class="agenda-track">Track 1</span>--%>
                 </div>
                 <div class="agenda-card">
-                  <%--  <div class="agenda-day">Day 3 - September 26</div>
+                    <%--  <div class="agenda-day">Day 3 - September 26</div>
                     <div class="agenda-time">09:30 - 10:30</div>
                     <div class="agenda-title">Phasing out Hazardous Chemicals</div>
                     <p style="color: #64748b; font-size: 14px; margin: 15px 0;">Addressing challenges from regulatory lists of chemicals of concern.</p>
@@ -609,7 +614,7 @@
             <h2 class="section-title">Featured Speakers</h2>
             <div class="speakers-grid">
                 <div class="speaker-card">
-                  <%--  <div class="speaker-avatar">JD</div>
+                    <%--  <div class="speaker-avatar">JD</div>
                     <div class="speaker-name">Dr. John Doe</div>
                     <div class="speaker-title">Chief Technology Officer</div>
                     <div class="speaker-company">Lorem Ipsum Corporation</div>--%>
@@ -639,7 +644,7 @@
                     <div class="speaker-company">Adipiscing Technologies</div>--%>
                 </div>
                 <div class="speaker-card">
-               <%--     <div class="speaker-avatar">LW</div>
+                    <%--     <div class="speaker-avatar">LW</div>
                     <div class="speaker-name">Laura Williams</div>
                     <div class="speaker-title">Senior Advisor</div>
                     <div class="speaker-company">Elit Consulting</div>--%>
@@ -656,16 +661,18 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div class="venue-info-text">
                             <h3>Location</h3>
-                            <p>Yashoobhumi Convention Centre<br>
-                            Dwarka, New Delhi<br>
-                            India</p>
+                            <p>
+                                Yashoobhumi Convention Centre<br>
+                                Dwarka, New Delhi<br>
+                                India
+                            </p>
                         </div>
                     </div>
                     <div class="venue-info-item">
                         <i class="fas fa-clock"></i>
                         <div class="venue-info-text">
                             <h3>Opening Times</h3>
-                           <%-- <p><strong>Wednesday, Sept 24:</strong> 9:00 - 17:30<br>
+                            <%-- <p><strong>Wednesday, Sept 24:</strong> 9:00 - 17:30<br>
                             <strong>Thursday, Sept 25:</strong> 9:00 - 17:30<br>
                             <strong>Friday, Sept 26:</strong> 9:00 - 15:00</p>--%>
                         </div>
@@ -681,8 +688,10 @@
                         <i class="fas fa-envelope"></i>
                         <div class="venue-info-text">
                             <h3>Contact</h3>
-                            <p>For inquiries and information:<br>
-                            <a href="mailto:test@test.com" style="color: #D94A2B;">test@test.com.com</a></p>
+                            <p>
+                                For inquiries and information:<br>
+                                <a href="mailto:test@test.com" style="color: #D94A2B;">test@test.com.com</a>
+                            </p>
                         </div>
                     </div>
                 </div>
