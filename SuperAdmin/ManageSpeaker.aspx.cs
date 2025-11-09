@@ -457,6 +457,15 @@ namespace Expo_Panel.Admin
                         return;
                     }
                 }
+                if (fuLogo.HasFile)
+                {
+                    logoPath = UploadLogo();
+                    if (string.IsNullOrEmpty(logoPath))
+                    {
+                        ShowMessage("Error uploading logo. Please try again.", "danger");
+                        return;
+                    }
+                }
 
                 if (mode == "add")
                 {
@@ -529,9 +538,47 @@ namespace Expo_Panel.Admin
             }
         }
 
+        private string UploadLogo()
+        {
+            try
+            {
+                if (!fuLogo.HasFile)
+                    return null;
+
+                string fileExtension = Path.GetExtension(fuLogo.FileName).ToLower();
+                if (fileExtension != ".jpg" && fileExtension != ".jpeg" && fileExtension != ".png")
+                {
+                    ShowMessage("Only JPG and PNG files are allowed for logo.", "danger");
+                    return null;
+                }
+
+                //if (fuLogo.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
+                //{
+                //    ShowMessage("Logo file size must be less than 2MB.", "danger");
+                //    return null;
+                //}
+
+                string uploadsFolder = Server.MapPath("~/Uploads/CompanyLogos/");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                string fileName = $"LOGO_{DateTime.Now:yyyyMMddHHmmss}_{Path.GetFileName(fuLogo.FileName)}";
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                fuLogo.SaveAs(filePath);
+
+                return "~/Uploads/CompanyLogos/" + fileName;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error uploading logo: " + ex.Message, "danger");
+                return null;
+            }
+        }
 
         protected void btnSaveApproval_Click(object sender, EventArgs e)
         {
+
+
             if (!Page.IsValid)
                 return;
 
@@ -540,6 +587,7 @@ namespace Expo_Panel.Admin
                 int speakerId = Convert.ToInt32(hdnApprovalSpeakerID.Value);
                 string approvalStatus = ddlApprovalStatus.SelectedValue;
                 string remarks = txtApprovalRemarks.Text.Trim();
+                string customPassword = txtPassword.Text.Trim();
 
                 if (approvalStatus == "Rejected" && string.IsNullOrEmpty(remarks))
                 {
@@ -547,7 +595,7 @@ namespace Expo_Panel.Admin
                     return;
                 }
 
-                UpdateApprovalStatus(speakerId, approvalStatus, remarks);
+                UpdateApprovalStatus(speakerId, approvalStatus, remarks, customPassword);
 
                 // Message is set in UpdateApprovalStatus method
                 if (Session["FlashMessage"] == null)
@@ -593,11 +641,11 @@ namespace Expo_Panel.Admin
                     return null;
                 }
 
-                if (fuPhoto.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
-                {
-                    ShowMessage("File size must be less than 2MB.", "danger");
-                    return null;
-                }
+                //if (fuPhoto.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
+                //{
+                //    ShowMessage("File size must be less than 2MB.", "danger");
+                //    return null;
+                //}
 
                 string uploadsFolder = Server.MapPath("~/Uploads/SpeakerPhotos/");
                 if (!Directory.Exists(uploadsFolder))
@@ -771,6 +819,7 @@ namespace Expo_Panel.Admin
                             jsData.AppendFormat("previousSpeakingEngagements: '{0}',", EscapeJsString(reader["PreviousSpeakingEngagements"].ToString()));
                             jsData.AppendFormat("isAvailable: '{0}',", EscapeJsString(isAvailable));
                             jsData.AppendFormat("marketingConsent: {0},", marketingConsent ? "true" : "false");
+                            jsData.AppendFormat("logoPath: '{0}',", EscapeJsString(reader["LogoPath"].ToString() ?? ""));
                             jsData.AppendFormat("linkedInProfile: '{0}',", EscapeJsString(reader["LinkedInProfile"].ToString() ?? ""));
                             jsData.AppendFormat("photoPath: '{0}',", EscapeJsString(reader["PhotoPath"].ToString() ?? ""));
                             jsData.AppendFormat("selectedAgendaIds: '{0}'", EscapeJsString(selectedAgendaIds));
@@ -1013,35 +1062,38 @@ namespace Expo_Panel.Admin
             }
         }
 
-        private void UpdateApprovalStatus(int speakerId, string approvalStatus, string remarks)
+        private void UpdateApprovalStatus(int speakerId, string approvalStatus, string remarks, string customPassword)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-                // Generate password if approving and no password exists
                 string password = null;
 
                 if (approvalStatus == "Approved")
                 {
-                    // Check if password already exists
-                    string checkQuery = "SELECT Password FROM TBL.Speaker WHERE SpeakerID = @SpeakerID";
-                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, con))
+                    if (!string.IsNullOrEmpty(customPassword))   // ✅ ADMIN ENTERED MANUAL PASSWORD
                     {
-                        checkCmd.Parameters.AddWithValue("@SpeakerID", speakerId);
-                        con.Open();
-                        object existingPassword = checkCmd.ExecuteScalar();
+                        password = customPassword;
+                    }
+                    else
+                    {
+                        // ✅ Check if password already exists in DB
+                        string checkQuery = "SELECT Password FROM TBL.Speaker WHERE SpeakerID = @SpeakerID";
+                        using (SqlCommand checkCmd = new SqlCommand(checkQuery, con))
+                        {
+                            checkCmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                            con.Open();
+                            object existingPassword = checkCmd.ExecuteScalar();
+                            con.Close();
 
-                        if (existingPassword == DBNull.Value || existingPassword == null ||
-                            string.IsNullOrEmpty(existingPassword.ToString()))
-                        {
-                            // Generate new password (8 characters)
-                            password = GeneratePassword(8);
+                            if (existingPassword == null || existingPassword == DBNull.Value || existingPassword.ToString() == "")
+                            {
+                                password = GeneratePassword(8);   // ✅ Auto-generate only if no password exists
+                            }
+                            else
+                            {
+                                password = existingPassword.ToString();   // ✅ Use existing password
+                            }
                         }
-                        else
-                        {
-                            // Use existing password
-                            password = existingPassword.ToString();
-                        }
-                        con.Close();
                     }
                 }
 
@@ -1052,6 +1104,8 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
                     cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
                     cmd.Parameters.AddWithValue("@ApprovedBy", CurrentAdminID);
+
+                    // ✅ Always send the result password (manual or generated or existing)
                     cmd.Parameters.AddWithValue("@Password", string.IsNullOrEmpty(password) ? (object)DBNull.Value : password);
 
                     if (con.State != ConnectionState.Open)
@@ -1063,18 +1117,19 @@ namespace Expo_Panel.Admin
                         string email = reader["Email"].ToString();
                         string name = reader["Name"].ToString();
 
-                        // Show success message with password
-                        Session["FlashMessage"] = $@"
-                    <strong>Speaker Approved Successfully!</strong><br/>
-                    <strong>Login Credentials:</strong><br/>
-                    Email: {email}<br/>
-                    Password: <span style='color: #dc3545; font-weight: bold;'>{password}</span><br/>";
+                        Session["FlashMessage"] = @"
+<div style='background: #d1fae5; border-left: 4px solid #10b981; padding: 12px 16px; margin: 15px 0; border-radius: 4px;'>
+    <strong style='color: #065f46;'>Speaker Approved!</strong>
+    <span style='color: #374151; margin-left: 15px;'>Login Credentials:</span>
+    <span style='color: #111827; margin-left: 8px;'><strong>" + email + @"</strong></span>
+    <span style='color: #374151; margin-left: 15px;'>Password:</span>
+    <span style='background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 3px; font-weight: 700; font-family: monospace; margin-left: 8px;'>" + password + @"</span>
+</div>";
                     }
                     reader.Close();
                 }
             }
         }
-
 
 
 
@@ -1116,6 +1171,8 @@ namespace Expo_Panel.Admin
             txtLinkedInProfile.Text = "";
             lblCurrentPhoto.Visible = false;
             lblCurrentPhoto.Text = "";
+            lblCurrentLogo.Visible = false;
+            lblCurrentLogo.Text = "";
 
         }
 

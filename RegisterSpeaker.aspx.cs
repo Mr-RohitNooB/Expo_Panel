@@ -361,10 +361,10 @@ namespace Expo_Panel
                     throw new Exception("Company logo: Only JPG and PNG files are allowed.");
                 }
 
-                if (fuLogo.PostedFile.ContentLength > 5 * 1024 * 1024) // 5MB
-                {
-                    throw new Exception("Company logo file size must be less than 5MB.");
-                }
+                //if (fuLogo.PostedFile.ContentLength > 5 * 1024 * 1024) // 5MB
+                //{
+                //    throw new Exception("Company logo file size must be less than 5MB.");
+                //}
 
                 string fileName = Path.GetFileName(fuLogo.FileName);
                 string uniqueFileName = "Logo_" + Guid.NewGuid().ToString() + logoExtension;
@@ -687,10 +687,10 @@ namespace Expo_Panel
                     throw new Exception("Photo: Only JPG and PNG files are allowed.");
                 }
 
-                if (fuPhoto.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
-                {
-                    throw new Exception("Photo file size must be less than 2MB.");
-                }
+                //if (fuPhoto.PostedFile.ContentLength > 2 * 1024 * 1024) // 2MB
+                //{
+                //    throw new Exception("Photo file size must be less than 2MB.");
+                //}
 
                 // Create upload directory if it doesn't exist
                 string uploadFolder = Server.MapPath("~/Uploads/Speakers/Photos/");

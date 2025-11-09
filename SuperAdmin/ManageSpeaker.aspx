@@ -10,32 +10,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Light Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
 
-<!-- Dark Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
 
-<!-- Android / PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
-<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
 
-<!-- Theme Colors -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
-<!-- Windows Tile Support -->
-<meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
         * {
@@ -827,6 +827,32 @@
                     width: 100%;
                 }
         }
+        /* Completely transparent file inputs */
+        input[type="file"],
+        .form-control-file {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+            /* Transparent button with no background */
+            input[type="file"]::file-selector-button,
+            input[type="file"]::-webkit-file-upload-button {
+                background: transparent;
+                border: 1px solid #ced4da;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                color: #495057;
+                transition: all 0.2s ease;
+            }
+
+                input[type="file"]::file-selector-button:hover,
+                input[type="file"]::-webkit-file-upload-button:hover {
+                    border-color: #80bdff;
+                    color: #0056b3;
+                }
     </style>
 </head>
 <body>
@@ -1033,6 +1059,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="<%=txtLinkedInProfile.ClientID%>">LinkedIn Profile</label>
+                            <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control" placeholder="Enter LinkedIn profile URL"></asp:TextBox>
+                        </div>
+
+                        <div class="form-group">
                             <label for="<%=ddlStatus.ClientID%>">Status</label>
                             <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
                                 <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
@@ -1045,25 +1076,25 @@
                 </div>
 
                 <!-- Profile & Media Section -->
-                <div class="form-section">
+                <div class="form-group">
                     <h4>Profile & Media</h4>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Upload Your Photo</label>
                             <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control-file" />
-                            <small class="form-text text-muted">JPG, PNG - Max 2MB</small>
+                            <small class="form-text text-muted">JPG, PNG</small>
                             <asp:Label ID="lblCurrentPhoto" runat="server" CssClass="text-info mt-2" Visible="false"></asp:Label>
                         </div>
+
                         <div class="form-group col-md-6">
-                            <label for="txtLinkedInProfile">LinkedIn Profile URL <span class="text-danger">*</span></label>
-                            <asp:TextBox ID="txtLinkedInProfile" runat="server" CssClass="form-control"
-                                placeholder="https://www.linkedin.com/in/yourprofile"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvLinkedIn" runat="server"
-                                ControlToValidate="txtLinkedInProfile" ErrorMessage="LinkedIn URL is required"
-                                CssClass="text-danger" Display="Dynamic" ValidationGroup="SpeakerForm"></asp:RequiredFieldValidator>
+                            <label for="fuLogo">Company Logo (High Resolution)</label>
+                            <asp:FileUpload ID="fuLogo" runat="server" CssClass="form-control-file" accept="image/*" />
+                            <small class="form-text text-muted">Upload company logo (JPG or PNG)</small>
+                            <asp:Label ID="lblCurrentLogo" runat="server" CssClass="text-info mt-2" Visible="false"></asp:Label>
                         </div>
                     </div>
                 </div>
+
 
 
                 <!-- Section 2: Professional Profile -->
@@ -1243,8 +1274,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
                     <asp:Button ID="btnSaveSpeaker" runat="server" Text="Save" CssClass="btn btn-primary"
-    OnClick="btnSaveSpeaker_Click" ValidationGroup="SpeakerValidation" 
-    OnClientClick="collectCheckboxData()" />
+                        OnClick="btnSaveSpeaker_Click" ValidationGroup="SpeakerValidation"
+                        OnClientClick="collectCheckboxData()" />
                 </div>
             </div>
         </div>
@@ -1688,6 +1719,7 @@
                     document.getElementById('<%=txtMobile.ClientID%>').value = '';
                     document.getElementById('<%=txtDesignation.ClientID%>').value = '';
                     document.getElementById('<%=txtCompany.ClientID%>').value = '';
+                    document.getElementById('<%=txtLinkedInProfile.ClientID%>').value = '';
                     document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = '';
                     document.getElementById('<%=txtProfessionalBio.ClientID%>').value = '';
                     document.getElementById('<%=txtCurrentWorkProjects.ClientID%>').value = '';
@@ -1714,6 +1746,7 @@
                     document.getElementById('<%=txtDesignation.ClientID%>').value = speakerData.designation || '';
                     document.getElementById('<%=txtCompany.ClientID%>').value = speakerData.company || '';
                     document.getElementById('<%=txtYearsOfExperience.ClientID%>').value = speakerData.yearsOfExperience || '';
+                    document.getElementById('<%=txtLinkedInProfile.ClientID%>').value = speakerData.linkedInProfile || '';
                     document.getElementById('<%=txtProfessionalBio.ClientID%>').value = speakerData.professionalBio || '';
                     document.getElementById('<%=txtCurrentWorkProjects.ClientID%>').value = speakerData.currentWorkProjects || '';
                     document.getElementById('<%=txtSuggestedTopics.ClientID%>').value = speakerData.suggestedTopics || '';
@@ -1751,6 +1784,7 @@
                 document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
                 document.getElementById('<%=txtApprovalDesignation.ClientID%>').value = designation;
                 document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
+                document.getElementById('<%=txtLinkedInProfile.ClientID%>').value = '';
                 document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
                 document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
                 document.getElementById('<%=txtPassword.ClientID%>').value = password || '';

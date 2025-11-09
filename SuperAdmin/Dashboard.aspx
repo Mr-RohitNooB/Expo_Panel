@@ -652,6 +652,31 @@
         .form-group label::after {
             color: #f56565;
         }
+
+        table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            white-space: nowrap;
+        }
+
+            table td:nth-child(2) {
+                white-space: normal;
+                max-width: 250px;
+                min-width: 200px;
+            }
+
+
+        .grid-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px; /* Ensure table doesn't shrink too much */
+        }
     </style>
 </head>
 <body>
@@ -729,7 +754,7 @@
                     </div>
                 </asp:HyperLink>
 
-                <asp:HyperLink ID="lnkAdvisorRating" runat="server" NavigateUrl="~/SuperAdmin/AdvisoryRatingDashboard.aspx" CssClass="card advisor-card">
+                <asp:HyperLink ID="lnkAdvisorRating" runat="server" NavigateUrl="~/User/AdvisoryRatingDashboard.aspx" CssClass="card advisor-card" Target="_blank">
     <div class="card-header">
         <div class="card-icon">
             <i class="fas fa-star"></i>

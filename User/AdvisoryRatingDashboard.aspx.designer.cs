@@ -69,22 +69,31 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// btnNotRated control.
+        /// btnAll control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNotRated;
+        protected global::System.Web.UI.WebControls.Button btnAll;
 
         /// <summary>
-        /// btnRated control.
+        /// btnNotStarted control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRated;
+        protected global::System.Web.UI.WebControls.Button btnNotStarted;
+
+        /// <summary>
+        /// btnFullyRated control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnFullyRated;
 
         /// <summary>
         /// hdnCurrentFilter control.
@@ -114,39 +123,39 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
-        /// gvSpeakers control.
+        /// gvAgendas control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvSpeakers;
+        protected global::System.Web.UI.WebControls.GridView gvAgendas;
 
         /// <summary>
-        /// hdnSpeakerID control.
+        /// hdnAgendaID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnSpeakerID;
+        protected global::System.Web.UI.WebControls.HiddenField hdnAgendaID;
 
         /// <summary>
-        /// upModalAgendas control.
+        /// upModalSpeakers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upModalAgendas;
+        protected global::System.Web.UI.UpdatePanel upModalSpeakers;
 
         /// <summary>
-        /// litAgendaCards control.
+        /// litSpeakerCards control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litAgendaCards;
+        protected global::System.Web.UI.WebControls.Literal litSpeakerCards;
     }
 }

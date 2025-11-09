@@ -258,7 +258,12 @@
             border-radius: 12px;
             font-size: 12px;
             font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap; /* This prevents "Not Started" from wrapping */
         }
+
 
         .badge-rated {
             background: #d1fae5;
@@ -429,7 +434,7 @@
 
             .star:hover,
             .star.active {
-                color: #fbbf24;
+                color: #fbbf24 !important;
             }
 
         .form-group {
@@ -491,7 +496,7 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
                         <asp:Label ID="lblAdvisorName" runat="server" Text=""></asp:Label></span>
-                  <%--  <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
+                    <%--  <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
         <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>--%>
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
@@ -507,26 +512,28 @@
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="status-filters">
-                            <asp:Button ID="btnNotRated" runat="server" Text="Not Rated (0)" CssClass="btn-filter active"
-                                OnClick="btnStatusFilter_Click" CommandArgument="NotRated" />
-                            <asp:Button ID="btnRated" runat="server" Text="Rated (0)" CssClass="btn-filter"
-                                OnClick="btnStatusFilter_Click" CommandArgument="Rated" />
-                            <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="NotRated" />
+                            <asp:Button ID="btnAll" runat="server" Text="All Agendas (0)" CssClass="btn-filter active"
+                                OnClick="btnStatusFilter_Click" CommandArgument="All" />
+                            <asp:Button ID="btnNotStarted" runat="server" Text="Not Started (0)" CssClass="btn-filter"
+                                OnClick="btnStatusFilter_Click" CommandArgument="NotStarted" />
+                            <asp:Button ID="btnFullyRated" runat="server" Text="Completed (0)" CssClass="btn-filter"
+                                OnClick="btnStatusFilter_Click" CommandArgument="FullyRated" />
+                            <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="All" />
                         </div>
                         <div class="toolbar">
                             <div class="search-box">
                                 <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control"
-                                    placeholder="Search by speaker name, company, email..."></asp:TextBox>
+                                    placeholder="Search by agenda title, track, day..."></asp:TextBox>
                                 <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary"
                                     OnClick="btnSearch_Click" />
                             </div>
                         </div>
                         <div class="grid-container">
-                            <asp:GridView ID="gvSpeakers" runat="server" AutoGenerateColumns="False"
-                                OnRowCommand="gvSpeakers_RowCommand" DataKeyNames="SpeakerID"
+                            <asp:GridView ID="gvAgendas" runat="server" AutoGenerateColumns="False"
+                                OnRowCommand="gvAgendas_RowCommand" DataKeyNames="AgendaID"
                                 CssClass="speakers-grid" GridLines="None">
                                 <Columns>
-                                    <asp:BoundField DataField="SpeakerID" HeaderText="ID" Visible="false" />
+                                    <asp:BoundField DataField="AgendaID" HeaderText="ID" Visible="false" />
 
                                     <asp:TemplateField HeaderText="Sr. No.">
                                         <ItemTemplate>
@@ -534,114 +541,157 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:BoundField DataField="SpeakerName" HeaderText="Name" />
-                                    <asp:BoundField DataField="Email" HeaderText="Email" />
-                                    <asp:BoundField DataField="Designation" HeaderText="Designation" />
-                                    <asp:BoundField DataField="Company" HeaderText="Company" />
-                                    <asp:BoundField DataField="YearsOfExperience" HeaderText="Experience (Yrs)" />
+                                    <asp:BoundField DataField="Title" HeaderText="Agenda Title" />
+                                    <asp:BoundField DataField="Day" HeaderText="Day" />
+                                    <asp:BoundField DataField="Track" HeaderText="Track" />
+                                    <asp:BoundField DataField="Time" HeaderText="Time" />
 
-                                    <asp:TemplateField HeaderText="Rating Status">
+                                    <asp:TemplateField HeaderText="Speakers">
                                         <ItemTemplate>
-                                            <%# Convert.ToBoolean(Eval("HasRated")) 
-                                ? "<span class='badge badge-rated'><i class='fas fa-check'></i> Rated (" + Eval("MyRatingCount") + ")</span>" 
-                                : "<span class='badge badge-pending'><i class='fas fa-clock'></i> Not Rated</span>" %>
+                                            <span style="font-weight: 600; color: #4f46e5; white-space: nowrap;">
+                                                <%# Convert.ToInt32(Eval("TotalSpeakers")) == 1 
+                ? "1 Speaker" 
+                : Eval("TotalSpeakers") + " Speakers" %>
+                                            </span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+
+
+
+                                    <asp:TemplateField HeaderText="Progress">
+                                        <ItemTemplate>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <div style="flex: 1; background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                                                    <div style='width: <%# Eval("ProgressPercentage") %>%; background: #10b981; height: 100%;'></div>
+                                                </div>
+                                                <span style="font-size: 12px; color: #64748b; font-weight: 500;">
+                                                    <%# Eval("RatedSpeakers") %>/<%# Eval("TotalSpeakers") %>
+                                                </span>
+                                            </div>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Status">
+                                        <ItemTemplate>
+                                            <%# Convert.ToBoolean(Eval("IsFullyRated")) 
+            ? "<span class='badge badge-rated'><i class='fas fa-check-circle'></i> Completed</span>" 
+            : (Convert.ToInt32(Eval("RatedSpeakers")) > 0 
+                ? "<span class='badge' style='background: #dbeafe; color: #1e40af;'><i class='fas fa-spinner'></i> In Progress</span>"
+                : "<span class='badge badge-pending'><i class='fas fa-clock'></i> Not Started</span>") %>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
 
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
                                             <asp:Button runat="server"
-                                                Text='<%# Convert.ToBoolean(Eval("HasRated")) ? "View/Edit Rating" : "Rate Now" %>'
-                                                CommandName="RateSpeaker"
-                                                CommandArgument='<%# Eval("SpeakerID") %>'
-                                                CssClass='<%# Convert.ToBoolean(Eval("HasRated")) ? "btn btn-warning" : "btn btn-success" %>' />
+                                                Text='<%# Convert.ToBoolean(Eval("IsFullyRated")) ? "View Ratings" : "Rate Speakers" %>'
+                                                CommandName="RateAgenda"
+                                                CommandArgument='<%# Eval("AgendaID") %>'
+                                                CssClass='<%# Convert.ToBoolean(Eval("IsFullyRated")) ? "btn btn-info" : "btn btn-success" %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
                                 <EmptyDataTemplate>
                                     <div class="no-records">
                                         <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
-                                        No speakers found for rating.
+                                        No agendas found.
                                     </div>
                                 </EmptyDataTemplate>
                             </asp:GridView>
                         </div>
                     </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnNotRated" EventName="Click" />
-                        <asp:AsyncPostBackTrigger ControlID="btnRated" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="btnAll" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="btnNotStarted" EventName="Click" />
+
+                        <asp:AsyncPostBackTrigger ControlID="btnFullyRated" EventName="Click" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
         </div>
 
         <!-- Rating Modal -->
+        <!-- Rating Modal -->
         <div id="ratingModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2><i class="fas fa-star"></i>Rate Speaker</h2>
+                    <h2><i class="fas fa-calendar-alt"></i>Rate Speakers for Agenda</h2>
                     <button type="button" class="close-btn" onclick="closeRatingModal()">&times;</button>
                 </div>
 
-                <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
+                <asp:HiddenField ID="hdnAgendaID" runat="server" Value="0" />
 
-                <!-- Speaker Information -->
+                <!-- Agenda Information -->
                 <div class="speaker-info">
-                    <h3><i class="fas fa-user"></i>Speaker Information</h3>
+                    <h3><i class="fas fa-info-circle"></i>Agenda Details</h3>
                     <div class="info-grid">
                         <div class="info-item">
-                            <span class="info-label">Name</span>
-                            <span class="info-value" id="spanSpeakerName"></span>
+                            <span class="info-label">Title</span>
+                            <span class="info-value" id="spanAgendaTitle"></span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Email</span>
-                            <span class="info-value" id="spanSpeakerEmail"></span>
+                            <span class="info-label">Day</span>
+                            <span class="info-value" id="spanAgendaDay"></span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Designation</span>
-                            <span class="info-value" id="spanDesignation"></span>
+                            <span class="info-label">Track</span>
+                            <span class="info-value" id="spanAgendaTrack"></span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Company</span>
-                            <span class="info-value" id="spanCompany"></span>
+                            <span class="info-label">Time</span>
+                            <span class="info-value" id="spanAgendaTime"></span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Experience</span>
-                            <span class="info-value" id="spanExperience"></span>
+                        <div class="info-item" style="grid-column: 1 / -1;">
+                            <span class="info-label">Brief</span>
+                            <span class="info-value" id="spanAgendaBrief"></span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Expertise</span>
-                            <span class="info-value" id="spanExpertise"></span>
-                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+                        <strong style="color: #0369a1;">Progress:</strong>
+                        <span id="spanProgress" style="color: #0c4a6e; font-weight: 500;"></span>
                     </div>
                 </div>
 
-                <!-- Agendas Section -->
-                <asp:UpdatePanel ID="upModalAgendas" runat="server" UpdateMode="Conditional">
+                <!-- Speakers Section -->
+                <asp:UpdatePanel ID="upModalSpeakers" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="agenda-section">
-                            <h3 style="margin-bottom: 15px;"><i class="fas fa-calendar"></i>Selected Agendas & Ratings</h3>
-                            <asp:Literal ID="litAgendaCards" runat="server"></asp:Literal>
+                            <h3 style="margin-bottom: 15px;">
+                                <i class="fas fa-users"></i>Speakers to Rate
+                            </h3>
+                            <asp:Literal ID="litSpeakerCards" runat="server"></asp:Literal>
                         </div>
                         <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-                            <button type="button" class="btn btn-cancel" onclick="closeRatingModal()" style="background: #e2e8f0; color: #475569;">Cancel</button>
-                            <button type="button" class="btn btn-primary" onclick="submitAllRatings()">Submit All Ratings</button>
+                            <button type="button" class="btn" onclick="closeRatingModal()" style="background: #e2e8f0; color: #475569;">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="submitAllRatings()">
+                                <i class="fas fa-save"></i>Submit All Ratings
+                            </button>
                         </div>
-                        </div> </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
         </div>
 
         <script type="text/javascript">
-            function openRatingModal(speakerId, name, email, designation, company, experience, expertise) {
-                document.getElementById('<%=hdnSpeakerID.ClientID%>').value = speakerId;
-                document.getElementById('spanSpeakerName').innerText = name;
-                document.getElementById('spanSpeakerEmail').innerText = email;
-                document.getElementById('spanDesignation').innerText = designation;
-                document.getElementById('spanCompany').innerText = company;
-                document.getElementById('spanExperience').innerText = experience + ' years';
-                document.getElementById('spanExpertise').innerText = expertise || 'Not specified';
+            function openRatingModal(agendaId, title, day, track, time, brief, ratedCount, totalCount) {
+                console.log('Opening modal for agenda:', agendaId);
+
+                document.getElementById('<%=hdnAgendaID.ClientID%>').value = agendaId;
+                document.getElementById('spanAgendaTitle').innerText = title;
+                document.getElementById('spanAgendaDay').innerText = day;
+                document.getElementById('spanAgendaTrack').innerText = track;
+                document.getElementById('spanAgendaTime').innerText = time;
+                document.getElementById('spanAgendaBrief').innerText = brief || 'No description available';
+                document.getElementById('spanProgress').innerText = ratedCount + ' of ' + totalCount + ' speakers rated';
+
+                // Debug: Check if speaker cards are loaded
+                var speakerCards = document.querySelectorAll('.agenda-card[data-speaker-id]');
+                console.log('Speaker cards found:', speakerCards.length);
+
+                if (speakerCards.length === 0) {
+                    console.error('No speaker cards found in DOM!');
+                }
 
                 document.getElementById('ratingModal').classList.add('show');
             }
@@ -650,19 +700,100 @@
                 document.getElementById('ratingModal').classList.remove('show');
             }
 
-            function setRating(agendaId, rating) {
+            function setRating(speakerId, rating) {
+                // Set the hidden field value
+                var hiddenField = document.getElementById('hdnRating_' + speakerId);
+                if (hiddenField) {
+                    hiddenField.value = rating;
+                }
+
                 // Update star display
-                var stars = document.querySelectorAll('.star-group-' + agendaId + ' .star');
-                stars.forEach(function (star, index) {
-                    if (index < rating) {
-                        star.classList.add('active');
-                    } else {
-                        star.classList.remove('active');
+                var starsContainer = document.getElementById('stars_' + speakerId);
+                if (starsContainer) {
+                    var stars = starsContainer.querySelectorAll('i');
+                    stars.forEach(function (star, index) {
+                        if (index < rating) {
+                            star.classList.add('active');
+                        } else {
+                            star.classList.remove('active');
+                        }
+                    });
+                }
+            }
+
+            function hoverStars(speakerId, rating) {
+                var starsContainer = document.getElementById('stars_' + speakerId);
+                if (starsContainer) {
+                    var stars = starsContainer.querySelectorAll('i');
+                    stars.forEach(function (star, index) {
+                        if (index < rating) {
+                            star.style.color = '#fbbf24';
+                        } else {
+                            star.style.color = '#cbd5e1';
+                        }
+                    });
+                }
+            }
+
+            function resetStars(speakerId) {
+                var hiddenField = document.getElementById('hdnRating_' + speakerId);
+                var currentRating = hiddenField ? parseInt(hiddenField.value) || 0 : 0;
+
+                var starsContainer = document.getElementById('stars_' + speakerId);
+                if (starsContainer) {
+                    var stars = starsContainer.querySelectorAll('i');
+                    stars.forEach(function (star, index) {
+                        if (index < currentRating) {
+                            star.classList.add('active');
+                            star.style.color = '#fbbf24';
+                        } else {
+                            star.classList.remove('active');
+                            star.style.color = '#cbd5e1';
+                        }
+                    });
+                }
+            }
+
+            function submitAllRatings() {
+                var agendaId = document.getElementById('<%=hdnAgendaID.ClientID%>').value;
+                var ratingsData = [];
+
+                var speakerCards = document.querySelectorAll('.agenda-card[data-speaker-id]');
+                var allValid = true;
+                var firstInvalidCard = null;
+
+                speakerCards.forEach(function (card) {
+                    var speakerId = card.getAttribute('data-speaker-id');
+                    var ratingField = document.getElementById('hdnRating_' + speakerId);
+                    var commentsField = document.getElementById('txtComments_' + speakerId);
+
+                    var rating = ratingField ? ratingField.value : '0';
+                    var comments = commentsField ? commentsField.value : '';
+
+                    if (!rating || rating == '0') {
+                        allValid = false;
+                        if (firstInvalidCard == null) {
+                            firstInvalidCard = card;
+                        }
                     }
+
+                    ratingsData.push({
+                        SpeakerID: speakerId,
+                        Rating: rating,
+                        Comments: comments
+                    });
                 });
 
-                // Set hidden field value
-                document.getElementById('hdnRating_' + agendaId).value = rating;
+                if (!allValid) {
+                    alert('Please provide a rating (1-5 stars) for all speakers before submitting.');
+                    if (firstInvalidCard) {
+                        firstInvalidCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+
+                // Use __doPostBack to submit via ASP.NET
+                __doPostBack('SubmitRatings', JSON.stringify({ agendaId: agendaId, ratings: ratingsData }));
             }
 
             window.onclick = function (event) {

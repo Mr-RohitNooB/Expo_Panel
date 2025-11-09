@@ -95,8 +95,12 @@ namespace Expo_Panel.Admin
         {
             int exhibitorId = Convert.ToInt32(e.CommandArgument);
 
+            // ADD DEBUG LOGGING
+            System.Diagnostics.Debug.WriteLine($"RowCommand fired: {e.CommandName} for ID: {exhibitorId}");
+
             if (e.CommandName == "EditExhibitor")
             {
+                System.Diagnostics.Debug.WriteLine("Edit command detected - calling LoadExhibitorForEdit");
                 LoadExhibitorForEdit(exhibitorId);
             }
             else if (e.CommandName == "QuickToggle")
@@ -107,11 +111,8 @@ namespace Expo_Panel.Admin
             {
                 LoadExhibitorForApproval(exhibitorId);
             }
-            else if (e.CommandName == "ViewProfile")
-            {
-                LoadPostApprovalProfile(exhibitorId);
-            }
         }
+
 
         protected void gvExhibitors_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -185,24 +186,31 @@ namespace Expo_Panel.Admin
 
                 if (mode == "add")
                 {
-                    // ADD MODE
-                    AddExhibitor(name, email, mobile, designation, company, headOffice, city, state, country,
-                        gstNumber, billingAddress, boothType, areaInSqm, conference, sponsorship, advertising,
-                        customPackage, isActive, registrationType);
+                    AddExhibitor(name, email, mobile, designation, company, headOffice, city, state,
+                                 country, gstNumber, billingAddress, boothType, areaInSqm, conference,
+                                 sponsorship, advertising, customPackage, isActive, registrationType);
 
-                    // Get the newly created exhibitor ID
                     exhibitorId = GetExhibitorIdByEmail(email);
 
-                    // If post-approval data is present, create the profile
                     if (hasPostApprovalData && exhibitorId > 0)
                     {
-                        SavePostApprovalProfile(exhibitorId, mode);
-                    }
+                        // ✅ Auto-Approve FIRST (before saving profile)
+                        string autoPassword = GenerateRandomPassword();
+                        UpdateApprovalStatus(exhibitorId, "Approved", "Auto-approved on full form submit",
+                                           autoPassword, CurrentAdminID);
 
-                    Session["FlashMessage"] = hasPostApprovalData
-                        ? "Exhibitor and profile added successfully!"
-                        : "Exhibitor added successfully!";
+                        // NOW save the post-approval profile
+                        SavePostApprovalProfile(exhibitorId, mode);
+
+                        Session["FlashMessage"] = "Exhibitor added and automatically approved with full profile!";
+                    }
+                    else
+                    {
+                        Session["FlashMessage"] = "Exhibitor added. Approval pending.";
+                    }
                 }
+
+
                 else if (mode == "edit")
                 {
                     // EDIT MODE
@@ -512,6 +520,7 @@ namespace Expo_Panel.Admin
                 ShowMessage("Error loading exhibitor for approval: " + ex.Message, "danger");
             }
         }
+
 
         protected void btnSaveApproval_Click(object sender, EventArgs e)
         {
@@ -904,92 +913,176 @@ namespace Expo_Panel.Admin
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
-
                         con.Open();
                         SqlDataReader reader = cmd.ExecuteReader();
 
                         if (reader.Read())
                         {
-                            hdnExhibitorID.Value = exhibitorId.ToString();
-                            hdnExhibitorModalMode.Value = "edit";
+                            // Build JSON data object
+                            StringBuilder json = new StringBuilder();
+                            json.Append("{");
+                            json.AppendFormat("id: {0},", exhibitorId);
+                            json.AppendFormat("name: '{0}',", reader["Name"] != DBNull.Value ? reader["Name"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("designation: '{0}',", reader["Designation"] != DBNull.Value ? reader["Designation"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("email: '{0}',", reader["Email"] != DBNull.Value ? reader["Email"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("mobile: '{0}',", reader["Mobile"] != DBNull.Value ? reader["Mobile"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("company: '{0}',", reader["Company"] != DBNull.Value ? reader["Company"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("headOffice: '{0}',", reader["HeadOfficeAddress"] != DBNull.Value ? reader["HeadOfficeAddress"].ToString().Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", "") : "");
+                            json.AppendFormat("city: '{0}',", reader["City"] != DBNull.Value ? reader["City"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("state: '{0}',", reader["State"] != DBNull.Value ? reader["State"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("country: '{0}',", reader["Country"] != DBNull.Value ? reader["Country"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("gst: '{0}',", reader["GSTNumber"] != DBNull.Value ? reader["GSTNumber"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("billing: '{0}',", reader["BillingAddress"] != DBNull.Value ? reader["BillingAddress"].ToString().Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", "") : "");
+                            json.AppendFormat("boothType: '{0}',", reader["BoothType"] != DBNull.Value ? reader["BoothType"].ToString().Replace("'", "\\'") : "");
+                            json.AppendFormat("area: '{0}',", reader["AreaInSqm"] != DBNull.Value ? reader["AreaInSqm"].ToString() : "");
+                            json.AppendFormat("conference: {0},", reader["InterestedInConference"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInConference"]) ? "true" : "false");
+                            json.AppendFormat("sponsorship: {0},", reader["InterestedInSponsorship"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInSponsorship"]) ? "true" : "false");
+                            json.AppendFormat("advertising: {0},", reader["InterestedInAdvertising"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInAdvertising"]) ? "true" : "false");
+                            json.AppendFormat("customPackage: {0},", reader["InterestedInCustomPackage"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInCustomPackage"]) ? "true" : "false");
+                            json.AppendFormat("isActive: '{0}',", reader["IS_ACTIVE"] != DBNull.Value && Convert.ToBoolean(reader["IS_ACTIVE"]) ? "1" : "0");
+                            json.AppendFormat("regType: '{0}'", reader["RegistrationType"] != DBNull.Value ? reader["RegistrationType"].ToString() : "Admin");
 
-                            // Pre-Approval Fields
-                            string name = reader["Name"] != DBNull.Value ? reader["Name"].ToString().Replace("'", "\\'") : "";
-                            string designation = reader["Designation"] != DBNull.Value ? reader["Designation"].ToString().Replace("'", "\\'") : "";
-                            string email = reader["Email"] != DBNull.Value ? reader["Email"].ToString().Replace("'", "\\'") : "";
-                            string mobile = reader["Mobile"] != DBNull.Value ? reader["Mobile"].ToString().Replace("'", "\\'") : "";
-                            string company = reader["Company"] != DBNull.Value ? reader["Company"].ToString().Replace("'", "\\'") : "";
-                            string headOffice = reader["HeadOfficeAddress"] != DBNull.Value ? reader["HeadOfficeAddress"].ToString().Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", "") : "";
-                            string city = reader["City"] != DBNull.Value ? reader["City"].ToString().Replace("'", "\\'") : "";
-                            string state = reader["State"] != DBNull.Value ? reader["State"].ToString().Replace("'", "\\'") : "";
-                            string country = reader["Country"] != DBNull.Value ? reader["Country"].ToString().Replace("'", "\\'") : "";
-                            string gst = reader["GSTNumber"] != DBNull.Value ? reader["GSTNumber"].ToString().Replace("'", "\\'") : "";
-                            string billing = reader["BillingAddress"] != DBNull.Value ? reader["BillingAddress"].ToString().Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", "") : "";
-                            string boothType = reader["BoothType"] != DBNull.Value ? reader["BoothType"].ToString().Replace("'", "\\'") : "";
-                            string area = reader["AreaInSqm"] != DBNull.Value ? reader["AreaInSqm"].ToString() : "";
-                            bool conference = reader["InterestedInConference"] != DBNull.Value ? Convert.ToBoolean(reader["InterestedInConference"]) : false;
-                            bool sponsorship = reader["InterestedInSponsorship"] != DBNull.Value ? Convert.ToBoolean(reader["InterestedInSponsorship"]) : false;
-                            bool advertising = reader["InterestedInAdvertising"] != DBNull.Value ? Convert.ToBoolean(reader["InterestedInAdvertising"]) : false;
-                            bool customPackage = reader["InterestedInCustomPackage"] != DBNull.Value ? Convert.ToBoolean(reader["InterestedInCustomPackage"]) : false;
-                            bool isActive = reader["IS_ACTIVE"] != DBNull.Value ? Convert.ToBoolean(reader["IS_ACTIVE"]) : true;
-                            string regType = reader["RegistrationType"] != DBNull.Value ? reader["RegistrationType"].ToString() : "Admin";
-
-                            // --- MODIFICATION ---
-                            // Must close the first reader *before* executing the second command
                             reader.Close();
 
-                            // MODIFIED: Load Post-Approval Data using the *same connection*
+                            // Get post-approval data
                             string postApprovalData = LoadPostApprovalDataForEdit(exhibitorId, con);
-                            // --- END MODIFICATION ---
-
-                            StringBuilder sb = new StringBuilder();
-                            sb.Append("openExhibitorModal('edit', {");
-                            sb.AppendFormat("id: {0},", exhibitorId);
-                            sb.AppendFormat("name: '{0}',", name);
-                            sb.AppendFormat("designation: '{0}',", designation);
-                            sb.AppendFormat("email: '{0}',", email);
-                            sb.AppendFormat("mobile: '{0}',", mobile);
-                            sb.AppendFormat("company: '{0}',", company);
-                            sb.AppendFormat("headOffice: '{0}',", headOffice);
-                            sb.AppendFormat("city: '{0}',", city);
-                            sb.AppendFormat("state: '{0}',", state);
-                            sb.AppendFormat("country: '{0}',", country);
-                            sb.AppendFormat("gst: '{0}',", gst);
-                            sb.AppendFormat("billing: '{0}',", billing);
-                            sb.AppendFormat("boothType: '{0}',", boothType);
-                            sb.AppendFormat("area: '{0}',", area);
-                            sb.AppendFormat("conference: '{0}',", conference);
-                            sb.AppendFormat("sponsorship: '{0}',", sponsorship);
-                            sb.AppendFormat("advertising: '{0}',", advertising);
-                            sb.AppendFormat("customPackage: '{0}',", customPackage);
-                            sb.AppendFormat("isActive: '{0}',", isActive ? "1" : "0");
-                            sb.AppendFormat("regType: '{0}'", regType);
-
-                            // Append post-approval data if exists
                             if (!string.IsNullOrEmpty(postApprovalData))
                             {
-                                sb.Append(",");
-                                sb.Append(postApprovalData);
+                                json.Append(",");
+                                json.Append(postApprovalData);
                             }
 
-                            sb.Append("});");
+                            json.Append("}");
 
-                            ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal", sb.ToString(), true);
+                            // Call JavaScript function with data
+                            string script = $"openExhibitorModal('edit', {json.ToString()});";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal_" + exhibitorId, script, true);
                         }
                         else
                         {
-                            // Close the reader even if no exhibitor was found
-                            reader.Close();
+                            ShowMessage("Exhibitor not found.", "danger");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                ShowMessage("Error loading exhibitor: " + ex.Message, "danger");
+                ShowMessage("Error loading exhibitor for edit: " + ex.Message, "danger");
             }
         }
 
+
+        private void LoadPostApprovalDataForEditServerSide(int exhibitorId, SqlConnection con)
+        {
+            try
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("sp_GetPostApprovalProfileByExhibitorID", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        // Booth Information
+                        txtBoothNo.Text = dr["BoothNo"] != DBNull.Value ? dr["BoothNo"].ToString() : "";
+                        txtHallNo.Text = dr["HallNo"] != DBNull.Value ? dr["HallNo"].ToString() : "";
+
+                        // Company Profile
+                        txtYearOfEstablishment.Text = dr["YearOfEstablishment"] != DBNull.Value ? dr["YearOfEstablishment"].ToString() : "";
+                        txtWebsite.Text = dr["Website"] != DBNull.Value ? dr["Website"].ToString() : "";
+                        txtLinkedIn.Text = dr["LinkedIn"] != DBNull.Value ? dr["LinkedIn"].ToString() : "";
+                        txtTwitter.Text = dr["Twitter"] != DBNull.Value ? dr["Twitter"].ToString() : "";
+                        txtFacebook.Text = dr["Facebook"] != DBNull.Value ? dr["Facebook"].ToString() : "";
+                        txtYouTube.Text = dr["YouTube"] != DBNull.Value ? dr["YouTube"].ToString() : "";
+
+                        // Customer Support
+                        txtSupportName.Text = dr["CustomerSupportName"] != DBNull.Value ? dr["CustomerSupportName"].ToString() : "";
+                        txtSupportContact.Text = dr["CustomerSupportContact"] != DBNull.Value ? dr["CustomerSupportContact"].ToString() : "";
+                        txtSupportEmail.Text = dr["CustomerSupportEmail"] != DBNull.Value ? dr["CustomerSupportEmail"].ToString() : "";
+
+                        // Parse and check Nature of Business checkboxes
+                        string nature = dr["NatureOfBusiness"] != DBNull.Value ? dr["NatureOfBusiness"].ToString() : "";
+                        chkManufacturer.Checked = nature.Contains("Manufacturer");
+                        chkDistributor.Checked = nature.Contains("Distributor");
+                        chkImporter.Checked = nature.Contains("Importer");
+                        chkServiceProvider.Checked = nature.Contains("Service Provider");
+                        chkTechnologyProvider.Checked = nature.Contains("Technology Provider");
+                        chkRnDServices.Checked = nature.Contains("R&D");
+                        chkConsultancy.Checked = nature.Contains("Consultancy");
+                        chkIndustryAssociation.Checked = nature.Contains("Industry Association");
+
+                        // Company Category
+                        string category = dr["CompanyCategory"] != DBNull.Value ? dr["CompanyCategory"].ToString() : "";
+                        chkAutomotiveLubricants.Checked = category.Contains("Automotive Lubricants");
+                        chkIndustrialLubricants.Checked = category.Contains("Industrial Lubricants");
+                        chkBaseOils.Checked = category.Contains("Base Oils");
+                        chkAdditives.Checked = category.Contains("Additives");
+                        chkGreases.Checked = category.Contains("Greases");
+                        chkSpecialtyFluids.Checked = category.Contains("Specialty Fluids");
+                        chkBioBasedLubricants.Checked = category.Contains("Bio-based");
+                        chkReRefinedOils.Checked = category.Contains("Re-refined");
+                        chkPackaging.Checked = category.Contains("Packaging");
+                        chkLabEquipment.Checked = category.Contains("Laboratory");
+                        chkLubricationSystems.Checked = category.Contains("Lubrication Systems");
+                        chkSoftwareAI.Checked = category.Contains("Software");
+
+                        // Markets
+                        string markets = dr["MarketsCateredTo"] != DBNull.Value ? dr["MarketsCateredTo"].ToString() : "";
+                        chkAutomotive.Checked = markets.Contains("Automotive");
+                        chkHeavyCommercial.Checked = markets.Contains("Heavy Commercial");
+                        chkRailways.Checked = markets.Contains("Railways");
+                        chkMarine.Checked = markets.Contains("Marine");
+                        chkAerospace.Checked = markets.Contains("Aerospace");
+                        chkManufacturing.Checked = markets.Contains("Manufacturing");
+                        chkPowerEnergy.Checked = markets.Contains("Power");
+                        chkConstruction.Checked = markets.Contains("Construction");
+                        chkAgriculture.Checked = markets.Contains("Agriculture");
+                        chkFMCG.Checked = markets.Contains("FMCG");
+
+                        // Geographic Reach
+                        string geo = dr["GeographicReach"] != DBNull.Value ? dr["GeographicReach"].ToString() : "";
+                        chkIndiaOnly.Checked = geo.Contains("India Only");
+                        chkSouthAsia.Checked = geo.Contains("South Asia");
+                        chkAsiaPacific.Checked = geo.Contains("Asia-Pacific");
+                        chkMiddleEast.Checked = geo.Contains("Middle East");
+                        chkAfrica.Checked = geo.Contains("Africa");
+                        chkEurope.Checked = geo.Contains("Europe");
+                        chkGlobal.Checked = geo.Contains("Global");
+
+                        // Requirements
+                        chkPowerSupply.Checked = dr["PowerSupplyRequired"] != DBNull.Value && Convert.ToBoolean(dr["PowerSupplyRequired"]);
+                        txtPowerSupplyKwh.Text = dr["PowerSupplyKwh"] != DBNull.Value ? dr["PowerSupplyKwh"].ToString() : "";
+                        chkInternet.Checked = dr["InternetRequired"] != DBNull.Value && Convert.ToBoolean(dr["InternetRequired"]);
+                        chkFurniture.Checked = dr["FurnitureRentalRequired"] != DBNull.Value && Convert.ToBoolean(dr["FurnitureRentalRequired"]);
+                        chkAVEquipment.Checked = dr["AVEquipmentRequired"] != DBNull.Value && Convert.ToBoolean(dr["AVEquipmentRequired"]);
+                        chkInterpreter.Checked = dr["InterpreterSupportRequired"] != DBNull.Value && Convert.ToBoolean(dr["InterpreterSupportRequired"]);
+                        txtReqOther.Text = dr["OtherRequirements"] != DBNull.Value ? dr["OtherRequirements"].ToString() : "";
+                        chkReqOther.Checked = !string.IsNullOrEmpty(txtReqOther.Text);
+
+                        // Objectives
+                        string objectives = dr["ParticipationObjectives"] != DBNull.Value ? dr["ParticipationObjectives"].ToString() : "";
+                        chkGenerateLeads.Checked = objectives.Contains("Generate Business Leads");
+                        chkLaunchProducts.Checked = objectives.Contains("Launch New Products");
+                        chkNetworking.Checked = objectives.Contains("Network with Industry");
+                        chkFindPartners.Checked = objectives.Contains("Find Distribution Partners");
+                        chkMarketResearch.Checked = objectives.Contains("Market Research");
+                        chkBrandVisibility.Checked = objectives.Contains("Brand Visibility");
+                        chkAttendConference.Checked = objectives.Contains("Attend Conference");
+                        chkRecruitTalent.Checked = objectives.Contains("Recruit Talent");
+
+                        // Additional Notes
+                        txtAdditionalNotes.Text = dr["AdditionalNotes"] != DBNull.Value ? dr["AdditionalNotes"].ToString() : "";
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error loading post-approval data: " + ex.Message);
+            }
+        }
         private string LoadPostApprovalDataForEdit(int exhibitorId)
         {
             try
@@ -1123,12 +1216,10 @@ namespace Expo_Panel.Admin
         }
 
 
-        // MODIFIED: Added 'SqlConnection con' parameter and removed the 'using' block for the connection
         private string LoadPostApprovalDataForEdit(int exhibitorId, SqlConnection con)
         {
             try
             {
-                // The connection is now passed in and is already open
                 using (SqlCommand cmd = new SqlCommand("sp_GetPostApprovalProfileByExhibitorID", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -1157,19 +1248,16 @@ namespace Expo_Panel.Admin
                         sb.AppendFormat("supportContact: '{0}',", dr["CustomerSupportContact"] != DBNull.Value ? dr["CustomerSupportContact"].ToString().Replace("'", "\\'") : "");
                         sb.AppendFormat("supportEmail: '{0}',", dr["CustomerSupportEmail"] != DBNull.Value ? dr["CustomerSupportEmail"].ToString().Replace("'", "\\'") : "");
 
-                        // Checkboxes - Nature of Business
+                        // Checkboxes data
                         string nature = dr["NatureOfBusiness"] != DBNull.Value ? dr["NatureOfBusiness"].ToString() : "";
                         sb.AppendFormat("natureOfBusiness: '{0}',", nature.Replace("'", "\\'"));
 
-                        // Company Category
                         string category = dr["CompanyCategory"] != DBNull.Value ? dr["CompanyCategory"].ToString() : "";
                         sb.AppendFormat("companyCategory: '{0}',", category.Replace("'", "\\'"));
 
-                        // Markets
                         string markets = dr["MarketsCateredTo"] != DBNull.Value ? dr["MarketsCateredTo"].ToString() : "";
                         sb.AppendFormat("marketsCatered: '{0}',", markets.Replace("'", "\\'"));
 
-                        // Geographic Reach
                         string geo = dr["GeographicReach"] != DBNull.Value ? dr["GeographicReach"].ToString() : "";
                         sb.AppendFormat("geographicReach: '{0}',", geo.Replace("'", "\\'"));
 
@@ -1206,8 +1294,8 @@ namespace Expo_Panel.Admin
             }
             catch (Exception ex)
             {
-                // Throw the exception so the outer method can display it
-                throw new Exception("Error in LoadPostApprovalDataForEdit: " + ex.Message, ex);
+                System.Diagnostics.Debug.WriteLine("Error loading post-approval data: " + ex.Message);
+                return "";
             }
         }
 
@@ -1567,8 +1655,6 @@ namespace Expo_Panel.Admin
                                 profileHtml.Append("</div>");
                             }
 
-                            pnlProfileDetails.Controls.Clear();
-                            pnlProfileDetails.Controls.Add(new Literal { Text = profileHtml.ToString() });
 
                             string script = "openProfileModal();";
                             ScriptManager.RegisterStartupScript(this, GetType(), "openProfileModal", script, true);
@@ -1587,6 +1673,20 @@ namespace Expo_Panel.Admin
                 ShowMessage("Error loading profile: " + ex.Message, "danger");
             }
         }
+
+        protected void btnTriggerViewProfile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int exhibitorId = Convert.ToInt32(hdnViewProfileExhibitorID.Value);
+                LoadPostApprovalProfile(exhibitorId);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error loading profile: " + ex.Message, "danger");
+            }
+        }
+
         private void ShowMessage(string message, string type)
         {
             string cssClass = type == "success" ? "alert-success" : (type == "info" ? "alert-info" : "alert-danger");
@@ -1600,5 +1700,117 @@ namespace Expo_Panel.Admin
         }
 
         #endregion
+
+
+
+        [System.Web.Services.WebMethod]
+        public static string GetExhibitorData(int exhibitorId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_GetExhibitorById", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        // Build JSON object
+                        StringBuilder json = new StringBuilder();
+                        json.Append("{");
+                        json.AppendFormat("\"id\": {0},", exhibitorId);
+                        json.AppendFormat("\"name\": \"{0}\",", reader["Name"] != DBNull.Value ? reader["Name"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"designation\": \"{0}\",", reader["Designation"] != DBNull.Value ? reader["Designation"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"email\": \"{0}\",", reader["Email"] != DBNull.Value ? reader["Email"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"mobile\": \"{0}\",", reader["Mobile"] != DBNull.Value ? reader["Mobile"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"company\": \"{0}\",", reader["Company"] != DBNull.Value ? reader["Company"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"headOffice\": \"{0}\",", reader["HeadOfficeAddress"] != DBNull.Value ? reader["HeadOfficeAddress"].ToString().Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "") : "");
+                        json.AppendFormat("\"city\": \"{0}\",", reader["City"] != DBNull.Value ? reader["City"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"state\": \"{0}\",", reader["State"] != DBNull.Value ? reader["State"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"country\": \"{0}\",", reader["Country"] != DBNull.Value ? reader["Country"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"gst\": \"{0}\",", reader["GSTNumber"] != DBNull.Value ? reader["GSTNumber"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"billing\": \"{0}\",", reader["BillingAddress"] != DBNull.Value ? reader["BillingAddress"].ToString().Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "") : "");
+                        json.AppendFormat("\"boothType\": \"{0}\",", reader["BoothType"] != DBNull.Value ? reader["BoothType"].ToString().Replace("\"", "\\\"") : "");
+                        json.AppendFormat("\"area\": \"{0}\",", reader["AreaInSqm"] != DBNull.Value ? reader["AreaInSqm"].ToString() : "");
+                        json.AppendFormat("\"conference\": {0},", reader["InterestedInConference"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInConference"]) ? "true" : "false");
+                        json.AppendFormat("\"sponsorship\": {0},", reader["InterestedInSponsorship"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInSponsorship"]) ? "true" : "false");
+                        json.AppendFormat("\"advertising\": {0},", reader["InterestedInAdvertising"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInAdvertising"]) ? "true" : "false");
+                        json.AppendFormat("\"customPackage\": {0},", reader["InterestedInCustomPackage"] != DBNull.Value && Convert.ToBoolean(reader["InterestedInCustomPackage"]) ? "true" : "false");
+                        json.AppendFormat("\"isActive\": \"{0}\",", reader["IS_ACTIVE"] != DBNull.Value && Convert.ToBoolean(reader["IS_ACTIVE"]) ? "1" : "0");
+                        json.AppendFormat("\"regType\": \"{0}\"", reader["RegistrationType"] != DBNull.Value ? reader["RegistrationType"].ToString() : "Admin");
+
+                        reader.Close();
+
+                        // Get post-approval data
+                        string postApprovalData = GetPostApprovalDataStatic(exhibitorId, con);
+                        if (!string.IsNullOrEmpty(postApprovalData))
+                        {
+                            json.Append(",");
+                            json.Append(postApprovalData);
+                        }
+
+                        json.Append("}");
+                        return json.ToString();
+                    }
+
+                    reader.Close();
+                    return "{}";
+                }
+            }
+        }
+
+        private static string GetPostApprovalDataStatic(int exhibitorId, SqlConnection con)
+        {
+            using (SqlCommand cmd = new SqlCommand("sp_GetPostApprovalProfileByExhibitorID", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendFormat("\"boothNo\": \"{0}\",", dr["BoothNo"] != DBNull.Value ? dr["BoothNo"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"hallNo\": \"{0}\",", dr["HallNo"] != DBNull.Value ? dr["HallNo"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"yearOfEstablishment\": \"{0}\",", dr["YearOfEstablishment"] != DBNull.Value ? dr["YearOfEstablishment"].ToString() : "");
+                    sb.AppendFormat("\"website\": \"{0}\",", dr["Website"] != DBNull.Value ? dr["Website"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"linkedIn\": \"{0}\",", dr["LinkedIn"] != DBNull.Value ? dr["LinkedIn"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"twitter\": \"{0}\",", dr["Twitter"] != DBNull.Value ? dr["Twitter"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"facebook\": \"{0}\",", dr["Facebook"] != DBNull.Value ? dr["Facebook"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"youtube\": \"{0}\",", dr["YouTube"] != DBNull.Value ? dr["YouTube"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"supportName\": \"{0}\",", dr["CustomerSupportName"] != DBNull.Value ? dr["CustomerSupportName"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"supportContact\": \"{0}\",", dr["CustomerSupportContact"] != DBNull.Value ? dr["CustomerSupportContact"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"supportEmail\": \"{0}\",", dr["CustomerSupportEmail"] != DBNull.Value ? dr["CustomerSupportEmail"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"natureOfBusiness\": \"{0}\",", dr["NatureOfBusiness"] != DBNull.Value ? dr["NatureOfBusiness"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"companyCategory\": \"{0}\",", dr["CompanyCategory"] != DBNull.Value ? dr["CompanyCategory"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"marketsCatered\": \"{0}\",", dr["MarketsCateredTo"] != DBNull.Value ? dr["MarketsCateredTo"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"geographicReach\": \"{0}\",", dr["GeographicReach"] != DBNull.Value ? dr["GeographicReach"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"powerSupply\": \"{0}\",", dr["PowerSupplyRequired"] != DBNull.Value ? dr["PowerSupplyRequired"].ToString() : "False");
+                    sb.AppendFormat("\"powerKwh\": \"{0}\",", dr["PowerSupplyKwh"] != DBNull.Value ? dr["PowerSupplyKwh"].ToString() : "");
+                    sb.AppendFormat("\"internet\": \"{0}\",", dr["InternetRequired"] != DBNull.Value ? dr["InternetRequired"].ToString() : "False");
+                    sb.AppendFormat("\"furniture\": \"{0}\",", dr["FurnitureRentalRequired"] != DBNull.Value ? dr["FurnitureRentalRequired"].ToString() : "False");
+                    sb.AppendFormat("\"avEquipment\": \"{0}\",", dr["AVEquipmentRequired"] != DBNull.Value ? dr["AVEquipmentRequired"].ToString() : "False");
+                    sb.AppendFormat("\"interpreter\": \"{0}\",", dr["InterpreterSupportRequired"] != DBNull.Value ? dr["InterpreterSupportRequired"].ToString() : "False");
+                    sb.AppendFormat("\"otherReq\": \"{0}\",", dr["OtherRequirements"] != DBNull.Value ? dr["OtherRequirements"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"objectives\": \"{0}\",", dr["ParticipationObjectives"] != DBNull.Value ? dr["ParticipationObjectives"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"additionalNotes\": \"{0}\",", dr["AdditionalNotes"] != DBNull.Value ? dr["AdditionalNotes"].ToString().Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "") : "");
+                    sb.AppendFormat("\"productPicture\": \"{0}\",", dr["ProductPicturePath"] != DBNull.Value ? dr["ProductPicturePath"].ToString().Replace("\"", "\\\"") : "");
+                    sb.AppendFormat("\"brochure\": \"{0}\"", dr["BrochurePath"] != DBNull.Value ? dr["BrochurePath"].ToString().Replace("\"", "\\\"") : "");
+
+                    dr.Close();
+                    return sb.ToString();
+                }
+
+                dr.Close();
+                return "";
+            }
+        }
     }
 }

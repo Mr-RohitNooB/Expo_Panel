@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
     <!-- Light Mode Favicons -->
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
@@ -342,12 +345,15 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
+            overflow: auto; /* Allow scrolling if content is tall */
         }
 
             .modal.show {
-                display: flex;
+                display: flex !important;
                 justify-content: center;
-                align-items: center;
+                align-items: flex-start; /* Changed from center to flex-start */
+                padding: 20px 0; /* Add vertical padding */
+                overflow-y: auto; /* Enable vertical scrolling */
             }
 
         .modal-content {
@@ -360,6 +366,8 @@
             animation: modalSlideIn 0.3s ease-out;
             max-height: 90vh;
             overflow-y: auto;
+            margin: auto; /* Center horizontally and vertically */
+            position: relative; /* Ensure proper positioning */
         }
 
         @keyframes modalSlideIn {
@@ -720,7 +728,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
 
         <div class="container">
             <div class="header">
@@ -844,19 +852,21 @@
 
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
-                                            <div class="action-buttons">
-                                                <button type="button" class="btn btn-edit"
-                                                    onclick="handleEditClick(<%# Eval("ExhibitorID") %>)">
-                                                    <i class="fas fa-edit"></i>Edit
-                                                </button>
-                                                <button type="button" class="btn btn-warning"
-                                                    onclick="handleApprovalClick(<%# Eval("ExhibitorID") %>)">
-                                                    <i class="fas fa-check-circle"></i>Approve/Reject
-                                                </button>
+                                            <asp:Button ID="btnEdit" runat="server"
+                                                Text="Edit"
+                                                CssClass="btn btn-sm btn-primary"
+                                                CommandName="EditExhibitor"
+                                                CommandArgument='<%# Eval("ExhibitorID") %>'
+                                                OnClientClick="return true;" />
 
-                                            </div>
+                                            <asp:Button ID="btnApprove" runat="server"
+                                                Text="Approve/Reject"
+                                                CssClass="btn btn-sm btn-success"
+                                                CommandName="ApprovalAction"
+                                                CommandArgument='<%# Eval("ExhibitorID") %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
+
                                 </Columns>
                                 <EmptyDataTemplate>
                                     <div class="no-records">
@@ -1469,10 +1479,37 @@
         <asp:HiddenField ID="hdnApproveExhibitorID" runat="server" Value="0" />
         <asp:Button ID="btnTriggerApproval" runat="server" OnClick="btnTriggerApproval_Click" Style="display: none;" />
 
+        <!-- test button -->
+        <asp:HiddenField ID="hdnViewProfileExhibitorID" runat="server" Value="0" />
+        <asp:Button ID="btnTriggerViewProfile" runat="server" OnClick="btnTriggerViewProfile_Click" Style="display: none;" />
+
         <script type="text/javascript">
             function handleEditClick(exhibitorId) {
+                // Optional: Show loading message
+                var loadingMsg = '<div class="alert alert-info"><i class="fas fa-spinner fa-spin"></i> Loading exhibitor data...</div>';
+                document.getElementById('<%=litMessage.ClientID%>').innerHTML = loadingMsg;
+
+                // Set the hidden field with the exhibitor ID
                 document.getElementById('<%=hdnEditExhibitorID.ClientID%>').value = exhibitorId;
+
+                // Trigger the postback via hidden button
                 document.getElementById('<%=btnTriggerEdit.ClientID%>').click();
+            }
+
+            function onGetExhibitorSuccess(result) {
+                // Clear loading message
+                document.getElementById('<%=litMessage.ClientID%>').innerHTML = '';
+
+                // Parse the JSON result
+                var data = JSON.parse(result);
+
+                // Open the modal with the data
+                openExhibitorModal('edit', data);
+            }
+
+            function onGetExhibitorError(error) {
+                document.getElementById('<%=litMessage.ClientID%>').innerHTML =
+                    '<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> Error loading exhibitor: ' + error.get_message() + '</div>';
             }
 
             function handleApprovalClick(exhibitorId) {
@@ -1497,31 +1534,67 @@
                 }
             }
 
-            function openExhibitorModal(mode, data) {
-                var modal = document.getElementById('exhibitorModal');
-                var modalTitle = document.getElementById('exhibitorModalTitle');
-                var hdnMode = document.getElementById('<%=hdnExhibitorModalMode.ClientID%>');
-                var hdnID = document.getElementById('<%=hdnExhibitorID.ClientID%>');
-
-                if (mode === 'add') {
-                    modalTitle.innerText = 'Add Exhibitor';
-                    hdnMode.value = 'add';
-                    hdnID.value = '0';
-                    clearExhibitorForm();
-                } else if (mode === 'edit' && data) {
-                    modalTitle.innerText = 'Edit Exhibitor';
-                    hdnMode.value = 'edit';
-                    hdnID.value = data.id;
-                    populateExhibitorForm(data);
+            (function () {
+                function $id(id) { return document.getElementById(id); }
+                function safeSet(id, value) {
+                    var el = $id(id);
+                    if (!el) return;
+                    try { if ('value' in el) el.value = value; else el.textContent = value; } catch (e) { }
                 }
 
-                modal.classList.add('show');
-            }
+                window.openExhibitorModal = function (mode, data) {
+                    try {
+                        data = data || {};
 
-            function closeExhibitorModal() {
-                var modal = document.getElementById('exhibitorModal');
-                modal.classList.remove('show');
-            }
+                        // Basic info
+                        safeSet('<%= txtName.ClientID %>', data.name || '');
+                        safeSet('<%= txtDesignation.ClientID %>', data.designation || '');
+                        safeSet('<%= txtEmail.ClientID %>', data.email || '');
+                        safeSet('<%= txtMobile.ClientID %>', data.mobile || '');
+
+                        // ... rest of your field population code ...
+
+                        // Hidden fields
+                        safeSet('<%= hdnExhibitorID.ClientID %>', data.id || 0);
+                        safeSet('<%= hdnExhibitorModalMode.ClientID %>', mode || 'edit');
+
+                        // ✅ FIX: Use Bootstrap's modal method instead of direct display manipulation
+                        var modal = $('#exhibitorModal');
+                        if (modal.length) {
+                            modal.modal('show');
+                        } else {
+                            // Fallback if jQuery/Bootstrap not available
+                            var modalEl = document.getElementById('exhibitorModal');
+                            if (modalEl) {
+                                modalEl.style.display = 'block';
+                                modalEl.classList.add('show');
+                            }
+                        }
+
+                        // Title update
+                        var title = document.getElementById('exhibitorModalTitle');
+                        if (title) title.textContent = (mode === 'edit') ? 'Edit Exhibitor' : 'Add Exhibitor';
+                    } catch (err) {
+                        console.error('openExhibitorModal error:', err);
+                    }
+                };
+
+                window.closeExhibitorModal = function () {
+                    // ✅ FIX: Use Bootstrap's modal method to properly close
+                    var modal = $('#exhibitorModal');
+                    if (modal.length) {
+                        modal.modal('hide');
+                    } else {
+                        // Fallback
+                        var modalEl = document.getElementById('exhibitorModal');
+                        if (modalEl) {
+                            modalEl.style.display = 'none';
+                            modalEl.classList.remove('show');
+                        }
+                    }
+                };
+
+            })();
 
             function clearExhibitorForm() {
                 document.getElementById('<%=txtName.ClientID%>').value = '';
@@ -1567,7 +1640,10 @@
                 }
 
                 document.getElementById('<%=txtAreaInSqm.ClientID%>').value = data.area || '';
-                document.getElementById('<%=chkConference.ClientID%>').checked = data.conference === 'True';
+                document.getElementById('<%=chkConference.ClientID%>').checked = data.conference === true || data.conference === 'True';
+                document.getElementById('<%=chkSponsorship.ClientID%>').checked = data.sponsorship === true || data.sponsorship === 'True';
+                document.getElementById('<%=chkAdvertising.ClientID%>').checked = data.advertising === true || data.advertising === 'True';
+                document.getElementById('<%=chkCustomPackage.ClientID%>').checked = data.customPackage === true || data.customPackage === 'True';
                 document.getElementById('<%=chkSponsorship.ClientID%>').checked = data.sponsorship === 'True';
                 document.getElementById('<%=chkAdvertising.ClientID%>').checked = data.advertising === 'True';
                 document.getElementById('<%=chkCustomPackage.ClientID%>').checked = data.customPackage === 'True';
@@ -1720,15 +1796,8 @@
                 modal.classList.remove('show');
             }
 
-            function openProfileModal() {
-                var modal = document.getElementById('profileModal');
-                modal.classList.add('show');
-            }
 
-            function closeProfileModal() {
-                var modal = document.getElementById('profileModal');
-                modal.classList.remove('show');
-            }
+
 
             function toggleRemarksAndPasswordRequired() {
                 var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
@@ -1787,16 +1856,12 @@
             window.onclick = function (event) {
                 var exhibitorModal = document.getElementById('exhibitorModal');
                 var approvalModal = document.getElementById('approvalModal');
-                var profileModal = document.getElementById('profileModal');
 
                 if (event.target == exhibitorModal) {
                     closeExhibitorModal();
                 }
                 if (event.target == approvalModal) {
                     closeApprovalModal();
-                }
-                if (event.target == profileModal) {
-                    closeProfileModal();
                 }
             }
 
@@ -1806,22 +1871,63 @@
                     ddlApproval.addEventListener('change', toggleRemarksAndPasswordRequired);
                 }
             });
+
+            function testPageMethod() {
+                console.log('Test button clicked');
+                alert('Testing PageMethod...');
+
+                // Test if PageMethods exists
+                if (typeof PageMethods === 'undefined') {
+                    alert('ERROR: PageMethods is undefined! EnablePageMethods may not be set to true.');
+                    console.error('PageMethods is undefined');
+                    return;
+                }
+
+                console.log('PageMethods exists:', PageMethods);
+
+                // Test if GetExhibitorData exists
+                if (typeof PageMethods.GetExhibitorData === 'undefined') {
+                    alert('ERROR: PageMethods.GetExhibitorData is undefined! The WebMethod may not be properly configured.');
+                    console.error('PageMethods.GetExhibitorData is undefined');
+                    return;
+                }
+
+                console.log('PageMethods.GetExhibitorData exists');
+
+                // Try to call with exhibitor ID 1 (change this to a real ID from your database)
+                var testId = 1; // CHANGE THIS TO A REAL EXHIBITOR ID
+
+                PageMethods.GetExhibitorData(testId,
+                    function (result) {
+                        console.log('Success! Result:', result);
+                        alert('SUCCESS! Check console for data. Result length: ' + result.length);
+
+                        try {
+                            var data = JSON.parse(result);
+                            console.log('Parsed data:', data);
+                            alert('Parsed successfully! Exhibitor: ' + data.name);
+                        } catch (e) {
+                            console.error('JSON parse error:', e);
+                            alert('ERROR parsing JSON: ' + e.message);
+                        }
+                    },
+                    function (error) {
+                        console.error('Error:', error);
+                        alert('ERROR: ' + error.get_message());
+                    }
+                );
+            }
+            function $id(id) { return document.getElementById(id); }
+
+            // Ensure modal backdrop is properly cleaned up
+            $('#exhibitorModal').on('hidden.bs.modal', function () {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+            });
+
         </script>
 
-        <asp:Panel ID="pnlProfileDetails" runat="server"></asp:Panel>
 
-        <!-- Profile Modal -->
-        <div id="profileModal" class="modal">
-            <div class="modal-content" style="max-width: 1000px;">
-                <div class="modal-header">
-                    <h2>Exhibitor Profile</h2>
-                    <button type="button" class="close-btn" onclick="closeProfileModal()"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <!-- The panel content will be injected here dynamically -->
-                </div>
-            </div>
-        </div>
         <!-- Approval Modal -->
         <div id="approvalModal" class="modal">
             <div class="modal-content" style="max-width: 600px;">

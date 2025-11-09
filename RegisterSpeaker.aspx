@@ -719,8 +719,8 @@
                 <h3><i class="fas fa-id-card"></i>Profile & Media</h3>
 
                 <div class="form-group">
-                    <label for="fuPhoto">Upload Your Photo <span class="required">*</span></label>
-                    <p class="info-text">Please upload a professional headshot (JPG, PNG - Max 2MB)</p>
+                    <label for="fuPhoto">Upload Your Recent Photo <span class="required">*</span></label>
+                    <p class="info-text">Please upload a professional photo (JPG, PNG)</p>
 
                     <!-- Current Photo Display -->
                     <asp:Panel ID="pnlCurrentPhoto" runat="server" Visible="false" CssClass="current-file-display">
@@ -760,7 +760,7 @@
 
                 <div class="form-group">
                     <label>Company Logo <span class="text-muted">(Optional)</span></label>
-                    <p class="info-text">High resolution logo (JPG, PNG - Max 5MB)</p>
+                    <p class="info-text">High resolution logo (JPG, PNG)</p>
 
                     <!-- Current Logo Display -->
                     <asp:Panel ID="pnlCurrentLogo" runat="server" Visible="false" CssClass="current-file-display">
@@ -998,14 +998,7 @@
                     var maxSize = displayId.includes('logo') ? 5 : 2; // 5MB for logo, 2MB for photo
                     var fileTypeName = displayId.includes('logo') ? 'Logo' : 'Photo';
 
-                    // Validate file size
-                    if (file.size > maxSize * 1024 * 1024) {
-                        alert(fileTypeName + ' file size must be less than ' + maxSize + 'MB');
-                        input.value = '';
-                        display.innerHTML = '';
-                        preview.style.display = 'none';
-                        return;
-                    }
+                   
 
                     // Validate file type
                     var fileType = file.type;
