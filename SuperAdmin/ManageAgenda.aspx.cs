@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -141,8 +142,8 @@ namespace Expo_Panel.Admin
             {
                 int agendaId = Convert.ToInt32(hdnAgendaID.Value);
                 string mode = hdnModalMode.Value;
-                string day = txtDay.Text.Trim();
-                string track = txtTrack.Text.Trim();
+                string day = ddlDay.SelectedValue;
+                string track = ddlStream.SelectedValue;
                 string time = txtTime.Text.Trim();
                 string title = txtTitle.Text.Trim();
                 string brief = txtBrief.Text.Trim();
@@ -479,8 +480,8 @@ namespace Expo_Panel.Admin
 
         private void ClearForm()
         {
-            txtDay.Text = "";
-            txtTrack.Text = "";
+            ddlDay.ClearSelection();
+            ddlStream.ClearSelection();
             txtTime.Text = "";
             txtTitle.Text = "";
             txtBrief.Text = "";

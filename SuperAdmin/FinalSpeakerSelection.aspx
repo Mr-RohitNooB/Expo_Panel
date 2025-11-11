@@ -1,142 +1,856 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FinalSpeakerSelection.aspx.cs" 
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FinalSpeakerSelection.aspx.cs"
     Inherits="Expo_Panel.SuperAdmin.FinalSpeakerSelection" %>
 
 <!DOCTYPE html>
 <html>
 <head runat="server">
     <title>Final Speaker Selection Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        body { background: #f4f7fc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
-        .admin-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white; 
-            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .admin-header h2 { margin: 0; font-weight: 600; }
-        .admin-header .admin-info { display: flex; align-items: center; gap: 15px; }
-        .btn-logout { background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 8px 20px; 
-            border-radius: 5px; cursor: pointer; transition: all 0.3s; }
-        .btn-logout:hover { background: white; color: #667eea; }
-        .dashboard-container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
-        .filter-section { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .filter-buttons { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-        .btn-filter { padding: 12px 24px; border: 2px solid #e0e6ed; background: white; border-radius: 8px; cursor: pointer; 
-            font-weight: 500; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
-        .btn-filter:hover { border-color: #667eea; color: #667eea; transform: translateY(-2px); }
-        .btn-filter.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: #667eea; }
-        .search-box { display: flex; gap: 10px; }
-        .search-box input { flex: 1; padding: 12px; border: 2px solid #e0e6ed; border-radius: 8px; font-size: 14px; }
-        .search-box button { padding: 12px 24px; background: #667eea; color: white; border: none; border-radius: 8px; 
-            cursor: pointer; font-weight: 500; }
-        .search-box button:hover { background: #5568d3; }
-        .agenda-card { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); 
-            margin-bottom: 20px; overflow: hidden; transition: all 0.3s; }
-        .agenda-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
-        .agenda-header { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .agenda-header:hover { background: #f8f9fc; }
-        .agenda-info h3 { margin: 0 0 8px 0; color: #2d3748; font-size: 20px; font-weight: 600; }
-        .agenda-meta { display: flex; gap: 20px; color: #718096; font-size: 14px; margin-bottom: 12px; flex-wrap: wrap; }
-        .agenda-meta span { display: flex; align-items: center; gap: 6px; }
-        .stats-row { display: flex; gap: 25px; flex-wrap: wrap; }
-        .stat-item { display: flex; align-items: center; gap: 8px; }
-        .stat-value { font-weight: 600; font-size: 18px; color: #2d3748; }
-        .stat-label { color: #718096; font-size: 13px; }
-        .status-badge { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 10px; display: inline-block; }
-        .badge-needs-review { background: #fff3cd; color: #856404; }
-        .badge-finalized { background: #d4edda; color: #155724; }
-        .badge-pending { background: #f8d7da; color: #721c24; }
-        .badge-no-speakers { background: #e2e8f0; color: #4a5568; }
-        .progress-container { margin-top: 15px; }
-        .progress { height: 8px; border-radius: 10px; background: #e2e8f0; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.5s; }
-        .toggle-icon { font-size: 20px; color: #a0aec0; transition: transform 0.3s; }
-        .agenda-card.expanded .toggle-icon { transform: rotate(180deg); }
-        .speakers-section { padding: 20px; background: #f7fafc; border-top: 2px solid #e2e8f0; }
-        .speaker-card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 15px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        .speaker-header { display: flex; gap: 20px; margin-bottom: 20px; align-items: flex-start; }
-        .speaker-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #e2e8f0; flex-shrink: 0; }
-        .speaker-info { flex: 1; }
-        .speaker-info h4 { margin: 0 0 5px 0; color: #2d3748; font-size: 18px; }
-        .speaker-meta { color: #718096; font-size: 14px; margin-bottom: 5px; }
-        .rating-display { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-        .avg-rating { font-size: 32px; font-weight: 700; color: #667eea; }
-        .rating-breakdown { flex: 1; min-width: 200px; }
-        .rating-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 12px; }
-        .rating-bar-fill { flex: 1; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
-        .rating-bar-fill-inner { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); }
-        .decision-section { background: #f7fafc; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .decision-options { display: flex; gap: 15px; margin-bottom: 10px; flex-wrap: wrap; }
-        .decision-option { flex: 1; min-width: 150px; }
-        .decision-option input[type="radio"] { display: none; }
-        .decision-option label { display: block; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; 
-            text-align: center; cursor: pointer; font-weight: 500; transition: all 0.3s; }
-        .decision-option label:hover { border-color: #667eea; }
-        .decision-option input[type="radio"]:checked + label { background: #48bb78; color: white; border-color: #48bb78; }
-        .decision-option.reject input[type="radio"]:checked + label { background: #f56565; border-color: #f56565; }
-        .decision-option.hold input[type="radio"]:checked + label { background: #ed8936; border-color: #ed8936; }
-        .action-buttons { display: flex; justify-content: flex-end; gap: 10px; padding: 20px; background: #f7fafc; 
-            border-top: 2px solid #e2e8f0; }
-        .btn-view-comments { background: #4299e1; color: white; border: none; padding: 8px 16px; border-radius: 6px; 
-            cursor: pointer; font-size: 13px; }
-        .btn-view-comments:hover { background: #3182ce; }
-        .btn-view-profile { background: #805ad5; color: white; border: none; padding: 8px 16px; border-radius: 6px; 
-            cursor: pointer; font-size: 13px; }
-        .btn-view-profile:hover { background: #6b46c1; }
-        .btn-save-all { background: #48bb78; color: white; border: none; padding: 12px 32px; border-radius: 8px; 
-            cursor: pointer; font-weight: 600; font-size: 15px; }
-        .btn-save-all:hover { background: #38a169; }
-        .btn-cancel { background: #a0aec0; color: white; border: none; padding: 12px 32px; border-radius: 8px; 
-            cursor: pointer; font-weight: 600; font-size: 15px; }
-        .btn-cancel:hover { background: #718096; }
-        .no-records { text-align: center; padding: 60px 20px; color: #a0aec0; }
-        .no-records i { font-size: 48px; margin-bottom: 15px; display: block; }
-        .loading-spinner { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            z-index: 9999; background: rgba(255,255,255,0.9); padding: 30px; border-radius: 10px; }
-        .loading-spinner.show { display: block; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; 
-            width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        * { box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            min-height: 100vh;
+        }
         
-        /* Modal Styles */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.6); z-index: 1000; }
-        .modal-overlay.show { display: block; }
-        .modal-content { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            background: white; border-radius: 12px; max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 1001; }
-        .modal-header { padding: 20px; border-bottom: 2px solid #e2e8f0; display: flex; 
-            justify-content: space-between; align-items: center; background: #f7fafc; }
-        .modal-header h3 { margin: 0; color: #2d3748; }
-        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #a0aec0; }
-        .modal-close:hover { color: #2d3748; }
-        .modal-body { padding: 20px; }
-        .comment-item { background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 15px; 
-            border-left: 4px solid #667eea; }
-        .comment-header { display: flex; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; }
-        .comment-author { font-weight: 600; color: #2d3748; }
-        .comment-rating { color: #f59e0b; font-weight: 600; }
-        .comment-text { color: #4a5568; line-height: 1.6; margin-top: 8px; }
-        .comment-meta { color: #a0aec0; font-size: 12px; margin-top: 8px; }
-        .alert { position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 15px 20px; border-radius: 8px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideIn 0.3s ease-out; min-width: 300px; }
-        .alert-success { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
-        .alert-danger { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
-        @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        /* Header */
+        .admin-header { 
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            color: #2d3748;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-header h2 { 
+            margin: 0; 
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 24px;
+        }
+        .admin-header .admin-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        .admin-header .admin-info span {
+            color: #4a5568;
+            font-weight: 500;
+        }
+        .btn-logout, .btn-info { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-logout:hover, .btn-info:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        /* Dashboard Container */
+        .dashboard-container { 
+            max-width: 1600px; 
+            margin: 0 auto; 
+            padding: 30px 20px;
+        }
+        
+        /* Statistics Dashboard */
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        .stat-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .stat-card-icon.purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .stat-card-icon.green { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; }
+        .stat-card-icon.orange { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); color: white; }
+        .stat-card-icon.blue { background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); color: white; }
+        .stat-card-icon.red { background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%); color: white; }
+        .stat-card-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        .stat-card-label {
+            color: #718096;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card-trend {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #48bb78;
+            font-weight: 600;
+        }
+        .stat-card-trend.down {
+            color: #f56565;
+        }
+        
+        /* Filter Section */
+        .filter-section { 
+            background: white;
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+            margin-bottom: 30px;
+        }
+        .filter-section h3 {
+            margin: 0 0 20px 0;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .filter-buttons { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 20px; 
+            flex-wrap: wrap; 
+        }
+        .btn-filter { 
+            padding: 12px 24px; 
+            border: 2px solid #e2e8f0;
+            background: white; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: all 0.3s; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            color: #4a5568;
+        }
+        .btn-filter:hover { 
+            border-color: #667eea; 
+            color: #667eea; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        .btn-filter.active { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .search-box { 
+            display: flex; 
+            gap: 12px; 
+        }
+        .search-box input { 
+            flex: 1; 
+            padding: 14px 18px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 10px; 
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .search-box button { 
+            padding: 14px 28px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .search-box button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Agenda Cards */
+        .agenda-card { 
+            background: white; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+            margin-bottom: 20px; 
+            overflow: hidden; 
+            transition: all 0.3s;
+            border-left: 5px solid transparent;
+        }
+        .agenda-card:hover { 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-left-color: #667eea;
+        }
+        .agenda-header { 
+            padding: 25px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            transition: background 0.3s;
+        }
+        .agenda-header:hover { 
+            background: #f7fafc; 
+        }
+        .agenda-info h3 { 
+            margin: 0 0 12px 0; 
+            color: #2d3748; 
+            font-size: 22px; 
+            font-weight: 700;
+        }
+        .agenda-meta { 
+            display: flex; 
+            gap: 25px; 
+            color: #718096; 
+            font-size: 14px; 
+            margin-bottom: 20px; 
+            flex-wrap: wrap; 
+        }
+        .agenda-meta span { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            background: #f7fafc;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+        .agenda-meta i {
+            color: #667eea;
+        }
+        .stats-row { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        .stat-item { 
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value { 
+            font-weight: 700;
+            font-size: 24px; 
+            color: #667eea;
+            display: block;
+        }
+        .stat-label { 
+            color: #718096; 
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+            display: block;
+        }
+        .status-badge { 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            font-weight: 700;
+            margin-bottom: 10px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge-needs-review { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #92400e; }
+        .badge-finalized { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; }
+        .badge-pending { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); color: #991b1b; }
+        .badge-no-speakers { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%); color: #1a202c; }
+        .progress-container { 
+            margin-top: 15px; 
+        }
+        .progress { 
+            height: 10px; 
+            border-radius: 10px; 
+            background: #e2e8f0; 
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #48bb78, #38a169); 
+            transition: width 0.8s ease;
+            box-shadow: 0 0 10px rgba(72, 187, 120, 0.5);
+        }
+        .toggle-icon { 
+            font-size: 24px; 
+            color: #a0aec0; 
+            transition: transform 0.3s;
+        }
+        .agenda-card.expanded .toggle-icon { 
+            transform: rotate(180deg); 
+        }
+        
+        /* Speakers Section */
+        .speakers-section { 
+            padding: 30px; 
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-top: 3px solid #e2e8f0;
+        }
+        .speakers-list {
+            display: grid;
+            gap: 20px;
+        }
+        .speaker-card { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 25px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        .speaker-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            border-left-color: #667eea;
+        }
+        .speaker-header { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 25px; 
+            align-items: flex-start; 
+        }
+        .speaker-photo { 
+            width: 90px; 
+            height: 90px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 4px solid #e2e8f0;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .speaker-photo-placeholder { 
+            width: 90px; 
+            height: 90px; 
+            border-radius: 50%; 
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+            color: #a0aec0;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 36px; 
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .speaker-info { 
+            flex: 1; 
+        }
+        .speaker-info h4 { 
+            margin: 0 0 8px 0; 
+            color: #2d3748; 
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .speaker-meta { 
+            color: #718096; 
+            font-size: 14px; 
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rating-display { 
+            display: flex; 
+            align-items: center; 
+            gap: 25px; 
+            margin-bottom: 20px; 
+            flex-wrap: wrap;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .avg-rating { 
+            font-size: 48px; 
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .rating-breakdown { 
+            flex: 1; 
+            min-width: 250px; 
+        }
+        .rating-bar { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 6px; 
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .rating-bar-fill { 
+            flex: 1; 
+            height: 8px; 
+            background: #e2e8f0; 
+            border-radius: 4px; 
+            overflow: hidden;
+        }
+        .rating-bar-fill-inner { 
+            height: 100%; 
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            transition: width 0.6s ease;
+        }
+        .decision-section { 
+            background: white;
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-top: 20px;
+            border: 2px solid #e2e8f0;
+        }
+        .decision-label { 
+            font-weight: 700;
+            color: #2d3748; 
+            margin-bottom: 15px; 
+            display: block;
+            font-size: 16px;
+        }
+        .decision-options { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .decision-option input[type="radio"] { 
+            display: none; 
+        }
+        .decision-option label { 
+            display: block; 
+            padding: 16px; 
+            border: 3px solid #e2e8f0; 
+            border-radius: 12px; 
+            text-align: center; 
+            cursor: pointer; 
+            font-weight: 700;
+            transition: all 0.3s;
+            background: white;
+        }
+        .decision-option label:hover { 
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        .decision-option input[type="radio"]:checked + label { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white; 
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.3);
+        }
+        .decision-option.reject input[type="radio"]:checked + label { 
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            box-shadow: 0 6px 20px rgba(245, 101, 101, 0.3);
+        }
+        .decision-option.hold input[type="radio"]:checked + label { 
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            box-shadow: 0 6px 20px rgba(237, 137, 54, 0.3);
+        }
+        .approved-agendas { 
+            margin-top: 15px; 
+            padding: 15px; 
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid #10b981;
+            border-radius: 8px;
+            color: #065f46; 
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .action-buttons { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 12px; 
+            padding: 20px 0 0 0;
+        }
+        .btn-view-profile { 
+            background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-view-profile:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(128, 90, 213, 0.4);
+        }
+        .btn-save-all { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white; 
+            border: none; 
+            padding: 16px 40px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-save-all:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+        .no-records { 
+            text-align: center; 
+            padding: 80px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .no-records i { 
+            font-size: 64px; 
+            margin-bottom: 20px; 
+            display: block;
+            color: #cbd5e0;
+        }
+        .no-records h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .no-records p {
+            color: #a0aec0;
+        }
+        .loading-spinner { 
+            display: none; 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 9999; 
+            background: rgba(255,255,255,0.95);
+            padding: 40px; 
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .loading-spinner.show { 
+            display: block; 
+        }
+        .spinner { 
+            border: 5px solid #f3f3f3; 
+            border-top: 5px solid #667eea; 
+            border-radius: 50%; 
+            width: 60px; 
+            height: 60px; 
+            animation: spin 1s linear infinite; 
+            margin: 0 auto; 
+        }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        
+        /* Modal */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-overlay.show { 
+            display: block; 
+        }
+        .modal-content { 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            background: white; 
+            border-radius: 16px; 
+            max-width: 900px; 
+            width: 90%; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+            z-index: 1001;
+            animation: slideUp 0.3s;
+        }
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to { 
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        .modal-header { 
+            padding: 25px 30px; 
+            border-bottom: 2px solid #e2e8f0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 16px 16px 0 0;
+        }
+        .modal-header h3 { 
+            margin: 0; 
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        .modal-close { 
+            background: none; 
+            border: none; 
+            font-size: 28px; 
+            cursor: pointer; 
+            color: #a0aec0;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover { 
+            color: #2d3748;
+            background: #e2e8f0;
+        }
+        .modal-body { 
+            padding: 30px; 
+        }
+        .comment-item { 
+            background: #f7fafc; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 15px; 
+            border-left: 4px solid #667eea;
+        }
+        .comment-header { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+            flex-wrap: wrap; 
+        }
+        .comment-author { 
+            font-weight: 700;
+            color: #2d3748; 
+        }
+        .comment-rating { 
+            color: #f59e0b; 
+            font-weight: 700;
+        }
+        .comment-text { 
+            color: #4a5568; 
+            line-height: 1.6; 
+            margin-top: 10px; 
+        }
+        .comment-meta { 
+            color: #a0aec0; 
+            font-size: 12px; 
+            margin-top: 10px; 
+        }
+        .alert { 
+            position: fixed; 
+            top: 90px; 
+            right: 20px; 
+            z-index: 9999; 
+            padding: 18px 24px; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2); 
+            animation: slideIn 0.3s ease-out; 
+            min-width: 320px;
+            font-weight: 600;
+        }
+        .alert-success { 
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46; 
+            border-left: 5px solid #10b981; 
+        }
+        .alert-danger { 
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b; 
+            border-left: 5px solid #ef4444; 
+        }
+        @keyframes slideIn { 
+            from { 
+                transform: translateX(400px); 
+                opacity: 0; 
+            } 
+            to { 
+                transform: translateX(0); 
+                opacity: 1; 
+            } 
+        }
+        
+        @media (max-width: 768px) {
+            .stats-dashboard {
+                grid-template-columns: 1fr;
+            }
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .admin-header .admin-info {
+                flex-direction: column;
+            }
+            .agenda-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .speaker-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
+        
+        <!-- Header -->
         <div class="admin-header">
             <h2><i class="fas fa-clipboard-check"></i> Final Speaker Selection Dashboard</h2>
             <div class="admin-info">
                 <span><i class="fas fa-user-shield"></i> <asp:Label ID="lblAdminName" runat="server" /></span>
+                <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn-info">
+                    <i class="fas fa-arrow-left"></i> Back
+                </asp:HyperLink>
                 <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout" OnClick="btnLogout_Click" />
             </div>
         </div>
 
         <div class="dashboard-container">
+            
+            <!-- Statistics Dashboard -->
+            <div class="stats-dashboard">
+                <div class="stat-card">
+                    <div class="stat-card-icon purple">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-card-value">
+                        <asp:Label ID="lblTotalAgendas" runat="server" Text="0" />
+                    </div>
+                    <div class="stat-card-label">Total Agendas</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-card-value">
+                        <asp:Label ID="lblTotalSpeakers" runat="server" Text="0" />
+                    </div>
+                    <div class="stat-card-label">Total Speakers</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-card-value">
+                        <asp:Label ID="lblApprovedSpeakers" runat="server" Text="0" />
+                    </div>
+                    <div class="stat-card-label">Approved Speakers</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon orange">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="stat-card-value">
+                        <asp:Label ID="lblTotalAdvisors" runat="server" Text="0" />
+                    </div>
+                    <div class="stat-card-label">Advisory Panel</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon red">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="stat-card-value">
+                        <asp:Label ID="lblPendingReview" runat="server" Text="0" />
+                    </div>
+                    <div class="stat-card-label">Needs Review</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-icon green">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="stat-card-value">
+                        <asp:Label ID="lblFinalizedAgendas" runat="server" Text="0" />
+                    </div>
+                    <div class="stat-card-label">Finalized Agendas</div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
             <div class="filter-section">
+                <h3><i class="fas fa-filter"></i> Filter Agendas</h3>
                 <div class="filter-buttons">
                     <asp:Button ID="btnAll" runat="server" Text="All Agendas (0)" CssClass="btn-filter active" 
                         CommandArgument="All" OnClick="btnStatusFilter_Click" />
@@ -148,22 +862,25 @@
                         CommandArgument="Pending" OnClick="btnStatusFilter_Click" />
                 </div>
                 <div class="search-box">
-                    <asp:TextBox ID="txtSearch" runat="server" placeholder="Search agendas by title, day, or track..." />
+                    <asp:TextBox ID="txtSearch" runat="server" placeholder="🔍 Search agendas by title, day, or track..." />
                     <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
                 </div>
             </div>
 
+            <!-- No Records Panel -->
             <asp:Panel ID="pnlNoRecords" runat="server" Visible="false" CssClass="no-records">
                 <i class="fas fa-inbox"></i>
                 <h3>No agendas found</h3>
                 <p>Try adjusting your filters or search criteria</p>
             </asp:Panel>
 
+            <!-- Agendas Repeater -->
             <asp:Repeater ID="rptAgendas" runat="server" OnItemCommand="rptAgendas_ItemCommand" 
                 OnItemDataBound="rptAgendas_ItemDataBound">
                 <ItemTemplate>
-                    <div class="agenda-card <%# Convert.ToInt32(Eval("AgendaID")) == ExpandedAgendaID ? "expanded" : "" %>">
-                        <div class="agenda-header" onclick="__doPostBack('Toggle', '<%# Eval("AgendaID") %>');">
+                    <div id="agenda_<%# Eval("AgendaID") %>" class="agenda-card <%# Convert.ToInt32(Eval("AgendaID")) == ExpandedAgendaID ? "expanded" : "" %>">
+                        
+                        <div class="agenda-header" onclick="toggleAgenda(<%# Eval("AgendaID") %>); return false;">
                             <div class="agenda-info">
                                 <h3><%# Eval("Title") %></h3>
                                 <div class="agenda-meta">
@@ -193,7 +910,7 @@
                                     <div class="progress">
                                         <div class="progress-fill" style="width: <%# Eval("CompletionPercentage") %>%"></div>
                                     </div>
-                                    <small style="color: #718096; margin-top: 5px; display: block;">
+                                    <small style="color: #718096; margin-top: 8px; display: block; font-weight: 600;">
                                         <%# String.Format("{0:F0}% Finalized", Eval("CompletionPercentage")) %>
                                     </small>
                                 </div>
@@ -203,130 +920,228 @@
                                 <div><i class="fas fa-chevron-down toggle-icon"></i></div>
                             </div>
                         </div>
-                        <asp:Panel ID="pnlSpeakers" runat="server" CssClass="speakers-section" 
-                            Visible='<%# Convert.ToInt32(Eval("AgendaID")) == ExpandedAgendaID %>' />
+                        
+                        <asp:Panel ID="pnlSpeakers" runat="server" CssClass="speakers-section" Visible="false" />
                     </div>
                 </ItemTemplate>
             </asp:Repeater>
         </div>
 
+        <!-- Loading Spinner -->
         <div class="loading-spinner" id="loadingSpinner">
             <div class="spinner"></div>
+            <p style="text-align: center; margin-top: 15px; color: #667eea; font-weight: 600;">Loading...</p>
         </div>
 
-        <!-- Comments Modal -->
-        <div class="modal-overlay" id="commentsModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-comments"></i> Advisory Comments</h3>
-                    <button type="button" class="modal-close" onclick="closeCommentsModal()">×</button>
-                </div>
-                <div class="modal-body" id="commentsModalBody">
-                    <p style="text-align: center; color: #a0aec0;">Loading comments...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Speaker Profile Modal -->
+        <!-- Profile Modal -->
         <div class="modal-overlay" id="profileModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3><i class="fas fa-user"></i> Speaker Profile</h3>
+                    <h3><i class="fas fa-user"></i> Speaker Profile & Comments</h3>
                     <button type="button" class="modal-close" onclick="closeProfileModal()">×</button>
                 </div>
                 <div class="modal-body" id="profileModalBody">
-                    <p style="text-align: center; color: #a0aec0;">Loading profile...</p>
+                    <p style="text-align: center; color: #a0aec0; padding: 40px;">Loading profile...</p>
                 </div>
             </div>
         </div>
 
+        <!-- Hidden Fields -->
         <asp:HiddenField ID="hdnExpandedAgendaID" runat="server" Value="0" />
         <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="All" />
         <asp:Literal ID="litMessage" runat="server" />
     </form>
 
     <script>
-        function showComments(speakerId, agendaId) {
+        function toggleAgenda(agendaId) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            var hdnField = document.getElementById('<%= hdnExpandedAgendaID.ClientID %>');
+            var currentExpanded = hdnField.value;
+
+            if (currentExpanded == agendaId) {
+                hdnField.value = '0';
+            } else {
+                hdnField.value = agendaId;
+            }
+
             document.getElementById('loadingSpinner').classList.add('show');
-            document.getElementById('commentsModal').classList.add('show');
-            document.getElementById('commentsModalBody').innerHTML = '<p style="text-align: center; color: #a0aec0;">Loading comments...</p>';
-
-            fetch('FinalSpeakerSelection.aspx/GetSpeakerComments', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ speakerId: speakerId, agendaId: agendaId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('loadingSpinner').classList.remove('show');
-                if (data.d && data.d.success) {
-                    document.getElementById('commentsModalBody').innerHTML = data.d.html;
-                } else {
-                    document.getElementById('commentsModalBody').innerHTML = '<p style="color: #f56565; text-align: center;">Error loading comments</p>';
-                }
-            })
-            .catch(error => {
-                document.getElementById('loadingSpinner').classList.remove('show');
-                document.getElementById('commentsModalBody').innerHTML = '<p style="color: #f56565; text-align: center;">Error: ' + error + '</p>';
-            });
-        }
-
-        function closeCommentsModal() {
-            document.getElementById('commentsModal').classList.remove('show');
-        }
-
-        function showProfile(speakerData) {
-            document.getElementById('profileModal').classList.add('show');
-            document.getElementById('profileModalBody').innerHTML = speakerData;
+            __doPostBack('Toggle', agendaId);
+            return false;
         }
 
         function closeProfileModal() {
             document.getElementById('profileModal').classList.remove('show');
         }
 
-        function collapseAgenda(agendaId) {
-            __doPostBack('Toggle', '0');
-        }
-
         function saveAllDecisions(agendaId) {
-            document.getElementById('loadingSpinner').classList.add('show');
+            console.log('=== Save All Decisions Debug ===');
+            console.log('AgendaID:', agendaId);
             
             var decisions = [];
-            var speakerCards = document.querySelectorAll('.speaker-card');
+            var currentAgendaCard = document.getElementById('agenda_' + agendaId);
             
-            speakerCards.forEach(function(card) {
-                var speakerId = card.dataset.speakerId;
-                var selectedRadio = card.querySelector('input[name="decision_' + speakerId + '"]:checked');
+            if (!currentAgendaCard) {
+                console.error('Agenda card not found for ID:', agendaId);
+                showAlert('Error: Agenda card not found', 'danger');
+                return;
+            }
+
+            var speakerCards = currentAgendaCard.querySelectorAll('.speaker-card');
+            console.log('Found speaker cards:', speakerCards.length);
+
+            speakerCards.forEach(function (card) {
+                var speakerId = parseInt(card.getAttribute('data-speaker-id'));
+                console.log('Processing speaker:', speakerId);
                 
+                var selectedRadio = card.querySelector('input[type="radio"]:checked');
+
                 if (selectedRadio) {
+                    var decision = selectedRadio.value;
+                    console.log('Speaker', speakerId, 'decision:', decision);
+                    
+                    var isApproved = null;
+
+                    if (decision === 'approved') isApproved = true;
+                    else if (decision === 'rejected') isApproved = false;
+
                     decisions.push({
-                        SpeakerID: parseInt(speakerId),
-                        Decision: parseInt(selectedRadio.value)
+                        SpeakerID: speakerId,
+                        IsApproved: isApproved,
+                        Comments: null
                     });
                 }
             });
 
+            console.log('Total decisions to save:', decisions.length);
+            console.log('Decisions array:', JSON.stringify(decisions));
+
             if (decisions.length === 0) {
-                alert('Please make at least one decision before saving.');
-                document.getElementById('loadingSpinner').classList.remove('show');
-                return false;
+                showAlert('⚠️ Please select a decision for at least one speaker.', 'danger');
+                return;
             }
 
-            var data = JSON.stringify({
-                agendaId: agendaId,
-                decisions: decisions
-            });
+            var btn = event.target;
+            var originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
 
-            __doPostBack('SaveDecisions', data);
-            return false;
+            console.log('Sending AJAX request...');
+
+            $.ajax({
+                type: "POST",
+                url: "<%= ResolveUrl("~/SuperAdmin/FinalSpeakerSelection.aspx/SaveSpeakerDecisions") %>",
+                data: JSON.stringify({
+                    agendaId: agendaId,
+                    decisions: decisions
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    console.log('AJAX Success Response:', response);
+
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+
+                    if (response.d && response.d.success) {
+                        showAlert('✅ ' + response.d.message, 'success');
+                        setTimeout(function () { location.reload(); }, 2000);
+                    } else {
+                        var errorMsg = response.d ? response.d.message : 'Unknown error occurred';
+                        console.error('Save failed:', errorMsg);
+                        showAlert('❌ ' + errorMsg, 'danger');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', {
+                        status: status,
+                        error: error,
+                        responseText: xhr.responseText,
+                        statusCode: xhr.status
+                    });
+
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+
+                    var errorMessage = 'Error saving decisions';
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.Message) {
+                            errorMessage = response.Message;
+                        } else if (response.ExceptionMessage) {
+                            errorMessage = response.ExceptionMessage;
+                        }
+                    } catch (e) {
+                        errorMessage = xhr.responseText || error || 'Unknown error';
+                    }
+
+                    showAlert('❌ ' + errorMessage, 'danger');
+                }
+            });
         }
 
-        // Close modals when clicking outside
-        window.onclick = function(event) {
+        function viewSpeakerProfile(speakerId, agendaId) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var modal = document.getElementById('profileModal');
+            var modalBody = document.getElementById('profileModalBody');
+            var loader = document.getElementById('loadingSpinner');
+
+            loader.classList.add('show');
+            modal.classList.add('show');
+            modalBody.innerHTML = '<p style="text-align: center; color: #a0aec0; padding: 40px;"><i class="fas fa-spinner fa-spin" style="font-size: 32px; display: block; margin-bottom: 15px;"></i>Loading profile and comments...</p>';
+
+            fetch('<%= ResolveUrl("~/SuperAdmin/FinalSpeakerSelection.aspx/GetSpeakerProfileAndComments") %>', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ speakerId: speakerId, agendaId: agendaId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    loader.classList.remove('show');
+                    if (data.d && data.d.success) {
+                        modalBody.innerHTML = data.d.html;
+                    } else {
+                        modalBody.innerHTML = '<p style="color: #f56565; text-align: center; padding: 40px;"><i class="fas fa-exclamation-triangle" style="font-size: 32px; display: block; margin-bottom: 15px;"></i>Error loading data: ' + (data.d ? data.d.error : 'Unknown error') + '</p>';
+                    }
+                })
+                .catch(error => {
+                    loader.classList.remove('show');
+                    modalBody.innerHTML = '<p style="color: #f56565; text-align: center; padding: 40px;"><i class="fas fa-exclamation-triangle" style="font-size: 32px; display: block; margin-bottom: 15px;"></i>Error: ' + error + '</p>';
+                });
+        }
+
+        function showAlert(message, type) {
+            var alertBox = document.createElement('div');
+            alertBox.className = 'alert alert-' + type;
+            alertBox.innerHTML = message;
+            document.body.appendChild(alertBox);
+            setTimeout(function () {
+                alertBox.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(function () { alertBox.remove(); }, 300);
+            }, 4000);
+        }
+
+        window.onclick = function (event) {
             if (event.target.classList.contains('modal-overlay')) {
                 event.target.classList.remove('show');
             }
         }
+
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                document.getElementById('loadingSpinner').classList.remove('show');
+            }, 500);
+        });
+
+        // Add CSS for slideOut animation
+        var style = document.createElement('style');
+        style.textContent = '@keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }';
+        document.head.appendChild(style);
     </script>
 </body>
 </html>

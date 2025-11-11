@@ -818,8 +818,8 @@
                     <button type="button" class="btn-action" onclick="window.location='ManageAdvisors.aspx'">
                         <i class="fas fa-calendar-plus"></i>Manage Advisors
                     </button>
-                    <button type="button" class="btn-action" onclick="window.location='ManageSpeaker.aspx'">
-                        <i class="fas fa-user-tie"></i>Add New Speaker
+                    <button type="button" class="btn-action" onclick="window.location='FinalSpeakerSelection.aspx'">
+                        <i class="fas fa-user-tie"></i>Final Speaker Selection
                     </button>
                     <button type="button" class="btn-action" onclick="window.location='ManageExhibitor.aspx'">
                         <i class="fas fa-building"></i>Add New Exhibitor

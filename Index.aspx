@@ -444,7 +444,12 @@
                 padding: 20px;
                 box-shadow: 0 4px 10px rgba(0,0,0,0.2);
                 border-top: 2px solid #D94A2B;
+                align-items: center; /* <-- Add this line */
+                text-align: center; /* <-- And this line */
             }
+            .nav-link {
+            justify-content: center;
+        }
 
                 .nav-menu.active {
                     display: flex;
@@ -498,7 +503,7 @@
                         <img src="Images/Expo_logo.png" alt="Lubricant India Expo 2026">
                     </a>
                 </div>
-                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <button type="button" class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                     <i class="fas fa-bars"></i>
                 </button>
                 <ul class="nav-menu" id="navMenu">
@@ -766,6 +771,135 @@
                 }
             });
         });
+
+        document.querySelectorAll('.nav-item.dropdown > .nav-link').forEach(dropdownLink => {
+            dropdownLink.addEventListener('click', function (e) {
+
+                // Check if we are in mobile view by seeing if the hamburger button is visible
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const isMobileView = window.getComputedStyle(mobileMenuToggle).display === 'block';
+
+                if (isMobileView) {
+                    // This is a mobile click! Stop the link from trying to navigate.
+                    e.preventDefault();
+
+                    // Get the dropdown menu itself (it's the next element after the link)
+                    const dropdownContent = this.nextElementSibling;
+
+                    // Manually toggle its display
+                    if (dropdownContent.style.display === 'block') {
+                        dropdownContent.style.display = 'none';
+                    } else {
+                        dropdownContent.style.display = 'block';
+                    }
+                }
+                // If we're not in mobile view, this code does nothing, 
+                // and the desktop CSS :hover continues to work as normal.
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadDynamicData();
+        });
+
+        async function loadDynamicData() {
+            try {
+                // 1. Call our C# WebMethod
+                const response = await fetch('Index.aspx/GetPublicAgendaDetails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    },
+                    body: JSON.stringify({}) // Send an empty body
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                const agendaAndSpeakerData = data.d; // ASP.NET wraps the result in '.d'
+
+                // 2. Get the containers where we will put our new HTML
+                const agendaGrid = document.querySelector('.agenda-grid');
+                const speakersGrid = document.querySelector('.speakers-grid');
+
+                // 3. Create empty strings to build our HTML
+                let agendaHtml = '';
+                let speakersHtml = '';
+
+                // A helper set to avoid duplicate speakers
+                const speakerIds = new Set();
+
+                // 4. Loop through every item returned from the database
+                agendaAndSpeakerData.forEach(item => {
+
+                    // --- Build the Agenda Card HTML ---
+                    agendaHtml += `
+                        <div class="agenda-card">
+                            <div class="agenda-day">${item.Day}</div>
+                            <div class="agenda-time">${item.Time}</div>
+                            <div class="agenda-title">${item.AgendaTitle}</div>
+                            <p style="color: #64748b; font-size: 14px; margin: 15px 0;">
+                                ${item.AgendaBrief}
+                            </p>
+                            <span class="agenda-track">${item.Track}</span>
+                        </div>
+                    `;
+
+                    // --- Build the Speaker Card HTML (if there is a speaker) ---
+                    // Check if SpeakerID is not null and we haven't added this speaker yet
+                    if (item.SpeakerID > 0 && !speakerIds.has(item.SpeakerID)) {
+
+                        speakersHtml += `
+                            <div class="speaker-card">
+                                <div class="speaker-avatar">
+                                    ${item.SpeakerPhoto ?
+                                `<img src="${item.SpeakerPhoto}" alt="${item.SpeakerName}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` :
+                                getInitials(item.SpeakerName)
+                            }
+                                </div>
+                                <div class="speaker-name">${item.SpeakerName}</div>
+                                <div class="speaker-title">${item.SpeakerDesignation}</div>
+                                <div class="speaker-company">${item.SpeakerCompany}</div>
+                            </div>
+                        `;
+
+                        // Add this speaker's ID to the set so we don't add them again
+                        speakerIds.add(item.SpeakerID);
+                    }
+                });
+
+                // 5. Inject the new HTML into the page
+                agendaGrid.innerHTML = agendaHtml;
+                speakersGrid.innerHTML = speakersHtml;
+
+                // If no agenda/speakers were found, show a message
+                if (agendaHtml === '') {
+                    agendaGrid.innerHTML = '<p>Agenda details will be available soon.</p>';
+                }
+                if (speakersHtml === '') {
+                    speakersGrid.innerHTML = '<p>Speaker details will be available soon.</p>';
+                }
+
+            } catch (error) {
+                console.error('Error loading dynamic data:', error);
+                // Show a friendly error on the page
+                document.querySelector('.agenda-grid').innerHTML = '<p>Could not load agenda. Please try again later.</p>';
+                document.querySelector('.speakers-grid').innerHTML = '<p>Could not load speakers. Please try again later.</p>';
+            }
+        }
+
+        // Helper function to get initials from a name
+        function getInitials(name) {
+            if (!name) return '';
+            const parts = name.split(' ');
+            let initials = parts[0] ? parts[0][0] : '';
+            if (parts.length > 1) {
+                initials += parts[parts.length - 1][0];
+            }
+            return initials.toUpperCase();
+        }
     </script>
 </body>
 </html>

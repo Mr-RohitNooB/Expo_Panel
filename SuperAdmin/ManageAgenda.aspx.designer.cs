@@ -168,13 +168,13 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.HiddenField hdnModalMode;
 
         /// <summary>
-        /// txtDay control.
+        /// ddlDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDay;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDay;
 
         /// <summary>
         /// rfvDay control.
@@ -186,22 +186,22 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDay;
 
         /// <summary>
-        /// txtTrack control.
+        /// ddlStream control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTrack;
+        protected global::System.Web.UI.WebControls.DropDownList ddlStream;
 
         /// <summary>
-        /// rfvTrack control.
+        /// rfvStream control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTrack;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvStream;
 
         /// <summary>
         /// txtTime control.

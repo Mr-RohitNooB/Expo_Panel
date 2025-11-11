@@ -42,6 +42,15 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Label lblAdminName;
 
         /// <summary>
+        /// hlBack control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlBack;
+
+        /// <summary>
         /// btnLogout control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,60 @@ namespace Expo_Panel.SuperAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnLogout;
+
+        /// <summary>
+        /// lblTotalAgendas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalAgendas;
+
+        /// <summary>
+        /// lblTotalSpeakers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalSpeakers;
+
+        /// <summary>
+        /// lblApprovedSpeakers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblApprovedSpeakers;
+
+        /// <summary>
+        /// lblTotalAdvisors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalAdvisors;
+
+        /// <summary>
+        /// lblPendingReview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPendingReview;
+
+        /// <summary>
+        /// lblFinalizedAgendas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFinalizedAgendas;
 
         /// <summary>
         /// btnAll control.

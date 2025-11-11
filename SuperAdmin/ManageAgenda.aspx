@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAgenda.aspx.cs" Inherits="Expo_Panel.Admin.AgendaDashboard" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAgenda.aspx.cs" Inherits="Expo_Panel.Admin.AgendaDashboard" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -720,17 +720,28 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="<%=txtDay.ClientID%>">Day <span style="color: red;">*</span></label>
-                        <asp:TextBox ID="txtDay" runat="server" CssClass="form-control" placeholder="e.g., Day 1 - Monday, Jan 15"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvDay" runat="server" ControlToValidate="txtDay"
-                            ErrorMessage="Day is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AgendaValidation"></asp:RequiredFieldValidator>
+                        <label for="<%=ddlDay.ClientID%>">Day <span style="color: red;">*</span></label>
+                        <asp:DropDownList ID="ddlDay" runat="server" CssClass="form-control">
+                            <asp:ListItem Text="-- Select Day --" Value=""></asp:ListItem>
+                            <asp:ListItem Text="Day 1" Value="Day 1"></asp:ListItem>
+                            <asp:ListItem Text="Day 2" Value="Day 2"></asp:ListItem>
+                            <asp:ListItem Text="Day 3" Value="Day 3"></asp:ListItem>
+                        </asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvDay" runat="server" ControlToValidate="ddlDay"
+                            ErrorMessage="Day is required" ForeColor="Red" Display="Dynamic" 
+                            ValidationGroup="AgendaValidation" InitialValue=""></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
-                        <label for="<%=txtTrack.ClientID%>">Track <span style="color: red;">*</span></label>
-                        <asp:TextBox ID="txtTrack" runat="server" CssClass="form-control" placeholder="e.g., Main Hall, Track A"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvTrack" runat="server" ControlToValidate="txtTrack"
-                            ErrorMessage="Track is required" ForeColor="Red" Display="Dynamic" ValidationGroup="AgendaValidation"></asp:RequiredFieldValidator>
+                        <label for="<%=ddlStream.ClientID%>">Stream <span style="color: red;">*</span></label>
+                        <asp:DropDownList ID="ddlStream" runat="server" CssClass="form-control">
+                            <asp:ListItem Text="-- Select Stream --" Value=""></asp:ListItem>
+                            <asp:ListItem Text="Stream A" Value="Stream A"></asp:ListItem>
+                            <asp:ListItem Text="Stream B" Value="Stream B"></asp:ListItem>
+                        </asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvStream" runat="server" ControlToValidate="ddlStream"
+                            ErrorMessage="Stream is required" ForeColor="Red" Display="Dynamic" 
+                            ValidationGroup="AgendaValidation" InitialValue=""></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
@@ -872,12 +883,19 @@
                 var hdnMode = document.getElementById('<%=hdnModalMode.ClientID%>');
                 var hdnID = document.getElementById('<%=hdnAgendaID.ClientID%>');
 
+                // Get new dropdown elements
+                var ddlDay = document.getElementById('<%=ddlDay.ClientID%>');
+                var ddlStream = document.getElementById('<%=ddlStream.ClientID%>');
+
                 if (mode === 'add') {
                     modalTitle.innerText = 'Add Agenda Item';
                     hdnMode.value = 'add';
                     hdnID.value = '0';
-                    document.getElementById('<%=txtDay.ClientID%>').value = '';
-                    document.getElementById('<%=txtTrack.ClientID%>').value = '';
+
+                    // Reset dropdowns to the first item ("-- Select --")
+                    ddlDay.selectedIndex = 0;
+                    ddlStream.selectedIndex = 0;
+
                     document.getElementById('<%=txtTime.ClientID%>').value = '';
                     document.getElementById('<%=txtTitle.ClientID%>').value = '';
                     document.getElementById('<%=txtBrief.ClientID%>').value = '';
@@ -887,8 +905,13 @@
                     modalTitle.innerText = 'Edit Agenda Item';
                     hdnMode.value = 'edit';
                     hdnID.value = id;
-                    document.getElementById('<%=txtDay.ClientID%>').value = day || '';
-                    document.getElementById('<%=txtTrack.ClientID%>').value = track || '';
+
+                    // *** THIS IS THE FIX ***
+                    // We set the .value of the dropdowns. 
+                    // 'track' is the variable name from C# holding the value (e.g., "Stream A")
+                    ddlDay.value = day || '';
+                    ddlStream.value = track || ''; 
+
                     document.getElementById('<%=txtTime.ClientID%>').value = time || '';
                     document.getElementById('<%=txtTitle.ClientID%>').value = title || '';
                     document.getElementById('<%=txtBrief.ClientID%>').value = brief || '';
@@ -902,6 +925,10 @@
             function closeModal() {
                 var modal = document.getElementById('agendaModal');
                 modal.classList.remove('show');
+
+                // Also reset dropdowns on close, just to be clean
+                document.getElementById('<%=ddlDay.ClientID%>').selectedIndex = 0;
+                document.getElementById('<%=ddlStream.ClientID%>').selectedIndex = 0;
             }
 
             function openApprovalModal(id, day, track, time, title, brief, regType, approvalStatus, remarks) {
