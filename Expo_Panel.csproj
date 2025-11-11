@@ -67,7 +67,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SpeakerLogin.aspx" />
+    <Content Include="User\SpeakerDashboard.aspx" />
+    <Content Include="User\SpeakerLogin.aspx" />
+    <Content Include="SuperAdmin\ManageAdvisors.aspx" />
     <Content Include="User\AdvisoryLogin.aspx" />
     <Content Include="Images\Expo_logo_Full.png" />
     <Content Include="Images\Lubricant_India_Expo_Cropped.png" />
@@ -80,21 +82,35 @@
     <Content Include="SuperAdmin\ManageExhibitor.aspx" />
     <Content Include="SuperAdmin\ManageSpeaker.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="ExhibitorLogin.aspx" />
-    <Content Include="PostApprovalExhibitor.aspx" />
+    <Content Include="User\ExhibitorLogin.aspx" />
+    <Content Include="User\PostApprovalExhibitor.aspx" />
     <Content Include="RegisterAdvisor.aspx" />
     <Content Include="RegisterAgenda.aspx" />
-    <Content Include="RegisterExhibitor.aspx" />
-    <Content Include="RegisterSpeaker.aspx" />
+    <Content Include="User\RegisterExhibitor.aspx" />
+    <Content Include="User\RegisterSpeaker.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SpeakerLogin.aspx.cs">
+    <Compile Include="User\SpeakerDashboard.aspx.cs">
+      <DependentUpon>SpeakerDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\SpeakerDashboard.aspx.designer.cs">
+      <DependentUpon>SpeakerDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\SpeakerLogin.aspx.cs">
       <DependentUpon>SpeakerLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SpeakerLogin.aspx.designer.cs">
+    <Compile Include="User\SpeakerLogin.aspx.designer.cs">
       <DependentUpon>SpeakerLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SuperAdmin\ManageAdvisors.aspx.cs">
+      <DependentUpon>ManageAdvisors.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SuperAdmin\ManageAdvisors.aspx.designer.cs">
+      <DependentUpon>ManageAdvisors.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\AdvisoryLogin.aspx.cs">
       <DependentUpon>AdvisoryLogin.aspx</DependentUpon>
@@ -159,18 +175,18 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ExhibitorLogin.aspx.cs">
+    <Compile Include="User\ExhibitorLogin.aspx.cs">
       <DependentUpon>ExhibitorLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ExhibitorLogin.aspx.designer.cs">
+    <Compile Include="User\ExhibitorLogin.aspx.designer.cs">
       <DependentUpon>ExhibitorLogin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="PostApprovalExhibitor.aspx.cs">
+    <Compile Include="User\PostApprovalExhibitor.aspx.cs">
       <DependentUpon>PostApprovalExhibitor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PostApprovalExhibitor.aspx.designer.cs">
+    <Compile Include="User\PostApprovalExhibitor.aspx.designer.cs">
       <DependentUpon>PostApprovalExhibitor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,18 +204,18 @@
     <Compile Include="RegisterAgenda.aspx.designer.cs">
       <DependentUpon>RegisterAgenda.aspx</DependentUpon>
     </Compile>
-    <Compile Include="RegisterExhibitor.aspx.cs">
+    <Compile Include="User\RegisterExhibitor.aspx.cs">
       <DependentUpon>RegisterExhibitor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="RegisterExhibitor.aspx.designer.cs">
+    <Compile Include="User\RegisterExhibitor.aspx.designer.cs">
       <DependentUpon>RegisterExhibitor.aspx</DependentUpon>
     </Compile>
-    <Compile Include="RegisterSpeaker.aspx.cs">
+    <Compile Include="User\RegisterSpeaker.aspx.cs">
       <DependentUpon>RegisterSpeaker.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="RegisterSpeaker.aspx.designer.cs">
+    <Compile Include="User\RegisterSpeaker.aspx.designer.cs">
       <DependentUpon>RegisterSpeaker.aspx</DependentUpon>
     </Compile>
   </ItemGroup>

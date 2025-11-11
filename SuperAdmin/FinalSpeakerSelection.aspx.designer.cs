@@ -11,7 +11,7 @@ namespace Expo_Panel.SuperAdmin
 {
 
 
-    public partial class AdvisoryRatingDashboard
+    public partial class FinalSpeakerSelection
     {
 
         /// <summary>
@@ -24,22 +24,13 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// ScriptManager1 control.
+        /// lblAdminName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
-
-        /// <summary>
-        /// lblAdvisorName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAdvisorName;
+        protected global::System.Web.UI.WebControls.Label lblAdminName;
 
         /// <summary>
         /// btnLogout control.
@@ -51,24 +42,6 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Button btnLogout;
 
         /// <summary>
-        /// litMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litMessage;
-
-        /// <summary>
-        /// UpdatePanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-
-        /// <summary>
         /// btnAll control.
         /// </summary>
         /// <remarks>
@@ -78,40 +51,31 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Button btnAll;
 
         /// <summary>
-        /// btnNotStarted control.
+        /// btnNeedsReview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNotStarted;
+        protected global::System.Web.UI.WebControls.Button btnNeedsReview;
 
         /// <summary>
-        /// btnFullyRated control.
+        /// btnFinalized control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFullyRated;
+        protected global::System.Web.UI.WebControls.Button btnFinalized;
 
         /// <summary>
-        /// hdnCurrentFilter control.
+        /// btnPending control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnCurrentFilter;
-
-        /// <summary>
-        /// hdnExpandedAgendaID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnExpandedAgendaID;
+        protected global::System.Web.UI.WebControls.Button btnPending;
 
         /// <summary>
         /// txtSearch control.
@@ -132,6 +96,15 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
+        /// pnlNoRecords control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNoRecords;
+
+        /// <summary>
         /// rptAgendas control.
         /// </summary>
         /// <remarks>
@@ -141,12 +114,30 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Repeater rptAgendas;
 
         /// <summary>
-        /// pnlNoRecords control.
+        /// hdnExpandedAgendaID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlNoRecords;
+        protected global::System.Web.UI.WebControls.HiddenField hdnExpandedAgendaID;
+
+        /// <summary>
+        /// hdnCurrentFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnCurrentFilter;
+
+        /// <summary>
+        /// litMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litMessage;
     }
 }

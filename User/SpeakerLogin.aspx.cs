@@ -19,7 +19,7 @@ namespace Expo_Panel
                 // Check if speaker is already logged in
                 if (Session["IsSpeakerLoggedIn"] != null && (bool)Session["IsSpeakerLoggedIn"])
                 {
-                    Response.Redirect("RegisterSpeaker.aspx", false);
+                    Response.Redirect("SpeakerDashboard.aspx", false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
             }
@@ -52,8 +52,8 @@ namespace Expo_Panel
                         Session["SpeakerEmail"] = speakerDetails.Email;
                         Session["SpeakerApprovalStatus"] = speakerDetails.ApprovalStatus;
 
-                        // Redirect to RegisterSpeaker page (edit mode)
-                        Response.Redirect("RegisterSpeaker.aspx", false);
+                        // Redirect to Dashboard
+                        Response.Redirect("SpeakerDashboard.aspx", false);
                         Context.ApplicationInstance.CompleteRequest();
                     }
                     else
@@ -71,6 +71,7 @@ namespace Expo_Panel
                 ShowMessage("Login error: " + ex.Message, "danger");
             }
         }
+
 
         private int AuthenticateSpeaker(string email, string password)
         {

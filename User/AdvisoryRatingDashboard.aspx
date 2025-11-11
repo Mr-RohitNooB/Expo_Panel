@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
+    <%-- ... HEAD content (styles, fonts, etc.) is UNCHANGED ... --%>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Advisory Rating Dashboard - Expo Panel</title>
@@ -10,31 +11,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Light Mode Favicons -->
+
+    <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
     <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
     <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
-
-    <!-- Dark Mode Favicons -->
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
     <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
     <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
-
-    <!-- Android / PWA -->
     <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
     <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
-
-    <!-- Theme Colors -->
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-
-    <!-- Windows Tile Support -->
     <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
+        /* ... ALL your CSS styles are UNCHANGED ... */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -195,36 +190,319 @@
                 border-color: #4f46e5;
             }
 
-        .grid-container {
-            overflow-x: auto;
+        .agenda-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        table {
+        .agenda-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+            .agenda-item:hover {
+                border-color: #cbd5e1;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                transform: translateX(2px);
+            }
+
+        .agenda-header-row {
+            display: grid;
+            grid-template-columns: 60px 2.5fr 100px 140px 120px 110px 140px 130px 100px;
+            gap: 12px;
+            padding: 18px 20px;
+            align-items: center;
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+            border-radius: 10px;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .agenda-data-row {
+            display: grid;
+            grid-template-columns: 60px 2.5fr 100px 140px 120px 110px 140px 130px 100px;
+            gap: 12px;
+            padding: 18px 20px;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
             width: 100%;
-            border-collapse: collapse;
+            text-decoration: none;
+            color: inherit;
+            font-size: 13px;
+            text-align: left;
         }
 
-            table thead {
+            .agenda-data-row:hover {
                 background: #f8fafc;
             }
 
-            table th {
-                padding: 15px;
-                text-align: left;
-                font-weight: 600;
+            .agenda-data-row.expanded {
+                background: #f0f9ff;
+                border-bottom: 2px solid #0ea5e9;
+            }
+
+        .agenda-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .progress-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #10b981;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .badge-rated {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s;
+            color: #64748b;
+        }
+
+            .expand-icon.rotated {
+                transform: rotate(180deg);
+            }
+
+        /* Speakers Section (Expandable) */
+        .speakers-section {
+            display: none; /* UNCHANGED */
+            padding: 25px;
+            background: #f8fafc;
+            border-top: 2px solid #e2e8f0;
+            animation: slideDown 0.3s ease-out;
+        }
+
+            .speakers-section.show {
+                display: block; /* UNCHANGED */
+            }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+
+            to {
+                opacity: 1;
+                max-height: 2000px;
+            }
+        }
+
+        .agenda-info-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+            .agenda-info-banner h3 {
+                margin-bottom: 10px;
+                font-size: 18px;
+            }
+
+        .agenda-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .speaker-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+            .speaker-card:hover {
+                border-color: #667eea;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            }
+
+        .speaker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .speaker-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .speaker-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+            .speaker-meta span {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+        .current-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef3c7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #92400e;
+        }
+
+            .current-rating i {
+                color: #fbbf24;
+            }
+
+        .rating-section {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .star {
+            font-size: 32px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .star:hover,
+            .star.active {
+                color: #fbbf24;
+                transform: scale(1.1);
+            }
+
+        .form-group {
+            margin-top: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
                 color: #475569;
-                border-bottom: 2px solid #e2e8f0;
+                font-weight: 500;
+                font-size: 14px;
             }
 
-            table td {
-                padding: 15px;
-                border-bottom: 1px solid #e2e8f0;
-                color: #334155;
+            .form-group textarea {
+                width: 100%;
+                padding: 10px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                font-family: 'Poppins', sans-serif;
+                resize: vertical;
+                min-height: 80px;
             }
 
-            table tbody tr:hover {
-                background: #f8fafc;
-            }
+                .form-group textarea:focus {
+                    outline: none;
+                    border-color: #667eea;
+                }
+
+        .save-ratings-section {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            margin-top: 20px;
+            /* NEW: Make this flex-wrap for the validation message */
+            flex-wrap: wrap;
+        }
 
         .alert {
             padding: 15px 20px;
@@ -253,237 +531,280 @@
             border: 1px solid #bfdbfe;
         }
 
-        .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap; /* This prevents "Not Started" from wrapping */
+        .no-records {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
         }
 
-
-        .badge-rated {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-        }
-
-            .modal.show {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+            .no-records i {
+                font-size: 48px;
+                margin-bottom: 15px;
+                display: block;
             }
 
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 900px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: modalSlideIn 0.3s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
         }
 
-        @keyframes modalSlideIn {
+            .loading-spinner.show {
+                display: block;
+            }
+
+            .loading-spinner i {
+                font-size: 48px;
+                animation: spin 1s linear infinite;
+            }
+
+        @keyframes spin {
             from {
-                opacity: 0;
-                transform: translateY(-50px);
+                transform: rotate(0deg);
             }
 
             to {
-                opacity: 1;
-                transform: translateY(0);
+                transform: rotate(360deg);
             }
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 15px;
-        }
-
-            .modal-header h2 {
-                color: #4f46e5;
-                font-size: 22px;
+        /* ... ALL @media queries are UNCHANGED ... */
+        @media (max-width: 1200px) {
+            .agenda-header-row,
+            .agenda-data-row {
+                grid-template-columns: 50px 1fr 80px 120px 100px 100px 120px 140px;
+                font-size: 13px;
             }
 
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: #6b7280;
-            cursor: pointer;
+            .speakers-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-            .close-btn:hover {
-                color: #ef4444;
+        @media (max-width: 768px) {
+            .agenda-header-row {
+                display: none;
             }
 
-        .speaker-info {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-            .speaker-info h3 {
-                color: #1e293b;
-                margin-bottom: 15px;
+            .agenda-data-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            font-size: 14px;
-            color: #1e293b;
-            font-weight: 500;
-        }
-
-        .agenda-section {
-            margin-top: 20px;
-        }
-
-        .agenda-card {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-
-        .agenda-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 15px;
-        }
-
-        .agenda-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .agenda-meta {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        .rating-section {
-            border-top: 1px solid #e2e8f0;
-            padding-top: 15px;
-            margin-top: 15px;
-        }
-
-        .star-rating {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-
-        .star {
-            font-size: 32px;
-            color: #cbd5e1;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-            .star:hover,
-            .star.active {
-                color: #fbbf24 !important;
-            }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: #475569;
-                font-weight: 500;
-            }
-
-            .form-group textarea {
-                width: 100%;
-                padding: 10px 15px;
-                border: 2px solid #e2e8f0;
-                border-radius: 8px;
-                font-size: 14px;
-                font-family: 'Poppins', sans-serif;
-                resize: vertical;
-            }
-
-                .form-group textarea:focus {
-                    outline: none;
-                    border-color: #667eea;
+                .agenda-data-row > span {
+                    display: flex;
+                    justify-content: space-between;
                 }
 
-        .no-records {
-            text-align: center;
-            padding: 40px;
-            color: #94a3b8;
-            font-size: 16px;
+                    .agenda-data-row > span::before {
+                        content: attr(data-label);
+                        font-weight: 600;
+                        color: #64748b;
+                    }
+        }
+        /* Color-coded agenda items */
+        .agenda-item:nth-child(2) {
+            border-left: 4px solid #3b82f6;
         }
 
-        .current-rating {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #fef3c7;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
+        .agenda-item:nth-child(3) {
+            border-left: 4px solid #10b981;
         }
 
-            .current-rating i {
-                color: #fbbf24;
+        .agenda-item:nth-child(4) {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .agenda-item:nth-child(5) {
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .agenda-item:nth-child(6) {
+            border-left: 4px solid #ec4899;
+        }
+
+        .agenda-item:nth-child(7) {
+            border-left: 4px solid #14b8a6;
+        }
+
+        .agenda-item:nth-child(8) {
+            border-left: 4px solid #f97316;
+        }
+
+        .agenda-item:nth-child(9) {
+            border-left: 4px solid #6366f1;
+        }
+
+        /* Color-coded speaker cards */
+        .speaker-card:nth-child(1) {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .speaker-card:nth-child(2) {
+            border-left: 4px solid #10b981;
+        }
+
+        .speaker-card:nth-child(3) {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .speaker-card:nth-child(4) {
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .speaker-card:nth-child(5) {
+            border-left: 4px solid #ec4899;
+        }
+
+        .speaker-card:nth-child(6) {
+            border-left: 4px solid #14b8a6;
+        }
+
+        .speaker-card:nth-child(7) {
+            border-left: 4px solid #f97316;
+        }
+
+        .speaker-card:nth-child(8) {
+            border-left: 4px solid #6366f1;
+        }
+
+        .speaker-card:nth-child(9) {
+            border-left: 4px solid #ef4444;
+        }
+
+        .speaker-card:nth-child(10) {
+            border-left: 4px solid #06b6d4;
+        }
+        /* ... Your existing CSS ... */
+        .btn-info:hover {
+            background: #0284c7;
+        }
+
+        /* NEW: Styles for the Profile Modal */
+        .profile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1040;
+            display: none; /* Hidden by default */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+            .profile-overlay.show {
+                display: block;
+                opacity: 1;
             }
+
+        .profile-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transform: translate(-50%, -60%); /* Start slightly higher for animation */
+            transition: all 0.3s ease-out;
+        }
+
+        .profile-overlay.show .profile-modal {
+            transform: translate(-50%, -50%); /* Animate to center */
+        }
+
+        .profile-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+            .profile-modal-header h3 {
+                color: #4f46e5;
+                font-weight: 600;
+                margin: 0;
+            }
+
+        .profile-modal-close {
+            background: transparent;
+            border: none;
+            font-size: 28px;
+            font-weight: 300;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+            .profile-modal-close:hover {
+                color: #1e293b;
+            }
+
+        .profile-modal-body {
+            padding: 25px;
+            display: flex;
+            gap: 25px;
+        }
+
+        .profile-modal-left {
+            flex-basis: 200px;
+            flex-shrink: 0;
+        }
+
+            .profile-modal-left img {
+                width: 100%;
+                height: 200px; /* Fixed height */
+                object-fit: cover;
+                border-radius: 10px;
+                border: 2px solid #e2e8f0;
+            }
+
+        .profile-modal-right {
+            flex-grow: 1;
+            font-size: 14px;
+            color: #475569;
+        }
+
+            .profile-modal-right .profile-meta-item {
+                margin-bottom: 10px;
+            }
+
+            .profile-modal-right strong {
+                color: #1e293b;
+                display: block;
+                margin-bottom: 4px;
+            }
+
+            .profile-modal-right hr {
+                border: none;
+                border-top: 1px solid #e2e8f0;
+                margin: 15px 0;
+            }
+
+            .profile-modal-right p {
+                line-height: 1.6;
+                white-space: pre-wrap; /* Respects newlines in the bio */
+            }
+
+        .speaker-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0; /* Prevents shrinking */
+        }
+        /* ... Your other styles ... */
     </style>
 </head>
 <body>
@@ -491,14 +812,12 @@
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
         <div class="container">
+            <!-- ... Header is UNCHANGED ... -->
             <div class="header">
                 <h1><i class="fas fa-star"></i>Advisory Rating Dashboard</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
                         <asp:Label ID="lblAdvisorName" runat="server" Text=""></asp:Label></span>
-                    <%--  <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
-        <i class="fas fa-arrow-left"></i> Back
-                    </asp:HyperLink>--%>
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
                 </div>
             </div>
@@ -506,11 +825,9 @@
             <div class="dashboard-card">
                 <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
 
-
-
-
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
+                        <!-- ... Status Filters and Toolbar are UNCHANGED ... -->
                         <div class="status-filters">
                             <asp:Button ID="btnAll" runat="server" Text="All Agendas (0)" CssClass="btn-filter active"
                                 OnClick="btnStatusFilter_Click" CommandArgument="All" />
@@ -519,7 +836,9 @@
                             <asp:Button ID="btnFullyRated" runat="server" Text="Completed (0)" CssClass="btn-filter"
                                 OnClick="btnStatusFilter_Click" CommandArgument="FullyRated" />
                             <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="All" />
+                            <asp:HiddenField ID="hdnExpandedAgendaID" runat="server" Value="0" />
                         </div>
+
                         <div class="toolbar">
                             <div class="search-box">
                                 <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control"
@@ -528,186 +847,157 @@
                                     OnClick="btnSearch_Click" />
                             </div>
                         </div>
-                        <div class="grid-container">
-                            <asp:GridView ID="gvAgendas" runat="server" AutoGenerateColumns="False"
-                                OnRowCommand="gvAgendas_RowCommand" DataKeyNames="AgendaID"
-                                CssClass="speakers-grid" GridLines="None">
-                                <Columns>
-                                    <asp:BoundField DataField="AgendaID" HeaderText="ID" Visible="false" />
 
-                                    <asp:TemplateField HeaderText="Sr. No.">
-                                        <ItemTemplate>
-                                            <%# Container.DataItemIndex + 1 %>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                        <div class="agenda-list">
+                            <!-- Header Row is UNCHANGED -->
+                            <div class="agenda-header-row">
+                                <div>Sr. No.</div>
+                                <div>Agenda Title</div>
+                                <div>Day</div>
+                                <div>Track</div>
+                                <div>Time</div>
+                                <div>Speakers</div>
+                                <div>Progress</div>
+                                <div>Status</div>   
+                            </div>
 
-                                    <asp:BoundField DataField="Title" HeaderText="Agenda Title" />
-                                    <asp:BoundField DataField="Day" HeaderText="Day" />
-                                    <asp:BoundField DataField="Track" HeaderText="Track" />
-                                    <asp:BoundField DataField="Time" HeaderText="Time" />
+                            <!-- REMOVED: The old <asp:Literal ID="litAgendaItems" ... /> is GONE. -->
 
-                                    <asp:TemplateField HeaderText="Speakers">
-                                        <ItemTemplate>
-                                            <span style="font-weight: 600; color: #4f46e5; white-space: nowrap;">
-                                                <%# Convert.ToInt32(Eval("TotalSpeakers")) == 1 
-                ? "1 Speaker" 
-                : Eval("TotalSpeakers") + " Speakers" %>
-                                            </span>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                            <!-- NEW: It is replaced with this asp:Repeater. -->
+                            <!-- The Repeater is a "smart" control that will create one <ItemTemplate> for each row in our data. -->
+                            <!-- We add OnItemCommand to listen for clicks and OnItemDataBound to load the speakers for the expanded row. -->
+                            <asp:Repeater ID="rptAgendas" runat="server"
+                                OnItemCommand="rptAgendas_ItemCommand"
+                                OnItemDataBound="rptAgendas_ItemDataBound">
+                                <ItemTemplate>
+                                    <div class="agenda-item">
 
+                                        <asp:LinkButton ID="lnkAgendaRow" runat="server"
+                                            CommandName="Toggle"
+                                            CommandArgument='<%# Eval("AgendaID") %>'
+                                            CssClass='<%# String.Format("agenda-data-row {0}", (Eval("AgendaID").ToString() == hdnExpandedAgendaID.Value) ? "expanded" : "") %>'>
 
+<span data-label="Sr. No."><%# Container.ItemIndex + 1 %></span>
+<span data-label="Title" class="agenda-title"><%# Eval("Title") %></span>
+<span data-label="Day"><%# Eval("Day") %></span>
+<span data-label="Track"><%# Eval("Track") %></span>
+<span data-label="Time"><%# Eval("Time") %></span>
+<span data-label="Speakers" style="font-weight: 600; color: #4f46e5;">
 
-                                    <asp:TemplateField HeaderText="Progress">
-                                        <ItemTemplate>
-                                            <div style="display: flex; align-items: center; gap: 10px;">
-                                                <div style="flex: 1; background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
-                                                    <div style='width: <%# Eval("ProgressPercentage") %>%; background: #10b981; height: 100%;'></div>
-                                                </div>
-                                                <span style="font-size: 12px; color: #64748b; font-weight: 500;">
-                                                    <%# Eval("RatedSpeakers") %>/<%# Eval("TotalSpeakers") %>
-                                                </span>
-                                            </div>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Status">
-                                        <ItemTemplate>
-                                            <%# Convert.ToBoolean(Eval("IsFullyRated")) 
-            ? "<span class='badge badge-rated'><i class='fas fa-check-circle'></i> Completed</span>" 
-            : (Convert.ToInt32(Eval("RatedSpeakers")) > 0 
-                ? "<span class='badge' style='background: #dbeafe; color: #1e40af;'><i class='fas fa-spinner'></i> In Progress</span>"
-                : "<span class='badge badge-pending'><i class='fas fa-clock'></i> Not Started</span>") %>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+        <%# Eval("TotalSpeakers") %> Speakers
+    </span>
+    <span data-label="Progress">
+        <%# GetProgressHtml(Eval("ProgressPercentage"), Eval("RatedSpeakers"), Eval("TotalSpeakers")) %>
+    </span>
+    <span data-label="Status">
+        <%# GetStatusBadge(Eval("IsFullyRated"), Eval("RatedSpeakers")) %>
+    </span>
+    <span data-label="Actions">
+        <i id="icon_<%# Eval("AgendaID") %>"
+            class='<%# String.Format("fas fa-chevron-down expand-icon {0}", (Eval("AgendaID").ToString() == hdnExpandedAgendaID.Value) ? "rotated" : "") %>'></i>
+    </span>
+                                        </asp:LinkButton>
 
 
-                                    <asp:TemplateField HeaderText="Actions">
-                                        <ItemTemplate>
-                                            <asp:Button runat="server"
-                                                Text='<%# Convert.ToBoolean(Eval("IsFullyRated")) ? "View Ratings" : "Rate Speakers" %>'
-                                                CommandName="RateAgenda"
-                                                CommandArgument='<%# Eval("AgendaID") %>'
-                                                CssClass='<%# Convert.ToBoolean(Eval("IsFullyRated")) ? "btn btn-info" : "btn btn-success" %>' />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                </Columns>
-                                <EmptyDataTemplate>
-                                    <div class="no-records">
-                                        <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
-                                        No agendas found.
+                                        <asp:Panel ID="pnlSpeakers" runat="server"
+                                            CssClass='<%# String.Format("speakers-section {0}", (Eval("AgendaID").ToString() == hdnExpandedAgendaID.Value) ? "show" : "") %>'
+                                            Visible='<%# (Eval("AgendaID").ToString() == hdnExpandedAgendaID.Value) %>'>
+                                        </asp:Panel>
+
                                     </div>
-                                </EmptyDataTemplate>
-                            </asp:GridView>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </div>
+
+                        <!-- ... pnlNoRecords and loadingSpinner are UNCHANGED ... -->
+                        <asp:Panel ID="pnlNoRecords" runat="server" CssClass="no-records" Visible="false">
+                            <i class="fas fa-inbox"></i>
+                            <p>No agendas found.</p>
+                        </asp:Panel>
+
+                        <div id="loadingSpinner" class="loading-spinner">
+                            <i class="fas fa-spinner"></i>
+                            <p>Loading speakers...</p>
                         </div>
                     </ContentTemplate>
                     <Triggers>
+
                         <asp:AsyncPostBackTrigger ControlID="btnAll" EventName="Click" />
                         <asp:AsyncPostBackTrigger ControlID="btnNotStarted" EventName="Click" />
-
                         <asp:AsyncPostBackTrigger ControlID="btnFullyRated" EventName="Click" />
                     </Triggers>
                 </asp:UpdatePanel>
             </div>
         </div>
-
-        <!-- Rating Modal -->
-        <!-- Rating Modal -->
-        <div id="ratingModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2><i class="fas fa-calendar-alt"></i>Rate Speakers for Agenda</h2>
-                    <button type="button" class="close-btn" onclick="closeRatingModal()">&times;</button>
+        <div id="profileOverlay" class="profile-overlay">
+            <div id="profileModal" class="profile-modal">
+                <div class="profile-modal-header">
+                    <h3 id="modalSpeakerName">Speaker Name</h3>
+                    <button type="button" class="profile-modal-close" onclick="hideSpeakerProfile()">
+                        &times;
+                    </button>
                 </div>
-
-                <asp:HiddenField ID="hdnAgendaID" runat="server" Value="0" />
-
-                <!-- Agenda Information -->
-                <div class="speaker-info">
-                    <h3><i class="fas fa-info-circle"></i>Agenda Details</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Title</span>
-                            <span class="info-value" id="spanAgendaTitle"></span>
+                <div class="profile-modal-body">
+                    <div class="profile-modal-left">
+                        <img id="modalSpeakerImage" src="/Images/DefaultUser.png" alt="Speaker Profile" />
+                        <div class="profile-meta-item">
+                            <strong><i class="fas fa-envelope"></i>Email:</strong>
+                            <span id="modalSpeakerEmail"></span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Day</span>
-                            <span class="info-value" id="spanAgendaDay"></span>
+                        <div class="profile-meta-item">
+                            <strong><i class="fas fa-phone"></i>Mobile:</strong>
+                            <span id="modalSpeakerMobile"></span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Track</span>
-                            <span class="info-value" id="spanAgendaTrack"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Time</span>
-                            <span class="info-value" id="spanAgendaTime"></span>
-                        </div>
-                        <div class="info-item" style="grid-column: 1 / -1;">
-                            <span class="info-label">Brief</span>
-                            <span class="info-value" id="spanAgendaBrief"></span>
+                        <div class="profile-meta-item">
+                            <strong><i class="fab fa-linkedin"></i>LinkedIn:</strong>
+                            <a id="modalSpeakerLinkedIn" href="#" target="_blank" rel="noopener noreferrer">N/A</a>
                         </div>
                     </div>
-                    <div style="margin-top: 15px; padding: 10px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0ea5e9;">
-                        <strong style="color: #0369a1;">Progress:</strong>
-                        <span id="spanProgress" style="color: #0c4a6e; font-weight: 500;"></span>
+                    <div class="profile-modal-right">
+                        <div class="profile-meta-item">
+                            <strong>Designation:</strong>
+                            <span id="modalSpeakerDesignation"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <strong>Company:</strong>
+                            <span id="modalSpeakerCompany"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <strong>Years of Experience:</strong>
+                            <span id="modalSpeakerExperience"></span>
+                        </div>
+                        <hr />
+                        <div class="profile-meta-item">
+                            <strong>Bio:</strong>
+                            <p id="modalSpeakerBio"></p>
+                        </div>
+                        <hr />
+                        <div class="profile-meta-item">
+                            <strong>Areas of Expertise:</strong>
+                            <p id="modalSpeakerExpertise"></p>
+                        </div>
+                        <hr />
+                        <div class="profile-meta-item">
+                            <strong>Current Projects:</strong>
+                            <p id="modalSpeakerProjects"></p>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Speakers Section -->
-                <asp:UpdatePanel ID="upModalSpeakers" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                        <div class="agenda-section">
-                            <h3 style="margin-bottom: 15px;">
-                                <i class="fas fa-users"></i>Speakers to Rate
-                            </h3>
-                            <asp:Literal ID="litSpeakerCards" runat="server"></asp:Literal>
-                        </div>
-                        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-                            <button type="button" class="btn" onclick="closeRatingModal()" style="background: #e2e8f0; color: #475569;">Cancel</button>
-                            <button type="button" class="btn btn-primary" onclick="submitAllRatings()">
-                                <i class="fas fa-save"></i>Submit All Ratings
-                            </button>
-                        </div>
-                    </ContentTemplate>
-                </asp:UpdatePanel>
             </div>
         </div>
 
         <script type="text/javascript">
-            function openRatingModal(agendaId, title, day, track, time, brief, ratedCount, totalCount) {
-                console.log('Opening modal for agenda:', agendaId);
+            // REMOVED: The old toggleAgenda(agendaId) function is no longer needed.
+            // The LinkButton click now triggers a server postback automatically.
 
-                document.getElementById('<%=hdnAgendaID.ClientID%>').value = agendaId;
-                document.getElementById('spanAgendaTitle').innerText = title;
-                document.getElementById('spanAgendaDay').innerText = day;
-                document.getElementById('spanAgendaTrack').innerText = track;
-                document.getElementById('spanAgendaTime').innerText = time;
-                document.getElementById('spanAgendaBrief').innerText = brief || 'No description available';
-                document.getElementById('spanProgress').innerText = ratedCount + ' of ' + totalCount + ' speakers rated';
-
-                // Debug: Check if speaker cards are loaded
-                var speakerCards = document.querySelectorAll('.agenda-card[data-speaker-id]');
-                console.log('Speaker cards found:', speakerCards.length);
-
-                if (speakerCards.length === 0) {
-                    console.error('No speaker cards found in DOM!');
-                }
-
-                document.getElementById('ratingModal').classList.add('show');
-            }
-
-            function closeRatingModal() {
-                document.getElementById('ratingModal').classList.remove('show');
-            }
-
+            // UNCHANGED: These JavaScript functions are still needed for the star rating
+            // inside the speaker cards.
             function setRating(speakerId, rating) {
-                // Set the hidden field value
                 var hiddenField = document.getElementById('hdnRating_' + speakerId);
                 if (hiddenField) {
                     hiddenField.value = rating;
                 }
 
-                // Update star display
                 var starsContainer = document.getElementById('stars_' + speakerId);
                 if (starsContainer) {
                     var stars = starsContainer.querySelectorAll('i');
@@ -754,11 +1044,16 @@
                 }
             }
 
-            function submitAllRatings() {
-                var agendaId = document.getElementById('<%=hdnAgendaID.ClientID%>').value;
-                var ratingsData = [];
+            // UPDATED: saveAgendaRatings
+            function saveAgendaRatings(agendaId) {
+                // NEW: Find the validation message div and hide it
+                var msgDiv = document.getElementById('validationMsg_' + agendaId);
+                if (msgDiv) {
+                    msgDiv.style.display = 'none';
+                }
 
-                var speakerCards = document.querySelectorAll('.agenda-card[data-speaker-id]');
+                var speakerCards = document.querySelectorAll('#speakers_' + agendaId + ' .speaker-card[data-speaker-id]');
+                var ratingsData = [];
                 var allValid = true;
                 var firstInvalidCard = null;
 
@@ -785,22 +1080,79 @@
                 });
 
                 if (!allValid) {
-                    alert('Please provide a rating (1-5 stars) for all speakers before submitting.');
+                    // REMOVED: alert('...');
+                    // NEW: Show the validation message div instead of an alert
+                    // This respects your request to avoid pop-ups.
+                    if (msgDiv) {
+                        msgDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please provide a rating (1-5 stars) for all speakers before submitting.';
+                        msgDiv.style.display = 'block';
+                    }
                     if (firstInvalidCard) {
                         firstInvalidCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                    return;
+                    return false;
                 }
 
-                // Use __doPostBack to submit via ASP.NET
-                __doPostBack('SubmitRatings', JSON.stringify({ agendaId: agendaId, ratings: ratingsData }));
+                // ... Show loading and __doPostBack are UNCHANGED ...
+                var spinner = document.getElementById('loadingSpinner');
+                if (spinner) spinner.classList.add('show');
+
+                __doPostBack('SaveRatings', JSON.stringify({ agendaId: agendaId, ratings: ratingsData }));
+                return false;
             }
 
-            window.onclick = function (event) {
-                var modal = document.getElementById('ratingModal');
-                if (event.target == modal) {
-                    closeRatingModal();
+            // UPDATED: collapseAgenda
+            function collapseAgenda(agendaId) {
+                // 1. Set the hidden field to 0 to tell the server we want to close it.
+                document.getElementById('<%=hdnExpandedAgendaID.ClientID%>').value = '0';
+
+                // 2. Trigger a postback to refresh the UpdatePanel.
+                // This will cause the C# code to re-bind the Repeater, and no
+                // panels will be set to visible.
+                __doPostBack('<%=UpdatePanel1.UniqueID%>', '');
+            }
+
+            function showSpeakerProfile(name, designation, company, bio, imageUrl, email, mobile, linkedIn, experience, expertise, projects) {
+
+                // 1. Populate the modal fields
+                document.getElementById('modalSpeakerName').innerText = name || 'Speaker Profile';
+
+                // Left Column (Contact)
+                document.getElementById('modalSpeakerEmail').innerText = email || 'N/A';
+                document.getElementById('modalSpeakerMobile').innerText = mobile || 'N/A';
+
+                var img = document.getElementById('modalSpeakerImage');
+                if (imageUrl) {
+                    img.src = imageUrl;
+                } else {
+                    img.src = '/Images/DefaultUser.png'; // Your default placeholder
                 }
+
+                var linkedInLink = document.getElementById('modalSpeakerLinkedIn');
+                if (linkedIn) {
+                    linkedInLink.href = linkedIn;
+                    linkedInLink.innerText = 'View Profile';
+                } else {
+                    linkedInLink.href = '#';
+                    linkedInLink.innerText = 'N/A';
+                }
+
+                // Right Column (Professional)
+                document.getElementById('modalSpeakerDesignation').innerText = designation || 'N/A';
+                document.getElementById('modalSpeakerCompany').innerText = company || 'N/A';
+                document.getElementById('modalSpeakerExperience').innerText = experience || 'N/A';
+                document.getElementById('modalSpeakerBio').innerText = bio || 'No bio available.';
+                document.getElementById('modalSpeakerExpertise').innerText = expertise || 'N/A';
+                document.getElementById('modalSpeakerProjects').innerText = projects || 'N/A';
+
+
+                // 2. Show the overlay
+                document.getElementById('profileOverlay').classList.add('show');
+            }
+
+            // NEW: Hides the speaker profile modal
+            function hideSpeakerProfile() {
+                document.getElementById('profileOverlay').classList.remove('show');
             }
         </script>
     </form>

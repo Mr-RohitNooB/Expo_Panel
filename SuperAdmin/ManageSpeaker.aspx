@@ -1784,7 +1784,6 @@
                 document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
                 document.getElementById('<%=txtApprovalDesignation.ClientID%>').value = designation;
                 document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
-                document.getElementById('<%=txtLinkedInProfile.ClientID%>').value = '';
                 document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
                 document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
                 document.getElementById('<%=txtPassword.ClientID%>').value = password || '';

@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Expo_Panel.SuperAdmin
+namespace Expo_Panel
 {
 
 
-    public partial class AdvisoryRatingDashboard
+    public partial class SpeakerDashboard
     {
 
         /// <summary>
@@ -24,22 +24,31 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// ScriptManager1 control.
+        /// litUserInitials control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        protected global::System.Web.UI.WebControls.Literal litUserInitials;
 
         /// <summary>
-        /// lblAdvisorName control.
+        /// litUserName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAdvisorName;
+        protected global::System.Web.UI.WebControls.Literal litUserName;
+
+        /// <summary>
+        /// litUserEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litUserEmail;
 
         /// <summary>
         /// btnLogout control.
@@ -51,6 +60,15 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Button btnLogout;
 
         /// <summary>
+        /// litWelcomeName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litWelcomeName;
+
+        /// <summary>
         /// litMessage control.
         /// </summary>
         /// <remarks>
@@ -60,93 +78,111 @@ namespace Expo_Panel.SuperAdmin
         protected global::System.Web.UI.WebControls.Literal litMessage;
 
         /// <summary>
-        /// UpdatePanel1 control.
+        /// litName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.WebControls.Literal litName;
 
         /// <summary>
-        /// btnAll control.
+        /// litEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAll;
+        protected global::System.Web.UI.WebControls.Literal litEmail;
 
         /// <summary>
-        /// btnNotStarted control.
+        /// litMobile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNotStarted;
+        protected global::System.Web.UI.WebControls.Literal litMobile;
 
         /// <summary>
-        /// btnFullyRated control.
+        /// litDesignation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFullyRated;
+        protected global::System.Web.UI.WebControls.Literal litDesignation;
 
         /// <summary>
-        /// hdnCurrentFilter control.
+        /// litCompany control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnCurrentFilter;
+        protected global::System.Web.UI.WebControls.Literal litCompany;
 
         /// <summary>
-        /// hdnExpandedAgendaID control.
+        /// litExperience control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnExpandedAgendaID;
+        protected global::System.Web.UI.WebControls.Literal litExperience;
 
         /// <summary>
-        /// txtSearch control.
+        /// litLinkedIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.Literal litLinkedIn;
 
         /// <summary>
-        /// btnSearch control.
+        /// litBio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.Literal litBio;
 
         /// <summary>
-        /// rptAgendas control.
+        /// litAllCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptAgendas;
+        protected global::System.Web.UI.WebControls.Literal litAllCount;
 
         /// <summary>
-        /// pnlNoRecords control.
+        /// litApprovedCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlNoRecords;
+        protected global::System.Web.UI.WebControls.Literal litApprovedCount;
+
+        /// <summary>
+        /// litRejectedCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litRejectedCount;
+
+        /// <summary>
+        /// litAgendaCards control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litAgendaCards;
     }
 }

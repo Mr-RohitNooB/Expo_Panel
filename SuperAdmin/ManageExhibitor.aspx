@@ -111,13 +111,13 @@
             }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 20px;
             border: none;
             border-radius: 8px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 14px;
+            font-size: 13px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -1484,38 +1484,112 @@
         <asp:Button ID="btnTriggerViewProfile" runat="server" OnClick="btnTriggerViewProfile_Click" Style="display: none;" />
 
         <script type="text/javascript">
+            // ============================================================
+            // UTILITY FUNCTIONS
+            // ============================================================
+
+            function $id(id) {
+                return document.getElementById(id);
+            }
+
+            function safeSet(id, value) {
+                var el = $id(id);
+                if (!el) {
+                    console.warn('Element not found:', id);
+                    return;
+                }
+                try {
+                    if ('value' in el) {
+                        el.value = value || '';
+                    } else {
+                        el.textContent = value || '';
+                    }
+                } catch (e) {
+                    console.error('Error setting value for:', id, e);
+                }
+            }
+
+            function safeCheck(id, checked) {
+                var el = $id(id);
+                if (el && el.type === 'checkbox') {
+                    el.checked = !!checked;
+                } else {
+                    console.warn('Checkbox not found:', id);
+                }
+            }
+
+            function safeRadio(id, shouldCheck) {
+                var el = $id(id);
+                if (el && el.type === 'radio') {
+                    el.checked = !!shouldCheck;
+                } else {
+                    console.warn('Radio button not found:', id);
+                }
+            }
+
+            // ============================================================
+            // EDIT EXHIBITOR HANDLER
+            // ============================================================
+
             function handleEditClick(exhibitorId) {
-                // Optional: Show loading message
                 var loadingMsg = '<div class="alert alert-info"><i class="fas fa-spinner fa-spin"></i> Loading exhibitor data...</div>';
-                document.getElementById('<%=litMessage.ClientID%>').innerHTML = loadingMsg;
+                $id('<%=litMessage.ClientID%>').innerHTML = loadingMsg;
 
-                // Set the hidden field with the exhibitor ID
-                document.getElementById('<%=hdnEditExhibitorID.ClientID%>').value = exhibitorId;
-
-                // Trigger the postback via hidden button
-                document.getElementById('<%=btnTriggerEdit.ClientID%>').click();
+                $id('<%=hdnEditExhibitorID.ClientID%>').value = exhibitorId;
+                $id('<%=btnTriggerEdit.ClientID%>').click();
             }
 
-            function onGetExhibitorSuccess(result) {
-                // Clear loading message
-                document.getElementById('<%=litMessage.ClientID%>').innerHTML = '';
-
-                // Parse the JSON result
-                var data = JSON.parse(result);
-
-                // Open the modal with the data
-                openExhibitorModal('edit', data);
-            }
-
-            function onGetExhibitorError(error) {
-                document.getElementById('<%=litMessage.ClientID%>').innerHTML =
-                    '<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> Error loading exhibitor: ' + error.get_message() + '</div>';
-            }
+            // ============================================================
+            // APPROVAL HANDLER
+            // ============================================================
 
             function handleApprovalClick(exhibitorId) {
-                document.getElementById('<%=hdnApproveExhibitorID.ClientID%>').value = exhibitorId;
-                document.getElementById('<%=btnTriggerApproval.ClientID%>').click();
+                $id('<%=hdnApproveExhibitorID.ClientID%>').value = exhibitorId;
+                $id('<%=btnTriggerApproval.ClientID%>').click();
             }
+
+            function openApprovalModal(id, name, email, company, regType, approvalStatus, remarks, password) {
+                $id('<%=hdnApprovalExhibitorID.ClientID%>').value = id;
+                $id('<%=txtApprovalName.ClientID%>').value = name;
+                $id('<%=txtApprovalEmail.ClientID%>').value = email;
+                $id('<%=txtApprovalCompany.ClientID%>').value = company;
+                $id('<%=txtApprovalRegType.ClientID%>').value = regType;
+                $id('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
+                $id('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
+                $id('<%=txtPassword.ClientID%>').value = password || '';
+
+                var modal = $id('approvalModal');
+                modal.classList.add('show');
+
+                toggleRemarksAndPasswordRequired();
+            }
+
+            function closeApprovalModal() {
+                var modal = $id('approvalModal');
+                modal.classList.remove('show');
+            }
+
+            function toggleRemarksAndPasswordRequired() {
+                var status = $id('<%=ddlApprovalStatus.ClientID%>').value;
+                var remarksReq = $id('remarksRequired');
+                var passwordReq = $id('passwordRequired');
+
+                if (status === 'Rejected') {
+                    remarksReq.style.display = 'inline';
+                    passwordReq.style.display = 'none';
+                } else if (status === 'Approved') {
+                    remarksReq.style.display = 'none';
+                    passwordReq.style.display = 'inline';
+                } else {
+                    remarksReq.style.display = 'none';
+                    passwordReq.style.display = 'none';
+                }
+            }
+
+            // ============================================================
+            // STATUS TOGGLE
+            // ============================================================
+
             function toggleStatusSimple(checkbox) {
                 var row = checkbox.closest('tr');
                 if (!row) {
@@ -1534,312 +1608,266 @@
                 }
             }
 
-            (function () {
-                function $id(id) { return document.getElementById(id); }
-                function safeSet(id, value) {
-                    var el = $id(id);
-                    if (!el) return;
-                    try { if ('value' in el) el.value = value; else el.textContent = value; } catch (e) { }
+            // ============================================================
+            // EXHIBITOR MODAL - OPEN/CLOSE
+            // ============================================================
+
+            function openExhibitorModal(mode, data) {
+                try {
+                    data = data || {};
+
+                    console.log('=== Opening Modal ===');
+                    console.log('Mode:', mode);
+                    console.log('Data received:', data);
+
+                    // Clear previous file status labels
+                    var lblProduct = $id('<%=lblProductPictureStatus.ClientID%>');
+            var lblBrochure = $id('<%=lblBrochureStatus.ClientID%>');
+            if (lblProduct) lblProduct.style.display = 'none';
+            if (lblBrochure) lblBrochure.style.display = 'none';
+
+            // ========== PRE-APPROVAL FIELDS (TBL.Exhibitor) ==========
+            console.log('Setting pre-approval fields...');
+
+            // Basic Information
+            safeSet('<%=txtName.ClientID%>', data.name);
+            safeSet('<%=txtDesignation.ClientID%>', data.designation);
+            safeSet('<%=txtEmail.ClientID%>', data.email);
+            safeSet('<%=txtMobile.ClientID%>', data.mobile);
+
+            // Company Information
+            safeSet('<%=txtCompany.ClientID%>', data.company);
+            safeSet('<%=txtHeadOffice.ClientID%>', data.headOffice);
+            safeSet('<%=txtCity.ClientID%>', data.city);
+            safeSet('<%=txtState.ClientID%>', data.state);
+            safeSet('<%=txtCountry.ClientID%>', data.country);
+            safeSet('<%=txtGSTNumber.ClientID%>', data.gst);
+            safeSet('<%=txtBillingAddress.ClientID%>', data.billing);
+
+            // Booth Type
+            safeRadio('<%=rbShellScheme.ClientID%>', data.boothType === 'Shell Scheme');
+            safeRadio('<%=rbRawSpace.ClientID%>', data.boothType === 'Raw Space');
+
+            safeSet('<%=txtAreaInSqm.ClientID%>', data.area);
+
+            // Additional Interests
+            safeCheck('<%=chkConference.ClientID%>', data.conference);
+            safeCheck('<%=chkSponsorship.ClientID%>', data.sponsorship);
+            safeCheck('<%=chkAdvertising.ClientID%>', data.advertising);
+            safeCheck('<%=chkCustomPackage.ClientID%>', data.customPackage);
+
+            // System Settings
+            var ddlStatus = $id('<%=ddlStatus.ClientID%>');
+            if (ddlStatus) ddlStatus.value = data.isActive || '1';
+
+            var ddlRegType = $id('<%=ddlRegistrationType.ClientID%>');
+            if (ddlRegType) ddlRegType.value = data.regType || 'Admin';
+
+            // ========== POST-APPROVAL FIELDS (TBL.PostApprovalExhibitor) ==========
+            console.log('=== Setting Post-Approval Fields ===');
+
+            // Check if post-approval data exists
+            var hasPostApprovalData = data.boothNo || data.hallNo || data.yearOfEstablishment;
+            console.log('Has post-approval data:', hasPostApprovalData);
+
+            if (hasPostApprovalData) {
+                // Booth Assignment
+                console.log('Setting booth info:', data.boothNo, data.hallNo);
+                safeSet('<%=txtBoothNo.ClientID%>', data.boothNo);
+                safeSet('<%=txtHallNo.ClientID%>', data.hallNo);
+
+                // Company Profile
+                console.log('Setting company profile...');
+                safeSet('<%=txtYearOfEstablishment.ClientID%>', data.yearOfEstablishment);
+                safeSet('<%=txtWebsite.ClientID%>', data.website);
+                safeSet('<%=txtLinkedIn.ClientID%>', data.linkedIn);
+                safeSet('<%=txtTwitter.ClientID%>', data.twitter);
+                safeSet('<%=txtFacebook.ClientID%>', data.facebook);
+                safeSet('<%=txtYouTube.ClientID%>', data.youtube);
+
+                // Customer Support
+                console.log('Setting support info...');
+                safeSet('<%=txtSupportName.ClientID%>', data.supportName);
+                safeSet('<%=txtSupportContact.ClientID%>', data.supportContact);
+                safeSet('<%=txtSupportEmail.ClientID%>', data.supportEmail);
+
+                // Nature of Business
+                console.log('Setting nature of business:', data.natureOfBusiness);
+                var nature = data.natureOfBusiness || '';
+                safeCheck('<%=chkManufacturer.ClientID%>', nature.includes('Manufacturer'));
+                safeCheck('<%=chkDistributor.ClientID%>', nature.includes('Distributor'));
+                safeCheck('<%=chkImporter.ClientID%>', nature.includes('Importer'));
+                safeCheck('<%=chkServiceProvider.ClientID%>', nature.includes('Service Provider'));
+                safeCheck('<%=chkTechnologyProvider.ClientID%>', nature.includes('Technology Provider'));
+                safeCheck('<%=chkRnDServices.ClientID%>', nature.includes('R&D'));
+                safeCheck('<%=chkConsultancy.ClientID%>', nature.includes('Consultancy'));
+                safeCheck('<%=chkIndustryAssociation.ClientID%>', nature.includes('Industry Association'));
+
+                if (nature.includes('Other:')) {
+                    safeCheck('<%=chkNatureOther.ClientID%>', true);
+                    var otherMatch = nature.match(/Other:\s*([^,]+)/);
+                    if (otherMatch) safeSet('<%=txtNatureOther.ClientID%>', otherMatch[1].trim());
                 }
 
-                window.openExhibitorModal = function (mode, data) {
-                    try {
-                        data = data || {};
+                // Company Category
+                console.log('Setting company category:', data.companyCategory);
+                var category = data.companyCategory || '';
+                safeCheck('<%=chkAutomotiveLubricants.ClientID%>', category.includes('Automotive Lubricants'));
+                safeCheck('<%=chkIndustrialLubricants.ClientID%>', category.includes('Industrial Lubricants'));
+                safeCheck('<%=chkBaseOils.ClientID%>', category.includes('Base Oils'));
+                safeCheck('<%=chkAdditives.ClientID%>', category.includes('Additives'));
+                safeCheck('<%=chkGreases.ClientID%>', category.includes('Greases'));
+                safeCheck('<%=chkSpecialtyFluids.ClientID%>', category.includes('Specialty Fluids'));
+                safeCheck('<%=chkBioBasedLubricants.ClientID%>', category.includes('Bio-based'));
+                safeCheck('<%=chkReRefinedOils.ClientID%>', category.includes('Re-refined'));
+                safeCheck('<%=chkPackaging.ClientID%>', category.includes('Packaging'));
+                safeCheck('<%=chkLabEquipment.ClientID%>', category.includes('Laboratory') || category.includes('Lab'));
+                safeCheck('<%=chkLubricationSystems.ClientID%>', category.includes('Lubrication Systems'));
+                safeCheck('<%=chkSoftwareAI.ClientID%>', category.includes('Software'));
 
-                        // Basic info
-                        safeSet('<%= txtName.ClientID %>', data.name || '');
-                        safeSet('<%= txtDesignation.ClientID %>', data.designation || '');
-                        safeSet('<%= txtEmail.ClientID %>', data.email || '');
-                        safeSet('<%= txtMobile.ClientID %>', data.mobile || '');
-
-                        // ... rest of your field population code ...
-
-                        // Hidden fields
-                        safeSet('<%= hdnExhibitorID.ClientID %>', data.id || 0);
-                        safeSet('<%= hdnExhibitorModalMode.ClientID %>', mode || 'edit');
-
-                        // ✅ FIX: Use Bootstrap's modal method instead of direct display manipulation
-                        var modal = $('#exhibitorModal');
-                        if (modal.length) {
-                            modal.modal('show');
-                        } else {
-                            // Fallback if jQuery/Bootstrap not available
-                            var modalEl = document.getElementById('exhibitorModal');
-                            if (modalEl) {
-                                modalEl.style.display = 'block';
-                                modalEl.classList.add('show');
-                            }
-                        }
-
-                        // Title update
-                        var title = document.getElementById('exhibitorModalTitle');
-                        if (title) title.textContent = (mode === 'edit') ? 'Edit Exhibitor' : 'Add Exhibitor';
-                    } catch (err) {
-                        console.error('openExhibitorModal error:', err);
-                    }
-                };
-
-                window.closeExhibitorModal = function () {
-                    // ✅ FIX: Use Bootstrap's modal method to properly close
-                    var modal = $('#exhibitorModal');
-                    if (modal.length) {
-                        modal.modal('hide');
-                    } else {
-                        // Fallback
-                        var modalEl = document.getElementById('exhibitorModal');
-                        if (modalEl) {
-                            modalEl.style.display = 'none';
-                            modalEl.classList.remove('show');
-                        }
-                    }
-                };
-
-            })();
-
-            function clearExhibitorForm() {
-                document.getElementById('<%=txtName.ClientID%>').value = '';
-                document.getElementById('<%=txtDesignation.ClientID%>').value = '';
-                document.getElementById('<%=txtEmail.ClientID%>').value = '';
-                document.getElementById('<%=txtMobile.ClientID%>').value = '';
-                document.getElementById('<%=txtCompany.ClientID%>').value = '';
-                document.getElementById('<%=txtHeadOffice.ClientID%>').value = '';
-                document.getElementById('<%=txtCity.ClientID%>').value = '';
-                document.getElementById('<%=txtState.ClientID%>').value = '';
-                document.getElementById('<%=txtCountry.ClientID%>').value = '';
-                document.getElementById('<%=txtGSTNumber.ClientID%>').value = '';
-                document.getElementById('<%=txtBillingAddress.ClientID%>').value = '';
-                document.getElementById('<%=rbShellScheme.ClientID%>').checked = false;
-                document.getElementById('<%=rbRawSpace.ClientID%>').checked = false;
-                document.getElementById('<%=txtAreaInSqm.ClientID%>').value = '';
-                document.getElementById('<%=chkConference.ClientID%>').checked = false;
-                document.getElementById('<%=chkSponsorship.ClientID%>').checked = false;
-                document.getElementById('<%=chkAdvertising.ClientID%>').checked = false;
-                document.getElementById('<%=chkCustomPackage.ClientID%>').checked = false;
-                document.getElementById('<%=ddlStatus.ClientID%>').selectedIndex = 0;
-                document.getElementById('<%=ddlRegistrationType.ClientID%>').selectedIndex = 0;
-            }
-
-            function populateExhibitorForm(data) {
-                // Pre-Approval Fields
-                document.getElementById('<%=txtName.ClientID%>').value = data.name || '';
-                document.getElementById('<%=txtDesignation.ClientID%>').value = data.designation || '';
-                document.getElementById('<%=txtEmail.ClientID%>').value = data.email || '';
-                document.getElementById('<%=txtMobile.ClientID%>').value = data.mobile || '';
-                document.getElementById('<%=txtCompany.ClientID%>').value = data.company || '';
-                document.getElementById('<%=txtHeadOffice.ClientID%>').value = data.headOffice || '';
-                document.getElementById('<%=txtCity.ClientID%>').value = data.city || '';
-                document.getElementById('<%=txtState.ClientID%>').value = data.state || '';
-                document.getElementById('<%=txtCountry.ClientID%>').value = data.country || '';
-                document.getElementById('<%=txtGSTNumber.ClientID%>').value = data.gst || '';
-                document.getElementById('<%=txtBillingAddress.ClientID%>').value = data.billing || '';
-
-                if (data.boothType === 'Shell Scheme') {
-                    document.getElementById('<%=rbShellScheme.ClientID%>').checked = true;
-                } else if (data.boothType === 'Raw Space') {
-                    document.getElementById('<%=rbRawSpace.ClientID%>').checked = true;
+                if (category.includes('Others:')) {
+                    safeCheck('<%=chkProductOther.ClientID%>', true);
+                    var otherMatch = category.match(/Others:\s*([^,]+)/);
+                    if (otherMatch) safeSet('<%=txtProductOther.ClientID%>', otherMatch[1].trim());
                 }
 
-                document.getElementById('<%=txtAreaInSqm.ClientID%>').value = data.area || '';
-                document.getElementById('<%=chkConference.ClientID%>').checked = data.conference === true || data.conference === 'True';
-                document.getElementById('<%=chkSponsorship.ClientID%>').checked = data.sponsorship === true || data.sponsorship === 'True';
-                document.getElementById('<%=chkAdvertising.ClientID%>').checked = data.advertising === true || data.advertising === 'True';
-                document.getElementById('<%=chkCustomPackage.ClientID%>').checked = data.customPackage === true || data.customPackage === 'True';
-                document.getElementById('<%=chkSponsorship.ClientID%>').checked = data.sponsorship === 'True';
-                document.getElementById('<%=chkAdvertising.ClientID%>').checked = data.advertising === 'True';
-                document.getElementById('<%=chkCustomPackage.ClientID%>').checked = data.customPackage === 'True';
-                document.getElementById('<%=ddlStatus.ClientID%>').value = data.isActive;
-                document.getElementById('<%=ddlRegistrationType.ClientID%>').value = data.regType || 'Admin';
+                // Markets Catered To
+                console.log('Setting markets:', data.marketsCatered);
+                var markets = data.marketsCatered || '';
+                safeCheck('<%=chkAutomotive.ClientID%>', markets.includes('Automotive'));
+                safeCheck('<%=chkHeavyCommercial.ClientID%>', markets.includes('Heavy Commercial'));
+                safeCheck('<%=chkRailways.ClientID%>', markets.includes('Railways'));
+                safeCheck('<%=chkMarine.ClientID%>', markets.includes('Marine'));
+                safeCheck('<%=chkAerospace.ClientID%>', markets.includes('Aerospace'));
+                safeCheck('<%=chkManufacturing.ClientID%>', markets.includes('Manufacturing'));
+                safeCheck('<%=chkPowerEnergy.ClientID%>', markets.includes('Power'));
+                safeCheck('<%=chkConstruction.ClientID%>', markets.includes('Construction'));
+                safeCheck('<%=chkAgriculture.ClientID%>', markets.includes('Agriculture'));
+                safeCheck('<%=chkFMCG.ClientID%>', markets.includes('FMCG'));
 
-                // Post-Approval Fields (if they exist)
-                if (data.boothNo !== undefined) {
-                    document.getElementById('<%=txtBoothNo.ClientID%>').value = data.boothNo || '';
-                    document.getElementById('<%=txtHallNo.ClientID%>').value = data.hallNo || '';
-                    document.getElementById('<%=txtYearOfEstablishment.ClientID%>').value = data.yearOfEstablishment || '';
-                    document.getElementById('<%=txtWebsite.ClientID%>').value = data.website || '';
-                    document.getElementById('<%=txtLinkedIn.ClientID%>').value = data.linkedIn || '';
-                    document.getElementById('<%=txtTwitter.ClientID%>').value = data.twitter || '';
-                    document.getElementById('<%=txtFacebook.ClientID%>').value = data.facebook || '';
-                    document.getElementById('<%=txtYouTube.ClientID%>').value = data.youtube || '';
-                    document.getElementById('<%=txtSupportName.ClientID%>').value = data.supportName || '';
-                    document.getElementById('<%=txtSupportContact.ClientID%>').value = data.supportContact || '';
-                    document.getElementById('<%=txtSupportEmail.ClientID%>').value = data.supportEmail || '';
+                if (markets.includes('Other:')) {
+                    safeCheck('<%=chkMarketOther.ClientID%>', true);
+                    var otherMatch = markets.match(/Other:\s*([^,]+)/);
+                    if (otherMatch) safeSet('<%=txtMarketOther.ClientID%>', otherMatch[1].trim());
+                }
 
-                    // Nature of Business
-                    var nature = data.natureOfBusiness || '';
-                    document.getElementById('<%=chkManufacturer.ClientID%>').checked = nature.includes('Manufacturer');
-                    document.getElementById('<%=chkDistributor.ClientID%>').checked = nature.includes('Distributor');
-                    document.getElementById('<%=chkImporter.ClientID%>').checked = nature.includes('Importer');
-                    document.getElementById('<%=chkServiceProvider.ClientID%>').checked = nature.includes('Service Provider');
-                    document.getElementById('<%=chkTechnologyProvider.ClientID%>').checked = nature.includes('Technology Provider');
-                    document.getElementById('<%=chkRnDServices.ClientID%>').checked = nature.includes('R&D');
-                    document.getElementById('<%=chkConsultancy.ClientID%>').checked = nature.includes('Consultancy');
-                    document.getElementById('<%=chkIndustryAssociation.ClientID%>').checked = nature.includes('Industry Association');
-                    if (nature.includes('Other:')) {
-                        document.getElementById('<%=chkNatureOther.ClientID%>').checked = true;
-                        var otherText = nature.substring(nature.indexOf('Other:') + 6).split(',')[0].trim();
-                        document.getElementById('<%=txtNatureOther.ClientID%>').value = otherText;
-                    }
+                // Geographic Reach
+                console.log('Setting geographic reach:', data.geographicReach);
+                var geo = data.geographicReach || '';
+                safeCheck('<%=chkIndiaOnly.ClientID%>', geo.includes('India Only'));
+                safeCheck('<%=chkSouthAsia.ClientID%>', geo.includes('South Asia'));
+                safeCheck('<%=chkAsiaPacific.ClientID%>', geo.includes('Asia-Pacific'));
+                safeCheck('<%=chkMiddleEast.ClientID%>', geo.includes('Middle East'));
+                safeCheck('<%=chkAfrica.ClientID%>', geo.includes('Africa'));
+                safeCheck('<%=chkEurope.ClientID%>', geo.includes('Europe'));
+                safeCheck('<%=chkGlobal.ClientID%>', geo.includes('Global'));
 
-                    // Company Category
-                    var category = data.companyCategory || '';
-                    document.getElementById('<%=chkAutomotiveLubricants.ClientID%>').checked = category.includes('Automotive Lubricants');
-                    document.getElementById('<%=chkIndustrialLubricants.ClientID%>').checked = category.includes('Industrial Lubricants');
-                    document.getElementById('<%=chkBaseOils.ClientID%>').checked = category.includes('Base Oils');
-                    document.getElementById('<%=chkAdditives.ClientID%>').checked = category.includes('Additives');
-                    document.getElementById('<%=chkGreases.ClientID%>').checked = category.includes('Greases');
-                    document.getElementById('<%=chkSpecialtyFluids.ClientID%>').checked = category.includes('Specialty Fluids');
-                    document.getElementById('<%=chkBioBasedLubricants.ClientID%>').checked = category.includes('Bio-based');
-                    document.getElementById('<%=chkReRefinedOils.ClientID%>').checked = category.includes('Re-refined');
-                    document.getElementById('<%=chkPackaging.ClientID%>').checked = category.includes('Packaging');
-                    document.getElementById('<%=chkLabEquipment.ClientID%>').checked = category.includes('Lab');
-                    document.getElementById('<%=chkLubricationSystems.ClientID%>').checked = category.includes('Lubrication Systems');
-                    document.getElementById('<%=chkSoftwareAI.ClientID%>').checked = category.includes('Software');
-                    if (category.includes('Others:')) {
-                        document.getElementById('<%=chkProductOther.ClientID%>').checked = true;
-                        var otherText = category.substring(category.indexOf('Others:') + 7).split(',')[0].trim();
-                        document.getElementById('<%=txtProductOther.ClientID%>').value = otherText;
-                    }
+                // Additional Requirements
+                console.log('Setting requirements...');
+                var powerSupply = data.powerSupply === 'True' || data.powerSupply === true;
+                safeCheck('<%=chkPowerSupply.ClientID%>', powerSupply);
+                safeSet('<%=txtPowerSupplyKwh.ClientID%>', data.powerKwh);
 
-                    // Markets
-                    var markets = data.marketsCatered || '';
-                    document.getElementById('<%=chkAutomotive.ClientID%>').checked = markets.includes('Automotive');
-                    document.getElementById('<%=chkHeavyCommercial.ClientID%>').checked = markets.includes('Heavy Commercial');
-                    document.getElementById('<%=chkRailways.ClientID%>').checked = markets.includes('Railways');
-                    document.getElementById('<%=chkMarine.ClientID%>').checked = markets.includes('Marine');
-                    document.getElementById('<%=chkAerospace.ClientID%>').checked = markets.includes('Aerospace');
-                    document.getElementById('<%=chkManufacturing.ClientID%>').checked = markets.includes('Manufacturing');
-                    document.getElementById('<%=chkPowerEnergy.ClientID%>').checked = markets.includes('Power');
-                    document.getElementById('<%=chkConstruction.ClientID%>').checked = markets.includes('Construction');
-                    document.getElementById('<%=chkAgriculture.ClientID%>').checked = markets.includes('Agriculture');
-                    document.getElementById('<%=chkFMCG.ClientID%>').checked = markets.includes('FMCG');
-                    if (markets.includes('Other:')) {
-                        document.getElementById('<%=chkMarketOther.ClientID%>').checked = true;
-                        var otherText = markets.substring(markets.indexOf('Other:') + 6).split(',')[0].trim();
-                        document.getElementById('<%=txtMarketOther.ClientID%>').value = otherText;
-                    }
+                safeCheck('<%=chkInternet.ClientID%>', data.internet === 'True' || data.internet === true);
+                safeCheck('<%=chkFurniture.ClientID%>', data.furniture === 'True' || data.furniture === true);
+                safeCheck('<%=chkAVEquipment.ClientID%>', data.avEquipment === 'True' || data.avEquipment === true);
+                safeCheck('<%=chkInterpreter.ClientID%>', data.interpreter === 'True' || data.interpreter === true);
 
-                    // Geographic Reach
-                    var geo = data.geographicReach || '';
-                    document.getElementById('<%=chkIndiaOnly.ClientID%>').checked = geo.includes('India Only');
-                    document.getElementById('<%=chkSouthAsia.ClientID%>').checked = geo.includes('South Asia');
-                    document.getElementById('<%=chkAsiaPacific.ClientID%>').checked = geo.includes('Asia-Pacific');
-                    document.getElementById('<%=chkMiddleEast.ClientID%>').checked = geo.includes('Middle East');
-                    document.getElementById('<%=chkAfrica.ClientID%>').checked = geo.includes('Africa');
-                    document.getElementById('<%=chkEurope.ClientID%>').checked = geo.includes('Europe');
-                    document.getElementById('<%=chkGlobal.ClientID%>').checked = geo.includes('Global');
+                if (data.otherReq) {
+                    safeCheck('<%=chkReqOther.ClientID%>', true);
+                    safeSet('<%=txtReqOther.ClientID%>', data.otherReq);
+                }
 
-                    // Requirements
-                    document.getElementById('<%=chkPowerSupply.ClientID%>').checked = data.powerSupply === 'True';
-                    document.getElementById('<%=txtPowerSupplyKwh.ClientID%>').value = data.powerKwh || '';
-                    document.getElementById('<%=chkInternet.ClientID%>').checked = data.internet === 'True';
-                    document.getElementById('<%=chkFurniture.ClientID%>').checked = data.furniture === 'True';
-                    document.getElementById('<%=chkAVEquipment.ClientID%>').checked = data.avEquipment === 'True';
-                    document.getElementById('<%=chkInterpreter.ClientID%>').checked = data.interpreter === 'True';
-                    if (data.otherReq) {
-                        document.getElementById('<%=chkReqOther.ClientID%>').checked = true;
-                        document.getElementById('<%=txtReqOther.ClientID%>').value = data.otherReq;
-                    }
+                // Participation Objectives
+                console.log('Setting objectives:', data.objectives);
+                var objectives = data.objectives || '';
+                safeCheck('<%=chkGenerateLeads.ClientID%>', objectives.includes('Generate Business Leads'));
+                safeCheck('<%=chkLaunchProducts.ClientID%>', objectives.includes('Launch New Products'));
+                safeCheck('<%=chkNetworking.ClientID%>', objectives.includes('Network'));
+                safeCheck('<%=chkFindPartners.ClientID%>', objectives.includes('Find Distribution'));
+                safeCheck('<%=chkMarketResearch.ClientID%>', objectives.includes('Market Research'));
+                safeCheck('<%=chkBrandVisibility.ClientID%>', objectives.includes('Brand Visibility'));
+                safeCheck('<%=chkAttendConference.ClientID%>', objectives.includes('Attend Conference'));
+                safeCheck('<%=chkRecruitTalent.ClientID%>', objectives.includes('Recruit Talent'));
 
-                    // Objectives
-                    var objectives = data.objectives || '';
-                    document.getElementById('<%=chkGenerateLeads.ClientID%>').checked = objectives.includes('Generate Business Leads');
-                    document.getElementById('<%=chkLaunchProducts.ClientID%>').checked = objectives.includes('Launch New Products');
-                    document.getElementById('<%=chkNetworking.ClientID%>').checked = objectives.includes('Network');
-                    document.getElementById('<%=chkFindPartners.ClientID%>').checked = objectives.includes('Find Distribution');
-                    document.getElementById('<%=chkMarketResearch.ClientID%>').checked = objectives.includes('Market Research');
-                    document.getElementById('<%=chkBrandVisibility.ClientID%>').checked = objectives.includes('Brand Visibility');
-                    document.getElementById('<%=chkAttendConference.ClientID%>').checked = objectives.includes('Attend Conference');
-                    document.getElementById('<%=chkRecruitTalent.ClientID%>').checked = objectives.includes('Recruit Talent');
-                    if (objectives.includes('Other:')) {
-                        document.getElementById('<%=chkObjectiveOther.ClientID%>').checked = true;
-                        var otherText = objectives.substring(objectives.indexOf('Other:') + 6).split(',')[0].trim();
-                        document.getElementById('<%=txtObjectiveOther.ClientID%>').value = otherText;
-                    }
+                if (objectives.includes('Other:')) {
+                    safeCheck('<%=chkObjectiveOther.ClientID%>', true);
+                    var otherMatch = objectives.match(/Other:\s*([^,]+)/);
+                    if (otherMatch) safeSet('<%=txtObjectiveOther.ClientID%>', otherMatch[1].trim());
+                }
 
-                    document.getElementById('<%=txtAdditionalNotes.ClientID%>').value = data.additionalNotes || '';
+                // Additional Notes
+                safeSet('<%=txtAdditionalNotes.ClientID%>', data.additionalNotes);
 
-                    // Show file status if files exist
-                    if (data.productPicture) {
-                        var lblProduct = document.getElementById('<%=lblProductPictureStatus.ClientID%>');
+                // File Upload Status
+                if (data.productPicture) {
+                    if (lblProduct) {
                         lblProduct.innerHTML = '<i class="fas fa-check-circle"></i> File uploaded: ' + data.productPicture.split('/').pop();
                         lblProduct.className = 'file-status exists';
                         lblProduct.style.display = 'block';
                     }
+                }
 
-                    if (data.brochure) {
-                        var lblBrochure = document.getElementById('<%=lblBrochureStatus.ClientID%>');
+                if (data.brochure) {
+                    if (lblBrochure) {
                         lblBrochure.innerHTML = '<i class="fas fa-check-circle"></i> File uploaded: ' + data.brochure.split('/').pop();
                         lblBrochure.className = 'file-status exists';
                         lblBrochure.style.display = 'block';
                     }
                 }
+
+                console.log('Post-approval fields populated successfully!');
+            } else {
+                console.log('No post-approval data to populate');
             }
 
-            function openApprovalModal(id, name, email, company, regType, approvalStatus, remarks, password) {
-                document.getElementById('<%=hdnApprovalExhibitorID.ClientID%>').value = id;
-                document.getElementById('<%=txtApprovalName.ClientID%>').value = name;
-                document.getElementById('<%=txtApprovalEmail.ClientID%>').value = email;
-                document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
-                document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
-                document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
-                document.getElementById('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
-                document.getElementById('<%=txtPassword.ClientID%>').value = password || '';
+            // Hidden fields
+            safeSet('<%=hdnExhibitorID.ClientID%>', data.id || 0);
+            safeSet('<%=hdnExhibitorModalMode.ClientID%>', mode || 'add');
 
-                var modal = document.getElementById('approvalModal');
-                modal.classList.add('show');
+                    // Open modal
+                    var modal = $('#exhibitorModal');
+                    if (modal.length) {
+                        modal.modal('show');
+                    } else {
+                        var modalEl = $id('exhibitorModal');
+                        if (modalEl) {
+                            modalEl.style.display = 'block';
+                            modalEl.classList.add('show');
+                        }
+                    }
 
-                toggleRemarksAndPasswordRequired();
-            }
+                    // Update title
+                    var title = $id('exhibitorModalTitle');
+                    if (title) title.textContent = (mode === 'edit') ? 'Edit Exhibitor' : 'Add Exhibitor';
 
-            function closeApprovalModal() {
-                var modal = document.getElementById('approvalModal');
-                modal.classList.remove('show');
-            }
+                    console.log('=== Modal opened successfully ===');
 
-
-
-
-            function toggleRemarksAndPasswordRequired() {
-                var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
-                var remarksReq = document.getElementById('remarksRequired');
-                var passwordReq = document.getElementById('passwordRequired');
-
-                if (status === 'Rejected') {
-                    remarksReq.style.display = 'inline';
-                    passwordReq.style.display = 'none';
-                } else if (status === 'Approved') {
-                    remarksReq.style.display = 'none';
-                    passwordReq.style.display = 'inline';
-                } else {
-                    remarksReq.style.display = 'none';
-                    passwordReq.style.display = 'none';
+                } catch (err) {
+                    console.error('openExhibitorModal error:', err);
+                    alert('Error opening modal: ' + err.message);
                 }
             }
 
-            function validateRemarks(sender, args) {
-                var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
-                var remarks = document.getElementById('<%=txtApprovalRemarks.ClientID%>').value.trim();
-
-                if (status === 'Rejected' && remarks === '') {
-                    args.IsValid = false;
+            function closeExhibitorModal() {
+                var modal = $('#exhibitorModal');
+                if (modal.length) {
+                    modal.modal('hide');
                 } else {
-                    args.IsValid = true;
+                    var modalEl = $id('exhibitorModal');
+                    if (modalEl) {
+                        modalEl.style.display = 'none';
+                        modalEl.classList.remove('show');
+                    }
                 }
             }
 
-            function validatePassword(sender, args) {
-                var status = document.getElementById('<%=ddlApprovalStatus.ClientID%>').value;
-                var password = document.getElementById('<%=txtPassword.ClientID%>').value.trim();
-
-                if (status === 'Approved' && password === '') {
-                    args.IsValid = false;
-                } else {
-                    args.IsValid = true;
-                }
-            }
+            // ============================================================
+            // PASSWORD TOGGLE
+            // ============================================================
 
             function togglePassword(fieldId) {
-                var field = document.getElementById(fieldId);
+                var field = $id(fieldId);
                 var icon = event.target;
 
                 if (field.type === 'password') {
@@ -1853,9 +1881,39 @@
                 }
             }
 
+            // ============================================================
+            // VALIDATION FUNCTIONS
+            // ============================================================
+
+            function validateRemarks(sender, args) {
+                var status = $id('<%=ddlApprovalStatus.ClientID%>').value;
+        var remarks = $id('<%=txtApprovalRemarks.ClientID%>').value.trim();
+
+                if (status === 'Rejected' && remarks === '') {
+                    args.IsValid = false;
+                } else {
+                    args.IsValid = true;
+                }
+            }
+
+            function validatePassword(sender, args) {
+                var status = $id('<%=ddlApprovalStatus.ClientID%>').value;
+        var password = $id('<%=txtPassword.ClientID%>').value.trim();
+
+                if (status === 'Approved' && password === '') {
+                    args.IsValid = false;
+                } else {
+                    args.IsValid = true;
+                }
+            }
+
+            // ============================================================
+            // MODAL BACKDROP CLICK HANDLER
+            // ============================================================
+
             window.onclick = function (event) {
-                var exhibitorModal = document.getElementById('exhibitorModal');
-                var approvalModal = document.getElementById('approvalModal');
+                var exhibitorModal = $id('exhibitorModal');
+                var approvalModal = $id('approvalModal');
 
                 if (event.target == exhibitorModal) {
                     closeExhibitorModal();
@@ -1865,66 +1923,23 @@
                 }
             }
 
+            // ============================================================
+            // DOCUMENT READY
+            // ============================================================
+
             document.addEventListener('DOMContentLoaded', function () {
-                var ddlApproval = document.getElementById('<%=ddlApprovalStatus.ClientID%>');
-                if (ddlApproval) {
-                    ddlApproval.addEventListener('change', toggleRemarksAndPasswordRequired);
-                }
-            });
+                // Setup approval status dropdown change handler
+                var ddlApproval = $id('<%=ddlApprovalStatus.ClientID%>');
+        if (ddlApproval) {
+            ddlApproval.addEventListener('change', toggleRemarksAndPasswordRequired);
+        }
 
-            function testPageMethod() {
-                console.log('Test button clicked');
-                alert('Testing PageMethod...');
-
-                // Test if PageMethods exists
-                if (typeof PageMethods === 'undefined') {
-                    alert('ERROR: PageMethods is undefined! EnablePageMethods may not be set to true.');
-                    console.error('PageMethods is undefined');
-                    return;
-                }
-
-                console.log('PageMethods exists:', PageMethods);
-
-                // Test if GetExhibitorData exists
-                if (typeof PageMethods.GetExhibitorData === 'undefined') {
-                    alert('ERROR: PageMethods.GetExhibitorData is undefined! The WebMethod may not be properly configured.');
-                    console.error('PageMethods.GetExhibitorData is undefined');
-                    return;
-                }
-
-                console.log('PageMethods.GetExhibitorData exists');
-
-                // Try to call with exhibitor ID 1 (change this to a real ID from your database)
-                var testId = 1; // CHANGE THIS TO A REAL EXHIBITOR ID
-
-                PageMethods.GetExhibitorData(testId,
-                    function (result) {
-                        console.log('Success! Result:', result);
-                        alert('SUCCESS! Check console for data. Result length: ' + result.length);
-
-                        try {
-                            var data = JSON.parse(result);
-                            console.log('Parsed data:', data);
-                            alert('Parsed successfully! Exhibitor: ' + data.name);
-                        } catch (e) {
-                            console.error('JSON parse error:', e);
-                            alert('ERROR parsing JSON: ' + e.message);
-                        }
-                    },
-                    function (error) {
-                        console.error('Error:', error);
-                        alert('ERROR: ' + error.get_message());
-                    }
-                );
-            }
-            function $id(id) { return document.getElementById(id); }
-
-            // Ensure modal backdrop is properly cleaned up
-            $('#exhibitorModal').on('hidden.bs.modal', function () {
-                $('.modal-backdrop').remove();
-                $('body').removeClass('modal-open');
-            });
-
+        // Ensure modal backdrop is properly cleaned up
+        $('#exhibitorModal').on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+        });
+    });
         </script>
 
 

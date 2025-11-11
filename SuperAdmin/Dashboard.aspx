@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Admin Dashboard - Lubricant India Expo Panel</title>
+    <title>Super Admin Dashboard - Lubricant India Expo Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <!-- Light Mode Favicons -->
@@ -812,15 +812,12 @@
             <div class="quick-actions">
                 <h3><i class="fas fa-bolt"></i>Quick Actions</h3>
                 <div class="action-buttons">
-                    <button type="button" class="btn-action" onclick="window.location='ManageAgenda.aspx'">
-                        <i class="fas fa-calendar-plus"></i>Add Agenda Item
-                    </button>
-
                     <button type="button" class="btn-action" onclick="openAddAdvisorModal();" id="btnAddAdvisor">
                         <i class="fas fa-user-plus"></i>Add New Advisor
                     </button>
-
-
+                    <button type="button" class="btn-action" onclick="window.location='ManageAdvisors.aspx'">
+                        <i class="fas fa-calendar-plus"></i>Manage Advisors
+                    </button>
                     <button type="button" class="btn-action" onclick="window.location='ManageSpeaker.aspx'">
                         <i class="fas fa-user-tie"></i>Add New Speaker
                     </button>

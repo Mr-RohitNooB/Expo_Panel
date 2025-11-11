@@ -506,8 +506,8 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Register <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
-                            <a href="RegisterExhibitor.aspx">Register as Exhibitor</a>
-                            <a href="RegisterSpeaker.aspx">Register as Speaker</a>
+                            <a href="User/RegisterExhibitor.aspx">Register as Exhibitor</a>
+                            <a href="User/RegisterSpeaker.aspx">Register as Speaker</a>
                             <%--<a href="RegisterAdvisor.aspx">Register as Advisor</a>--%>
                             <%--  <a href="RegisterAgenda.aspx">Register for Agenda</a>--%>
                         </div>
@@ -519,9 +519,9 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Login <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
-                            <a href="User/AdvisoryLogin.aspx">Advisory committee</a>
-                            <a href="ExhibitorLogin.aspx">Exhibitor Login - Post Approval</a>
-                            <a href="SpeakerLogin.aspx">Speaker Login (After Approval)</a>
+                            <a href="User/AdvisoryLogin.aspx">Advisory Committee</a>
+                            <a href="User/ExhibitorLogin.aspx">Exhibitor Login</a>
+                            <a href="User/SpeakerLogin.aspx">Speaker Login</a>
                         </div>
                     </li>
                 </ul>
@@ -708,7 +708,7 @@
                 </p>
                 <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                     <a href="mailto:test@.com.com" class="cta-button">Email Us</a>
-                    <a href="RegisterExhibitor.aspx" class="cta-button" style="background: linear-gradient(135deg, #FF6B4A 0%, #D94A2B 100%);">Become an Exhibitor</a>
+                    <a href="User/RegisterExhibitor.aspx" class="cta-button" style="background: linear-gradient(135deg, #FF6B4A 0%, #D94A2B 100%);">Become an Exhibitor</a>
                 </div>
             </div>
         </section>
