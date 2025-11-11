@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SuperAdmin\FinalSpeakerSelection.aspx" />
     <Content Include="User\SpeakerDashboard.aspx" />
     <Content Include="User\SpeakerLogin.aspx" />
     <Content Include="SuperAdmin\ManageAdvisors.aspx" />
@@ -91,6 +92,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SuperAdmin\FinalSpeakerSelection.aspx.cs">
+      <DependentUpon>FinalSpeakerSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SuperAdmin\FinalSpeakerSelection.aspx.designer.cs">
+      <DependentUpon>FinalSpeakerSelection.aspx</DependentUpon>
+    </Compile>
     <Compile Include="User\SpeakerDashboard.aspx.cs">
       <DependentUpon>SpeakerDashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

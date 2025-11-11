@@ -126,6 +126,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
         <div class="admin-header">
             <h2><i class="fas fa-clipboard-check"></i> Final Speaker Selection Dashboard</h2>
             <div class="admin-info">
