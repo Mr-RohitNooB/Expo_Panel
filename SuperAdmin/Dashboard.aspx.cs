@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Web;
 
 namespace Expo_Panel.Admin
 {
@@ -48,6 +49,21 @@ namespace Expo_Panel.Admin
                 Context.ApplicationInstance.CompleteRequest();
             }
         }
+
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static bool LogoutUser()
+        {
+
+            if (HttpContext.Current != null && HttpContext.Current.Session != null)
+            {
+                HttpContext.Current.Session.Clear();
+                HttpContext.Current.Session.Abandon();
+                return true;
+
+            }
+            return false;
+        }
+
 
         #region Dashboard Stats
 

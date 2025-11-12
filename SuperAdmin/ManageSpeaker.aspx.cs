@@ -134,7 +134,7 @@ namespace Expo_Panel.Admin
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
                     // First, get speaker details
-                    using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerById", con))
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[sp_GetSpeakerById]", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
@@ -777,7 +777,7 @@ namespace Expo_Panel.Admin
 
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerById", con))
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[sp_GetSpeakerById]", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
@@ -791,9 +791,9 @@ namespace Expo_Panel.Admin
                             hdnModalMode.Value = "edit";
 
                             // Read values from database
-                            string isAvailable = reader["IsAvailable"].ToString();
-                            bool marketingConsent = reader["MarketingConsent"] != DBNull.Value && Convert.ToBoolean(reader["MarketingConsent"]);
-                            string selectedAgendaIds = reader["SelectedAgendas"] != DBNull.Value ? reader["SelectedAgendas"].ToString() : "";
+                            string isAvailable = ColumnExists(reader, "IsAvailable") && reader["IsAvailable"] != DBNull.Value ? reader["IsAvailable"].ToString() : "Yes";
+                            bool marketingConsent = ColumnExists(reader, "MarketingConsent") && reader["MarketingConsent"] != DBNull.Value && Convert.ToBoolean(reader["MarketingConsent"]);
+                            string selectedAgendaIds = ColumnExists(reader, "SelectedAgendas") && reader["SelectedAgendas"] != DBNull.Value ? reader["SelectedAgendas"].ToString() : "";
 
 
 
@@ -879,7 +879,7 @@ namespace Expo_Panel.Admin
             {
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerById", con))
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[sp_GetSpeakerById]", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
@@ -893,7 +893,7 @@ namespace Expo_Panel.Admin
 
                             string name = reader["Name"].ToString();
                             string email = reader["Email"].ToString();
-                            string regType = reader["RegistrationType"].ToString();
+                            // string regType = reader["RegistrationType"].ToString(); // <-- REMOVED
                             string designation = reader["Designation"].ToString();
                             string company = reader["Company"].ToString();
                             string approvalStatus = reader["ApprovalStatus"].ToString();
@@ -917,15 +917,17 @@ namespace Expo_Panel.Admin
                             // Escape single quotes for JavaScript
                             name = EscapeJsString(name);
                             email = EscapeJsString(email);
-                            regType = EscapeJsString(regType);
+                            // regType = EscapeJsString(regType); // <-- REMOVED
                             designation = EscapeJsString(designation);
                             company = EscapeJsString(company);
                             remarks = EscapeJsString(remarks);
                             password = EscapeJsString(password);
 
+                            // --- MODIFIED SCRIPT ---
+                            // Removed the '{regType}' parameter from the function call
                             string script = $@"
                         setTimeout(function() {{
-                            openApprovalModal({speakerId}, '{name}', '{email}', '{regType}', '{designation}', '{company}', '{approvalStatus}', '{remarks}', '{password}');
+                            openApprovalModal({speakerId}, '{name}', '{email}', '{designation}', '{company}', '{approvalStatus}', '{remarks}', '{password}');
                         }}, 100);";
 
                             ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal_" + speakerId, script, true);
@@ -994,6 +996,17 @@ namespace Expo_Panel.Admin
             return 0;
         }
 
+        private bool ColumnExists(SqlDataReader reader, string columnName)
+        {
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                if (reader.GetName(i).Equals(columnName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         private void UpdateSpeaker(int speakerId, string name, string email, string mobile, string designation, string company, bool isActive,
             int? yearsOfExperience, string linkedInProfile, string photoPath, string logoPath,
             string professionalBio, string areasOfExpertise, string currentWorkProjects,

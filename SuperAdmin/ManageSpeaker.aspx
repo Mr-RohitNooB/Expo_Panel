@@ -891,8 +891,11 @@
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
                     <div style="display: flex; gap: 10px;">
-                        <a href="/RegisterSpeaker.aspx" class="btn btn-info" target="_blank">
+                        <a href="/User/RegisterSpeaker.aspx" class="btn btn-info" target="_blank">
                             <i class="fas fa-link"></i>Get Registration Link
+                        </a>
+                        <a style="background-color:darkorange" href="/User/SpeakerLogin.aspx" class="btn btn-info" target="_blank">
+                            <i class="fas fa-link"></i>Get Login Link
                         </a>
                         <button type="button" class="btn btn-success" onclick="openModal('add')">
                             <i class="fas fa-plus"></i>Add Speaker
@@ -1295,15 +1298,13 @@
                     <asp:TextBox ID="txtApprovalName" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <asp:TextBox ID="txtApprovalEmail" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
-                    </div>
-                    <div class="form-group">
-                        <label>Registration Type</label>
-                        <asp:TextBox ID="txtApprovalRegType" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
-                    </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <asp:TextBox ID="txtApprovalEmail" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label>Registration Type</label>
+                    <asp:TextBox ID="txtApprovalRegType" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
                 </div>
 
                 <div class="form-row">
@@ -1777,11 +1778,11 @@
             }
 
 
-            function openApprovalModal(id, name, email, regType, designation, company, approvalStatus, remarks, password) {
+            function openApprovalModal(id, name, email, designation, company, approvalStatus, remarks, password) {
                 document.getElementById('<%=hdnApprovalSpeakerID.ClientID%>').value = id;
                 document.getElementById('<%=txtApprovalName.ClientID%>').value = name;
                 document.getElementById('<%=txtApprovalEmail.ClientID%>').value = email;
-                document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType;
+                // document.getElementById('<%=txtApprovalRegType.ClientID%>').value = regType; // <-- REMOVED
                 document.getElementById('<%=txtApprovalDesignation.ClientID%>').value = designation;
                 document.getElementById('<%=txtApprovalCompany.ClientID%>').value = company;
                 document.getElementById('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
@@ -1793,7 +1794,6 @@
 
                 toggleRemarksRequired();
             }
-
 
             function closeApprovalModal() {
                 var modal = document.getElementById('approvalModal');

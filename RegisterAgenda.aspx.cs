@@ -28,8 +28,8 @@ namespace Expo_Panel
 
             try
             {
-                string day = txtDay.Text.Trim();
-                string track = txtTrack.Text.Trim();
+                string day = ddlDay.SelectedValue;
+                string track = ddlStream.SelectedValue;
                 string time = txtTime.Text.Trim();
                 string title = txtTitle.Text.Trim();
                 string brief = txtBrief.Text.Trim();
@@ -94,8 +94,8 @@ namespace Expo_Panel
 
         private void ClearForm()
         {
-            txtDay.Text = "";
-            txtTrack.Text = "";
+            ddlDay.ClearSelection();
+            ddlStream.ClearSelection();
             txtTime.Text = "";
             txtTitle.Text = "";
             txtBrief.Text = "";

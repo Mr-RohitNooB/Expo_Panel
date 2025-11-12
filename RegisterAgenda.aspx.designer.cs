@@ -9,8 +9,11 @@
 
 namespace Expo_Panel
 {
+
+
     public partial class RegisterAgenda
     {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -30,13 +33,13 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.Literal litMessage;
 
         /// <summary>
-        /// txtDay control.
+        /// ddlDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDay;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDay;
 
         /// <summary>
         /// rfvDay control.
@@ -48,13 +51,13 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDay;
 
         /// <summary>
-        /// txtTrack control.
+        /// ddlStream control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTrack;
+        protected global::System.Web.UI.WebControls.DropDownList ddlStream;
 
         /// <summary>
         /// rfvTrack control.

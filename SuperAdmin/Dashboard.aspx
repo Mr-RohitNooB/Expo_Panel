@@ -5,6 +5,9 @@
 <head runat="server">
     <title>Super Admin Dashboard - Lubricant India Expo Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <!-- Light Mode Favicons -->
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
@@ -699,8 +702,8 @@
                         <span class="user-role">Administrator</span>
                     </div>
                 </div>
-                <asp:Button ID="btnLogout" runat="server" CssClass="btn-logout"
-                    Text="Logout" OnClick="btnLogout_Click" />
+
+                <a class="btn-logout" href="/Default.aspx" onclick="logout(); return false;">Logout</a>
             </div>
         </div>
 
@@ -927,7 +930,7 @@
         }
 
         function closeAddAdvisorModal() {
-            document.getElementById('addAdvisorModal').style.display = 'none';
+            document.getElementById("addAdvisorModal").style.display = "none";
         }
 
         function submitAddAdvisor() {
@@ -1025,6 +1028,28 @@
         function closeAddAdvisorModal() {
             document.getElementById("addAdvisorModal").style.display = "none";
         }
+
+        function logout() {
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/LogoutUser",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,  // Force synchronous to ensure session clears before redirect
+                success: function (response) {
+                    if (response.d === true) {
+                        window.location.replace("Default.aspx");
+                    }
+                },
+                error: function (err) {
+                    console.error("Logout error:", err);
+                    window.location.replace("Default.aspx");
+                }
+            });
+            return false;
+        }
+
+
 
     </script>
 

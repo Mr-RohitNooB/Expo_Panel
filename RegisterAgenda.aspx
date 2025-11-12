@@ -11,28 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- Light Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
 
-<!-- Dark Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
 
-<!-- Android / PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
-<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
 
-<!-- Theme Colors -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
-<!-- Windows Tile Support -->
-<meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
         * {
@@ -53,7 +53,7 @@
 
         .registration-container {
             width: 900px;
-           /* width: 100%;*/
+            /* width: 100%;*/
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 40px;
@@ -65,17 +65,17 @@
             margin-bottom: 30px;
         }
 
-        .header h1 {
-            color: #3b82f6;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+            .header h1 {
+                color: #3b82f6;
+                font-size: 28px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
 
-        .header p {
-            color: #64748b;
-            font-size: 16px;
-        }
+            .header p {
+                color: #64748b;
+                font-size: 16px;
+            }
 
         .form-row {
             display: grid;
@@ -88,31 +88,31 @@
             margin-bottom: 20px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #475569;
-            font-weight: 500;
-        }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #475569;
+                font-weight: 500;
+            }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-        }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 12px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                transition: all 0.3s;
+                font-family: 'Poppins', sans-serif;
+            }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
+                .form-group input:focus,
+                .form-group select:focus,
+                .form-group textarea:focus {
+                    outline: none;
+                    border-color: #3b82f6;
+                }
 
         .btn {
             padding: 12px 24px;
@@ -132,11 +132,11 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-        }
+            .btn-primary:hover {
+                background: #2563eb;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            }
 
         .form-footer {
             display: flex;
@@ -154,9 +154,9 @@
             gap: 5px;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
+            .back-link:hover {
+                text-decoration: underline;
+            }
 
         .alert {
             padding: 15px 20px;
@@ -205,7 +205,7 @@
     <form id="form1" runat="server">
         <div class="registration-container">
             <div class="header">
-                <h1><i class="fas fa-calendar-alt"></i> Register Agenda Item</h1>
+                <h1><i class="fas fa-calendar-alt"></i>Register Agenda Item</h1>
                 <p>Submit your session proposal for the expo</p>
             </div>
 
@@ -213,17 +213,26 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="<%=txtDay.ClientID%>">Day <span class="required">*</span></label>
-                    <asp:TextBox ID="txtDay" runat="server" CssClass="form-control" placeholder="e.g., Day 1 - Monday, Jan 15"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvDay" runat="server" ControlToValidate="txtDay"
-                        ErrorMessage="Day is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                    <label for="<%=ddlDay.ClientID%>">Day <span class="required">*</span></label>
+                    <asp:DropDownList ID="ddlDay" runat="server" CssClass="form-control">
+                        <asp:ListItem Text="-- Select Day --" Value=""></asp:ListItem>
+                        <asp:ListItem Text="Day 1" Value="Day 1"></asp:ListItem>
+                        <asp:ListItem Text="Day 2" Value="Day 2"></asp:ListItem>
+                        <asp:ListItem Text="Day 3" Value="Day 3"></asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="rfvDay" runat="server" ControlToValidate="ddlDay"
+                        ErrorMessage="Day is required" ForeColor="Red" Display="Dynamic" InitialValue="" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
-                    <label for="<%=txtTrack.ClientID%>">Track <span class="required">*</span></label>
-                    <asp:TextBox ID="txtTrack" runat="server" CssClass="form-control" placeholder="e.g., Main Hall, Track A"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvTrack" runat="server" ControlToValidate="txtTrack"
-                        ErrorMessage="Track is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                    <label for="<%=ddlStream.ClientID%>">Stream <span class="required">*</span></label>
+                    <asp:DropDownList ID="ddlStream" runat="server" CssClass="form-control">
+                        <asp:ListItem Text="-- Select Stream --" Value=""></asp:ListItem>
+                        <asp:ListItem Text="Stream A" Value="Stream A"></asp:ListItem>
+                        <asp:ListItem Text="Stream B" Value="Stream B"></asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="rfvTrack" runat="server" ControlToValidate="ddlStream"
+                        ErrorMessage="Stream is required" ForeColor="Red" Display="Dynamic" InitialValue="" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
 
@@ -254,9 +263,7 @@
             </div>
 
             <div class="form-footer">
-                <a href="Default.aspx" class="back-link">
-                    <i class="fas fa-arrow-left"></i>Back to Home
-                </a>
+               
                 <asp:Button ID="btnRegister" runat="server" Text="Submit Agenda" CssClass="btn btn-primary"
                     OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" />
             </div>

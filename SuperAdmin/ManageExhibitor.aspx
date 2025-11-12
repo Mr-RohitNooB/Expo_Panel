@@ -759,9 +759,12 @@
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
                     <div style="display: flex; gap: 10px;">
-                        <a href="/RegisterExhibitor.aspx" class="btn btn-info" target="_blank">
+                        <a href="../User/RegisterExhibitor.aspx" class="btn btn-info" target="_blank">
                             <i class="fas fa-link"></i>Get Registration Link
                         </a>
+                         <a style="background-color:orange" href="../User/ExhibitorLogin.aspx" class="btn btn-info" target="_blank">
+     <i class="fas fa-link"></i>Get Login Link
+ </a>
                         <button type="button" class="btn btn-success" onclick="openExhibitorModal('add')">
                             <i class="fas fa-plus"></i>Add Exhibitor
                         </button>
