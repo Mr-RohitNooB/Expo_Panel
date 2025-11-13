@@ -16,6 +16,8 @@ namespace Expo_Panel
             get { return ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString; }
         }
 
+        // RegisterSpeaker.aspx.cs (Modified Page_Load)
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -28,12 +30,33 @@ namespace Expo_Panel
                     int speakerId = Convert.ToInt32(Session["SpeakerID"]);
                     LoadSpeakerData(speakerId);
 
-                    // Change button text to "Update Profile"
+                    //// --- NEW LOGIC: Lock the form immediately after loading data ---
+                    //LockAllControls(this);
+
                     btnRegister.Text = "Update Profile";
 
-                    // Add logout button (you can add this in your ASPX as well)
-                    // Show welcome message
-                    ShowMessage($"Welcome back, {Session["SpeakerName"]}! You can update your profile below.", "info");
+                    // Show welcome message (with a note that agendas are locked)
+                    ShowMessage($"Welcome back, {Session["SpeakerName"]}! You can update your profile below. Your agenda topic selection is locked after the first save. For agenda edit kindly contact the Expo organizer", "info");
+
+                    // Ensure the photo/logo panels are visible but the 'remove' buttons inside them are hidden.
+                    // (The buttons are already hidden by LockAllControls)
+                    pnlCurrentPhoto.Visible = true;
+                    pnlCurrentLogo.Visible = true;
+                    string script = @"
+                <style>
+                    .agenda-checkbox { 
+                        pointer-events: none !important; 
+                        opacity: 0.5 !important; 
+                        cursor: not-allowed !important; 
+                    }
+                    .agenda-table tbody tr {
+                        opacity: 0.7 !important;
+                    }
+                </style>
+            ";
+
+                    ClientScript.RegisterStartupScript(this.GetType(), "disableAgendas", script, false);
+
                 }
             }
         }
@@ -251,26 +274,26 @@ namespace Expo_Panel
 
 
         private void UpdateSpeakerProfile(
-    int speakerId,
-    string name,
-    string mobile,
-    string designation,
-    string company,
-    int? yearsOfExperience,
-    string linkedInProfile,
-    string photoPath,
-    bool updatePhoto,      // NEW: Flag to indicate if photo should be updated
-    string logoPath,
-    bool updateLogo,       // NEW: Flag to indicate if logo should be updated
-    string professionalBio,
-    string areasOfExpertise,
-    string currentWorkProjects,
-    string suggestedTopics,
-    string preferredDiscussionFormat,
-    string previousSpeakingEngagements,
-    string isAvailable,
-    bool marketingConsent,
-    string selectedAgendas)
+int speakerId,
+string name,
+string mobile,
+string designation,
+string company,
+int? yearsOfExperience,
+string linkedInProfile,
+string photoPath,
+bool updatePhoto,
+string logoPath,
+bool updateLogo,
+string professionalBio,
+string areasOfExpertise,
+string currentWorkProjects,
+string suggestedTopics,
+string preferredDiscussionFormat,
+string previousSpeakingEngagements,
+string isAvailable,
+bool marketingConsent,
+string selectedAgendas)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -287,7 +310,7 @@ namespace Expo_Panel
                         hasModifiedAgenda = Convert.ToBoolean(result);
                 }
 
-                // Build update query - ONLY update PhotoPath/LogoPath if flags are true
+                // Build update query
                 string updateQuery = @"
             UPDATE TBL.Speaker
             SET 
@@ -336,13 +359,59 @@ namespace Expo_Panel
                     cmd.Parameters.AddWithValue("@IsAvailable", isAvailable);
                     cmd.Parameters.AddWithValue("@MarketingConsent", marketingConsent);
 
+                    // Only add parameter if we're updating agendas
                     if (!hasModifiedAgenda)
-                        cmd.Parameters.AddWithValue("@SelectedAgendas", selectedAgendas);
+                    {
+                        cmd.Parameters.AddWithValue("@SelectedAgendas", string.IsNullOrEmpty(selectedAgendas) ? (object)DBNull.Value : selectedAgendas);
+                    }
 
                     if (con.State != ConnectionState.Open)
                         con.Open();
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Recursively disables all input controls to enforce read-only status.
+        /// </summary>
+        private void LockAllControls(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                // Disable TextBox, DropDownList, CheckBox
+                if (c is TextBox textBox)
+                {
+                    textBox.ReadOnly = true;
+                    textBox.CssClass += " bg-light-gray"; // Add a class for visual feedback
+                }
+                else if (c is DropDownList dropDownList)
+                {
+                    dropDownList.Enabled = false;
+                }
+                else if (c is CheckBox checkBox)
+                {
+                    checkBox.Enabled = false;
+                }
+                else if (c is Button button)
+                {
+                    // Disable the main submit/update button
+                    if (button.ID == "btnRegister")
+                    {
+                        button.Visible = false;
+                    }
+                }
+                else if (c is FileUpload fileUpload)
+                {
+                    fileUpload.Visible = false; // Hide file upload controls
+                }
+
+                // Recursively check child controls
+                if (c.HasControls())
+                {
+                    LockAllControls(c);
                 }
             }
         }

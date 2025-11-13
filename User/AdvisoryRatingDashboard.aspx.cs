@@ -35,7 +35,6 @@ namespace Expo_Panel.SuperAdmin
         {
             if (!IsAdvisorLoggedIn())
             {
-                // ... Login redirect logic is UNCHANGED ...
                 Response.Redirect("~/User/AdvisoryLogin.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
@@ -43,7 +42,6 @@ namespace Expo_Panel.SuperAdmin
 
             if (!IsPostBack)
             {
-                // ... Advisor link check and username logic is UNCHANGED ...
                 bool isLinked = CheckIfAdvisorIsLinked(CurrentAdvisorID);
                 btnLogout.Visible = !isLinked;
 
@@ -62,11 +60,30 @@ namespace Expo_Panel.SuperAdmin
 
                 hdnCurrentFilter.Value = "All";
                 LoadStatusCounts();
-
-                // RENAMED: from LoadAgendas to BindAgendas for clarity
                 BindAgendas(string.Empty, "All");
             }
+            else
+            {
+                // ✅ NEW: Handle postback after rating save
+                if (Session["ReloadAfterRating"] != null && (bool)Session["ReloadAfterRating"])
+                {
+                    // Restore the expanded agenda ID
+                    if (Session["ExpandedAgendaAfterRating"] != null)
+                    {
+                        hdnExpandedAgendaID.Value = Session["ExpandedAgendaAfterRating"].ToString();
+                    }
+
+                    // Reload fresh data from database
+                    LoadStatusCounts();
+                    BindAgendas(txtSearch.Text.Trim(), hdnCurrentFilter.Value);
+
+                    // Clear the session flags so it doesn't reload again
+                    Session.Remove("ReloadAfterRating");
+                    Session.Remove("ExpandedAgendaAfterRating");
+                }
+            }
         }
+
 
         // ... IsAdvisorLoggedIn, btnLogout_Click, CheckIfAdvisorIsLinked are UNCHANGED ...
         private bool IsAdvisorLoggedIn()
@@ -458,7 +475,6 @@ namespace Expo_Panel.SuperAdmin
         {
             base.OnInit(e);
 
-            // Handle rating submission
             if (IsPostBack && Request.Form["__EVENTTARGET"] == "SaveRatings")
             {
                 try
@@ -499,13 +515,14 @@ namespace Expo_Panel.SuperAdmin
 
                     litMessage.Text = "<div class='alert alert-success'><i class='fas fa-check-circle'></i> All ratings saved successfully!</div>";
 
-                    // Keep the agenda expanded after save
-                    hdnExpandedAgendaID.Value = agendaId.ToString();
+                    // ✅ Set session flags - Page_Load will handle the reload
+                    Session["ReloadAfterRating"] = true;
+                    Session["ExpandedAgendaAfterRating"] = agendaId;
 
-                    BindAgendas(txtSearch.Text.Trim(), hdnCurrentFilter.Value);
-                    LoadStatusCounts();
+                    // ❌ REMOVE these two lines - they're duplicates now
+                    // LoadStatusCounts();
+                    // BindAgendas(txtSearch.Text.Trim(), hdnCurrentFilter.Value);
 
-                    // Hide loading spinner
                     ScriptManager.RegisterStartupScript(this, GetType(), "HideSpinner",
                         "document.getElementById('loadingSpinner').classList.remove('show');", true);
                 }
@@ -514,12 +531,12 @@ namespace Expo_Panel.SuperAdmin
                     litMessage.Text = $"<div class='alert alert-danger'><i class='fas fa-exclamation-circle'></i> Error: {ex.Message}</div>";
                     System.Diagnostics.Debug.WriteLine("Rating Submission Error: " + ex.ToString());
 
-                    // Hide loading spinner
                     ScriptManager.RegisterStartupScript(this, GetType(), "HideSpinnerError",
                         "document.getElementById('loadingSpinner').classList.remove('show');", true);
                 }
             }
         }
+
 
         // NEW: These are helper functions for the Repeater's <%# ... %> databinding syntax.
         // This keeps our ASPX file clean.

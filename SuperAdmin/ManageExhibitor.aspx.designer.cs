@@ -375,6 +375,15 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.TextBox txtHallNo;
 
         /// <summary>
+        /// txtExhibitorProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtExhibitorProfile;
+
+        /// <summary>
         /// txtYearOfEstablishment control.
         /// </summary>
         /// <remarks>

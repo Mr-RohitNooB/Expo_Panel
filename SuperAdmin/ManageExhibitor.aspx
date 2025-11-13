@@ -762,9 +762,9 @@
                         <a href="../User/RegisterExhibitor.aspx" class="btn btn-info" target="_blank">
                             <i class="fas fa-link"></i>Get Registration Link
                         </a>
-                         <a style="background-color:orange" href="../User/ExhibitorLogin.aspx" class="btn btn-info" target="_blank">
-     <i class="fas fa-link"></i>Get Login Link
- </a>
+                        <a style="background-color: orange" href="../User/ExhibitorLogin.aspx" class="btn btn-info" target="_blank">
+                            <i class="fas fa-link"></i>Get Login Link
+                        </a>
                         <button type="button" class="btn btn-success" onclick="openExhibitorModal('add')">
                             <i class="fas fa-plus"></i>Add Exhibitor
                         </button>
@@ -1051,6 +1051,10 @@
                     <div class="form-group">
                         <label for="<%=txtHallNo.ClientID%>">Hall No <span class="required">*</span></label>
                         <asp:TextBox ID="txtHallNo" runat="server" placeholder="Enter hall number"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label>Exhibitor Profile <span class="required">*</span></label>
+                        <asp:TextBox ID="txtExhibitorProfile" runat="server" CssClass="form-control" placeholder="Enter exhibitor profile"></asp:TextBox>
                     </div>
                 </div>
 
@@ -1625,208 +1629,210 @@
 
                     // Clear previous file status labels
                     var lblProduct = $id('<%=lblProductPictureStatus.ClientID%>');
-            var lblBrochure = $id('<%=lblBrochureStatus.ClientID%>');
-            if (lblProduct) lblProduct.style.display = 'none';
-            if (lblBrochure) lblBrochure.style.display = 'none';
+                    var lblBrochure = $id('<%=lblBrochureStatus.ClientID%>');
+                    if (lblProduct) lblProduct.style.display = 'none';
+                    if (lblBrochure) lblBrochure.style.display = 'none';
 
-            // ========== PRE-APPROVAL FIELDS (TBL.Exhibitor) ==========
-            console.log('Setting pre-approval fields...');
+                    // ========== PRE-APPROVAL FIELDS (TBL.Exhibitor) ==========
+                    console.log('Setting pre-approval fields...');
 
-            // Basic Information
-            safeSet('<%=txtName.ClientID%>', data.name);
-            safeSet('<%=txtDesignation.ClientID%>', data.designation);
-            safeSet('<%=txtEmail.ClientID%>', data.email);
-            safeSet('<%=txtMobile.ClientID%>', data.mobile);
+                    // Basic Information
+                    safeSet('<%=txtName.ClientID%>', data.name);
+                    safeSet('<%=txtDesignation.ClientID%>', data.designation);
+                    safeSet('<%=txtEmail.ClientID%>', data.email);
+                    safeSet('<%=txtMobile.ClientID%>', data.mobile);
 
-            // Company Information
-            safeSet('<%=txtCompany.ClientID%>', data.company);
-            safeSet('<%=txtHeadOffice.ClientID%>', data.headOffice);
-            safeSet('<%=txtCity.ClientID%>', data.city);
-            safeSet('<%=txtState.ClientID%>', data.state);
-            safeSet('<%=txtCountry.ClientID%>', data.country);
-            safeSet('<%=txtGSTNumber.ClientID%>', data.gst);
-            safeSet('<%=txtBillingAddress.ClientID%>', data.billing);
+                    // Company Information
+                    safeSet('<%=txtCompany.ClientID%>', data.company);
+                    safeSet('<%=txtHeadOffice.ClientID%>', data.headOffice);
+                    safeSet('<%=txtCity.ClientID%>', data.city);
+                    safeSet('<%=txtState.ClientID%>', data.state);
+                    safeSet('<%=txtCountry.ClientID%>', data.country);
+                    safeSet('<%=txtGSTNumber.ClientID%>', data.gst);
+                    safeSet('<%=txtBillingAddress.ClientID%>', data.billing);
 
-            // Booth Type
-            safeRadio('<%=rbShellScheme.ClientID%>', data.boothType === 'Shell Scheme');
-            safeRadio('<%=rbRawSpace.ClientID%>', data.boothType === 'Raw Space');
+                    // Booth Type
+                    safeRadio('<%=rbShellScheme.ClientID%>', data.boothType === 'Shell Scheme');
+                    safeRadio('<%=rbRawSpace.ClientID%>', data.boothType === 'Raw Space');
 
-            safeSet('<%=txtAreaInSqm.ClientID%>', data.area);
+                    safeSet('<%=txtAreaInSqm.ClientID%>', data.area);
 
-            // Additional Interests
-            safeCheck('<%=chkConference.ClientID%>', data.conference);
-            safeCheck('<%=chkSponsorship.ClientID%>', data.sponsorship);
-            safeCheck('<%=chkAdvertising.ClientID%>', data.advertising);
-            safeCheck('<%=chkCustomPackage.ClientID%>', data.customPackage);
+                    // Additional Interests
+                    safeCheck('<%=chkConference.ClientID%>', data.conference);
+                    safeCheck('<%=chkSponsorship.ClientID%>', data.sponsorship);
+                    safeCheck('<%=chkAdvertising.ClientID%>', data.advertising);
+                    safeCheck('<%=chkCustomPackage.ClientID%>', data.customPackage);
 
-            // System Settings
-            var ddlStatus = $id('<%=ddlStatus.ClientID%>');
-            if (ddlStatus) ddlStatus.value = data.isActive || '1';
+                    // System Settings
+                    var ddlStatus = $id('<%=ddlStatus.ClientID%>');
+                    if (ddlStatus) ddlStatus.value = data.isActive || '1';
 
-            var ddlRegType = $id('<%=ddlRegistrationType.ClientID%>');
-            if (ddlRegType) ddlRegType.value = data.regType || 'Admin';
+                    var ddlRegType = $id('<%=ddlRegistrationType.ClientID%>');
+                    if (ddlRegType) ddlRegType.value = data.regType || 'Admin';
 
-            // ========== POST-APPROVAL FIELDS (TBL.PostApprovalExhibitor) ==========
-            console.log('=== Setting Post-Approval Fields ===');
+                    // ========== POST-APPROVAL FIELDS (TBL.PostApprovalExhibitor) ==========
+                    console.log('=== Setting Post-Approval Fields ===');
 
-            // Check if post-approval data exists
-            var hasPostApprovalData = data.boothNo || data.hallNo || data.yearOfEstablishment;
-            console.log('Has post-approval data:', hasPostApprovalData);
+                    // Check if post-approval data exists
+                    var hasPostApprovalData = data.boothNo || data.hallNo || data.yearOfEstablishment;
+                    console.log('Has post-approval data:', hasPostApprovalData);
 
-            if (hasPostApprovalData) {
-                // Booth Assignment
-                console.log('Setting booth info:', data.boothNo, data.hallNo);
-                safeSet('<%=txtBoothNo.ClientID%>', data.boothNo);
-                safeSet('<%=txtHallNo.ClientID%>', data.hallNo);
+                    if (hasPostApprovalData) {
+                        // Booth Assignment
+                        console.log('Setting booth info:', data.boothNo, data.hallNo);
+                        safeSet('<%=txtBoothNo.ClientID%>', data.boothNo);
+                        safeSet('<%=txtHallNo.ClientID%>', data.hallNo);
+                        safeSet('<%=txtExhibitorProfile.ClientID%>', data.exhibitorProfile);
+                        safeSet('<%=txtYearOfEstablishment.ClientID%>', data.yearOfEstablishment);
 
-                // Company Profile
-                console.log('Setting company profile...');
-                safeSet('<%=txtYearOfEstablishment.ClientID%>', data.yearOfEstablishment);
-                safeSet('<%=txtWebsite.ClientID%>', data.website);
-                safeSet('<%=txtLinkedIn.ClientID%>', data.linkedIn);
-                safeSet('<%=txtTwitter.ClientID%>', data.twitter);
-                safeSet('<%=txtFacebook.ClientID%>', data.facebook);
-                safeSet('<%=txtYouTube.ClientID%>', data.youtube);
+                        // Company Profile
+                        console.log('Setting company profile...');
+                        safeSet('<%=txtYearOfEstablishment.ClientID%>', data.yearOfEstablishment);
+                        safeSet('<%=txtWebsite.ClientID%>', data.website);
+                        safeSet('<%=txtLinkedIn.ClientID%>', data.linkedIn);
+                        safeSet('<%=txtTwitter.ClientID%>', data.twitter);
+                        safeSet('<%=txtFacebook.ClientID%>', data.facebook);
+                        safeSet('<%=txtYouTube.ClientID%>', data.youtube);
 
-                // Customer Support
-                console.log('Setting support info...');
-                safeSet('<%=txtSupportName.ClientID%>', data.supportName);
-                safeSet('<%=txtSupportContact.ClientID%>', data.supportContact);
-                safeSet('<%=txtSupportEmail.ClientID%>', data.supportEmail);
+                        // Customer Support
+                        console.log('Setting support info...');
+                        safeSet('<%=txtSupportName.ClientID%>', data.supportName);
+                        safeSet('<%=txtSupportContact.ClientID%>', data.supportContact);
+                        safeSet('<%=txtSupportEmail.ClientID%>', data.supportEmail);
 
-                // Nature of Business
-                console.log('Setting nature of business:', data.natureOfBusiness);
-                var nature = data.natureOfBusiness || '';
-                safeCheck('<%=chkManufacturer.ClientID%>', nature.includes('Manufacturer'));
-                safeCheck('<%=chkDistributor.ClientID%>', nature.includes('Distributor'));
-                safeCheck('<%=chkImporter.ClientID%>', nature.includes('Importer'));
-                safeCheck('<%=chkServiceProvider.ClientID%>', nature.includes('Service Provider'));
-                safeCheck('<%=chkTechnologyProvider.ClientID%>', nature.includes('Technology Provider'));
-                safeCheck('<%=chkRnDServices.ClientID%>', nature.includes('R&D'));
-                safeCheck('<%=chkConsultancy.ClientID%>', nature.includes('Consultancy'));
-                safeCheck('<%=chkIndustryAssociation.ClientID%>', nature.includes('Industry Association'));
+                        // Nature of Business
+                        console.log('Setting nature of business:', data.natureOfBusiness);
+                        var nature = data.natureOfBusiness || '';
+                        safeCheck('<%=chkManufacturer.ClientID%>', nature.includes('Manufacturer'));
+                        safeCheck('<%=chkDistributor.ClientID%>', nature.includes('Distributor'));
+                        safeCheck('<%=chkImporter.ClientID%>', nature.includes('Importer'));
+                        safeCheck('<%=chkServiceProvider.ClientID%>', nature.includes('Service Provider'));
+                        safeCheck('<%=chkTechnologyProvider.ClientID%>', nature.includes('Technology Provider'));
+                        safeCheck('<%=chkRnDServices.ClientID%>', nature.includes('R&D'));
+                        safeCheck('<%=chkConsultancy.ClientID%>', nature.includes('Consultancy'));
+                        safeCheck('<%=chkIndustryAssociation.ClientID%>', nature.includes('Industry Association'));
 
-                if (nature.includes('Other:')) {
-                    safeCheck('<%=chkNatureOther.ClientID%>', true);
+                        if (nature.includes('Other:')) {
+                            safeCheck('<%=chkNatureOther.ClientID%>', true);
                     var otherMatch = nature.match(/Other:\s*([^,]+)/);
                     if (otherMatch) safeSet('<%=txtNatureOther.ClientID%>', otherMatch[1].trim());
-                }
+                        }
 
-                // Company Category
-                console.log('Setting company category:', data.companyCategory);
-                var category = data.companyCategory || '';
-                safeCheck('<%=chkAutomotiveLubricants.ClientID%>', category.includes('Automotive Lubricants'));
-                safeCheck('<%=chkIndustrialLubricants.ClientID%>', category.includes('Industrial Lubricants'));
-                safeCheck('<%=chkBaseOils.ClientID%>', category.includes('Base Oils'));
-                safeCheck('<%=chkAdditives.ClientID%>', category.includes('Additives'));
-                safeCheck('<%=chkGreases.ClientID%>', category.includes('Greases'));
-                safeCheck('<%=chkSpecialtyFluids.ClientID%>', category.includes('Specialty Fluids'));
-                safeCheck('<%=chkBioBasedLubricants.ClientID%>', category.includes('Bio-based'));
-                safeCheck('<%=chkReRefinedOils.ClientID%>', category.includes('Re-refined'));
-                safeCheck('<%=chkPackaging.ClientID%>', category.includes('Packaging'));
-                safeCheck('<%=chkLabEquipment.ClientID%>', category.includes('Laboratory') || category.includes('Lab'));
-                safeCheck('<%=chkLubricationSystems.ClientID%>', category.includes('Lubrication Systems'));
-                safeCheck('<%=chkSoftwareAI.ClientID%>', category.includes('Software'));
+                        // Company Category
+                        console.log('Setting company category:', data.companyCategory);
+                        var category = data.companyCategory || '';
+                        safeCheck('<%=chkAutomotiveLubricants.ClientID%>', category.includes('Automotive Lubricants'));
+                        safeCheck('<%=chkIndustrialLubricants.ClientID%>', category.includes('Industrial Lubricants'));
+                        safeCheck('<%=chkBaseOils.ClientID%>', category.includes('Base Oils'));
+                        safeCheck('<%=chkAdditives.ClientID%>', category.includes('Additives'));
+                        safeCheck('<%=chkGreases.ClientID%>', category.includes('Greases'));
+                        safeCheck('<%=chkSpecialtyFluids.ClientID%>', category.includes('Specialty Fluids'));
+                        safeCheck('<%=chkBioBasedLubricants.ClientID%>', category.includes('Bio-based'));
+                        safeCheck('<%=chkReRefinedOils.ClientID%>', category.includes('Re-refined'));
+                        safeCheck('<%=chkPackaging.ClientID%>', category.includes('Packaging'));
+                        safeCheck('<%=chkLabEquipment.ClientID%>', category.includes('Laboratory') || category.includes('Lab'));
+                        safeCheck('<%=chkLubricationSystems.ClientID%>', category.includes('Lubrication Systems'));
+                        safeCheck('<%=chkSoftwareAI.ClientID%>', category.includes('Software'));
 
-                if (category.includes('Others:')) {
-                    safeCheck('<%=chkProductOther.ClientID%>', true);
+                        if (category.includes('Others:')) {
+                            safeCheck('<%=chkProductOther.ClientID%>', true);
                     var otherMatch = category.match(/Others:\s*([^,]+)/);
                     if (otherMatch) safeSet('<%=txtProductOther.ClientID%>', otherMatch[1].trim());
-                }
+                        }
 
-                // Markets Catered To
-                console.log('Setting markets:', data.marketsCatered);
-                var markets = data.marketsCatered || '';
-                safeCheck('<%=chkAutomotive.ClientID%>', markets.includes('Automotive'));
-                safeCheck('<%=chkHeavyCommercial.ClientID%>', markets.includes('Heavy Commercial'));
-                safeCheck('<%=chkRailways.ClientID%>', markets.includes('Railways'));
-                safeCheck('<%=chkMarine.ClientID%>', markets.includes('Marine'));
-                safeCheck('<%=chkAerospace.ClientID%>', markets.includes('Aerospace'));
-                safeCheck('<%=chkManufacturing.ClientID%>', markets.includes('Manufacturing'));
-                safeCheck('<%=chkPowerEnergy.ClientID%>', markets.includes('Power'));
-                safeCheck('<%=chkConstruction.ClientID%>', markets.includes('Construction'));
-                safeCheck('<%=chkAgriculture.ClientID%>', markets.includes('Agriculture'));
-                safeCheck('<%=chkFMCG.ClientID%>', markets.includes('FMCG'));
+                        // Markets Catered To
+                        console.log('Setting markets:', data.marketsCatered);
+                        var markets = data.marketsCatered || '';
+                        safeCheck('<%=chkAutomotive.ClientID%>', markets.includes('Automotive'));
+                        safeCheck('<%=chkHeavyCommercial.ClientID%>', markets.includes('Heavy Commercial'));
+                        safeCheck('<%=chkRailways.ClientID%>', markets.includes('Railways'));
+                        safeCheck('<%=chkMarine.ClientID%>', markets.includes('Marine'));
+                        safeCheck('<%=chkAerospace.ClientID%>', markets.includes('Aerospace'));
+                        safeCheck('<%=chkManufacturing.ClientID%>', markets.includes('Manufacturing'));
+                        safeCheck('<%=chkPowerEnergy.ClientID%>', markets.includes('Power'));
+                        safeCheck('<%=chkConstruction.ClientID%>', markets.includes('Construction'));
+                        safeCheck('<%=chkAgriculture.ClientID%>', markets.includes('Agriculture'));
+                        safeCheck('<%=chkFMCG.ClientID%>', markets.includes('FMCG'));
 
-                if (markets.includes('Other:')) {
-                    safeCheck('<%=chkMarketOther.ClientID%>', true);
+                        if (markets.includes('Other:')) {
+                            safeCheck('<%=chkMarketOther.ClientID%>', true);
                     var otherMatch = markets.match(/Other:\s*([^,]+)/);
                     if (otherMatch) safeSet('<%=txtMarketOther.ClientID%>', otherMatch[1].trim());
-                }
+                        }
 
-                // Geographic Reach
-                console.log('Setting geographic reach:', data.geographicReach);
-                var geo = data.geographicReach || '';
-                safeCheck('<%=chkIndiaOnly.ClientID%>', geo.includes('India Only'));
-                safeCheck('<%=chkSouthAsia.ClientID%>', geo.includes('South Asia'));
-                safeCheck('<%=chkAsiaPacific.ClientID%>', geo.includes('Asia-Pacific'));
-                safeCheck('<%=chkMiddleEast.ClientID%>', geo.includes('Middle East'));
-                safeCheck('<%=chkAfrica.ClientID%>', geo.includes('Africa'));
-                safeCheck('<%=chkEurope.ClientID%>', geo.includes('Europe'));
-                safeCheck('<%=chkGlobal.ClientID%>', geo.includes('Global'));
+                        // Geographic Reach
+                        console.log('Setting geographic reach:', data.geographicReach);
+                        var geo = data.geographicReach || '';
+                        safeCheck('<%=chkIndiaOnly.ClientID%>', geo.includes('India Only'));
+                        safeCheck('<%=chkSouthAsia.ClientID%>', geo.includes('South Asia'));
+                        safeCheck('<%=chkAsiaPacific.ClientID%>', geo.includes('Asia-Pacific'));
+                        safeCheck('<%=chkMiddleEast.ClientID%>', geo.includes('Middle East'));
+                        safeCheck('<%=chkAfrica.ClientID%>', geo.includes('Africa'));
+                        safeCheck('<%=chkEurope.ClientID%>', geo.includes('Europe'));
+                        safeCheck('<%=chkGlobal.ClientID%>', geo.includes('Global'));
 
-                // Additional Requirements
-                console.log('Setting requirements...');
-                var powerSupply = data.powerSupply === 'True' || data.powerSupply === true;
-                safeCheck('<%=chkPowerSupply.ClientID%>', powerSupply);
-                safeSet('<%=txtPowerSupplyKwh.ClientID%>', data.powerKwh);
+                        // Additional Requirements
+                        console.log('Setting requirements...');
+                        var powerSupply = data.powerSupply === 'True' || data.powerSupply === true;
+                        safeCheck('<%=chkPowerSupply.ClientID%>', powerSupply);
+                        safeSet('<%=txtPowerSupplyKwh.ClientID%>', data.powerKwh);
 
-                safeCheck('<%=chkInternet.ClientID%>', data.internet === 'True' || data.internet === true);
-                safeCheck('<%=chkFurniture.ClientID%>', data.furniture === 'True' || data.furniture === true);
-                safeCheck('<%=chkAVEquipment.ClientID%>', data.avEquipment === 'True' || data.avEquipment === true);
-                safeCheck('<%=chkInterpreter.ClientID%>', data.interpreter === 'True' || data.interpreter === true);
+                        safeCheck('<%=chkInternet.ClientID%>', data.internet === 'True' || data.internet === true);
+                        safeCheck('<%=chkFurniture.ClientID%>', data.furniture === 'True' || data.furniture === true);
+                        safeCheck('<%=chkAVEquipment.ClientID%>', data.avEquipment === 'True' || data.avEquipment === true);
+                        safeCheck('<%=chkInterpreter.ClientID%>', data.interpreter === 'True' || data.interpreter === true);
 
-                if (data.otherReq) {
-                    safeCheck('<%=chkReqOther.ClientID%>', true);
+                        if (data.otherReq) {
+                            safeCheck('<%=chkReqOther.ClientID%>', true);
                     safeSet('<%=txtReqOther.ClientID%>', data.otherReq);
-                }
+                        }
 
-                // Participation Objectives
-                console.log('Setting objectives:', data.objectives);
-                var objectives = data.objectives || '';
-                safeCheck('<%=chkGenerateLeads.ClientID%>', objectives.includes('Generate Business Leads'));
-                safeCheck('<%=chkLaunchProducts.ClientID%>', objectives.includes('Launch New Products'));
-                safeCheck('<%=chkNetworking.ClientID%>', objectives.includes('Network'));
-                safeCheck('<%=chkFindPartners.ClientID%>', objectives.includes('Find Distribution'));
-                safeCheck('<%=chkMarketResearch.ClientID%>', objectives.includes('Market Research'));
-                safeCheck('<%=chkBrandVisibility.ClientID%>', objectives.includes('Brand Visibility'));
-                safeCheck('<%=chkAttendConference.ClientID%>', objectives.includes('Attend Conference'));
-                safeCheck('<%=chkRecruitTalent.ClientID%>', objectives.includes('Recruit Talent'));
+                        // Participation Objectives
+                        console.log('Setting objectives:', data.objectives);
+                        var objectives = data.objectives || '';
+                        safeCheck('<%=chkGenerateLeads.ClientID%>', objectives.includes('Generate Business Leads'));
+                        safeCheck('<%=chkLaunchProducts.ClientID%>', objectives.includes('Launch New Products'));
+                        safeCheck('<%=chkNetworking.ClientID%>', objectives.includes('Network'));
+                        safeCheck('<%=chkFindPartners.ClientID%>', objectives.includes('Find Distribution'));
+                        safeCheck('<%=chkMarketResearch.ClientID%>', objectives.includes('Market Research'));
+                        safeCheck('<%=chkBrandVisibility.ClientID%>', objectives.includes('Brand Visibility'));
+                        safeCheck('<%=chkAttendConference.ClientID%>', objectives.includes('Attend Conference'));
+                        safeCheck('<%=chkRecruitTalent.ClientID%>', objectives.includes('Recruit Talent'));
 
-                if (objectives.includes('Other:')) {
-                    safeCheck('<%=chkObjectiveOther.ClientID%>', true);
+                        if (objectives.includes('Other:')) {
+                            safeCheck('<%=chkObjectiveOther.ClientID%>', true);
                     var otherMatch = objectives.match(/Other:\s*([^,]+)/);
                     if (otherMatch) safeSet('<%=txtObjectiveOther.ClientID%>', otherMatch[1].trim());
-                }
+                        }
 
-                // Additional Notes
-                safeSet('<%=txtAdditionalNotes.ClientID%>', data.additionalNotes);
+                        // Additional Notes
+                        safeSet('<%=txtAdditionalNotes.ClientID%>', data.additionalNotes);
 
-                // File Upload Status
-                if (data.productPicture) {
-                    if (lblProduct) {
-                        lblProduct.innerHTML = '<i class="fas fa-check-circle"></i> File uploaded: ' + data.productPicture.split('/').pop();
-                        lblProduct.className = 'file-status exists';
-                        lblProduct.style.display = 'block';
+                        // File Upload Status
+                        if (data.productPicture) {
+                            if (lblProduct) {
+                                lblProduct.innerHTML = '<i class="fas fa-check-circle"></i> File uploaded: ' + data.productPicture.split('/').pop();
+                                lblProduct.className = 'file-status exists';
+                                lblProduct.style.display = 'block';
+                            }
+                        }
+
+                        if (data.brochure) {
+                            if (lblBrochure) {
+                                lblBrochure.innerHTML = '<i class="fas fa-check-circle"></i> File uploaded: ' + data.brochure.split('/').pop();
+                                lblBrochure.className = 'file-status exists';
+                                lblBrochure.style.display = 'block';
+                            }
+                        }
+
+                        console.log('Post-approval fields populated successfully!');
+                    } else {
+                        console.log('No post-approval data to populate');
                     }
-                }
 
-                if (data.brochure) {
-                    if (lblBrochure) {
-                        lblBrochure.innerHTML = '<i class="fas fa-check-circle"></i> File uploaded: ' + data.brochure.split('/').pop();
-                        lblBrochure.className = 'file-status exists';
-                        lblBrochure.style.display = 'block';
-                    }
-                }
-
-                console.log('Post-approval fields populated successfully!');
-            } else {
-                console.log('No post-approval data to populate');
-            }
-
-            // Hidden fields
-            safeSet('<%=hdnExhibitorID.ClientID%>', data.id || 0);
-            safeSet('<%=hdnExhibitorModalMode.ClientID%>', mode || 'add');
+                    // Hidden fields
+                    safeSet('<%=hdnExhibitorID.ClientID%>', data.id || 0);
+                    safeSet('<%=hdnExhibitorModalMode.ClientID%>', mode || 'add');
 
                     // Open modal
                     var modal = $('#exhibitorModal');
@@ -1890,7 +1896,7 @@
 
             function validateRemarks(sender, args) {
                 var status = $id('<%=ddlApprovalStatus.ClientID%>').value;
-        var remarks = $id('<%=txtApprovalRemarks.ClientID%>').value.trim();
+                var remarks = $id('<%=txtApprovalRemarks.ClientID%>').value.trim();
 
                 if (status === 'Rejected' && remarks === '') {
                     args.IsValid = false;
@@ -1901,7 +1907,7 @@
 
             function validatePassword(sender, args) {
                 var status = $id('<%=ddlApprovalStatus.ClientID%>').value;
-        var password = $id('<%=txtPassword.ClientID%>').value.trim();
+                var password = $id('<%=txtPassword.ClientID%>').value.trim();
 
                 if (status === 'Approved' && password === '') {
                     args.IsValid = false;
@@ -1933,16 +1939,16 @@
             document.addEventListener('DOMContentLoaded', function () {
                 // Setup approval status dropdown change handler
                 var ddlApproval = $id('<%=ddlApprovalStatus.ClientID%>');
-        if (ddlApproval) {
-            ddlApproval.addEventListener('change', toggleRemarksAndPasswordRequired);
-        }
+                if (ddlApproval) {
+                    ddlApproval.addEventListener('change', toggleRemarksAndPasswordRequired);
+                }
 
-        // Ensure modal backdrop is properly cleaned up
-        $('#exhibitorModal').on('hidden.bs.modal', function () {
-            $('.modal-backdrop').remove();
-            $('body').removeClass('modal-open');
-        });
-    });
+                // Ensure modal backdrop is properly cleaned up
+                $('#exhibitorModal').on('hidden.bs.modal', function () {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open');
+                });
+            });
         </script>
 
 

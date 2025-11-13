@@ -114,6 +114,7 @@ namespace Expo_Panel
                 // Collect all data
                 string boothNo = txtBoothNo.Text.Trim();
                 string hallNo = txtHallNo.Text.Trim();
+                string exhibitorProfile = txtExhibitorProfile.Text.Trim();
                 int yearOfEstablishment = Convert.ToInt32(txtYearOfEstablishment.Text.Trim());
                 string website = txtWebsite.Text.Trim();
                 string linkedIn = txtLinkedIn.Text.Trim();
@@ -152,7 +153,7 @@ namespace Expo_Panel
                     // UPDATE existing profile
                     int profileId = GetExistingProfileID(ExhibitorID);
                     UpdatePostApprovalProfile(
-                        profileId, boothNo, hallNo, yearOfEstablishment,
+                        profileId, boothNo, hallNo, exhibitorProfile, yearOfEstablishment,
                         website, linkedIn, twitter, facebook, youtube,
                         supportName, supportContact, supportEmail,
                         natureOfBusiness, companyCategory, marketsCatered, geographicReach,
@@ -167,7 +168,7 @@ namespace Expo_Panel
                 {
                     // INSERT new profile
                     int profileId = AddPostApprovalProfile(
-                        ExhibitorID, boothNo, hallNo, yearOfEstablishment,
+                        ExhibitorID, boothNo, hallNo, exhibitorProfile, yearOfEstablishment,
                         website, linkedIn, twitter, facebook, youtube,
                         supportName, supportContact, supportEmail,
                         natureOfBusiness, companyCategory, marketsCatered, geographicReach,
@@ -296,6 +297,7 @@ namespace Expo_Panel
                             // Booth Information
                             txtBoothNo.Text = dr["BoothNo"].ToString();
                             txtHallNo.Text = dr["HallNo"].ToString();
+                            txtExhibitorProfile.Text = dr["ExhibitorProfile"].ToString();
 
                             // Exhibitor Profile
                             txtYearOfEstablishment.Text = dr["YearOfEstablishment"].ToString();
@@ -564,7 +566,7 @@ namespace Expo_Panel
         }
 
         private int AddPostApprovalProfile(
-            int exhibitorId, string boothNo, string hallNo, int yearOfEstablishment,
+            int exhibitorId, string boothNo, string hallNo, string exhibitorProfile, int yearOfEstablishment,
             string website, string linkedIn, string twitter, string facebook, string youtube,
             string supportName, string supportContact, string supportEmail,
             string natureOfBusiness, string companyCategory, string marketsCatered, string geographicReach,
@@ -582,6 +584,7 @@ namespace Expo_Panel
                     cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
                     cmd.Parameters.AddWithValue("@BoothNo", boothNo);
                     cmd.Parameters.AddWithValue("@HallNo", hallNo);
+                    cmd.Parameters.AddWithValue("@ExhibitorProfile", string.IsNullOrEmpty(exhibitorProfile) ? (object)DBNull.Value : exhibitorProfile);  
                     cmd.Parameters.AddWithValue("@YearOfEstablishment", yearOfEstablishment);
                     cmd.Parameters.AddWithValue("@Website", string.IsNullOrEmpty(website) ? (object)DBNull.Value : website);
                     cmd.Parameters.AddWithValue("@LinkedIn", string.IsNullOrEmpty(linkedIn) ? (object)DBNull.Value : linkedIn);
@@ -622,7 +625,7 @@ namespace Expo_Panel
         }
 
         private void UpdatePostApprovalProfile(
-            int profileId, string boothNo, string hallNo, int yearOfEstablishment,
+            int profileId, string boothNo, string hallNo, string exhibitorProfile, int yearOfEstablishment,
             string website, string linkedIn, string twitter, string facebook, string youtube,
             string supportName, string supportContact, string supportEmail,
             string natureOfBusiness, string companyCategory, string marketsCatered, string geographicReach,
@@ -640,6 +643,7 @@ namespace Expo_Panel
                     cmd.Parameters.AddWithValue("@ProfileID", profileId);
                     cmd.Parameters.AddWithValue("@BoothNo", boothNo);
                     cmd.Parameters.AddWithValue("@HallNo", hallNo);
+                    cmd.Parameters.AddWithValue("@ExhibitorProfile", string.IsNullOrEmpty(exhibitorProfile) ? (object)DBNull.Value : exhibitorProfile);
                     cmd.Parameters.AddWithValue("@YearOfEstablishment", yearOfEstablishment);
                     cmd.Parameters.AddWithValue("@Website", string.IsNullOrEmpty(website) ? (object)DBNull.Value : website);
                     cmd.Parameters.AddWithValue("@LinkedIn", string.IsNullOrEmpty(linkedIn) ? (object)DBNull.Value : linkedIn);

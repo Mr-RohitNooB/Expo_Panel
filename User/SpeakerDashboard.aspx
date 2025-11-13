@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
+
     <style>
         * {
             box-sizing: border-box;
@@ -38,8 +38,10 @@
         }
 
         .header-logo img {
-            height: 50px;
+            height: 80px;
             width: auto;
+            margin-bottom: -19px;
+            margin-top: -10px;
         }
 
         .header-right {
@@ -98,10 +100,10 @@
             gap: 8px;
         }
 
-        .btn-logout:hover {
-            background: #dc2626;
-            transform: translateY(-1px);
-        }
+            .btn-logout:hover {
+                background: #dc2626;
+                transform: translateY(-1px);
+            }
 
         /* Main Container */
         .dashboard-container {
@@ -119,15 +121,15 @@
             box-shadow: 0 4px 15px rgba(56, 161, 105, 0.2);
         }
 
-        .welcome-section h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+            .welcome-section h1 {
+                font-size: 32px;
+                margin-bottom: 10px;
+            }
 
-        .welcome-section p {
-            font-size: 16px;
-            opacity: 0.95;
-        }
+            .welcome-section p {
+                font-size: 16px;
+                opacity: 0.95;
+            }
 
         /* Tab Navigation */
         .tab-navigation {
@@ -152,22 +154,22 @@
             gap: 8px;
         }
 
-        .tab-btn:hover {
-            color: #38a169;
-        }
+            .tab-btn:hover {
+                color: #38a169;
+            }
 
-        .tab-btn.active {
-            color: #38a169;
-            border-bottom-color: #38a169;
-        }
+            .tab-btn.active {
+                color: #38a169;
+                border-bottom-color: #38a169;
+            }
 
         .tab-content {
             display: none;
         }
 
-        .tab-content.active {
-            display: block;
-        }
+            .tab-content.active {
+                display: block;
+            }
 
         /* Profile Section */
         .profile-card {
@@ -185,13 +187,13 @@
             margin-bottom: 25px;
         }
 
-        .profile-header h2 {
-            font-size: 24px;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+            .profile-header h2 {
+                font-size: 24px;
+                color: #1e293b;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
 
         .btn-edit {
             padding: 10px 20px;
@@ -209,10 +211,10 @@
             text-decoration: none;
         }
 
-        .btn-edit:hover {
-            background: #2f855a;
-            transform: translateY(-1px);
-        }
+            .btn-edit:hover {
+                background: #2f855a;
+                transform: translateY(-1px);
+            }
 
         .profile-info {
             display: grid;
@@ -263,27 +265,27 @@
             gap: 6px;
         }
 
-        .filter-btn:hover {
-            border-color: #38a169;
-            color: #38a169;
-        }
+            .filter-btn:hover {
+                border-color: #38a169;
+                color: #38a169;
+            }
 
-        .filter-btn.active {
-            background: #38a169;
-            border-color: #38a169;
-            color: white;
-        }
+            .filter-btn.active {
+                background: #38a169;
+                border-color: #38a169;
+                color: white;
+            }
 
-        .filter-btn .badge {
-            background: rgba(0, 0, 0, 0.1);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
+            .filter-btn .badge {
+                background: rgba(0, 0, 0, 0.1);
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-size: 12px;
+            }
 
-        .filter-btn.active .badge {
-            background: rgba(255, 255, 255, 0.2);
-        }
+            .filter-btn.active .badge {
+                background: rgba(255, 255, 255, 0.2);
+            }
 
         .agenda-grid {
             display: grid;
@@ -299,15 +301,15 @@
             transition: all 0.3s;
         }
 
-        .agenda-card:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
+            .agenda-card:hover {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                transform: translateY(-2px);
+            }
 
-        .agenda-card.rejected {
-            border-left-color: #ef4444;
-            opacity: 0.7;
-        }
+            .agenda-card.rejected {
+                border-left-color: #ef4444;
+                opacity: 0.7;
+            }
 
         .agenda-header {
             display: flex;
@@ -331,15 +333,15 @@
             text-transform: uppercase;
         }
 
-        .status-badge.approved {
-            background: #d1fae5;
-            color: #065f46;
-        }
+            .status-badge.approved {
+                background: #d1fae5;
+                color: #065f46;
+            }
 
-        .status-badge.rejected {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+            .status-badge.rejected {
+                background: #fee2e2;
+                color: #991b1b;
+            }
 
         .agenda-meta {
             display: flex;
@@ -356,9 +358,9 @@
             color: #64748b;
         }
 
-        .meta-item i {
-            color: #38a169;
-        }
+            .meta-item i {
+                color: #38a169;
+            }
 
         .agenda-brief {
             font-size: 14px;
@@ -375,21 +377,21 @@
             color: #94a3b8;
         }
 
-        .empty-state i {
-            font-size: 64px;
-            margin-bottom: 20px;
-            display: block;
-            opacity: 0.5;
-        }
+            .empty-state i {
+                font-size: 64px;
+                margin-bottom: 20px;
+                display: block;
+                opacity: 0.5;
+            }
 
-        .empty-state h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+            .empty-state h3 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
 
-        .empty-state p {
-            font-size: 14px;
-        }
+            .empty-state p {
+                font-size: 14px;
+            }
 
         /* Alert Messages */
         .alert {
@@ -471,11 +473,13 @@
                         <asp:Literal ID="litUserInitials" runat="server"></asp:Literal>
                     </div>
                     <div class="user-details">
-                        <h4><asp:Literal ID="litUserName" runat="server"></asp:Literal></h4>
-                        <p><asp:Literal ID="litUserEmail" runat="server"></asp:Literal></p>
+                        <h4>
+                            <asp:Literal ID="litUserName" runat="server"></asp:Literal></h4>
+                        <p>
+                            <asp:Literal ID="litUserEmail" runat="server"></asp:Literal></p>
                     </div>
                 </div>
-                <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout" 
+                <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout"
                     OnClick="btnLogout_Click" CausesValidation="false" />
             </div>
         </div>
@@ -484,7 +488,8 @@
         <div class="dashboard-container">
             <!-- Welcome Section -->
             <div class="welcome-section">
-                <h1>Welcome, <asp:Literal ID="litWelcomeName" runat="server"></asp:Literal>! 👋</h1>
+                <h1>Welcome,
+                    <asp:Literal ID="litWelcomeName" runat="server"></asp:Literal>! 👋</h1>
                 <p>Manage your speaker profile and view your agenda assignments</p>
             </div>
 
@@ -494,10 +499,10 @@
             <!-- Tab Navigation -->
             <div class="tab-navigation">
                 <button type="button" class="tab-btn active" onclick="openTab(event, 'profile')">
-                    <i class="fas fa-user"></i> Profile
+                    <i class="fas fa-user"></i>Profile
                 </button>
                 <button type="button" class="tab-btn" onclick="openTab(event, 'agendas')">
-                    <i class="fas fa-calendar-check"></i> My Agendas
+                    <i class="fas fa-calendar-check"></i>My Agendas
                 </button>
             </div>
 
@@ -505,44 +510,52 @@
             <div id="profile" class="tab-content active">
                 <div class="profile-card">
                     <div class="profile-header">
-                        <h2><i class="fas fa-id-card"></i> Profile Information</h2>
+                        <h2><i class="fas fa-id-card"></i>Profile Information</h2>
                         <a href="RegisterSpeaker.aspx" class="btn-edit">
-                            <i class="fas fa-edit"></i> Update Profile
+                            <i class="fas fa-edit"></i>Update Profile
                         </a>
                     </div>
-                    
+
                     <div class="profile-info">
                         <div class="info-item">
                             <div class="info-label">Full Name</div>
-                            <div class="info-value"><asp:Literal ID="litName" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litName" runat="server"></asp:Literal></div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Email</div>
-                            <div class="info-value"><asp:Literal ID="litEmail" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litEmail" runat="server"></asp:Literal></div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Mobile</div>
-                            <div class="info-value"><asp:Literal ID="litMobile" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litMobile" runat="server"></asp:Literal></div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Designation</div>
-                            <div class="info-value"><asp:Literal ID="litDesignation" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litDesignation" runat="server"></asp:Literal></div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Company</div>
-                            <div class="info-value"><asp:Literal ID="litCompany" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litCompany" runat="server"></asp:Literal></div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Years of Experience</div>
-                            <div class="info-value"><asp:Literal ID="litExperience" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litExperience" runat="server"></asp:Literal></div>
                         </div>
                         <div class="info-item" style="grid-column: 1 / -1;">
                             <div class="info-label">LinkedIn Profile</div>
-                            <div class="info-value"><asp:Literal ID="litLinkedIn" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litLinkedIn" runat="server"></asp:Literal></div>
                         </div>
                         <div class="info-item" style="grid-column: 1 / -1;">
                             <div class="info-label">Professional Bio</div>
-                            <div class="info-value"><asp:Literal ID="litBio" runat="server"></asp:Literal></div>
+                            <div class="info-value">
+                                <asp:Literal ID="litBio" runat="server"></asp:Literal></div>
                         </div>
                     </div>
                 </div>
@@ -552,22 +565,25 @@
             <div id="agendas" class="tab-content">
                 <div class="profile-card">
                     <div class="profile-header">
-                        <h2><i class="fas fa-calendar-check"></i> My Agendas</h2>
+                        <h2><i class="fas fa-calendar-check"></i>My Agendas</h2>
                     </div>
 
                     <!-- Filters -->
                     <div class="agenda-filters">
                         <button type="button" class="filter-btn active" onclick="filterAgendas('all')">
-                            <i class="fas fa-list"></i> All 
-                            <span class="badge"><asp:Literal ID="litAllCount" runat="server"></asp:Literal></span>
+                            <i class="fas fa-list"></i>All 
+                            <span class="badge">
+                                <asp:Literal ID="litAllCount" runat="server"></asp:Literal></span>
                         </button>
                         <button type="button" class="filter-btn" onclick="filterAgendas('approved')">
-                            <i class="fas fa-check-circle"></i> Approved 
-                            <span class="badge"><asp:Literal ID="litApprovedCount" runat="server"></asp:Literal></span>
+                            <i class="fas fa-check-circle"></i>Approved 
+                            <span class="badge">
+                                <asp:Literal ID="litApprovedCount" runat="server"></asp:Literal></span>
                         </button>
                         <button type="button" class="filter-btn" onclick="filterAgendas('rejected')">
-                            <i class="fas fa-times-circle"></i> Rejected 
-                            <span class="badge"><asp:Literal ID="litRejectedCount" runat="server"></asp:Literal></span>
+                            <i class="fas fa-times-circle"></i>Rejected 
+                            <span class="badge">
+                                <asp:Literal ID="litRejectedCount" runat="server"></asp:Literal></span>
                         </button>
                     </div>
 
@@ -582,17 +598,17 @@
         <script>
             function openTab(evt, tabName) {
                 var i, tabcontent, tablinks;
-                
+
                 tabcontent = document.getElementsByClassName("tab-content");
                 for (i = 0; i < tabcontent.length; i++) {
                     tabcontent[i].classList.remove("active");
                 }
-                
+
                 tablinks = document.getElementsByClassName("tab-btn");
                 for (i = 0; i < tablinks.length; i++) {
                     tablinks[i].classList.remove("active");
                 }
-                
+
                 document.getElementById(tabName).classList.add("active");
                 evt.currentTarget.classList.add("active");
             }
@@ -600,15 +616,15 @@
             function filterAgendas(status) {
                 var cards = document.querySelectorAll('.agenda-card');
                 var filterBtns = document.querySelectorAll('.filter-btn');
-                
+
                 // Update active filter button
-                filterBtns.forEach(function(btn) {
+                filterBtns.forEach(function (btn) {
                     btn.classList.remove('active');
                 });
                 event.currentTarget.classList.add('active');
-                
+
                 // Show/hide cards based on filter
-                cards.forEach(function(card) {
+                cards.forEach(function (card) {
                     if (status === 'all') {
                         card.style.display = 'block';
                     } else if (status === 'approved' && card.classList.contains('approved')) {

@@ -1154,6 +1154,8 @@
             function hideSpeakerProfile() {
                 document.getElementById('profileOverlay').classList.remove('show');
             }
+
+
         </script>
     </form>
 </body>

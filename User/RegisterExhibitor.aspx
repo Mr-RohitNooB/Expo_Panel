@@ -526,9 +526,6 @@
             </div>
 
             <div class="form-footer">
-                <a href="Default.aspx" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Back to Home
-                </a>
                 <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary" 
                     OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" />
             </div>

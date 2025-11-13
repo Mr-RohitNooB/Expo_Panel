@@ -440,7 +440,7 @@ namespace Expo_Panel.SuperAdmin
                 Int32.TryParse(hdnExpandedAgendaID.Value, out current);
 
                 if (current == clicked)
-                    hdnExpandedAgendaID.Value = "0";
+                    hdnExpandedAgendaID.Value = "0"; // Collapse
                 else
                     hdnExpandedAgendaID.Value = clicked.ToString();
 

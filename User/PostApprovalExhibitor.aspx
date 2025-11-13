@@ -11,28 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- Light Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
 
-<!-- Dark Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
 
-<!-- Android / PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
-<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
 
-<!-- Theme Colors -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
-<!-- Windows Tile Support -->
-<meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
         * {
@@ -64,17 +64,17 @@
             margin-bottom: 30px;
         }
 
-        .header h1 {
-            color: #dd6b20;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+            .header h1 {
+                color: #dd6b20;
+                font-size: 28px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
 
-        .header p {
-            color: #6b7280;
-            font-size: 16px;
-        }
+            .header p {
+                color: #6b7280;
+                font-size: 16px;
+            }
 
         .form-row {
             display: grid;
@@ -87,41 +87,41 @@
             margin-bottom: 20px;
         }
 
-        .form-group.full-width {
-            grid-column: span 2;
-        }
+            .form-group.full-width {
+                grid-column: span 2;
+            }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #374151;
-            font-weight: 500;
-        }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #374151;
+                font-weight: 500;
+            }
 
-        .form-group input[type="text"],
-        .form-group input[type="number"],
-        .form-group input[type="email"],
-        .form-group input[type="tel"],
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-        }
+            .form-group input[type="text"],
+            .form-group input[type="number"],
+            .form-group input[type="email"],
+            .form-group input[type="tel"],
+            .form-group textarea {
+                width: 100%;
+                padding: 12px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                transition: all 0.3s;
+                font-family: 'Poppins', sans-serif;
+            }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+            .form-group textarea {
+                resize: vertical;
+                min-height: 100px;
+            }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #ed8936;
-        }
+                .form-group input:focus,
+                .form-group textarea:focus {
+                    outline: none;
+                    border-color: #ed8936;
+                }
 
         .checkbox-group {
             display: grid;
@@ -136,27 +136,27 @@
             gap: 10px;
         }
 
-        .checkbox-item input[type="checkbox"] {
-            margin-top: 3px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
+            .checkbox-item input[type="checkbox"] {
+                margin-top: 3px;
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
 
-        .checkbox-item label {
-            margin: 0;
-            cursor: pointer;
-            font-weight: 400;
-            font-size: 14px;
-        }
+            .checkbox-item label {
+                margin: 0;
+                cursor: pointer;
+                font-weight: 400;
+                font-size: 14px;
+            }
 
-        .checkbox-item input[type="text"] {
-            flex: 1;
-            padding: 8px 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 13px;
-        }
+            .checkbox-item input[type="text"] {
+                flex: 1;
+                padding: 8px 12px;
+                border: 2px solid #e2e8f0;
+                border-radius: 6px;
+                font-size: 13px;
+            }
 
         .section-title {
             color: #dd6b20;
@@ -176,13 +176,13 @@
             margin-top: 10px;
         }
 
-        .file-upload input[type="file"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px dashed #e2e8f0;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+            .file-upload input[type="file"] {
+                width: 100%;
+                padding: 12px;
+                border: 2px dashed #e2e8f0;
+                border-radius: 8px;
+                cursor: pointer;
+            }
 
         .btn {
             padding: 12px 24px;
@@ -202,17 +202,17 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background: #ed8936;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(221, 107, 32, 0.4);
-        }
+            .btn-primary:hover {
+                background: #ed8936;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(221, 107, 32, 0.4);
+            }
 
-        .btn-primary:disabled {
-            background: #cbd5e0;
-            cursor: not-allowed;
-            transform: none;
-        }
+            .btn-primary:disabled {
+                background: #cbd5e0;
+                cursor: not-allowed;
+                transform: none;
+            }
 
         .form-footer {
             display: flex;
@@ -230,9 +230,9 @@
             gap: 5px;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
+            .back-link:hover {
+                text-decoration: underline;
+            }
 
         .alert {
             padding: 15px 20px;
@@ -273,9 +273,9 @@
             height: 24px;
         }
 
-        .alert .close-btn:hover {
-            opacity: 1;
-        }
+            .alert .close-btn:hover {
+                opacity: 1;
+            }
 
         .additional-req-group {
             display: flex;
@@ -284,18 +284,18 @@
             margin-bottom: 12px;
         }
 
-        .additional-req-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-        }
+            .additional-req-group input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+            }
 
-        .additional-req-group input[type="number"],
-        .additional-req-group input[type="text"] {
-            flex: 1;
-            padding: 8px 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-        }
+            .additional-req-group input[type="number"],
+            .additional-req-group input[type="text"] {
+                flex: 1;
+                padding: 8px 12px;
+                border: 2px solid #e2e8f0;
+                border-radius: 6px;
+            }
 
         @media (max-width: 768px) {
             .form-row {
@@ -321,46 +321,52 @@
     <form id="form1" runat="server">
         <div class="profile-container">
             <div class="header">
-                <h1><i class="fas fa-id-card"></i> Post Approval Exhibitor Profile</h1>
+                <h1><i class="fas fa-id-card"></i>Post Approval Exhibitor Profile</h1>
                 <p>Complete your exhibitor profile for Lubricant India Expo & Summit 2026</p>
             </div>
 
             <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
 
             <!-- Booth Information -->
-            <div class="section-title"><i class="fas fa-map-marker-alt"></i> Booth Information</div>
+            <div class="section-title"><i class="fas fa-map-marker-alt"></i>Booth Information</div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="<%=txtBoothNo.ClientID%>">Booth No <span class="required">*</span></label>
                     <asp:TextBox ID="txtBoothNo" runat="server" placeholder="Enter booth number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvBoothNo" runat="server" ControlToValidate="txtBoothNo" 
+                    <asp:RequiredFieldValidator ID="rfvBoothNo" runat="server" ControlToValidate="txtBoothNo"
                         ErrorMessage="Booth number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtHallNo.ClientID%>">Hall No <span class="required">*</span></label>
                     <asp:TextBox ID="txtHallNo" runat="server" placeholder="Enter hall number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvHallNo" runat="server" ControlToValidate="txtHallNo" 
+                    <asp:RequiredFieldValidator ID="rfvHallNo" runat="server" ControlToValidate="txtHallNo"
                         ErrorMessage="Hall number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                 </div>
+                
+
             </div>
 
-            <!-- Exhibitor Profile -->
-            <div class="section-title"><i class="fas fa-building"></i> Exhibitor Profile</div>
+            <div class="form-group">
+    <label for="<%=txtExhibitorProfile.ClientID%>">Exhibitor Profile <span class="required">*</span></label>
+    <asp:TextBox ID="txtExhibitorProfile" runat="server" placeholder="Enter exhibitor profile"></asp:TextBox>
+    <asp:RequiredFieldValidator ID="rfvExhibitorProfile" runat="server" ControlToValidate="txtExhibitorProfile"
+        ErrorMessage="Exhibitor Profile is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
+</div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="<%=txtYearOfEstablishment.ClientID%>">Year of Establishment <span class="required">*</span></label>
                     <asp:TextBox ID="txtYearOfEstablishment" runat="server" TextMode="Number" placeholder="e.g., 2000"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvYear" runat="server" ControlToValidate="txtYearOfEstablishment" 
+                    <asp:RequiredFieldValidator ID="rfvYear" runat="server" ControlToValidate="txtYearOfEstablishment"
                         ErrorMessage="Year of establishment is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtWebsite.ClientID%>">Website <span class="required">*</span></label>
                     <asp:TextBox ID="txtWebsite" runat="server" placeholder="https://www.example.com"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvWebsite" runat="server" ControlToValidate="txtWebsite" 
+                    <asp:RequiredFieldValidator ID="rfvWebsite" runat="server" ControlToValidate="txtWebsite"
                         ErrorMessage="Website is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -386,20 +392,20 @@
             </div>
 
             <!-- Customer Support Contact -->
-            <div class="section-title"><i class="fas fa-headset"></i> Customer Support Contact</div>
+            <div class="section-title"><i class="fas fa-headset"></i>Customer Support Contact</div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="<%=txtSupportName.ClientID%>">Contact Person Name <span class="required">*</span></label>
                     <asp:TextBox ID="txtSupportName" runat="server" placeholder="Enter contact person name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvSupportName" runat="server" ControlToValidate="txtSupportName" 
+                    <asp:RequiredFieldValidator ID="rfvSupportName" runat="server" ControlToValidate="txtSupportName"
                         ErrorMessage="Contact person name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtSupportContact.ClientID%>">Contact Number <span class="required">*</span></label>
                     <asp:TextBox ID="txtSupportContact" runat="server" placeholder="Enter contact number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvSupportContact" runat="server" ControlToValidate="txtSupportContact" 
+                    <asp:RequiredFieldValidator ID="rfvSupportContact" runat="server" ControlToValidate="txtSupportContact"
                         ErrorMessage="Contact number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -407,12 +413,12 @@
             <div class="form-group">
                 <label for="<%=txtSupportEmail.ClientID%>">Email <span class="required">*</span></label>
                 <asp:TextBox ID="txtSupportEmail" runat="server" TextMode="Email" placeholder="Enter support email"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="rfvSupportEmail" runat="server" ControlToValidate="txtSupportEmail" 
+                <asp:RequiredFieldValidator ID="rfvSupportEmail" runat="server" ControlToValidate="txtSupportEmail"
                     ErrorMessage="Support email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
             </div>
 
             <!-- Nature of Business -->
-            <div class="section-title"><i class="fas fa-briefcase"></i> Nature of Business</div>
+            <div class="section-title"><i class="fas fa-briefcase"></i>Nature of Business</div>
 
             <div class="form-group">
                 <label>Select all that apply <span class="required">*</span></label>
@@ -458,7 +464,7 @@
             </div>
 
             <!-- Company Category / Primary Products -->
-            <div class="section-title"><i class="fas fa-tags"></i> Company Category / Primary Products</div>
+            <div class="section-title"><i class="fas fa-tags"></i>Company Category / Primary Products</div>
 
             <div class="form-group">
                 <label>Select all that apply <span class="required">*</span></label>
@@ -520,7 +526,7 @@
             </div>
 
             <!-- Markets You Cater To -->
-            <div class="section-title"><i class="fas fa-globe"></i> Markets You Cater To</div>
+            <div class="section-title"><i class="fas fa-globe"></i>Markets You Cater To</div>
 
             <div class="form-group">
                 <label>Select all that apply <span class="required">*</span></label>
@@ -574,7 +580,7 @@
             </div>
 
             <!-- Geographic Reach -->
-            <div class="section-title"><i class="fas fa-map"></i> Geographic Reach</div>
+            <div class="section-title"><i class="fas fa-map"></i>Geographic Reach</div>
 
             <div class="form-group">
                 <label>Select all that apply <span class="required">*</span></label>
@@ -611,7 +617,7 @@
             </div>
 
             <!-- Additional Requirements -->
-            <div class="section-title"><i class="fas fa-cogs"></i> Additional Requirements</div>
+            <div class="section-title"><i class="fas fa-cogs"></i>Additional Requirements</div>
 
             <div class="form-group">
                 <div class="additional-req-group">
@@ -648,7 +654,7 @@
             </div>
 
             <!-- Participation Objectives -->
-            <div class="section-title"><i class="fas fa-bullseye"></i> Participation Objectives</div>
+            <div class="section-title"><i class="fas fa-bullseye"></i>Participation Objectives</div>
 
             <div class="form-group">
                 <label>You may select multiple <span class="required">*</span></label>
@@ -694,26 +700,26 @@
             </div>
 
             <!-- Additional Notes -->
-            <div class="section-title"><i class="fas fa-comment-alt"></i> Additional Notes / Comments</div>
+            <div class="section-title"><i class="fas fa-comment-alt"></i>Additional Notes / Comments</div>
 
             <div class="form-group">
                 <label for="<%=txtAdditionalNotes.ClientID%>">Any special requirements or comments</label>
-                <asp:TextBox ID="txtAdditionalNotes" runat="server" TextMode="MultiLine" 
-                    placeholder="Enter any additional information, special requirements, or comments here..." 
+                <asp:TextBox ID="txtAdditionalNotes" runat="server" TextMode="MultiLine"
+                    placeholder="Enter any additional information, special requirements, or comments here..."
                     Rows="5"></asp:TextBox>
             </div>
 
             <!-- File Uploads -->
-            <div class="section-title"><i class="fas fa-upload"></i> Upload Documents</div>
+            <div class="section-title"><i class="fas fa-upload"></i>Upload Documents</div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="<%=fuProductPicture.ClientID%>">Product Picture <span class="required">*</span></label>
                     <div class="file-upload">
                         <asp:FileUpload ID="fuProductPicture" runat="server" />
-                        <asp:RequiredFieldValidator ID="rfvProductPicture" runat="server" 
-                            ControlToValidate="fuProductPicture" 
-                            ErrorMessage="Product picture is required" 
+                        <asp:RequiredFieldValidator ID="rfvProductPicture" runat="server"
+                            ControlToValidate="fuProductPicture"
+                            ErrorMessage="Product picture is required"
                             ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                     </div>
                     <small style="color: #6b7280; font-size: 13px;">Accepted: All image formats</small>
@@ -723,9 +729,9 @@
                     <label for="<%=fuBrochure.ClientID%>">Company Brochure <span class="required">*</span></label>
                     <div class="file-upload">
                         <asp:FileUpload ID="fuBrochure" runat="server" />
-                        <asp:RequiredFieldValidator ID="rfvBrochure" runat="server" 
-                            ControlToValidate="fuBrochure" 
-                            ErrorMessage="Brochure is required" 
+                        <asp:RequiredFieldValidator ID="rfvBrochure" runat="server"
+                            ControlToValidate="fuBrochure"
+                            ErrorMessage="Brochure is required"
                             ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                     </div>
                     <small style="color: #6b7280; font-size: 13px;">Accepted: All document formats (PDF, DOC, DOCX, etc.)</small>
@@ -735,10 +741,10 @@
             <!-- Form Footer -->
             <div class="form-footer">
                 <a href="Dashboard.aspx" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    <i class="fas fa-arrow-left"></i>Back to Dashboard
                 </a>
-                <asp:Button ID="btnSubmit" runat="server" Text="Submit Profile" 
-                    CssClass="btn btn-primary" OnClick="btnSubmit_Click" 
+                <asp:Button ID="btnSubmit" runat="server" Text="Submit Profile"
+                    CssClass="btn btn-primary" OnClick="btnSubmit_Click"
                     ValidationGroup="ProfileValidation" />
             </div>
 
@@ -747,10 +753,10 @@
 
     <script>
         // Show filename after selection
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const fileInputs = document.querySelectorAll('input[type="file"]');
             fileInputs.forEach(input => {
-                input.addEventListener('change', function() {
+                input.addEventListener('change', function () {
                     if (this.files.length > 0) {
                         const fileName = this.files[0].name;
                         const small = this.parentElement.parentElement.querySelector('small');
@@ -764,15 +770,15 @@
             // Enable/disable Power Supply Kwh input based on checkbox
             const chkPowerSupply = document.getElementById('<%=chkPowerSupply.ClientID%>');
             const txtPowerSupplyKwh = document.getElementById('<%=txtPowerSupplyKwh.ClientID%>');
-            
+
             if (chkPowerSupply && txtPowerSupplyKwh) {
-                chkPowerSupply.addEventListener('change', function() {
+                chkPowerSupply.addEventListener('change', function () {
                     txtPowerSupplyKwh.disabled = !this.checked;
                     if (!this.checked) {
                         txtPowerSupplyKwh.value = '';
                     }
                 });
-                
+
                 // Initialize on page load
                 txtPowerSupplyKwh.disabled = !chkPowerSupply.checked;
             }

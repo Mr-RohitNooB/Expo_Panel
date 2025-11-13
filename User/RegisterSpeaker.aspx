@@ -557,101 +557,108 @@
         }
 
         /* Current File Display Styles */
-.current-file-display {
-    background: #f0fdf4;
-    border: 2px solid #86efac;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
+        .current-file-display {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
 
-.current-file-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+        .current-file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-.current-photo-thumb,
-.current-logo-thumb {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid #38a169;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+        .current-photo-thumb,
+        .current-logo-thumb {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #38a169;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.current-logo-thumb {
-    object-fit: contain;
-    background: white;
-    padding: 10px;
-}
+        .current-logo-thumb {
+            object-fit: contain;
+            background: white;
+            padding: 10px;
+        }
 
-.current-file-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        .current-file-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-.current-file-label {
-    color: #166534;
-    font-weight: 600;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+        .current-file-label {
+            color: #166534;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.current-file-label i {
-    color: #22c55e;
-    font-size: 16px;
-}
+            .current-file-label i {
+                color: #22c55e;
+                font-size: 16px;
+            }
 
-.btn-remove-file {
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    align-self: flex-start;
-}
+        .btn-remove-file {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            align-self: flex-start;
+        }
 
-.btn-remove-file:hover {
-    background: #dc2626;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-}
+            .btn-remove-file:hover {
+                background: #dc2626;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            }
 
-.btn-remove-file::before {
-    content: '\f1f8';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-}
+            .btn-remove-file::before {
+                content: '\f1f8';
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+            }
 
-@media (max-width: 768px) {
-    .current-file-info {
-        flex-direction: column;
-        text-align: center;
-    }
+        @media (max-width: 768px) {
+            .current-file-info {
+                flex-direction: column;
+                text-align: center;
+            }
 
-    .current-file-details {
-        align-items: center;
-    }
-}
+            .current-file-details {
+                align-items: center;
+            }
+        }
 
-.alert-info {
-    background: #dbeafe;
-    color: #1e40af;
-    border: 1px solid #93c5fd;
-}
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        /* RegisterSpeaker.aspx (inside <style> tag) */
+
+        .bg-light-gray {
+            background-color: #f8fafc !important; /* Use a light gray background */
+            cursor: default !important;
+        }
     </style>
 </head>
 <body>
@@ -961,7 +968,7 @@
             </div>
 
             <div class="form-footer">
-               <%-- <a href="Default.aspx" class="back-link">
+                <%-- <a href="Default.aspx" class="back-link">
                     <i class="fas fa-arrow-left"></i>Back to Home
                 </a>--%>
                 <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary"
@@ -998,7 +1005,7 @@
                     var maxSize = displayId.includes('logo') ? 5 : 2; // 5MB for logo, 2MB for photo
                     var fileTypeName = displayId.includes('logo') ? 'Logo' : 'Photo';
 
-                   
+
 
                     // Validate file type
                     var fileType = file.type;
@@ -1258,18 +1265,20 @@
                     }
                 });
 
-                // Add notice message
-                var agendaSection = document.getElementById('agendaSection');
-                if (agendaSection && !document.getElementById('agendaModifiedNotice')) {
+                // Add notice message - use the correct parent element
+                var agendaTableWrapper = document.querySelector('.agenda-table-wrapper');
+                if (agendaTableWrapper && !document.getElementById('agendaModifiedNotice')) {
                     var notice = document.createElement('div');
                     notice.id = 'agendaModifiedNotice';
                     notice.className = 'alert alert-info';
                     notice.style.marginBottom = '15px';
-                    notice.innerHTML = '<i class="fas fa-info-circle"></i> You have already modified your agenda selection. No further changes are allowed.';
+                    notice.innerHTML = '<i class="fas fa-info-circle"></i> You have already selected your agenda topics. No further changes are allowed. Please contact the organizer for any modifications.';
 
-                    agendaSection.insertBefore(notice, agendaSection.firstChild);
+                    agendaTableWrapper.parentElement.insertBefore(notice, agendaTableWrapper);
                 }
             }
+
+
             document.addEventListener('DOMContentLoaded', function () {
                 var agendaCheckboxes = document.querySelectorAll('.agenda-checkbox');
                 var hiddenField = document.getElementById('<%= hdnSelectedAgendas.ClientID %>');
