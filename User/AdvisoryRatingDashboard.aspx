@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Advisory Rating Dashboard - Expo Panel</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -603,79 +604,51 @@
                         color: #64748b;
                     }
         }
-        /* Color-coded agenda items */
-        .agenda-item:nth-child(2) {
+
+
+        /* === INFINITE COLOR LOOP (Repeats every 8 items) === */
+
+        /* Color 1 (Blue) - Applies to Agenda 1, 9, 17, 25... */
+        /* Formula 8n+2: Start at row 2 (header is row 1), repeat every 8 */
+        .agenda-item:nth-child(8n+2) {
             border-left: 4px solid #3b82f6;
         }
 
-        .agenda-item:nth-child(3) {
+        /* Color 2 (Green) - Applies to Agenda 2, 10, 18, 26... */
+        .agenda-item:nth-child(8n+3) {
             border-left: 4px solid #10b981;
         }
 
-        .agenda-item:nth-child(4) {
+        /* Color 3 (Orange) */
+        .agenda-item:nth-child(8n+4) {
             border-left: 4px solid #f59e0b;
         }
 
-        .agenda-item:nth-child(5) {
+        /* Color 4 (Purple) */
+        .agenda-item:nth-child(8n+5) {
             border-left: 4px solid #8b5cf6;
         }
 
-        .agenda-item:nth-child(6) {
+        /* Color 5 (Pink) */
+        .agenda-item:nth-child(8n+6) {
             border-left: 4px solid #ec4899;
         }
 
-        .agenda-item:nth-child(7) {
+        /* Color 6 (Teal) */
+        .agenda-item:nth-child(8n+7) {
             border-left: 4px solid #14b8a6;
         }
 
-        .agenda-item:nth-child(8) {
+        /* Color 7 (Dark Orange) */
+        .agenda-item:nth-child(8n+8) {
             border-left: 4px solid #f97316;
         }
 
-        .agenda-item:nth-child(9) {
+        /* Color 8 (Indigo) - Applies to Agenda 8, 16, 24... */
+        .agenda-item:nth-child(8n+9) {
             border-left: 4px solid #6366f1;
         }
 
-        /* Color-coded speaker cards */
-        .speaker-card:nth-child(1) {
-            border-left: 4px solid #3b82f6;
-        }
-
-        .speaker-card:nth-child(2) {
-            border-left: 4px solid #10b981;
-        }
-
-        .speaker-card:nth-child(3) {
-            border-left: 4px solid #f59e0b;
-        }
-
-        .speaker-card:nth-child(4) {
-            border-left: 4px solid #8b5cf6;
-        }
-
-        .speaker-card:nth-child(5) {
-            border-left: 4px solid #ec4899;
-        }
-
-        .speaker-card:nth-child(6) {
-            border-left: 4px solid #14b8a6;
-        }
-
-        .speaker-card:nth-child(7) {
-            border-left: 4px solid #f97316;
-        }
-
-        .speaker-card:nth-child(8) {
-            border-left: 4px solid #6366f1;
-        }
-
-        .speaker-card:nth-child(9) {
-            border-left: 4px solid #ef4444;
-        }
-
-        .speaker-card:nth-child(10) {
-            border-left: 4px solid #06b6d4;
-        }
         /* ... Your existing CSS ... */
         .btn-info:hover {
             background: #0284c7;
@@ -858,7 +831,7 @@
                                 <div>Time</div>
                                 <div>Speakers</div>
                                 <div>Progress</div>
-                                <div>Status</div>   
+                                <div>Status</div>
                             </div>
 
                             <!-- REMOVED: The old <asp:Literal ID="litAgendaItems" ... /> is GONE. -->
@@ -870,7 +843,7 @@
                                 OnItemCommand="rptAgendas_ItemCommand"
                                 OnItemDataBound="rptAgendas_ItemDataBound">
                                 <ItemTemplate>
-                                    <div class="agenda-item">
+                                    <div id="agenda_<%# Eval("AgendaID") %>" class="agenda-item">
 
                                         <asp:LinkButton ID="lnkAgendaRow" runat="server"
                                             CommandName="Toggle"

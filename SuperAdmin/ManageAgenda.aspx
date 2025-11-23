@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAgenda.aspx.cs" Inherits="Expo_Panel.Admin.AgendaDashboard" %>
+﻿﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAgenda.aspx.cs" Inherits="Expo_Panel.Admin.AgendaDashboard" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,28 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- Light Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
 
-<!-- Dark Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
 
-<!-- Android / PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
-<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
 
-<!-- Theme Colors -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
-<!-- Windows Tile Support -->
-<meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
         * {
@@ -64,11 +64,11 @@
             align-items: center;
         }
 
-        .header h1 {
-            color: #3b82f6;
-            font-size: 28px;
-            font-weight: 600;
-        }
+            .header h1 {
+                color: #3b82f6;
+                font-size: 28px;
+                font-weight: 600;
+            }
 
         .dashboard-card {
             background: rgba(255, 255, 255, 0.95);
@@ -102,10 +102,10 @@
             flex: 1;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
+            .form-control:focus {
+                outline: none;
+                border-color: #3b82f6;
+            }
 
         .btn {
             padding: 10px 20px;
@@ -125,11 +125,11 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-        }
+            .btn-primary:hover {
+                background: #2563eb;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            }
 
         .btn-success {
             background: #10b981;
@@ -138,9 +138,9 @@
             font-size: 13px;
         }
 
-        .btn-success:hover {
-            background: #059669;
-        }
+            .btn-success:hover {
+                background: #059669;
+            }
 
         .btn-edit {
             background: #3b82f6;
@@ -149,9 +149,9 @@
             font-size: 13px;
         }
 
-        .btn-edit:hover {
-            background: #2563eb;
-        }
+            .btn-edit:hover {
+                background: #2563eb;
+            }
 
         .btn-danger {
             background: #ef4444;
@@ -160,20 +160,20 @@
             font-size: 14px;
         }
 
-        .btn-danger:hover {
-            background: #dc2626;
-        }
+            .btn-danger:hover {
+                background: #dc2626;
+            }
 
         .btn-info {
             background: #0ea5e9;
             color: white;
         }
 
-        .btn-info:hover {
-            background: #0284c7;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
-        }
+            .btn-info:hover {
+                background: #0284c7;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+            }
 
         .btn-warning {
             background: #f59e0b;
@@ -182,9 +182,9 @@
             font-size: 13px;
         }
 
-        .btn-warning:hover {
-            background: #d97706;
-        }
+            .btn-warning:hover {
+                background: #d97706;
+            }
 
         .grid-container {
             overflow-x: auto;
@@ -196,40 +196,40 @@
             font-size: 13px;
         }
 
-        table thead {
-            background: #f8fafc;
-        }
+            table thead {
+                background: #f8fafc;
+            }
 
-        table th {
-            padding: 15px 8px;
-            text-align: left;
-            font-weight: 600;
-            color: #475569;
-            border-bottom: 2px solid #e2e8f0;
-            white-space: nowrap;
-            font-size: 13px;
-        }
+            table th {
+                padding: 15px 8px;
+                text-align: left;
+                font-weight: 600;
+                color: #475569;
+                border-bottom: 2px solid #e2e8f0;
+                white-space: nowrap;
+                font-size: 13px;
+            }
 
-        table th:first-child {
-            width: 60px;
-            text-align: center;
-        }
+                table th:first-child {
+                    width: 60px;
+                    text-align: center;
+                }
 
-        table td {
-            padding: 15px 8px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #334155;
-        }
+            table td {
+                padding: 15px 8px;
+                border-bottom: 1px solid #e2e8f0;
+                color: #334155;
+            }
 
-        table td:first-child {
-            text-align: center;
-            font-weight: 600;
-            color: #3b82f6;
-        }
+                table td:first-child {
+                    text-align: center;
+                    font-weight: 600;
+                    color: #3b82f6;
+                }
 
-        table tbody tr:hover {
-            background: #f8fafc;
-        }
+            table tbody tr:hover {
+                background: #f8fafc;
+            }
 
         .toggle-switch {
             position: relative;
@@ -238,11 +238,11 @@
             height: 30px;
         }
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
 
         .toggle-slider {
             position: absolute;
@@ -260,26 +260,26 @@
             padding: 0 8px;
         }
 
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
+            .toggle-slider:before {
+                position: absolute;
+                content: "";
+                height: 22px;
+                width: 22px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
 
         .toggle-switch input:checked + .toggle-slider {
             background-color: #10b981;
         }
 
-        .toggle-switch input:checked + .toggle-slider:before {
-            transform: translateX(30px);
-        }
+            .toggle-switch input:checked + .toggle-slider:before {
+                transform: translateX(30px);
+            }
 
         .toggle-icon {
             font-size: 12px;
@@ -292,10 +292,10 @@
             gap: 8px;
         }
 
-        .action-buttons .btn {
-            padding: 6px 10px;
-            font-size: 12px;
-        }
+            .action-buttons .btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
 
         .alert {
             padding: 15px 20px;
@@ -336,11 +336,11 @@
             backdrop-filter: blur(4px);
         }
 
-        .modal.show {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+            .modal.show {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
         .modal-content {
             background: white;
@@ -359,6 +359,7 @@
                 opacity: 0;
                 transform: translateY(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -372,10 +373,10 @@
             margin-bottom: 25px;
         }
 
-        .modal-header h2 {
-            color: #3b82f6;
-            font-size: 22px;
-        }
+            .modal-header h2 {
+                color: #3b82f6;
+                font-size: 22px;
+            }
 
         .close-btn {
             background: none;
@@ -391,9 +392,9 @@
             justify-content: center;
         }
 
-        .close-btn:hover {
-            color: #ef4444;
-        }
+            .close-btn:hover {
+                color: #ef4444;
+            }
 
         .form-row {
             display: grid;
@@ -406,30 +407,30 @@
             margin-bottom: 20px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #475569;
-            font-weight: 500;
-        }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #475569;
+                font-weight: 500;
+            }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Poppins', sans-serif;
-        }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 10px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                font-family: 'Poppins', sans-serif;
+            }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
+                .form-group input:focus,
+                .form-group select:focus,
+                .form-group textarea:focus {
+                    outline: none;
+                    border-color: #3b82f6;
+                }
 
         .modal-footer {
             display: flex;
@@ -443,9 +444,9 @@
             color: #475569;
         }
 
-        .btn-cancel:hover {
-            background: #cbd5e1;
-        }
+            .btn-cancel:hover {
+                background: #cbd5e1;
+            }
 
         .no-records {
             text-align: center;
@@ -481,16 +482,16 @@
             position: relative;
         }
 
-        .btn-filter:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-        }
+            .btn-filter:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+            }
 
-        .btn-filter.active {
-            background: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
-        }
+            .btn-filter.active {
+                background: #3b82f6;
+                color: white;
+                border-color: #3b82f6;
+            }
 
         .badge-status {
             padding: 4px 10px;
@@ -540,6 +541,14 @@
             cursor: help;
         }
 
+
+        .wrap-cell {
+            max-width: 250px; /* You can adjust this width */
+            white-space: normal;
+            word-wrap: break-word; /* For older browsers */
+            overflow-wrap: break-word; /* For newer browsers */
+        }
+
         #remarksRequired {
             display: none;
         }
@@ -557,7 +566,7 @@
 
         <div class="container">
             <div class="header">
-                <h1><i class="fas fa-calendar-alt"></i> Manage Agenda</h1>
+                <h1><i class="fas fa-calendar-alt"></i>Manage Agenda</h1>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
                         <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label>
@@ -586,16 +595,16 @@
                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by day, track, title..."></asp:TextBox>
                         <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
                     </div>
-                   <div style="display: flex; gap: 10px;">
-                    <a href="/RegisterAgenda.aspx" class="btn btn-info" target="_blank">
-                        <i class="fas fa-link"></i>Get Registration Link
-                    </a>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="/RegisterAgenda.aspx" class="btn btn-info" target="_blank">
+                            <i class="fas fa-link"></i>Get Registration Link
+                        </a>
 
-                    <button type="button" class="btn btn-success" onclick="openModal('add')">
-                        <i class="fas fa-plus"></i>Add Agenda
-                    </button>
+                        <button type="button" class="btn btn-success" onclick="openModal('add')">
+                            <i class="fas fa-plus"></i>Add Agenda
+                        </button>
+                    </div>
                 </div>
-                                </div>
 
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                     <ContentTemplate>
@@ -632,7 +641,7 @@
 
                                     <asp:TemplateField HeaderText="Title">
                                         <ItemTemplate>
-                                            <span class="truncate-cell" title='<%# Eval("Title") %>'>
+                                            <span class="wrap-cell" title='<%# Eval("Title") %>'>
                                                 <%# Eval("Title") %>
                                             </span>
                                         </ItemTemplate>
@@ -640,7 +649,7 @@
 
                                     <asp:TemplateField HeaderText="Brief">
                                         <ItemTemplate>
-                                            <span class="truncate-cell" title='<%# Eval("Brief") %>'>
+                                            <span class="wrap-cell" title='<%# Eval("Brief") %>'>
                                                 <%# Eval("Brief") %>
                                             </span>
                                         </ItemTemplate>
@@ -728,7 +737,7 @@
                             <asp:ListItem Text="Day 3" Value="Day 3"></asp:ListItem>
                         </asp:DropDownList>
                         <asp:RequiredFieldValidator ID="rfvDay" runat="server" ControlToValidate="ddlDay"
-                            ErrorMessage="Day is required" ForeColor="Red" Display="Dynamic" 
+                            ErrorMessage="Day is required" ForeColor="Red" Display="Dynamic"
                             ValidationGroup="AgendaValidation" InitialValue=""></asp:RequiredFieldValidator>
                     </div>
 
@@ -740,7 +749,7 @@
                             <asp:ListItem Text="Stream B" Value="Stream B"></asp:ListItem>
                         </asp:DropDownList>
                         <asp:RequiredFieldValidator ID="rfvStream" runat="server" ControlToValidate="ddlStream"
-                            ErrorMessage="Stream is required" ForeColor="Red" Display="Dynamic" 
+                            ErrorMessage="Stream is required" ForeColor="Red" Display="Dynamic"
                             ValidationGroup="AgendaValidation" InitialValue=""></asp:RequiredFieldValidator>
                     </div>
                 </div>
@@ -910,7 +919,7 @@
                     // We set the .value of the dropdowns. 
                     // 'track' is the variable name from C# holding the value (e.g., "Stream A")
                     ddlDay.value = day || '';
-                    ddlStream.value = track || ''; 
+                    ddlStream.value = track || '';
 
                     document.getElementById('<%=txtTime.ClientID%>').value = time || '';
                     document.getElementById('<%=txtTitle.ClientID%>').value = title || '';

@@ -4,313 +4,724 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Speaker Login - Expo Panel</title>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <meta name="description" content="Login to the Expo Panel as a Speaker" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Favicons from Blueprint -->
+    <!-- Light Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+        /* ============================================
+           Blueprint Stylesheet (Themed for Speaker Login - GREEN)
+           ============================================ */
 
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        min-height: 100vh;
-        padding: 40px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .login-container {
-        width: 500px;
-        margin: 0 auto;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 15px;
-        padding: 40px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+            /* THEME: Fallback solid color */
+            background: #38a169;
+        }
 
-    .logo-section {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .logo-section i {
-        font-size: 60px;
-        color: #38a169;
-        margin-bottom: 15px;
-    }
-
-    .logo-section h2 {
-        color: #38a169;
-        font-weight: 600;
-        margin-bottom: 8px;
-        font-size: 32px;
-    }
-
-    .logo-section p {
-        color: #64748b;
-        font-size: 16px;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: #475569;
-        font-weight: 500;
-        font-size: 14px;
-    }
-
-    .form-group label .required {
-        color: #ef4444;
-    }
-
-    .input-wrapper {
-        position: relative;
-    }
-
-    .input-wrapper i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        font-size: 16px;
-        z-index: 1;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 12px 15px 12px 45px;
-        border: 2px solid #e2e8f0;
-        border-radius: 8px;
-        font-size: 14px;
-        font-family: 'Poppins', sans-serif;
-        transition: all 0.3s ease;
-    }
-
-    .form-control:focus {
-        outline: none;
-        border-color: #48bb78;
-        box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
-    }
-
-    .text-danger {
-        color: #ef4444;
-        font-size: 13px;
-        margin-top: 5px;
-        display: block;
-    }
-
-    .btn-login {
-        width: 100%;
-        padding: 14px;
-        background: #38a169;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 10px;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .btn-login:hover {
-        background: #2f855a;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(56, 161, 105, 0.4);
-    }
-
-    .btn-login:active {
-        transform: translateY(0);
-    }
-
-    .divider {
-        text-align: center;
-        margin: 25px 0;
-        position: relative;
-    }
-
-    .divider::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        width: 100%;
-        height: 1px;
-        background: #e2e8f0;
-    }
-
-    .divider span {
-        background: white;
-        padding: 0 15px;
-        color: #94a3b8;
-        position: relative;
-        font-size: 14px;
-        font-weight: 500;
-    }
-
-    .register-link {
-        text-align: center;
-        margin-top: 20px;
-        color: #64748b;
-        font-size: 14px;
-    }
-
-    .register-link p {
-        margin: 0;
-    }
-
-    .register-link a {
-        color: #38a169;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s;
-    }
-
-    .register-link a:hover {
-        color: #2f855a;
-        text-decoration: underline;
-    }
-
-    .alert {
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .alert i {
-        font-size: 18px;
-    }
-
-    .alert-danger {
-        background: #fee2e2;
-        color: #991b1b;
-        border: 1px solid #fecaca;
-    }
-
-    .alert-success {
-        background: #d1fae5;
-        color: #065f46;
-        border: 1px solid #a7f3d0;
-    }
-
-    .alert-info {
-        background: #dbeafe;
-        color: #1e40af;
-        border: 1px solid #93c5fd;
-    }
-
-    @media (max-width: 768px) {
         body {
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* THEME: Green Gradient */
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
         }
 
+        .login-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 25px;
+}
+
+        /* Login Container */
         .login-container {
-            padding: 30px 25px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            width: 100%;
+            max-width: 480px;
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
         }
 
-        .logo-section h2 {
-            font-size: 28px;
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .logo-section i {
-            font-size: 50px;
+        /* Header Styles */
+        .login-header {
+            /* THEME: Green Gradient */
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            padding: 50px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
         }
 
-        .logo-section p {
+            .login-header::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -10%;
+                width: 300px;
+                height: 300px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                animation: float 6s ease-in-out infinite;
+            }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        .header-brand h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px; /* Changed from -50px */
+        }
+
+        /* Update header-brand p - CHANGE margin */
+        .header-brand p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            margin: 8px 0; /* Changed from 4px 0 */
+        }
+
+        /* Update tagline - CHANGE margin */
+        .header-brand .tagline {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            margin-top: 5px;
+            margin-bottom: -30px;
+        }
+
+        .header-brand img {
+            max-width: 313px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            object-fit: contain;
+            margin-top: -50px;
+            margin-bottom: -41px;
+        }
+
+
+        /* Body Styles */
+        .login-body {
+            padding: 45px 30px;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2d3748;
             font-size: 14px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .login-container {
-            padding: 25px 20px;
-        }
-
-        .logo-section h2 {
-            font-size: 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .logo-section i {
-            font-size: 45px;
+        .label-icon {
+            font-size: 16px;
         }
-    }
-</style>
+
+        /* Form Controls */
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f7fafc;
+            color: #2d3748;
+        }
+
+            .form-control:focus {
+                outline: none;
+                /* THEME: Green border and shadow */
+                border-color: #48bb78;
+                background: white;
+                box-shadow: 0 0 0 4px rgba(72, 187, 120, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .form-control::placeholder {
+                color: #a0aec0;
+            }
+
+        /* Password Container */
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            border-radius: 6px;
+        }
+            /* THEME: Green hover */
+            .toggle-password-btn:hover {
+                background: rgba(72, 187, 120, 0.1);
+            }
+
+            .toggle-password-btn:active {
+                transform: translateY(-50%) scale(0.95);
+            }
+
+        /* Login Button */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            /* THEME: Green Gradient */
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            /* THEME: Green shadow */
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-login::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.2);
+                transition: left 0.3s ease;
+            }
+
+            .btn-login:hover {
+                transform: translateY(-3px);
+                /* THEME: Green shadow */
+                box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+            }
+
+                .btn-login:hover::before {
+                    left: 100%;
+                }
+
+            .btn-login:active {
+                transform: translateY(-1px);
+            }
+
+        /* Alert Styles */
+        .alert {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-error {
+            background: #fff5f5;
+            color: #c53030;
+            border-left: 4px solid #fc8181;
+        }
+
+        /* Added for compatibility with old litMessage */
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #c53030;
+            font-size: 13px;
+            margin-top: 6px;
+            font-weight: 500;
+            display: block;
+        }
+
+        /* Footer Styles */
+        .login-footer {
+            background: #f7fafc;
+            padding: 25px 30px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+            .login-footer p {
+                color: #718096;
+                font-size: 12px;
+                line-height: 1.6;
+                margin: 4px 0;
+            }
+
+                /* THEME: Style for register link */
+                .login-footer p a {
+                    color: #38a169;
+                    font-weight: 600;
+                    text-decoration: none;
+                }
+
+                    .login-footer p a:hover {
+                        text-decoration: underline;
+                        color: #2f855a;
+                    }
+
+        .footer-text {
+            color: #a0aec0;
+            font-style: italic;
+            font-size: 11px;
+        }
+
+        /* Decorative Elements */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .decoration-top {
+            width: 300px;
+            height: 300px;
+            background: white;
+            top: -100px;
+            left: -80px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .decoration-bottom {
+            width: 250px;
+            height: 250px;
+            background: white;
+            bottom: -80px;
+            right: -60px;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        /* ============================================
+   Responsive Design
+   ============================================ */
+
+        /* Tablets (768px and below) */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .login-container {
+                border-radius: 16px;
+                max-width: 100%;
+            }
+
+            .login-header {
+                padding: 30px 20px;
+            }
+
+            .header-brand h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            .header-brand p {
+                font-size: 13px;
+                margin: 6px 0;
+            }
+
+            .header-brand .tagline {
+                font-size: 11px;
+                margin-top: 6px;
+            }
+
+            .login-body {
+                padding: 30px 20px;
+            }
+
+            .login-footer {
+                padding: 20px;
+            }
+        }
+
+        /* Mobile (480px and below) */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            .login-container {
+                border-radius: 12px;
+                max-width: 100%;
+                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            }
+
+            .login-header {
+                padding: 20px 16px;
+            }
+
+            .header-brand h1 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+
+            .header-brand img {
+                max-width: 250px;
+                width: 100%;
+                height: auto;
+                display: block;
+                margin: 15px auto;
+                object-fit: contain;
+            }
+
+            .header-brand p {
+                font-size: 12px;
+                margin: 4px 0;
+            }
+
+            .header-brand .tagline {
+                font-size: 10px;
+                margin-top: 5px;
+            }
+
+            .login-body {
+                padding: 20px 16px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-label {
+                font-size: 12px;
+            }
+
+            .form-control {
+                padding: 11px 12px;
+                font-size: 14px;
+            }
+
+            .btn-login {
+                padding: 11px;
+                font-size: 14px;
+            }
+
+            .login-footer {
+                padding: 16px;
+            }
+
+                .login-footer p {
+                    font-size: 10px;
+                }
+
+            .decoration {
+                display: none;
+            }
+
+            .alert {
+                padding: 12px;
+                font-size: 12px;
+            }
+        }
+
+        /* Small Mobile (360px and below) */
+        @media (max-width: 360px) {
+            .login-header {
+                padding: 18px 12px;
+            }
+
+            .header-brand h1 {
+                font-size: 18px;
+                margin-bottom: 6px;
+            }
+
+            .header-brand img {
+                max-width: 60%;
+                max-height: 40px;
+                margin: 6px auto;
+            }
+
+            .header-brand p {
+                font-size: 11px;
+                margin: 3px 0;
+            }
+
+            .header-brand .tagline {
+                font-size: 9px;
+                margin-top: 4px;
+            }
+
+            .login-body {
+                padding: 18px 12px;
+            }
+
+            .login-footer {
+                padding: 14px 12px;
+            }
+
+            .form-control {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .form-label {
+                font-size: 11px;
+            }
+
+            .btn-login {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .login-wrapper,
+            .login-container {
+                box-shadow: none;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <form id="form1" runat="server">
-        <div class="login-container">
-            <!-- Logo Section -->
-            <div class="logo-section">
-                <i class="fas fa-user-tie"></i>
-                <h2>Speaker Login</h2>
-                <p>Access your speaker profile</p>
-            </div>
-
-            <!-- Alert Message -->
-            <asp:Literal ID="litMessage" runat="server" />
-
-            <!-- Email Field -->
-            <div class="form-group">
-                <label for="txtEmail">Email Address <span class="required">*</span></label>
-                <div class="input-wrapper">
-                    <i class="fas fa-envelope"></i>
-                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control"
-                        placeholder="Enter your registered email" TextMode="Email" />
+        <div class="login-wrapper">
+            <div class="login-container">
+                <!-- Header Section -->
+                <div class="login-header">
+                    <div class="header-brand">
+                        <h1>Speaker Login Panel</h1>
+                        <img src="../Images/Expo_logo_Full.png" />
+                        <p class="tagline">Access your speaker profile</p>
+                    </div>
                 </div>
-                <asp:RequiredFieldValidator ID="rfvEmail" runat="server"
-                    ControlToValidate="txtEmail"
-                    ErrorMessage="Email is required"
-                    Display="Dynamic"
-                    CssClass="text-danger"
-                    Style="font-size: 13px; margin-top: 5px; display: block;" />
-            </div>
 
-            <!-- Password Field -->
-            <div class="form-group">
-                <label for="txtPassword">Password <span class="required">*</span></label>
-                <div class="input-wrapper">
-                    <i class="fas fa-lock"></i>
-                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control"
-                        placeholder="Enter your password" TextMode="Password" />
+                <!-- Body Section -->
+                <div class="login-body">
+                    <!-- Error Alert -->
+                    <asp:Literal ID="litMessage" runat="server" />
+                    <asp:Panel ID="pnlError" runat="server" CssClass="alert alert-error" Visible="false">
+                        <div class="alert-icon">⚠</div>
+                        <asp:Label ID="lblError" runat="server"></asp:Label>
+                    </asp:Panel>
+
+                    <!-- Email Field (Replaced txtUsername with txtEmail) -->
+                    <div class="form-group">
+                        <label for="txtEmail" class="form-label">
+                            <span class="label-icon"><i class="fas fa-envelope"></i></span>
+                            Email Address
+                        </label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control"
+                            placeholder="Enter your registered email" MaxLength="100" TextMode="Email"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server"
+                            ControlToValidate="txtEmail"
+                            ErrorMessage="Email is required"
+                            CssClass="error-message"
+                            Display="Dynamic"></asp:RequiredFieldValidator>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="txtPassword" class="form-label">
+                            <span class="label-icon"><i class="fas fa-lock"></i></span>
+                            Password
+                        </label>
+                        <div class="password-container">
+                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
+                                CssClass="form-control" placeholder="Enter your password"
+                                MaxLength="255"></asp:TextBox>
+                            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
+                                <i class="fas fa-eye toggle-icon"></i>
+                            </button>
+                        </div>
+                        <asp:RequiredFieldValidator ID="rfvPassword" runat="server"
+                            ControlToValidate="txtPassword"
+                            ErrorMessage="Password is required"
+                            CssClass="error-message"
+                            Display="Dynamic"></asp:RequiredFieldValidator>
+                    </div>
+
+                    <!-- Login Button -->
+                    <asp:Button ID="btnLogin" runat="server" Text="Login to Dashboard"
+                        CssClass="btn-login" OnClick="btnLogin_Click" />
                 </div>
-                <asp:RequiredFieldValidator ID="rfvPassword" runat="server"
-                    ControlToValidate="txtPassword"
-                    ErrorMessage="Password is required"
-                    Display="Dynamic"
-                    CssClass="text-danger"
-                    Style="font-size: 13px; margin-top: 5px; display: block;" />
+
+                <!-- Footer Section (Customized with Register Link) -->
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="RegisterSpeaker.aspx">Register as Speaker</a></p>
+                    <p>&copy; 2025 Lubricant India Expo. All rights reserved.</p>
+                </div>
             </div>
 
-            <!-- Login Button -->
-            <asp:Button ID="btnLogin" runat="server" Text="Login to Dashboard"
-                CssClass="btn-login" OnClick="btnLogin_Click" />
-
-            <!-- Divider -->
-            <div class="divider">
-                <span>OR</span>
-            </div>
-
-            <!-- Register Link -->
-            <div class="register-link">
-                <p>Don't have an account? <a href="RegisterSpeaker.aspx">Register as Speaker</a></p>
-            </div>
+            <!-- Decorative Elements -->
+            <div class="decoration decoration-top"></div>
+            <div class="decoration decoration-bottom"></div>
         </div>
     </form>
+
+    <script type="text/javascript">
+        function togglePasswordVisibility(event) {
+            event.preventDefault();
+            var passwordInput = document.getElementById('<%= txtPassword.ClientID %>');
+            var toggleBtn = event.currentTarget;
+            var toggleIcon = toggleBtn.querySelector('.toggle-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.className = 'fas fa-eye-slash toggle-icon';
+                toggleBtn.setAttribute('title', 'Hide password');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.className = 'fas fa-eye toggle-icon';
+                toggleBtn.setAttribute('title', 'Show password');
+            }
+        }
+
+        // Focus on email field on page load
+        window.addEventListener('load', function () {
+            // Updated to focus txtEmail
+            var emailInput = document.getElementById('<%= txtEmail.ClientID %>');
+            if (emailInput) {
+                emailInput.focus();
+            }
+        });
+    </script>
 </body>
 </html>

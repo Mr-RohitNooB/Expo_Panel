@@ -27,6 +27,35 @@ namespace Expo_Panel
         public string SpeakerPhoto { get; set; }
         public string SpeakerLogo { get; set; }
     }
+    public class SpeakerDTO
+    {
+        public int SpeakerID { get; set; }
+        public string Name { get; set; }
+        public string Designation { get; set; }
+        public string Company { get; set; }
+        public string PhotoPath { get; set; }
+    }
+    public class SpeakerDetailsDTO
+    {
+        public string Name { get; set; }
+        public string Designation { get; set; }
+        public string Company { get; set; }
+        public int YearsOfExperience { get; set; }
+        public string PhotoPath { get; set; }
+        public string LogoPath { get; set; }
+        public string ProfessionalBio { get; set; }
+        public string AreasOfExpertise { get; set; }
+        public string CurrentWorkProjects { get; set; }
+    }
+    public class ExhibitorDTO
+    {
+        public string Company { get; set; }
+        public string FullName { get; set; }
+        public string Designation { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+    }
     public partial class Index : System.Web.UI.Page
     {
 
@@ -110,5 +139,190 @@ namespace Expo_Panel
         {
             base.OnPreRender(e);
         }
+
+
+        protected void btnSubmitContact_Click(object sender, EventArgs e)
+        {
+            if (Page.IsValid)
+            {
+                try
+                {
+                    string connStr = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
+
+                    using (SqlConnection con = new SqlConnection(connStr))
+                    {
+                        using (SqlCommand cmd = new SqlCommand("spAddContactInquiry", con))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.AddWithValue("@Name", txtName.Text.Trim());
+                            cmd.Parameters.AddWithValue("@Email", txtEmail.Text.Trim());
+                            cmd.Parameters.AddWithValue("@Mobile", txtMobile.Text.Trim());
+                            cmd.Parameters.AddWithValue("@Message", txtMessage.Text.Trim());
+
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+
+                            // Clear form
+                            txtName.Text = "";
+                            txtEmail.Text = "";
+                            txtMobile.Text = "";
+                            txtMessage.Text = "";
+
+                            lblMessage.Text = "Thank you! Your message has been sent successfully.";
+                            lblMessage.ForeColor = System.Drawing.Color.Green;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lblMessage.Text = "An error occurred. Please try again later.";
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+        }
+        protected void btnFooterSignup_Click(object sender, EventArgs e)
+        {
+            if (!Page.IsValid) return;
+
+            try
+            {
+                string email = txtFooterEmail.Text.Trim();
+
+                // FIX: Changed "con" to "ExpoPanelDB" to match the rest of your project
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString))
+                {
+                    // Ensure this Stored Procedure exists in your SQL Database (see step 2 below)
+                    using (SqlCommand cmd = new SqlCommand("USP_SubscribeForUpdates", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Email", email);
+
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                lblFooterMsg.Text = "Thank you for subscribing!";
+                lblFooterMsg.ForeColor = System.Drawing.Color.LightGreen;
+                txtFooterEmail.Text = "";
+            }
+            catch (Exception ex)
+            {
+                // DEBUGGING: Temporarily show the real error message so we know what is wrong
+                lblFooterMsg.Text = "Error: " + ex.Message;
+                lblFooterMsg.ForeColor = System.Drawing.Color.LightCoral;
+            }
+        }
+
+
+        [WebMethod]
+        public static List<SpeakerDTO> GetSpeakersList()
+        {
+            List<SpeakerDTO> list = new List<SpeakerDTO>();
+            // Ensure this connection string name matches your Web.config
+            string connStr = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                using (SqlCommand cmd = new SqlCommand("[eventExpo].[sp_GetApprovedSpeakers]", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            // FIX: We use .Replace("~", "") so the browser gets a clean path like "/Uploads/..."
+                            string rawPath = rdr["PhotoPath"] != DBNull.Value ? rdr["PhotoPath"].ToString() : "";
+
+                            list.Add(new SpeakerDTO
+                            {
+                                SpeakerID = Convert.ToInt32(rdr["SpeakerID"]),
+                                Name = rdr["Name"].ToString(),
+                                Designation = rdr["Designation"].ToString(),
+                                Company = rdr["Company"].ToString(),
+                                // REMOVING TILDE HERE
+                                PhotoPath = rawPath.Replace("~", "")
+                            });
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        [WebMethod]
+        public static SpeakerDetailsDTO GetSpeakerDetails(int speakerId)
+        {
+            SpeakerDetailsDTO details = new SpeakerDetailsDTO();
+            string connStr = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                using (SqlCommand cmd = new SqlCommand("[eventExpo].[sp_GetPublicSpeakerDetails]", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    con.Open();
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            details.Name = rdr["Name"].ToString();
+                            details.Designation = rdr["Designation"].ToString();
+                            details.Company = rdr["Company"].ToString();
+                            details.YearsOfExperience = rdr["YearsOfExperience"] != DBNull.Value ? Convert.ToInt32(rdr["YearsOfExperience"]) : 0;
+
+                            // FIX: Remove Tilde (~) from both Photo and Logo paths
+                            string rawPhoto = rdr["PhotoPath"] != DBNull.Value ? rdr["PhotoPath"].ToString() : "";
+                            string rawLogo = rdr["LogoPath"] != DBNull.Value ? rdr["LogoPath"].ToString() : "";
+
+                            details.PhotoPath = rawPhoto.Replace("~", "");
+                            details.LogoPath = rawLogo.Replace("~", "");
+
+                            details.ProfessionalBio = rdr["ProfessionalBio"] != DBNull.Value ? rdr["ProfessionalBio"].ToString() : "No bio available.";
+                            details.AreasOfExpertise = rdr["AreasOfExpertise"] != DBNull.Value ? rdr["AreasOfExpertise"].ToString() : "";
+                            details.CurrentWorkProjects = rdr["CurrentWorkProjects"] != DBNull.Value ? rdr["CurrentWorkProjects"].ToString() : "";
+                        }
+                    }
+                }
+            }
+            return details;
+        }
+
+        [WebMethod]
+        public static List<ExhibitorDTO> GetExhibitorsList()
+        {
+            List<ExhibitorDTO> list = new List<ExhibitorDTO>();
+            string connStr = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_GetPublicExhibitors", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            list.Add(new ExhibitorDTO
+                            {
+                                Company = rdr["Company"].ToString(),
+                                // Handle potential NULLs safely
+                                FullName = rdr["FullName"] != DBNull.Value ? rdr["FullName"].ToString() : "",
+                                Designation = rdr["Designation"] != DBNull.Value ? rdr["Designation"].ToString() : "",
+                                City = rdr["City"] != DBNull.Value ? rdr["City"].ToString() : "",
+                                State = rdr["State"] != DBNull.Value ? rdr["State"].ToString() : "",
+                                Country = rdr["Country"] != DBNull.Value ? rdr["Country"].ToString() : ""
+                            });
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
     }
 }

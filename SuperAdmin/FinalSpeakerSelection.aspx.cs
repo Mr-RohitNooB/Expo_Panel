@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web;
 using System.Web.Services;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Expo_Panel.SuperAdmin
@@ -27,7 +28,7 @@ namespace Expo_Panel.SuperAdmin
             }
         }
 
-        protected int ExpandedAgendaID
+        public int ExpandedAgendaID
         {
             get
             {
@@ -41,9 +42,30 @@ namespace Expo_Panel.SuperAdmin
         {
             if (!IsAdminLoggedIn())
             {
-                Response.Redirect("~/User/AdminLogin.aspx", false);
+                Response.Redirect("~/Default.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
+            }
+
+            if (IsPostBack && ExpandedAgendaID > 0)
+            {
+                // We use jQuery .animate() here because it allows us to set the speed (400ms)
+                // 'scrollTop' calculation ensures the card isn't hidden behind your sticky header
+                string script = $@"
+            setTimeout(function() {{
+                var $target = $('#agenda_{ExpandedAgendaID}');
+                if ($target.length) {{
+                    // Calculate position: Element Top - Header Height (approx 140px) - Buffer (20px)
+                    var targetTop = $target.offset().top - 160;
+                    
+                    // 400 = 400 milliseconds (0.4 seconds) -> Fast and Snappy
+                    $('html, body').animate({{
+                        scrollTop: targetTop
+                    }}, 400); 
+                }}
+            }}, 300);"; // Keep small delay to ensure DOM is ready
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "ScrollToAgenda", script, true);
             }
 
             if (!IsPostBack)
@@ -69,7 +91,7 @@ namespace Expo_Panel.SuperAdmin
         {
             Session.Clear();
             Session.Abandon();
-            Response.Redirect("~/User/AdminLogin.aspx", false);
+            Response.Redirect("~/Default.aspx", false);
             Context.ApplicationInstance.CompleteRequest();
         }
 
@@ -262,6 +284,7 @@ namespace Expo_Panel.SuperAdmin
 
         private void LoadAgendaSpeakers(int agendaId, Panel pnlSpeakers)
         {
+            _colorIndex = 0;
             try
             {
                 pnlSpeakers.Controls.Clear();
@@ -293,6 +316,7 @@ namespace Expo_Panel.SuperAdmin
 
                 foreach (DataRow row in dt.Rows)
                 {
+                    string colorClass = GetNextSpeakerColor();
                     int speakerId = Convert.ToInt32(row["SpeakerID"]);
                     string name = row["Name"]?.ToString() ?? "";
                     string designation = row["Designation"]?.ToString() ?? "";
@@ -354,7 +378,7 @@ namespace Expo_Panel.SuperAdmin
                         photoHtml = $"<img src='{resolvedPhotoPath}' alt='{HttpUtility.HtmlEncode(name)}' class='speaker-photo' onerror='this.style.display=\"none\"; this.nextElementSibling.style.display=\"flex\";' /><div class='speaker-photo-placeholder' style='display:none;'><i class='fas fa-user'></i></div>";
                     }
 
-                    html.Append($@"<div class='speaker-card' data-speaker-id='{speakerId}'>
+                    html.Append($@"<div class='speaker-card {colorClass}' data-speaker-id='{speakerId}'>
                         <div class='speaker-header'>
                             {photoHtml}
                             <div class='speaker-info'>
@@ -448,7 +472,7 @@ namespace Expo_Panel.SuperAdmin
             }
         }
 
-        protected string GetStatusBadge(object statusCategoryObj)
+        public string GetStatusBadge(object statusCategoryObj)
         {
             string status = statusCategoryObj?.ToString() ?? "Pending";
             switch (status)
@@ -702,6 +726,24 @@ namespace Expo_Panel.SuperAdmin
             return profile.ToString();
         }
 
+        private static readonly string[] SpeakerColorPool = {
+    "teal", // #38b2ac (Your new primary color)
+    "indigo", // #667eea (Previous primary color)
+    "orange", // #ed8936 
+    "red",    // #f56565
+    "purple", // #9f7aea
+    "pink"    // #ed64a6
+};
+        // Counter to track which color to use next
+        private static int _colorIndex = 0;
+
+        // Method to get the next color in the cycle
+        private string GetNextSpeakerColor()
+        {
+            string color = SpeakerColorPool[_colorIndex % SpeakerColorPool.Length];
+            _colorIndex++;
+            return color;
+        }
         public class SpeakerDecision
         {
             public int SpeakerID { get; set; }

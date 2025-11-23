@@ -14,7 +14,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(300deg, #00394e 0%, #1b887a 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
@@ -23,7 +23,7 @@
 
         /* Header */
         .admin-header {
-            background: rgba(255,255,255,0.95);
+            background: linear-gradient(106deg, #d3fffa 45%, #d3fffa 100%, transparent);
             backdrop-filter: blur(10px);
             padding: 20px 30px;
             color: #2d3748;
@@ -39,7 +39,7 @@
             .admin-header h2 {
                 margin: 0;
                 font-weight: 700;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
@@ -58,7 +58,7 @@
                 }
 
         .btn-logout, .btn-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
             border: none;
             color: white;
             padding: 10px 20px;
@@ -74,7 +74,7 @@
 
             .btn-logout:hover, .btn-info:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+                box-shadow: 0 8px 20px rgba(56, 178, 172, 0.4);
                 color: white;
             }
 
@@ -130,7 +130,7 @@
         }
 
             .stat-card-icon.purple {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: #38b2ac;
                 color: white;
             }
 
@@ -225,10 +225,10 @@
             }
 
             .btn-filter.active {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #38b2ac 0%, #319795 100%); /* New Teal Gradient */
                 color: white;
                 border-color: transparent;
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+                box-shadow: 0 4px 12px rgba(56, 178, 172, 0.3); /* New Teal Shadow */
             }
 
         .search-box {
@@ -275,13 +275,15 @@
             margin-bottom: 20px;
             overflow: hidden;
             transition: all 0.3s;
+            scroll-margin-top: 150px;
             border-left: 5px solid transparent;
         }
 
             .agenda-card:hover {
                 box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-                border-left-color: #667eea;
+                border-left-color: #38b2ac; /* Deep Emerald/Teal */
             }
+
 
         .agenda-header {
             padding: 25px;
@@ -333,7 +335,8 @@
         }
 
         .stat-item {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            /* Use a 10% opacity of your new accent color over white */
+            background: rgba(56, 178, 172, 0.1);
             padding: 12px;
             border-radius: 10px;
             text-align: center;
@@ -986,14 +989,65 @@
 
         .agenda-card.expanded {
             background: linear-gradient(to right, #f7fafc, #fff);
-            border-left: 4px solid #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            border-left: 4px solid #38b2ac; /* Deep Emerald/Teal */
+            box-shadow: 0 4px 12px rgba(56, 178, 172, 0.15);
         }
 
         @media (min-width: 992px) { /* Adjust breakpoint for two columns */
             .speakers-list {
                 grid-template-columns: repeat(2, 1fr); /* Explicitly set 2 columns for wider screens */
             }
+        }
+
+        /* --- New CSS Overrides for stat-card top bar (::before) - SOLID COLORS --- */
+
+        .stat-card.card-purple::before {
+            background: #38b2ac; /* Primary purple */
+        }
+
+        .stat-card.card-blue::before {
+            background: #4299e1; /* Primary blue */
+        }
+
+        .stat-card.card-green::before {
+            background: #48bb78; /* Primary green */
+        }
+
+        .stat-card.card-orange::before {
+            background: #ed8936; /* Primary orange */
+        }
+
+        .stat-card.card-red::before {
+            background: #f56565; /* Primary red */
+        }
+
+        .btn-filter, .btn-logout, .btn-info {
+            border-left: none !important;
+        }
+        /* --- SPEAKER HOVER COLOR OVERRIDES (Unique Color per Speaker) --- */
+
+        .speaker-card.teal:hover {
+            border-left-color: #38b2ac;
+        }
+
+        .speaker-card.indigo:hover {
+            border-left-color: #667eea;
+        }
+
+        .speaker-card.orange:hover {
+            border-left-color: #ed8936;
+        }
+
+        .speaker-card.red:hover {
+            border-left-color: #f56565;
+        }
+
+        .speaker-card.purple:hover {
+            border-left-color: #9f7aea;
+        }
+
+        .speaker-card.pink:hover {
+            border-left-color: #ed64a6;
         }
     </style>
 </head>
@@ -1003,14 +1057,16 @@
 
         <!-- Header -->
         <div class="admin-header">
-            <h2><i class="fas fa-clipboard-check"></i>Final Speaker Selection Dashboard</h2>
+            <h2>
+                <img src="../Images/Expo_logo_Full.png" style="vertical-align: middle; border-style: none; height: 122px; margin: -44px 0px -44px -23px;">Final Speaker Selection Dashboard</h2>
             <div class="admin-info">
                 <span><i class="fas fa-user-shield"></i>
                     <asp:Label ID="lblAdminName" runat="server" /></span>
                 <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn-info">
                     <i class="fas fa-arrow-left"></i> Back
                 </asp:HyperLink>
-                <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout" OnClick="btnLogout_Click" />
+           <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout" 
+    OnClick="btnLogout_Click" UseSubmitBehavior="false" />
             </div>
         </div>
 
@@ -1018,7 +1074,7 @@
 
             <!-- Statistics Dashboard -->
             <div class="stats-dashboard">
-                <div class="stat-card">
+                <div class="stat-card card-purple">
                     <div class="stat-card-icon purple">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
@@ -1028,7 +1084,7 @@
                     <div class="stat-card-label">Total Agendas</div>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card card-blue">
                     <div class="stat-card-icon blue">
                         <i class="fas fa-users"></i>
                     </div>
@@ -1038,7 +1094,7 @@
                     <div class="stat-card-label">Total Speakers</div>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card card-green">
                     <div class="stat-card-icon green">
                         <i class="fas fa-check-circle"></i>
                     </div>
@@ -1048,7 +1104,7 @@
                     <div class="stat-card-label">Approved Speakers</div>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card card-orange">
                     <div class="stat-card-icon orange">
                         <i class="fas fa-user-tie"></i>
                     </div>
@@ -1058,7 +1114,7 @@
                     <div class="stat-card-label">Advisory Panel</div>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card card-red">
                     <div class="stat-card-icon red">
                         <i class="fas fa-hourglass-half"></i>
                     </div>
@@ -1068,7 +1124,7 @@
                     <div class="stat-card-label">Needs Review</div>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card card-green">
                     <div class="stat-card-icon green">
                         <i class="fas fa-clipboard-check"></i>
                     </div>
@@ -1092,10 +1148,10 @@
                     <asp:Button ID="btnPending" runat="server" Text="Pending Ratings (0)" CssClass="btn-filter"
                         CommandArgument="Pending" OnClick="btnStatusFilter_Click" />
                 </div>
-                <div class="search-box">
-                    <asp:TextBox ID="txtSearch" runat="server" placeholder="🔍 Search agendas by title, day, or track..." />
-                    <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
-                </div>
+                <asp:Panel ID="pnlSearch" runat="server" CssClass="search-box" DefaultButton="btnSearch">
+    <asp:TextBox ID="txtSearch" runat="server" placeholder="🔍 Search agendas by title, day, or track..." />
+    <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+</asp:Panel>
             </div>
 
             <!-- No Records Panel -->
@@ -1199,33 +1255,37 @@
             var currentExpanded = hdnField.value;
             var agendaCard = document.getElementById('agenda_' + agendaId);
 
+            // Find the toggle icon element specific to this card
+            var toggleIcon = agendaCard ? agendaCard.querySelector('.toggle-icon') : null;
+
             // Check if the current card is expanded (i.e., we want to collapse it)
             if (currentExpanded == agendaId) {
-                // --- FIX: Client-side collapse to prevent postback ---
-                hdnField.value = '0'; // Update hidden field for next time
+                // Client-side collapse to prevent postback
+                hdnField.value = '0';
                 if (agendaCard) {
-                    // Remove the 'expanded' class to visually collapse
+                    // Remove the expanded class first
                     agendaCard.classList.remove('expanded');
-                    // We don't need to hide the pnlSpeakers panel here, 
-                    // the next postback will render it as hidden.
-                    // However, to prevent a visible flash on a subsequent postback:
+
+                    // Hide the speakers section
                     var pnlSpeakers = agendaCard.querySelector('.speakers-section');
                     if (pnlSpeakers) {
                         pnlSpeakers.style.display = 'none';
                     }
                 }
-                // Just return; DO NOT call __doPostBack
                 document.getElementById('loadingSpinner').classList.remove('show');
                 return false;
             } else {
                 // We want to EXPAND: Must call postback to load speaker data
                 hdnField.value = agendaId;
+
+                // Show loading spinner
                 document.getElementById('loadingSpinner').classList.add('show');
+
+                // Trigger postback
                 __doPostBack('Toggle', agendaId);
                 return false;
             }
         }
-
         function closeProfileModal() {
             document.getElementById('profileModal').classList.remove('show');
         }

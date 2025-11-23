@@ -8,6 +8,22 @@
     <title>Speaker Dashboard - Expo Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -458,6 +474,17 @@
                 justify-content: center;
             }
         }
+
+        /* Add these to your existing CSS */
+
+        .status-badge.applied {
+            background: #dbeafe;
+            color: #1e40af; /* Blue */
+        }
+
+        .agenda-card.applied {
+            border-left-color: #3b82f6; /* Blue border */
+        }
     </style>
 </head>
 <body>
@@ -476,7 +503,8 @@
                         <h4>
                             <asp:Literal ID="litUserName" runat="server"></asp:Literal></h4>
                         <p>
-                            <asp:Literal ID="litUserEmail" runat="server"></asp:Literal></p>
+                            <asp:Literal ID="litUserEmail" runat="server"></asp:Literal>
+                        </p>
                     </div>
                 </div>
                 <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout"
@@ -490,7 +518,7 @@
             <div class="welcome-section">
                 <h1>Welcome,
                     <asp:Literal ID="litWelcomeName" runat="server"></asp:Literal>! 👋</h1>
-                <p>Manage your speaker profile and view your agenda assignments</p>
+                <p>Manage your speaker profile and view your sessions assignments</p>
             </div>
 
             <!-- Alert Messages -->
@@ -502,7 +530,7 @@
                     <i class="fas fa-user"></i>Profile
                 </button>
                 <button type="button" class="tab-btn" onclick="openTab(event, 'agendas')">
-                    <i class="fas fa-calendar-check"></i>My Agendas
+                    <i class="fas fa-calendar-check"></i>My Sessions
                 </button>
             </div>
 
@@ -520,42 +548,50 @@
                         <div class="info-item">
                             <div class="info-label">Full Name</div>
                             <div class="info-value">
-                                <asp:Literal ID="litName" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litName" runat="server"></asp:Literal>
+                            </div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Email</div>
                             <div class="info-value">
-                                <asp:Literal ID="litEmail" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litEmail" runat="server"></asp:Literal>
+                            </div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Mobile</div>
                             <div class="info-value">
-                                <asp:Literal ID="litMobile" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litMobile" runat="server"></asp:Literal>
+                            </div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Designation</div>
                             <div class="info-value">
-                                <asp:Literal ID="litDesignation" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litDesignation" runat="server"></asp:Literal>
+                            </div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Company</div>
                             <div class="info-value">
-                                <asp:Literal ID="litCompany" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litCompany" runat="server"></asp:Literal>
+                            </div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Years of Experience</div>
                             <div class="info-value">
-                                <asp:Literal ID="litExperience" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litExperience" runat="server"></asp:Literal>
+                            </div>
                         </div>
                         <div class="info-item" style="grid-column: 1 / -1;">
                             <div class="info-label">LinkedIn Profile</div>
                             <div class="info-value">
-                                <asp:Literal ID="litLinkedIn" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litLinkedIn" runat="server"></asp:Literal>
+                            </div>
                         </div>
                         <div class="info-item" style="grid-column: 1 / -1;">
                             <div class="info-label">Professional Bio</div>
                             <div class="info-value">
-                                <asp:Literal ID="litBio" runat="server"></asp:Literal></div>
+                                <asp:Literal ID="litBio" runat="server"></asp:Literal>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -565,7 +601,7 @@
             <div id="agendas" class="tab-content">
                 <div class="profile-card">
                     <div class="profile-header">
-                        <h2><i class="fas fa-calendar-check"></i>My Agendas</h2>
+                        <h2><i class="fas fa-calendar-check"></i>My Sessions</h2>
                     </div>
 
                     <!-- Filters -->
@@ -574,6 +610,12 @@
                             <i class="fas fa-list"></i>All 
                             <span class="badge">
                                 <asp:Literal ID="litAllCount" runat="server"></asp:Literal></span>
+                        </button>
+                        <button type="button" class="filter-btn" onclick="filterAgendas('applied')">
+                            <i class="fas fa-clock"></i>Applied 
+       
+                            <span class="badge">
+                                <asp:Literal ID="litAppliedCount" runat="server"></asp:Literal></span>
                         </button>
                         <button type="button" class="filter-btn" onclick="filterAgendas('approved')">
                             <i class="fas fa-check-circle"></i>Approved 
@@ -617,19 +659,22 @@
                 var cards = document.querySelectorAll('.agenda-card');
                 var filterBtns = document.querySelectorAll('.filter-btn');
 
-                // Update active filter button
+                // Update active button
                 filterBtns.forEach(function (btn) {
                     btn.classList.remove('active');
                 });
                 event.currentTarget.classList.add('active');
 
-                // Show/hide cards based on filter
+                // Show/Hide logic
                 cards.forEach(function (card) {
                     if (status === 'all') {
                         card.style.display = 'block';
                     } else if (status === 'approved' && card.classList.contains('approved')) {
                         card.style.display = 'block';
                     } else if (status === 'rejected' && card.classList.contains('rejected')) {
+                        card.style.display = 'block';
+                    } else if (status === 'applied' && card.classList.contains('applied')) {
+                        // New Logic for Applied
                         card.style.display = 'block';
                     } else {
                         card.style.display = 'none';

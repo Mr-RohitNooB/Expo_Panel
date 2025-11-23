@@ -117,7 +117,7 @@ namespace Expo_Panel
             {
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_GetSpeakerAgendas", con))
+                    using (SqlCommand cmd = new SqlCommand("eventExpo.sp_GetSpeakerAgendas", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
@@ -128,25 +128,28 @@ namespace Expo_Panel
                             da.Fill(dt);
                         }
 
-                        // Count agendas by status
+                        // 1. Variables for counting
                         int totalCount = dt.Rows.Count;
                         int approvedCount = 0;
                         int rejectedCount = 0;
+                        int appliedCount = 0; // New Variable
 
+                        // 2. Count Loop
                         foreach (DataRow row in dt.Rows)
                         {
                             string status = row["AgendaStatus"].ToString();
-                            if (status == "Approved")
-                                approvedCount++;
-                            else if (status == "Rejected")
-                                rejectedCount++;
+                            if (status == "Approved") approvedCount++;
+                            else if (status == "Rejected") rejectedCount++;
+                            else if (status == "Applied") appliedCount++; // Count Applied
                         }
 
+                        // 3. Bind Counts to Literals
                         litAllCount.Text = totalCount.ToString();
                         litApprovedCount.Text = approvedCount.ToString();
                         litRejectedCount.Text = rejectedCount.ToString();
+                        litAppliedCount.Text = appliedCount.ToString(); // Bind New Literal
 
-                        // Generate agenda cards
+                        // 4. Render Cards
                         if (totalCount > 0)
                         {
                             StringBuilder html = new StringBuilder();
@@ -154,8 +157,31 @@ namespace Expo_Panel
                             foreach (DataRow row in dt.Rows)
                             {
                                 string status = row["AgendaStatus"].ToString();
-                                string statusClass = status == "Approved" ? "approved" : "rejected";
-                                string statusBadgeClass = status == "Approved" ? "status-badge approved" : "status-badge rejected";
+
+                                // Determine CSS classes based on status
+                                string statusClass = "";
+                                string statusBadgeClass = "";
+                                string icon = "";
+
+                                if (status == "Approved")
+                                {
+                                    statusClass = "approved";
+                                    statusBadgeClass = "status-badge approved";
+                                    icon = "<i class='fas fa-check-circle'></i>";
+                                }
+                                else if (status == "Rejected")
+                                {
+                                    statusClass = "rejected";
+                                    statusBadgeClass = "status-badge rejected";
+                                    icon = "<i class='fas fa-times-circle'></i>";
+                                }
+                                else
+                                {
+                                    // Default to Applied
+                                    statusClass = "applied";
+                                    statusBadgeClass = "status-badge applied";
+                                    icon = "<i class='fas fa-clock'></i>";
+                                }
 
                                 string day = row["Day"].ToString();
                                 string track = row["Track"].ToString();
@@ -173,7 +199,7 @@ namespace Expo_Panel
                                 html.Append($"<div class='meta-item'><i class='fas fa-clock'></i> {time}</div>");
                                 html.Append("</div>");
                                 html.Append("</div>");
-                                html.Append($"<span class='{statusBadgeClass}'>{status}</span>");
+                                html.Append($"<span class='{statusBadgeClass}'>{icon} {status}</span>");
                                 html.Append("</div>");
 
                                 if (!string.IsNullOrEmpty(brief))
@@ -189,11 +215,11 @@ namespace Expo_Panel
                         else
                         {
                             litAgendaCards.Text = @"
-                                <div class='empty-state'>
-                                    <i class='fas fa-calendar-times'></i>
-                                    <h3>No Agendas Assigned Yet</h3>
-                                    <p>You haven't been assigned to any agenda topics yet. Our team will review your profile and assign relevant topics soon.</p>
-                                </div>";
+                        <div class='empty-state'>
+                            <i class='fas fa-calendar-times'></i>
+                            <h3>No Agendas Found</h3>
+                            <p>You haven't applied for or been assigned to any agendas yet.</p>
+                        </div>";
                         }
                     }
                 }

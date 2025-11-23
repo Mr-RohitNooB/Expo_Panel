@@ -18,7 +18,16 @@ namespace Expo_Panel.SuperAdmin
         {
             get { return ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString; }
         }
-
+        public int ExpandedAgendaID
+        {
+            get
+            {
+                int id = 0;
+                // This reads the hidden field value safely
+                Int32.TryParse(hdnExpandedAgendaID.Value, out id);
+                return id;
+            }
+        }
         private int CurrentAdvisorID
         {
             get
@@ -39,6 +48,7 @@ namespace Expo_Panel.SuperAdmin
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
+
 
             if (!IsPostBack)
             {
@@ -99,6 +109,30 @@ namespace Expo_Panel.SuperAdmin
             Context.ApplicationInstance.CompleteRequest();
         }
 
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            // Check if we have an expanded agenda (ExpandedAgendaID > 0)
+            // We do this in PreRender because by now, the 'ItemCommand' has finished
+            // and updated the HiddenField with the correct ID.
+            if (ExpandedAgendaID > 0)
+            {
+                string script = $@"
+        setTimeout(function() {{
+            var $target = $('#agenda_{ExpandedAgendaID}');
+            if ($target.length) {{
+                // offset().top - 120 gives space for your fixed header
+                var targetTop = $target.offset().top - 120;
+                
+                // 400ms animation speed = Fast & Smooth
+                $('html, body').animate({{
+                    scrollTop: targetTop
+                }}, 400);
+            }}
+        }}, 300);";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "ScrollToAgenda", script, true);
+            }
+        }
         private bool CheckIfAdvisorIsLinked(int advisorId)
         {
             if (advisorId == 0) return false;

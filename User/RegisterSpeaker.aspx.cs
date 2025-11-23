@@ -20,6 +20,7 @@ namespace Expo_Panel
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             if (!IsPostBack)
             {
                 LoadAvailableAgendas();
@@ -244,8 +245,14 @@ namespace Expo_Panel
 
                     if (newSpeakerId > 0)
                     {
-                        ShowMessage("Your registration has been submitted successfully! Our team will review your application and get back to you soon.", "success");
-                        ClearForm();
+                        // 1. Hide the form
+                        pnlFormFields.Visible = false;
+
+                        // 2. Hide the generic alert message (we don't need it now)
+                        litMessage.Text = "";
+
+                        // 3. Show the fancy Animation Panel
+                        pnlSuccessMessage.Visible = true;
                     }
                     else
                     {

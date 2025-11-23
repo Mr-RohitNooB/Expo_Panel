@@ -6,9 +6,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lubricant India Expo 2026</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -362,42 +375,247 @@
             font-weight: 600;
         }
 
-        /* Venue Section */
-        .venue-content {
+        /* Compact Venue Section */
+        .venue-content-compact {
             background: #fff;
             border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
-        .venue-info {
+        .venue-grid-compact {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
         }
 
-        .venue-info-item {
+        .venue-left-compact {
             display: flex;
-            align-items: flex-start;
+            flex-direction: column;
             gap: 15px;
         }
 
-            .venue-info-item i {
-                font-size: 24px;
-                color: #D94A2B;
-                margin-top: 5px;
-            }
-
-        .venue-info-text h3 {
-            font-size: 18px;
-            color: #1e293b;
-            margin-bottom: 5px;
+        /* Info Cards - Compact */
+        .info-card-compact {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 3px solid #D94A2B;
         }
 
-        .venue-info-text p {
+        .info-header-compact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+            .info-header-compact i {
+                font-size: 18px;
+                color: #D94A2B;
+            }
+
+            .info-header-compact h3 {
+                font-size: 16px;
+                color: #1e293b;
+                margin: 0;
+                font-weight: 600;
+            }
+
+        .info-text-compact {
             color: #64748b;
             font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Contact Grid - Compact */
+        .contact-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .contact-item-compact {
+            font-size: 13px;
+        }
+
+            .contact-item-compact strong {
+                display: block;
+                color: #1e293b;
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+
+            .contact-item-compact p {
+                color: #64748b;
+                margin: 2px 0;
+                font-size: 13px;
+            }
+
+            .contact-item-compact a {
+                color: #D94A2B;
+                text-decoration: none;
+                font-size: 12px;
+                word-break: break-word;
+            }
+
+                .contact-item-compact a:hover {
+                    text-decoration: underline;
+                }
+
+        /* Timing List - Compact */
+        .timing-list-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .timing-item-compact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+            .timing-item-compact:last-child {
+                border-bottom: none;
+            }
+
+            .timing-item-compact strong {
+                color: #1e293b;
+                font-size: 13px;
+            }
+
+            .timing-item-compact span {
+                color: #64748b;
+                font-size: 13px;
+            }
+
+        /* Compact Contact Form */
+        .venue-right-compact {
+            display: flex;
+        }
+
+        .contact-form-compact {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            border: 2px solid #e2e8f0;
+        }
+
+        .form-header-compact {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+            .form-header-compact i {
+                font-size: 28px;
+                color: #D94A2B;
+                margin-bottom: 8px;
+            }
+
+            .form-header-compact h3 {
+                font-size: 18px;
+                color: #1e293b;
+                margin: 0;
+                font-weight: 600;
+            }
+
+        /* Compact Form Inputs */
+        .input-compact {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+            .input-compact:focus {
+                outline: none;
+                border-color: #D94A2B;
+                box-shadow: 0 0 0 2px rgba(217, 74, 43, 0.1);
+            }
+
+        .textarea-compact {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .error-compact {
+            display: block;
+            font-size: 11px;
+            margin-top: -6px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Compact Submit Button */
+        .btn-compact {
+            width: 100%;
+            background: linear-gradient(135deg, #D94A2B 0%, #FF6B4A 100%);
+            color: white;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            margin-top: 5px;
+        }
+
+            .btn-compact:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(217, 74, 43, 0.3);
+            }
+
+        .msg-compact {
+            display: block;
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            font-weight: 500;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .venue-grid-compact {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .contact-grid-compact {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .contact-form-compact {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .venue-content-compact {
+                padding: 20px;
+            }
+
+            .info-card-compact {
+                padding: 12px;
+            }
+
+            .contact-item-compact a {
+                font-size: 11px;
+            }
         }
 
         /* Footer */
@@ -447,13 +665,14 @@
                 align-items: center; /* <-- Add this line */
                 text-align: center; /* <-- And this line */
             }
-            .nav-link {
-            justify-content: center;
-        }
 
-                .nav-menu.active {
-                    display: flex;
-                }
+            .nav-link {
+                justify-content: center;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
 
             .mobile-menu-toggle {
                 display: block;
@@ -491,6 +710,294 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* --- Floating Countdown Timer Styles --- */
+        .sticky-timer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #3D3935; /* Your Dark Grey Brand Color */
+            border-top: 4px solid #D94A2B; /* Your Orange Brand Color */
+            color: #fff;
+            z-index: 9999;
+            transform: translateY(100%); /* Hidden by default */
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+            .sticky-timer-bar.visible {
+                transform: translateY(0); /* Slide up into view */
+            }
+
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .timer-text {
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-box {
+            display: flex;
+            gap: 15px;
+        }
+
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+
+        .time-val {
+            font-size: 24px;
+            font-weight: 700;
+            color: #D94A2B; /* Orange highlight */
+            line-height: 1;
+        }
+
+        .time-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        /* Button inside timer */
+        .timer-btn {
+            background: #D94A2B;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+            .timer-btn:hover {
+                background: #fff;
+                color: #D94A2B;
+            }
+
+        /* Mobile Response */
+        @media (max-width: 768px) {
+            .timer-container {
+                flex-direction: column;
+                gap: 10px;
+                padding: 5px 0;
+            }
+
+            .timer-text {
+                display: none;
+            }
+            /* Hide text on small screens to save space */
+            .time-val {
+                font-size: 20px;
+            }
+
+            .sticky-timer-bar {
+                padding: 10px;
+            }
+        }
+
+        /* --- NEW Exhibitor Styles --- */
+        .exhibitors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .exhibitor-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #D94A2B; /* Orange accent */
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100px;
+        }
+
+            .exhibitor-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+                border-color: #D94A2B;
+            }
+
+        .exhibitor-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .exhibitor-stall {
+            font-size: 13px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+
+        /* Modal & Button Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 12px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-body-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .modal-profile-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .modal-title {
+            font-size: 32px;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .modal-designation {
+            font-size: 18px;
+            color: #D94A2B;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .modal-badge {
+            background: #f1f5f9;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+            .modal-section h5 {
+                font-size: 16px;
+                color: #1e293b;
+                font-weight: 700;
+                margin-bottom: 8px;
+                text-transform: uppercase;
+            }
+
+        .btn-view-profile {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            border: 2px solid #D94A2B;
+            color: #D94A2B;
+            background: transparent;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+            .btn-view-profile:hover {
+                background: #D94A2B;
+                color: white;
+            }
+
+        @media (max-width: 768px) {
+            .modal-body-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Circular Speaker & Overlapping Logo Styles --- */
+        .speaker-avatar-container {
+            position: relative; /* Acts as the anchor for the logo */
+            width: 220px; /* Fixed width */
+            height: 220px; /* Fixed height */
+            margin: 0 auto 20px auto; /* Center horizontally and add bottom space */
+        }
+
+        /* The Main Speaker Photo */
+        .modal-profile-img-circle {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image doesn't stretch */
+            border-radius: 50%; /* Makes it a perfect circle */
+            border: 4px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Soft shadow */
+        }
+
+        /* The Overlapping Company Logo */
+        .modal-company-logo-circle {
+            position: absolute;
+            bottom: 5px; /* 5px from bottom of container */
+            right: 5px; /* 5px from right of container */
+            width: 75px; /* Logo size */
+            height: 75px;
+            border-radius: 50%; /* Make logo circular */
+            object-fit: contain; /* Keep logo aspect ratio inside the circle */
+            background: #ffffff;
+            border: 3px solid #f1f5f9; /* Light grey border */
+            padding: 5px; /* White space inside the circle */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Lift it up a bit */
+            z-index: 10; /* Ensure it sits ON TOP of the speaker photo */
+        }
     </style>
 </head>
 <body>
@@ -517,10 +1024,9 @@
                             <%--  <a href="RegisterAgenda.aspx">Register for Agenda</a>--%>
                         </div>
                     </li>
-                    <li class="nav-item"><a href="#agenda" class="nav-link">Agenda</a></li>
+                    <li class="nav-item"><a href="Conference.aspx" class="nav-link">Conference</a></li>
                     <li class="nav-item"><a href="#speakers" class="nav-link">Speakers</a></li>
-                    <li class="nav-item"><a href="#venue" class="nav-link">Venue</a></li>
-                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="Exhibitors.aspx" class="nav-link">Exhibitors</a></li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Login <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
@@ -556,7 +1062,7 @@
                     <div class="event-detail-item">
                         <i class="fas fa-users"></i>
                         <div>
-                            <div><strong>100+ Speakers</strong></div>
+                            <div><strong>60+ Speakers</strong></div>
                             <small>Industry Experts</small>
                         </div>
                     </div>
@@ -565,166 +1071,207 @@
             </div>
         </section>
 
-        <!-- Agenda Section -->
-        <section class="section" id="agenda">
-            <h2 class="section-title">Event Agenda Highlights</h2>
-            <div class="agenda-grid">
-                <div class="agenda-card">
-                    <%--  <div class="agenda-day">Day 1 - September 24</div>
-                    <div class="agenda-time">09:30 - 10:30</div>
-                    <div class="agenda-title">Leadership Panel – Global Markets</div>
-                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">The lubricants industry has always been closely impacted by complex political dynamics and macroeconomic fluctuations.</p>--%>
-                    <span class="agenda-track">Track 1</span>
-                </div>
-                <div class="agenda-card">
-                    <div class="agenda-day">Day 1 - September 24</div>
-                    <%-- <div class="agenda-time">10:45 - 11:45</div>
-                    <div class="agenda-title">Driving Innovation in the Lubricants Sector</div>
-                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">As industries demand higher performance, sustainability, and efficiency, lubricant developers are pushing boundaries.</p>--%>
-                    <span class="agenda-track">Track 1</span>
-                </div>
-                <div class="agenda-card">
-                    <%--  <div class="agenda-day">Day 1 - September 24</div>
-                    <div class="agenda-time">12:00 - 13:00</div>
-                    <div class="agenda-title">Evolving Landscape of Rerefined Base Oils</div>
-                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">Sustainability and circular economy goals move to the forefront of the lubricants industry.</p>
-                    <span class="agenda-track">Track 1</span>--%>
-                </div>
-                <div class="agenda-card">
-                    <%-- <div class="agenda-day">Day 2 - September 25</div>
-                    <div class="agenda-time">09:30 - 10:45</div>
-                    <div class="agenda-title">Building a Sustainable Lubricants Sector</div>
-                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">From packaging to product passports, preparing for transformative regulations.</p>
-                    <span class="agenda-track">Track 1</span>--%>
-                </div>
-                <div class="agenda-card">
-                    <%--         <div class="agenda-day">Day 2 - September 25</div>
-                    <div class="agenda-time">11:15 - 12:30</div>
-                    <div class="agenda-title">Avoided Emissions: Product Carbon Handprint</div>
-                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">Focusing on avoided emissions during the use phase of lubricants.</p>
-                    <span class="agenda-track">Track 1</span>--%>
-                </div>
-                <div class="agenda-card">
-                    <%--  <div class="agenda-day">Day 3 - September 26</div>
-                    <div class="agenda-time">09:30 - 10:30</div>
-                    <div class="agenda-title">Phasing out Hazardous Chemicals</div>
-                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">Addressing challenges from regulatory lists of chemicals of concern.</p>
-                    <span class="agenda-track">Track 1</span>--%>
-                </div>
-            </div>
-        </section>
 
         <!-- Speakers Section -->
         <section class="section" id="speakers" style="background: #f8fafc;">
             <h2 class="section-title">Featured Speakers</h2>
             <div class="speakers-grid">
-                <div class="speaker-card">
-                    <%--  <div class="speaker-avatar">JD</div>
-                    <div class="speaker-name">Dr. John Doe</div>
-                    <div class="speaker-title">Chief Technology Officer</div>
-                    <div class="speaker-company">Lorem Ipsum Corporation</div>--%>
-                </div>
-                <div class="speaker-card">
-                    <%--<div class="speaker-avatar">SM</div>
-                    <div class="speaker-name">Sarah Mitchell</div>
-                    <div class="speaker-title">VP of Innovation</div>
-                    <div class="speaker-company">Dolor Sit Industries</div>--%>
-                </div>
-                <div class="speaker-card">
-                    <%--<div class="speaker-avatar">RJ</div>
-                    <div class="speaker-name">Dr. Robert Johnson</div>
-                    <div class="speaker-title">Global Director</div>
-                    <div class="speaker-company">Amet Solutions</div>--%>
-                </div>
-                <div class="speaker-card">
-                    <%--<div class="speaker-avatar">EC</div>
-                    <div class="speaker-name">Emily Chen</div>
-                    <div class="speaker-title">Head of Research</div>
-                    <div class="speaker-company">Consectetur Labs</div>--%>
-                </div>
-                <div class="speaker-card">
-                    <%--<div class="speaker-avatar">MB</div>
-                    <div class="speaker-name">Dr. Michael Brown</div>
-                    <div class="speaker-title">President</div>
-                    <div class="speaker-company">Adipiscing Technologies</div>--%>
-                </div>
-                <div class="speaker-card">
-                    <%--     <div class="speaker-avatar">LW</div>
-                    <div class="speaker-name">Laura Williams</div>
-                    <div class="speaker-title">Senior Advisor</div>
-                    <div class="speaker-company">Elit Consulting</div>--%>
-                </div>
+                <!-- 
+                    This grid is also intentionally left empty.
+                    The 'loadDynamicData()' function will fill this section
+                    with speaker data from the database.
+                -->
             </div>
         </section>
+
+
+        <!-- Exhibitors Section -->
+        <section class="section" id="exhibitors">
+            <h2 class="section-title">Featured Exhibitors</h2>
+            <div class="exhibitors-grid">
+            </div>
+        </section>
+
 
         <!-- Venue Section -->
         <section class="section" id="venue">
             <h2 class="section-title">Venue Information</h2>
-            <div class="venue-content">
-                <div class="venue-info">
-                    <div class="venue-info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div class="venue-info-text">
-                            <h3>Location</h3>
-                            <p>
+            <div class="venue-content-compact">
+                <!-- Two Column Layout -->
+                <div class="venue-grid-compact">
+                    <!-- Left Side: Info Cards -->
+                    <div class="venue-left-compact">
+                        <!-- Location Card -->
+                        <div class="info-card-compact">
+                            <div class="info-header-compact">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h3>Location</h3>
+                            </div>
+                            <p class="info-text-compact">
                                 Yashoobhumi Convention Centre<br>
-                                Dwarka, New Delhi<br>
-                                India
+                                Dwarka, New Delhi, India
                             </p>
                         </div>
-                    </div>
-                    <div class="venue-info-item">
-                        <i class="fas fa-clock"></i>
-                        <div class="venue-info-text">
-                            <h3>Opening Times</h3>
-                            <%-- <p><strong>Wednesday, Sept 24:</strong> 9:00 - 17:30<br>
-                            <strong>Thursday, Sept 25:</strong> 9:00 - 17:30<br>
-                            <strong>Friday, Sept 26:</strong> 9:00 - 15:00</p>--%>
+
+                        <!-- Contact Card -->
+                        <div class="info-card-compact">
+                            <div class="info-header-compact">
+                                <i class="fas fa-envelope"></i>
+                                <h3>Contact</h3>
+                            </div>
+                            <div class="contact-grid-compact">
+                                <div class="contact-item-compact">
+                                    <strong>Booth Bookings</strong>
+                                    <p>Amit Gautam</p>
+                                    <a href="mailto:sales@lubricantindia.com">sales@lubricantindia.com</a>
+                                </div>
+                                <div class="contact-item-compact">
+                                    <strong>Speaking Opportunities</strong>
+                                    <p>Hema Sharma</p>
+                                    <a href="mailto:confex@lubricantindia.com">confex@lubricantindia.com</a>
+                                </div>
+                                <div class="contact-item-compact">
+                                    <strong>Sponsorship Packages</strong>
+                                    <p>Shubham Kumar</p>
+                                    <a href="mailto:partner@lubricantindia.com">partner@lubricantindia.com</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Opening Times Card -->
+                        <div class="info-card-compact">
+                            <div class="info-header-compact">
+                                <i class="fas fa-clock"></i>
+                                <h3>Opening Times</h3>
+                            </div>
+                            <div class="timing-list-compact">
+                                <div class="timing-item-compact">
+                                    <strong>Thu, Sept 24, 2026:</strong> <span>10:00 AM – 6:30 PM</span>
+                                </div>
+                                <div class="timing-item-compact">
+                                    <strong>Fri, Sept 25 2026:</strong> <span>10:00 AM – 6:30 PM</span>
+                                </div>
+                                <div class="timing-item-compact">
+                                    <strong>Sat, Sept 26 2026:</strong> <span>10:00 AM – 6:00 PM</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="venue-info-item">
-                        <i class="fas fa-info-circle"></i>
-                        <div class="venue-info-text">
-                            <h3>Event Details</h3>
-                            <p>3 days of exhibitions, conferences, and networking opportunities with industry leaders from across India and around the globe.</p>
-                        </div>
-                    </div>
-                    <div class="venue-info-item">
-                        <i class="fas fa-envelope"></i>
-                        <div class="venue-info-text">
-                            <h3>Contact</h3>
-                            <p>
-                                For inquiries and information:<br>
-                                <a href="mailto:test@test.com" style="color: #D94A2B;">test@test.com.com</a>
-                            </p>
+
+                    <!-- Right Side: Compact Contact Form -->
+                    <div class="venue-right-compact">
+                        <div class="contact-form-compact">
+                            <div class="form-header-compact">
+                                <i class="fas fa-paper-plane"></i>
+                                <h3>Send Us a Message</h3>
+                            </div>
+
+                            <asp:Panel ID="pnlContactForm" runat="server">
+                                <asp:TextBox ID="txtName" runat="server" placeholder="Your Name" CssClass="input-compact"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
+                                    ErrorMessage="*Required" ForeColor="#D94A2B" Display="Dynamic" ValidationGroup="ContactForm" CssClass="error-compact"></asp:RequiredFieldValidator>
+
+                                <asp:TextBox ID="txtEmail" runat="server" placeholder="Your Email" TextMode="Email" CssClass="input-compact"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
+                                    ErrorMessage="*Required" ForeColor="#D94A2B" Display="Dynamic" ValidationGroup="ContactForm" CssClass="error-compact"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                                    ErrorMessage="*Invalid email" ForeColor="#D94A2B" Display="Dynamic"
+                                    ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ValidationGroup="ContactForm" CssClass="error-compact"></asp:RegularExpressionValidator>
+
+                                <asp:TextBox ID="txtMobile" runat="server" placeholder="Mobile Number" CssClass="input-compact" MaxLength="10"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtMobile"
+                                    ErrorMessage="*Required" ForeColor="#D94A2B" Display="Dynamic" ValidationGroup="ContactForm" CssClass="error-compact"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="revMobile" runat="server" ControlToValidate="txtMobile"
+                                    ErrorMessage="*Invalid mobile number" ForeColor="#D94A2B" Display="Dynamic"
+                                    ValidationExpression="^[6-9]\d{9}$" ValidationGroup="ContactForm" CssClass="error-compact"></asp:RegularExpressionValidator>
+
+                                <asp:TextBox ID="txtMessage" runat="server" placeholder="Your Message" TextMode="MultiLine" Rows="3" CssClass="input-compact textarea-compact"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvMessage" runat="server" ControlToValidate="txtMessage"
+                                    ErrorMessage="*Required" ForeColor="#D94A2B" Display="Dynamic" ValidationGroup="ContactForm" CssClass="error-compact"></asp:RequiredFieldValidator>
+
+                                <asp:Button ID="btnSubmitContact" runat="server" Text="Send Message"
+                                    OnClick="btnSubmitContact_Click" ValidationGroup="ContactForm" CssClass="btn-compact" />
+
+                                <asp:Label ID="lblMessage" runat="server" CssClass="msg-compact"></asp:Label>
+                            </asp:Panel>
                         </div>
                     </div>
                 </div>
-                <a href="https://maps.app.goo.gl/pDFdFGjQq9trFb43A" target="_blank" class="cta-button" style="margin-top: 20px;">View on Google Maps</a>
+
+                <a href="https://maps.app.goo.gl/pDFdFGjQq9trFb43A" target="_blank" class="cta-button" style="margin-top: 25px;">
+                    <i class="fas fa-map-marked-alt" style="margin-right: 8px;"></i>View on Google Maps
+                </a>
             </div>
         </section>
 
-        <!-- Contact Section -->
-        <section class="section" id="contact" style="background: #f8fafc;">
-            <h2 class="section-title">Get in Touch</h2>
-            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                <p style="font-size: 18px; color: #64748b; margin-bottom: 30px;">
-                    Have questions? Want to become a sponsor? We'd love to hear from you!
-                </p>
-                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                    <a href="mailto:test@.com.com" class="cta-button">Email Us</a>
-                    <a href="User/RegisterExhibitor.aspx" class="cta-button" style="background: linear-gradient(135deg, #FF6B4A 0%, #D94A2B 100%);">Become an Exhibitor</a>
+
+        <div id="stickyTimer" class="sticky-timer-bar">
+            <div class="timer-container">
+                <div class="timer-text">Event Starts In:</div>
+
+                <div class="countdown-box">
+                    <div class="time-unit">
+                        <span class="time-val" id="days">00</span>
+                        <span class="time-label">Days</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-val" id="hours">00</span>
+                        <span class="time-label">Hours</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-val" id="minutes">00</span>
+                        <span class="time-label">Mins</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-val" id="seconds">00</span>
+                        <span class="time-label">Secs</span>
+                    </div>
                 </div>
+
+                <a href="User/RegisterExhibitor.aspx" class="timer-btn">Register Now</a>
             </div>
-        </section>
+        </div>
 
         <!-- Footer -->
         <footer class="footer">
+            <div style="margin-top: 40px;">
+                <h3 style="color: #fff; font-size: 20px; margin-bottom: 15px;">Sign up for Updates</h3>
+
+                <asp:Panel ID="pnlFooterSignup" runat="server" Style="max-width: 400px; margin: 0 auto;">
+
+                    <asp:TextBox ID="txtFooterEmail" runat="server" CssClass="input-compact"
+                        placeholder="Enter your email"
+                        Style="border-radius: 5px; padding: 10px; width: 100%;"></asp:TextBox>
+
+                    <asp:RequiredFieldValidator ID="rfvFooterEmail" runat="server"
+                        ControlToValidate="txtFooterEmail"
+                        ErrorMessage="Email is required"
+                        ForeColor="#FFB3B3" ValidationGroup="FooterSignup" Display="Dynamic" />
+
+                    <asp:RegularExpressionValidator ID="revFooterEmail" runat="server"
+                        ControlToValidate="txtFooterEmail"
+                        ErrorMessage="Invalid email"
+                        ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
+                        ForeColor="#FFB3B3" ValidationGroup="FooterSignup" Display="Dynamic" />
+
+                    <asp:Button ID="btnFooterSignup" runat="server"
+                        Text="Subscribe"
+                        CssClass="btn-compact"
+                        ValidationGroup="FooterSignup"
+                        OnClick="btnFooterSignup_Click"
+                        Style="margin-top: 10px;" />
+
+                    <asp:Label ID="lblFooterMsg" runat="server"
+                        Style="display: block; margin-top: 10px; color: #FFD9D9; font-size: 14px;"></asp:Label>
+                </asp:Panel>
+            </div>
+
             <div class="footer-content">
                 <div class="footer-links">
                     <a href="#home">Home</a>
                     <a href="#agenda">Agenda</a>
                     <a href="#speakers">Speakers</a>
+                    <a href="Exhibitors.aspx">Exhibitors</a>
                     <a href="#venue">Venue</a>
                     <a href="#">Terms & Conditions</a>
                     <a href="#">Privacy Policy</a>
@@ -735,6 +1282,45 @@
             </div>
         </footer>
     </form>
+
+    <div id="speakerModal" class="modal-overlay">
+        <div class="modal-content">
+            <button type="button" class="close-modal" onclick="closeSpeakerModal()">&times;</button>
+            <div class="modal-body-grid">
+                <div class="modal-sidebar" style="text-align: center;">
+
+                    <div class="speaker-avatar-container">
+                        <img id="modalPhoto" src="" alt="Speaker" class="modal-profile-img-circle">
+
+                        <img id="modalLogo" src="" alt="Logo" class="modal-company-logo-circle" style="display: none;">
+                    </div>
+
+                    <div style="margin-top: 15px; text-align: center;">
+                        <h4 id="modalCompany" style="margin-top: 5px; color: #D94A2B; font-weight: 700;"></h4>
+                    </div>
+                </div>
+                <div class="modal-main-info">
+                    <h2 id="modalName" class="modal-title"></h2>
+                    <p id="modalDesignation" class="modal-designation"></p>
+                    <div class="modal-badge">Experience: <span id="modalYEO"></span>Years</div>
+                    <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 20px 0;">
+
+                    <div class="modal-section">
+                        <h5>Professional Bio</h5>
+                        <p id="modalBio"></p>
+                    </div>
+                    <div class="modal-section">
+                        <h5>Areas of Expertise</h5>
+                        <p id="modalExpertise"></p>
+                    </div>
+                    <div class="modal-section">
+                        <h5>Current Projects</h5>
+                        <p id="modalProjects"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Navbar scroll effect
@@ -799,18 +1385,177 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
-            loadDynamicData();
+            loadSpeakers();
+            loadExhibitors();
         });
+
+        // 1. Update loadSpeakers to include the Button
+        async function loadSpeakers() {
+            try {
+                const response = await fetch('Index.aspx/GetSpeakersList', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json; charset=utf-8' }
+                });
+                const data = await response.json();
+                const speakers = data.d;
+                const grid = document.querySelector('.speakers-grid');
+
+                if (!speakers || speakers.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Speaker list coming soon.</p>';
+                    return;
+                }
+
+                let html = '';
+                speakers.forEach(s => {
+                    let imgHtml = s.PhotoPath
+                        ? `<img src="${s.PhotoPath}" alt="${s.Name}" style="width:100%; height:100%; object-fit:cover;">`
+                        : `<div style="width:100%;height:100%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:24px;color:#555;">${getInitials(s.Name)}</div>`;
+
+                    html += `
+                <div class="speaker-card">
+                    <div class="speaker-avatar">${imgHtml}</div>
+                    <div class="speaker-name">${s.Name}</div>
+                    <div class="speaker-title">${s.Designation}</div>
+                    <div class="speaker-company">${s.Company}</div>
+                    <button class="btn-view-profile" onclick="openSpeakerModal(${s.SpeakerID}); return false;">View Profile</button>
+                </div>
+            `;
+                });
+                grid.innerHTML = html;
+            } catch (err) { console.error('Speaker Error:', err); }
+        }
+
+        async function openSpeakerModal(speakerId) {
+            try {
+                // Fetch data from the C# WebMethod
+                const response = await fetch('Index.aspx/GetSpeakerDetails', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                    body: JSON.stringify({ speakerId: speakerId })
+                });
+
+                const data = await response.json();
+                const d = data.d; // The SpeakerDetailsDTO object
+
+                if (d) {
+                    // Fill text fields
+                    document.getElementById('modalName').innerText = d.Name || "";
+                    document.getElementById('modalDesignation').innerText = d.Designation || "";
+                    document.getElementById('modalCompany').innerText = d.Company || "";
+                    document.getElementById('modalYEO').innerText = d.YearsOfExperience || "0";
+                    document.getElementById('modalBio').innerText = d.ProfessionalBio || "No bio available.";
+                    document.getElementById('modalExpertise').innerText = d.AreasOfExpertise || "N/A";
+                    document.getElementById('modalProjects').innerText = d.CurrentWorkProjects || "N/A";
+
+                    // Handle Profile Photo
+                    const img = document.getElementById('modalPhoto');
+                    img.src = d.PhotoPath ? d.PhotoPath : 'Images/default_user.png';
+
+                    // Handle Company Logo
+                    const logo = document.getElementById('modalLogo');
+                    const companyHeader = document.getElementById('modalCompany');
+
+                    if (d.LogoPath) {
+                        logo.src = d.LogoPath;
+                        logo.style.display = 'inline-block';
+                        companyHeader.style.display = 'none'; // Hide text if logo exists (optional preference)
+                    } else {
+                        logo.style.display = 'none';
+                        companyHeader.style.display = 'block'; // Show text if no logo
+                    }
+
+                    // Show the Modal
+                    document.getElementById('speakerModal').style.display = 'flex';
+                    // Stop background scrolling
+                    document.body.style.overflow = 'hidden';
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Could not load details. Please try again.");
+            }
+        }
+
+        function closeSpeakerModal() {
+            document.getElementById('speakerModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }
+
+        // Close modal if user clicks outside the white box
+        window.onclick = function (e) {
+            const modal = document.getElementById('speakerModal');
+            if (e.target == modal) {
+                closeSpeakerModal();
+            }
+        }
+
+        // 2. FETCH EXHIBITORS
+        async function loadExhibitors() {
+            try {
+                const response = await fetch('Index.aspx/GetExhibitorsList', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' }
+                });
+                const data = await response.json();
+                const exhibitors = data.d;
+                const grid = document.querySelector('.exhibitors-grid');
+
+                if (!exhibitors || exhibitors.length === 0) {
+                    grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Exhibitor list coming soon.</p>';
+                    return;
+                }
+
+                let html = '';
+                exhibitors.forEach(e => {
+                    // 1. Format Location (City, State, Country)
+                    let locParts = [];
+                    if (e.City) locParts.push(e.City);
+                    if (e.State) locParts.push(e.State);
+                    if (e.Country) locParts.push(e.Country);
+                    let locationStr = locParts.join(', ');
+
+                    // 2. Build Card HTML
+                    html += `
+                <div class="exhibitor-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:130px;">
+                    
+                    <div style="margin-bottom:12px;">
+                        <div style="font-size:17px; font-weight:700; color:#D94A2B; line-height:1.3;">${e.FullName}</div>
+                        <div style="font-size:13px; color:#64748b; font-weight:600; margin-top:2px;">${e.Designation}</div>
+                    </div>
+
+                    <div style="border-top:1px solid #f1f5f9; padding-top:10px;">
+                         <div class="exhibitor-name" style="font-size:15px; margin-bottom:4px; color:#1e293b; font-weight:700;">
+                            <i class="fas fa-building" style="color:#cbd5e1; margin-right:6px; font-size:12px;"></i>${e.Company}
+                         </div>
+                         
+                         ${locationStr ?
+                            `<div style="font-size:13px; color:#94a3b8;">
+                                <i class="fas fa-map-marker-alt" style="margin-right:8px; font-size:12px; margin-left:2px;"></i>${locationStr}
+                            </div>` : ''
+                        }
+                    </div>
+                </div>
+            `;
+                });
+                grid.innerHTML = html;
+            } catch (err) {
+                console.error('Exhibitor Error:', err);
+            }
+        }
+
+        // Helper function (Keep or Add if missing)
+        function getInitials(name) {
+            if (!name) return 'SP';
+            const parts = name.split(' ');
+            return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+        }
 
         async function loadDynamicData() {
             try {
-                // 1. Call our C# WebMethod
                 const response = await fetch('Index.aspx/GetPublicAgendaDetails', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
-                    body: JSON.stringify({}) // Send an empty body
+                    body: JSON.stringify({})
                 });
 
                 if (!response.ok) {
@@ -818,76 +1563,71 @@
                 }
 
                 const data = await response.json();
-                const agendaAndSpeakerData = data.d; // ASP.NET wraps the result in '.d'
+                const allData = data.d;
 
-                // 2. Get the containers where we will put our new HTML
+                // Separate agendas and speakers
+                const agendas = allData.filter(item => item.AgendaID !== null);
+                const speakers = allData.filter(item => item.SpeakerID !== null);
+
+                // Get the containers
                 const agendaGrid = document.querySelector('.agenda-grid');
                 const speakersGrid = document.querySelector('.speakers-grid');
 
-                // 3. Create empty strings to build our HTML
+                // Build Agenda HTML
                 let agendaHtml = '';
-                let speakersHtml = '';
-
-                // A helper set to avoid duplicate speakers
-                const speakerIds = new Set();
-
-                // 4. Loop through every item returned from the database
-                agendaAndSpeakerData.forEach(item => {
-
-                    // --- Build the Agenda Card HTML ---
+                agendas.forEach(item => {
                     agendaHtml += `
-                        <div class="agenda-card">
-                            <div class="agenda-day">${item.Day}</div>
-                            <div class="agenda-time">${item.Time}</div>
-                            <div class="agenda-title">${item.AgendaTitle}</div>
-                            <p style="color: #64748b; font-size: 14px; margin: 15px 0;">
-                                ${item.AgendaBrief}
-                            </p>
-                            <span class="agenda-track">${item.Track}</span>
-                        </div>
-                    `;
-
-                    // --- Build the Speaker Card HTML (if there is a speaker) ---
-                    // Check if SpeakerID is not null and we haven't added this speaker yet
-                    if (item.SpeakerID > 0 && !speakerIds.has(item.SpeakerID)) {
-
-                        speakersHtml += `
-                            <div class="speaker-card">
-                                <div class="speaker-avatar">
-                                    ${item.SpeakerPhoto ?
-                                `<img src="${item.SpeakerPhoto}" alt="${item.SpeakerName}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` :
-                                getInitials(item.SpeakerName)
-                            }
-                                </div>
-                                <div class="speaker-name">${item.SpeakerName}</div>
-                                <div class="speaker-title">${item.SpeakerDesignation}</div>
-                                <div class="speaker-company">${item.SpeakerCompany}</div>
-                            </div>
-                        `;
-
-                        // Add this speaker's ID to the set so we don't add them again
-                        speakerIds.add(item.SpeakerID);
-                    }
+                <div class="agenda-card">
+                    <div class="agenda-day">${item.Day}</div>
+                    <div class="agenda-time">${item.Time}</div>
+                    <div class="agenda-title">${item.AgendaTitle}</div>
+                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">
+                        ${item.AgendaBrief}
+                    </p>
+                    <span class="agenda-track">${item.Track}</span>
+                </div>
+            `;
                 });
 
-                // 5. Inject the new HTML into the page
-                agendaGrid.innerHTML = agendaHtml;
-                speakersGrid.innerHTML = speakersHtml;
+                agendaGrid.innerHTML = agendaHtml || '<p>Agenda details will be available soon.</p>';
 
-                // If no agenda/speakers were found, show a message
-                if (agendaHtml === '') {
-                    agendaGrid.innerHTML = '<p>Agenda details will be available soon.</p>';
-                }
-                if (speakersHtml === '') {
-                    speakersGrid.innerHTML = '<p>Speaker details will be available soon.</p>';
-                }
+                // Build Speaker HTML
+                let speakersHtml = '';
+                speakers.forEach(speaker => {
+                    speakersHtml += `
+                <div class="speaker-card">
+                    <div class="speaker-avatar">
+                        ${speaker.SpeakerPhoto ?
+                            `<img src="${speaker.SpeakerPhoto}" alt="${speaker.SpeakerName}" 
+                                  style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` :
+                            getInitials(speaker.SpeakerName)
+                        }
+                    </div>
+                    <div class="speaker-name">${speaker.SpeakerName}</div>
+                    <div class="speaker-title">${speaker.SpeakerDesignation}</div>
+                    <div class="speaker-company">${speaker.SpeakerCompany}</div>
+                </div>
+            `;
+                });
+
+                speakersGrid.innerHTML = speakersHtml || '<p>Speaker details will be available soon.</p>';
 
             } catch (error) {
                 console.error('Error loading dynamic data:', error);
-                // Show a friendly error on the page
                 document.querySelector('.agenda-grid').innerHTML = '<p>Could not load agenda. Please try again later.</p>';
                 document.querySelector('.speakers-grid').innerHTML = '<p>Could not load speakers. Please try again later.</p>';
             }
+        }
+
+        // Helper function (keep this as-is)
+        function getInitials(name) {
+            if (!name) return '';
+            const parts = name.split(' ');
+            let initials = parts[0] ? parts[0][0] : '';
+            if (parts.length > 1) {
+                initials += parts[parts.length - 1][0];
+            }
+            return initials.toUpperCase();
         }
 
         // Helper function to get initials from a name
@@ -900,6 +1640,54 @@
             }
             return initials.toUpperCase();
         }
+
+        // --- COUNTDOWN TIMER LOGIC ---
+
+        // 1. Set the date we're counting down to (Sept 24, 2026 10:00:00)
+        const countDownDate = new Date("Sep 24, 2026 10:00:00").getTime();
+
+        const updateTimer = setInterval(function () {
+            // Get today's date and time
+            const now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            const distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Output the result in elements with id="days", "hours", etc.
+            const elDays = document.getElementById("days");
+            const elHours = document.getElementById("hours");
+            const elMins = document.getElementById("minutes");
+            const elSecs = document.getElementById("seconds");
+
+            // Check if elements exist to prevent errors on other pages if you reuse this script
+            if (elDays) elDays.innerText = days < 10 ? "0" + days : days;
+            if (elHours) elHours.innerText = hours < 10 ? "0" + hours : hours;
+            if (elMins) elMins.innerText = minutes < 10 ? "0" + minutes : minutes;
+            if (elSecs) elSecs.innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            // If the count down is over, write some text 
+            if (distance < 0) {
+                clearInterval(updateTimer);
+                document.getElementById("stickyTimer").innerHTML = "<div style='color:white; font-weight:bold; width:100%; text-align:center;'>Event has started!</div>";
+            }
+        }, 1000);
+
+        // --- SCROLL TRIGGER LOGIC ---
+        window.addEventListener('scroll', function () {
+            const timerBar = document.getElementById('stickyTimer');
+            // Show timer after scrolling 600px (past the Hero section)
+            if (window.scrollY > 600) {
+                timerBar.classList.add('visible');
+            } else {
+                timerBar.classList.remove('visible');
+            }
+        });
     </script>
 </body>
 </html>

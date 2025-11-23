@@ -659,6 +659,172 @@
             background-color: #f8fafc !important; /* Use a light gray background */
             cursor: default !important;
         }
+
+        /* --- Modern Success Card Styles --- */
+       .success-card {
+    background: white;
+    /* Optional: Add a very subtle border/shadow if you want it to look like a card, 
+       or remove these two lines if you want it completely flat like the image */
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    
+    padding: 60px 20px;
+    text-align: center;
+    max-width: 600px;
+    margin: 40px auto;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Icon Container */
+.success-icon-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 30px auto;
+    position: relative;
+}
+
+/* The Green Circle */
+.success-circle {
+    width: 100%;
+    height: 100%;
+    background-color: #8cd47e; /* The soft green from your image */
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+        @keyframes pulseGreen {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(56, 161, 105, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 20px rgba(56, 161, 105, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(56, 161, 105, 0);
+            }
+        }
+
+        /* The Checkmark Drawing Animation */
+        /* --- Clean "Thank You" Style --- */
+.success-card {
+    background: white;
+    /* Optional: Add a very subtle border/shadow if you want it to look like a card, 
+       or remove these two lines if you want it completely flat like the image */
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    
+    padding: 60px 20px;
+    text-align: center;
+    max-width: 600px;
+    margin: 40px auto;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Icon Container */
+.success-icon-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 30px auto;
+    position: relative;
+}
+
+/* The Green Circle */
+.success-circle {
+    width: 100%;
+    height: 100%;
+    background-color: #8cd47e; /* The soft green from your image */
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* The White Checkmark */
+.checkmark {
+    width: 35px;
+    height: 70px;
+    border-bottom: 8px solid white; /* Thicker line */
+    border-right: 8px solid white;  /* Thicker line */
+    border-radius: 4px; /* Rounds the edges of the checkmark */
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -60%) rotate(45deg);
+    opacity: 0;
+    animation: drawCheck 0.5s 0.4s ease-out forwards;
+}
+
+@keyframes drawCheck {
+    0% { height: 0; width: 0; opacity: 0; }
+    40% { height: 70px; width: 0; opacity: 1; }
+    100% { height: 70px; width: 35px; opacity: 1; }
+}
+
+/* Typography matching the image */
+.success-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1e2046; /* The Dark Navy Blue from the image */
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.success-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #5a6b85; /* The Grey-Blue subtext color */
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+/* Button to match */
+.btn-home {
+    background: #1e2046; /* Match the dark title color */
+    color: white;
+    padding: 12px 35px;
+    border-radius: 50px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 15px;
+}
+
+.btn-home:hover {
+    background: #8cd47e; /* Green on hover */
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(140, 212, 126, 0.4);
+}
     </style>
 </head>
 <body>
@@ -670,311 +836,329 @@
             </div>
 
             <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
+           <asp:Panel ID="pnlSuccessMessage" runat="server" Visible="false">
+    <div class="success-card">
+        
+        <div class="success-icon-container">
+            <div class="success-circle"></div>
+            <div class="checkmark"></div>
+        </div>
 
-            <!-- Section 1: Personal Information -->
-            <div class="form-section">
-                <h3><i class="fas fa-user"></i>Personal Information</h3>
+        <h2 class="success-title">Thank you!</h2>
+        
+        <p class="success-text">
+            Your submission has been sent. <br />
+            <span style="font-size: 14px; opacity: 0.8;">We will contact you shortly via email.</span>
+        </p>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="<%=txtName.ClientID%>">Full Name <span class="required">*</span></label>
-                        <asp:TextBox ID="txtName" runat="server" placeholder="Enter your full name"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
-                            ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+    </div>
+</asp:Panel>
+            <asp:Panel ID="pnlFormFields" runat="server">
+
+                <!-- Section 1: Personal Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i>Personal Information</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="<%=txtName.ClientID%>">Full Name <span class="required">*</span></label>
+                            <asp:TextBox ID="txtName" runat="server" placeholder="Enter your full name"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
+                                ErrorMessage="Name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="<%=txtEmail.ClientID%>">Email Address <span class="required">*</span></label>
+                            <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" placeholder="Enter your email"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
+                                ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                            <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                                ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
+                                ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
+                        </div>
+                    </div>
+
+                    <div class="form-row-three">
+                        <div class="form-group">
+                            <label for="<%=txtMobile.ClientID%>">Mobile Number</label>
+                            <asp:TextBox ID="txtMobile" runat="server" placeholder="Enter your mobile number"></asp:TextBox>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="<%=txtDesignation.ClientID%>">Designation <span class="required">*</span></label>
+                            <asp:TextBox ID="txtDesignation" runat="server" placeholder="Enter your designation"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
+                                ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="<%=txtYearsOfExperience.ClientID%>">Years of Experience</label>
+                            <asp:TextBox ID="txtYearsOfExperience" runat="server" TextMode="Number" placeholder="Enter years" min="0"></asp:TextBox>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="<%=txtEmail.ClientID%>">Email Address <span class="required">*</span></label>
-                        <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" placeholder="Enter your email"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
-                            ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
-                        <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
-                            ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
-                            ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
+                        <label for="<%=txtCompany.ClientID%>">Company/Organization <span class="required">*</span></label>
+                        <asp:TextBox ID="txtCompany" runat="server" placeholder="Enter your company name"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
+                            ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                     </div>
                 </div>
 
-                <div class="form-row-three">
+                <!-- Section 2: Profile & Media -->
+                <div class="form-section">
+                    <h3><i class="fas fa-id-card"></i>Profile & Media</h3>
+
                     <div class="form-group">
-                        <label for="<%=txtMobile.ClientID%>">Mobile Number</label>
-                        <asp:TextBox ID="txtMobile" runat="server" placeholder="Enter your mobile number"></asp:TextBox>
+                        <label for="fuPhoto">Upload Your Recent Photo <span class="required">*</span></label>
+                        <p class="info-text">Please upload a professional photo (JPG, PNG)</p>
+
+                        <!-- Current Photo Display -->
+                        <asp:Panel ID="pnlCurrentPhoto" runat="server" Visible="false" CssClass="current-file-display">
+                            <div class="current-file-info">
+                                <asp:Image ID="imgCurrentPhoto" runat="server" CssClass="current-photo-thumb" />
+                                <div class="current-file-details">
+                                    <span class="current-file-label"><i class="fas fa-check-circle"></i>Current Photo</span>
+                                    <asp:Button ID="btnRemovePhoto" runat="server" Text="Remove & Upload New"
+                                        CssClass="btn-remove-file" OnClick="btnRemovePhoto_Click"
+                                        OnClientClick="return confirm('Are you sure you want to remove the current photo? You will need to upload a new one.');"
+                                        CausesValidation="false" />
+                                </div>
+                            </div>
+                        </asp:Panel>
+
+                        <!-- Upload New Photo -->
+                        <asp:Panel ID="pnlUploadPhoto" runat="server">
+                            <div class="file-upload-wrapper">
+                                <asp:FileUpload ID="fuPhoto" runat="server" CssClass="file-upload-input"
+                                    accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'photoFileName', 'photoPreview')" />
+                                <label for="<%=fuPhoto.ClientID%>" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Photo</span>
+                                </label>
+                            </div>
+                            <div id="photoFileName" class="file-name"></div>
+                            <div id="photoPreview" class="photo-preview">
+                                <img id="photoPreviewImg" src="" alt="Photo Preview" />
+                            </div>
+                        </asp:Panel>
+
+                        <asp:RequiredFieldValidator ID="rfvPhoto" runat="server" ControlToValidate="fuPhoto"
+                            ErrorMessage="Photo is required" ForeColor="Red" Display="Dynamic"
+                            ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                        <asp:HiddenField ID="hdnCurrentPhotoPath" runat="server" />
                     </div>
 
                     <div class="form-group">
-                        <label for="<%=txtDesignation.ClientID%>">Designation <span class="required">*</span></label>
-                        <asp:TextBox ID="txtDesignation" runat="server" placeholder="Enter your designation"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
-                            ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                        <label>Company Logo <span class="text-muted">(Optional)</span></label>
+                        <p class="info-text">High resolution logo (JPG, PNG)</p>
+
+                        <!-- Current Logo Display -->
+                        <asp:Panel ID="pnlCurrentLogo" runat="server" Visible="false" CssClass="current-file-display">
+                            <div class="current-file-info">
+                                <asp:Image ID="imgCurrentLogo" runat="server" CssClass="current-logo-thumb" />
+                                <div class="current-file-details">
+                                    <span class="current-file-label"><i class="fas fa-check-circle"></i>Current Logo</span>
+                                    <asp:Button ID="btnRemoveLogo" runat="server" Text="Remove & Upload New"
+                                        CssClass="btn-remove-file" OnClick="btnRemoveLogo_Click"
+                                        OnClientClick="return confirm('Are you sure you want to remove the current logo?');"
+                                        CausesValidation="false" />
+                                </div>
+                            </div>
+                        </asp:Panel>
+
+                        <!-- Upload New Logo -->
+                        <asp:Panel ID="pnlUploadLogo" runat="server">
+                            <div class="file-upload-wrapper">
+                                <asp:FileUpload ID="fuLogo" runat="server" CssClass="file-upload-input"
+                                    accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'logoFileName', 'logoPreview')" />
+                                <label for="<%=fuLogo.ClientID%>" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Logo</span>
+                                </label>
+                            </div>
+                            <div id="logoFileName" class="file-name"></div>
+                            <div id="logoPreview" class="photo-preview">
+                                <img id="logoPreviewImg" src="" alt="Logo Preview" />
+                            </div>
+                        </asp:Panel>
+
+                        <asp:HiddenField ID="hdnCurrentLogoPath" runat="server" />
                     </div>
 
                     <div class="form-group">
-                        <label for="<%=txtYearsOfExperience.ClientID%>">Years of Experience</label>
-                        <asp:TextBox ID="txtYearsOfExperience" runat="server" TextMode="Number" placeholder="Enter years" min="0"></asp:TextBox>
+                        <label for="<%=txtLinkedIn.ClientID%>">LinkedIn Profile URL <span class="required">*</span></label>
+                        <asp:TextBox ID="txtLinkedIn" runat="server" placeholder="https://linkedin.com/in/yourprofile"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
+                            ErrorMessage="LinkedIn profile is required" ForeColor="Red" Display="Dynamic"
+                            ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="revLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
+                            ErrorMessage="Please enter a valid LinkedIn URL" ForeColor="Red" Display="Dynamic"
+                            ValidationExpression="^https?://(www\.)?linkedin\.com/.*$"
+                            ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="<%=txtCompany.ClientID%>">Company/Organization <span class="required">*</span></label>
-                    <asp:TextBox ID="txtCompany" runat="server" placeholder="Enter your company name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
-                        ErrorMessage="Company is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
-                </div>
-            </div>
 
-            <!-- Section 2: Profile & Media -->
-            <div class="form-section">
-                <h3><i class="fas fa-id-card"></i>Profile & Media</h3>
+                <!-- Section 3: Professional Profile -->
+                <div class="form-section">
+                    <h3><i class="fas fa-briefcase"></i>Professional Profile</h3>
 
-                <div class="form-group">
-                    <label for="fuPhoto">Upload Your Recent Photo <span class="required">*</span></label>
-                    <p class="info-text">Please upload a professional photo (JPG, PNG)</p>
+                    <div class="form-group">
+                        <label for="<%=txtProfessionalBio.ClientID%>">Professional Bio (150-250 words recommended)</label>
+                        <p class="info-text">This will be used for promotional and agenda material</p>
+                        <asp:TextBox ID="txtProfessionalBio" runat="server" TextMode="MultiLine" Rows="5"
+                            placeholder="Enter your professional bio"></asp:TextBox>
+                        <div id="bioCharCount" class="char-counter">0 characters</div>
+                    </div>
 
-                    <!-- Current Photo Display -->
-                    <asp:Panel ID="pnlCurrentPhoto" runat="server" Visible="false" CssClass="current-file-display">
-                        <div class="current-file-info">
-                            <asp:Image ID="imgCurrentPhoto" runat="server" CssClass="current-photo-thumb" />
-                            <div class="current-file-details">
-                                <span class="current-file-label"><i class="fas fa-check-circle"></i>Current Photo</span>
-                                <asp:Button ID="btnRemovePhoto" runat="server" Text="Remove & Upload New"
-                                    CssClass="btn-remove-file" OnClick="btnRemovePhoto_Click"
-                                    OnClientClick="return confirm('Are you sure you want to remove the current photo? You will need to upload a new one.');"
-                                    CausesValidation="false" />
+                    <div class="form-group">
+                        <label>Areas of Expertise</label>
+                        <p class="info-text">Please select or mention your core areas of domain expertise</p>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkBaseOils" />
+                                <label for="chkBaseOils">Base Oils</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkAdditives" />
+                                <label for="chkAdditives">Lubricant Additives</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkIndustrial" />
+                                <label for="chkIndustrial">Industrial Lubrication</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkAutomotive" />
+                                <label for="chkAutomotive">Automotive & EV Fluids</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkSynthetic" />
+                                <label for="chkSynthetic">Synthetic and Bio-Based Lubricants</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkSustainability" />
+                                <label for="chkSustainability">Sustainability & Circularity</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkTribology" />
+                                <label for="chkTribology">Tribology & Wear Performance</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkMonitoring" />
+                                <label for="chkMonitoring">Condition Monitoring & Smart Maintenance</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkRegulatory" />
+                                <label for="chkRegulatory">Regulatory Compliance & Standards</label>
                             </div>
                         </div>
-                    </asp:Panel>
-
-                    <!-- Upload New Photo -->
-                    <asp:Panel ID="pnlUploadPhoto" runat="server">
-                        <div class="file-upload-wrapper">
-                            <asp:FileUpload ID="fuPhoto" runat="server" CssClass="file-upload-input"
-                                accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'photoFileName', 'photoPreview')" />
-                            <label for="<%=fuPhoto.ClientID%>" class="file-upload-label">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <span>Choose Photo</span>
-                            </label>
-                        </div>
-                        <div id="photoFileName" class="file-name"></div>
-                        <div id="photoPreview" class="photo-preview">
-                            <img id="photoPreviewImg" src="" alt="Photo Preview" />
-                        </div>
-                    </asp:Panel>
-
-                    <asp:RequiredFieldValidator ID="rfvPhoto" runat="server" ControlToValidate="fuPhoto"
-                        ErrorMessage="Photo is required" ForeColor="Red" Display="Dynamic"
-                        ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
-                    <asp:HiddenField ID="hdnCurrentPhotoPath" runat="server" />
+                        <asp:TextBox ID="txtOtherExpertise" runat="server" placeholder="Other areas (please specify)" Style="margin-top: 12px;"></asp:TextBox>
+                        <asp:HiddenField ID="hdnAreasOfExpertise" runat="server" />
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Company Logo <span class="text-muted">(Optional)</span></label>
-                    <p class="info-text">High resolution logo (JPG, PNG)</p>
+                <!-- Section 4: Current Work & Projects -->
+                <div class="form-section">
+                    <h3><i class="fas fa-project-diagram"></i>Current Work & Projects</h3>
 
-                    <!-- Current Logo Display -->
-                    <asp:Panel ID="pnlCurrentLogo" runat="server" Visible="false" CssClass="current-file-display">
-                        <div class="current-file-info">
-                            <asp:Image ID="imgCurrentLogo" runat="server" CssClass="current-logo-thumb" />
-                            <div class="current-file-details">
-                                <span class="current-file-label"><i class="fas fa-check-circle"></i>Current Logo</span>
-                                <asp:Button ID="btnRemoveLogo" runat="server" Text="Remove & Upload New"
-                                    CssClass="btn-remove-file" OnClick="btnRemoveLogo_Click"
-                                    OnClientClick="return confirm('Are you sure you want to remove the current logo?');"
-                                    CausesValidation="false" />
+                    <div class="form-group">
+                        <label for="<%=txtCurrentWorkProjects.ClientID%>">Current Work & Projects</label>
+                        <p class="info-text">Description of current projects, research or industry initiatives you're involved in</p>
+                        <asp:TextBox ID="txtCurrentWorkProjects" runat="server" TextMode="MultiLine" Rows="4"
+                            placeholder="Describe your current work, projects, research or industry initiatives"></asp:TextBox>
+                        <div id="workCharCount" class="char-counter">0 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="<%=txtSuggestedTopics.ClientID%>">Suggested Topics/Themes You'd Be Comfortable Speaking On</label>
+                        <p class="info-text">You may list 2-3 topics that reflect your current work or thought leadership areas</p>
+                        <asp:TextBox ID="txtSuggestedTopics" runat="server" TextMode="MultiLine" Rows="3"
+                            placeholder="List 2-3 topics"></asp:TextBox>
+                    </div>
+                </div>
+
+                <!-- Section 5: Discussion Format & Speaking Experience -->
+                <div class="form-section">
+                    <h3><i class="fas fa-comments"></i>Discussion Format & Speaking Experience</h3>
+
+                    <div class="form-group">
+                        <label>Preferred Discussion Format</label>
+                        <p class="info-text">Select all that apply</p>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkPanel" />
+                                <label for="chkPanel">Panel Discussion</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chkPresentation" />
+                                <label for="chkPresentation">Technical Presentation</label>
                             </div>
                         </div>
-                    </asp:Panel>
+                        <asp:HiddenField ID="hdnPreferredFormat" runat="server" />
+                    </div>
 
-                    <!-- Upload New Logo -->
-                    <asp:Panel ID="pnlUploadLogo" runat="server">
-                        <div class="file-upload-wrapper">
-                            <asp:FileUpload ID="fuLogo" runat="server" CssClass="file-upload-input"
-                                accept="image/jpeg,image/png,image/jpg" onchange="displayFileName(this, 'logoFileName', 'logoPreview')" />
-                            <label for="<%=fuLogo.ClientID%>" class="file-upload-label">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <span>Choose Logo</span>
+                    <div class="form-group">
+                        <label for="<%=txtPreviousSpeakingEngagements.ClientID%>">Previous Speaking Engagements</label>
+                        <p class="info-text">Please list any conferences, webinars or forums where you've recently spoken</p>
+                        <asp:TextBox ID="txtPreviousSpeakingEngagements" runat="server" TextMode="MultiLine" Rows="4"
+                            placeholder="List your speaking engagements with links if available"></asp:TextBox>
+                        <div id="engagementsCharCount" class="char-counter">0 characters</div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Select Agenda Topics -->
+                <div class="form-section">
+                    <h3><i class="fas fa-calendar-check"></i>Select Topics You'd Like to Speak On</h3>
+
+                    <div class="selection-counter">
+                        <i class="fas fa-info-circle"></i>
+                        <span>You can select up to 3 topics. Currently selected: <strong><span id="selectedCount">0</span>/3</strong></span>
+                    </div>
+
+                    <div class="agenda-table-wrapper">
+                        <asp:Literal ID="litAgendaTable" runat="server"></asp:Literal>
+                    </div>
+
+                    <asp:HiddenField ID="hdnSelectedAgendas" runat="server" />
+                    <asp:CustomValidator ID="cvAgendaSelection" runat="server"
+                        ErrorMessage="Please select at least 1 topic (maximum 3)" ForeColor="Red" Display="Dynamic"
+                        ClientValidationFunction="validateAgendaSelection"
+                        OnServerValidate="cvAgendaSelection_ServerValidate"
+                        ValidationGroup="RegistrationValidation"></asp:CustomValidator>
+                </div>
+
+                <!-- Section 7: Consent & Availability -->
+                <div class="form-section">
+                    <h3><i class="fas fa-check-circle"></i>Consent & Availability</h3>
+
+                    <div class="form-group">
+                        <label for="<%=ddlIsAvailable.ClientID%>">Are you available to speak during the scheduled event dates? <span class="required">*</span></label>
+                        <asp:DropDownList ID="ddlIsAvailable" runat="server">
+                            <asp:ListItem Text="Yes" Value="Yes" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="No" Value="No"></asp:ListItem>
+                            <asp:ListItem Text="Tentative" Value="Tentative"></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <asp:CheckBox ID="chkMarketingConsent" runat="server" />
+                            <label for="<%=chkMarketingConsent.ClientID%>">
+                                I consent to the use of my photo, name and bio in event marketing materials
                             </label>
                         </div>
-                        <div id="logoFileName" class="file-name"></div>
-                        <div id="logoPreview" class="photo-preview">
-                            <img id="logoPreviewImg" src="" alt="Logo Preview" />
-                        </div>
-                    </asp:Panel>
-
-                    <asp:HiddenField ID="hdnCurrentLogoPath" runat="server" />
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtLinkedIn.ClientID%>">LinkedIn Profile URL <span class="required">*</span></label>
-                    <asp:TextBox ID="txtLinkedIn" runat="server" placeholder="https://linkedin.com/in/yourprofile"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
-                        ErrorMessage="LinkedIn profile is required" ForeColor="Red" Display="Dynamic"
-                        ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revLinkedIn" runat="server" ControlToValidate="txtLinkedIn"
-                        ErrorMessage="Please enter a valid LinkedIn URL" ForeColor="Red" Display="Dynamic"
-                        ValidationExpression="^https?://(www\.)?linkedin\.com/.*$"
-                        ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
-                </div>
-            </div>
-
-
-            <!-- Section 3: Professional Profile -->
-            <div class="form-section">
-                <h3><i class="fas fa-briefcase"></i>Professional Profile</h3>
-
-                <div class="form-group">
-                    <label for="<%=txtProfessionalBio.ClientID%>">Professional Bio (150-250 words recommended)</label>
-                    <p class="info-text">This will be used for promotional and agenda material</p>
-                    <asp:TextBox ID="txtProfessionalBio" runat="server" TextMode="MultiLine" Rows="5"
-                        placeholder="Enter your professional bio"></asp:TextBox>
-                    <div id="bioCharCount" class="char-counter">0 characters</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Areas of Expertise</label>
-                    <p class="info-text">Please select or mention your core areas of domain expertise</p>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkBaseOils" />
-                            <label for="chkBaseOils">Base Oils</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkAdditives" />
-                            <label for="chkAdditives">Lubricant Additives</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkIndustrial" />
-                            <label for="chkIndustrial">Industrial Lubrication</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkAutomotive" />
-                            <label for="chkAutomotive">Automotive & EV Fluids</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkSynthetic" />
-                            <label for="chkSynthetic">Synthetic and Bio-Based Lubricants</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkSustainability" />
-                            <label for="chkSustainability">Sustainability & Circularity</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkTribology" />
-                            <label for="chkTribology">Tribology & Wear Performance</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkMonitoring" />
-                            <label for="chkMonitoring">Condition Monitoring & Smart Maintenance</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkRegulatory" />
-                            <label for="chkRegulatory">Regulatory Compliance & Standards</label>
-                        </div>
-                    </div>
-                    <asp:TextBox ID="txtOtherExpertise" runat="server" placeholder="Other areas (please specify)" Style="margin-top: 12px;"></asp:TextBox>
-                    <asp:HiddenField ID="hdnAreasOfExpertise" runat="server" />
-                </div>
-            </div>
-
-            <!-- Section 4: Current Work & Projects -->
-            <div class="form-section">
-                <h3><i class="fas fa-project-diagram"></i>Current Work & Projects</h3>
-
-                <div class="form-group">
-                    <label for="<%=txtCurrentWorkProjects.ClientID%>">Current Work & Projects</label>
-                    <p class="info-text">Description of current projects, research or industry initiatives you're involved in</p>
-                    <asp:TextBox ID="txtCurrentWorkProjects" runat="server" TextMode="MultiLine" Rows="4"
-                        placeholder="Describe your current work, projects, research or industry initiatives"></asp:TextBox>
-                    <div id="workCharCount" class="char-counter">0 characters</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtSuggestedTopics.ClientID%>">Suggested Topics/Themes You'd Be Comfortable Speaking On</label>
-                    <p class="info-text">You may list 2-3 topics that reflect your current work or thought leadership areas</p>
-                    <asp:TextBox ID="txtSuggestedTopics" runat="server" TextMode="MultiLine" Rows="3"
-                        placeholder="List 2-3 topics"></asp:TextBox>
-                </div>
-            </div>
-
-            <!-- Section 5: Discussion Format & Speaking Experience -->
-            <div class="form-section">
-                <h3><i class="fas fa-comments"></i>Discussion Format & Speaking Experience</h3>
-
-                <div class="form-group">
-                    <label>Preferred Discussion Format</label>
-                    <p class="info-text">Select all that apply</p>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkPanel" />
-                            <label for="chkPanel">Panel Discussion</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="chkPresentation" />
-                            <label for="chkPresentation">Technical Presentation</label>
-                        </div>
-                    </div>
-                    <asp:HiddenField ID="hdnPreferredFormat" runat="server" />
-                </div>
-
-                <div class="form-group">
-                    <label for="<%=txtPreviousSpeakingEngagements.ClientID%>">Previous Speaking Engagements</label>
-                    <p class="info-text">Please list any conferences, webinars or forums where you've recently spoken</p>
-                    <asp:TextBox ID="txtPreviousSpeakingEngagements" runat="server" TextMode="MultiLine" Rows="4"
-                        placeholder="List your speaking engagements with links if available"></asp:TextBox>
-                    <div id="engagementsCharCount" class="char-counter">0 characters</div>
-                </div>
-            </div>
-
-            <!-- Section 6: Select Agenda Topics -->
-            <div class="form-section">
-                <h3><i class="fas fa-calendar-check"></i>Select Topics You'd Like to Speak On</h3>
-
-                <div class="selection-counter">
-                    <i class="fas fa-info-circle"></i>
-                    <span>You can select up to 3 topics. Currently selected: <strong><span id="selectedCount">0</span>/3</strong></span>
-                </div>
-
-                <div class="agenda-table-wrapper">
-                    <asp:Literal ID="litAgendaTable" runat="server"></asp:Literal>
-                </div>
-
-                <asp:HiddenField ID="hdnSelectedAgendas" runat="server" />
-                <asp:CustomValidator ID="cvAgendaSelection" runat="server"
-                    ErrorMessage="Please select at least 1 topic (maximum 3)" ForeColor="Red" Display="Dynamic"
-                    ClientValidationFunction="validateAgendaSelection"
-                    OnServerValidate="cvAgendaSelection_ServerValidate"
-                    ValidationGroup="RegistrationValidation"></asp:CustomValidator>
-            </div>
-
-            <!-- Section 7: Consent & Availability -->
-            <div class="form-section">
-                <h3><i class="fas fa-check-circle"></i>Consent & Availability</h3>
-
-                <div class="form-group">
-                    <label for="<%=ddlIsAvailable.ClientID%>">Are you available to speak during the scheduled event dates? <span class="required">*</span></label>
-                    <asp:DropDownList ID="ddlIsAvailable" runat="server">
-                        <asp:ListItem Text="Yes" Value="Yes" Selected="True"></asp:ListItem>
-                        <asp:ListItem Text="No" Value="No"></asp:ListItem>
-                        <asp:ListItem Text="Tentative" Value="Tentative"></asp:ListItem>
-                    </asp:DropDownList>
-                </div>
-
-                <div class="form-group">
-                    <div class="checkbox-item">
-                        <asp:CheckBox ID="chkMarketingConsent" runat="server" />
-                        <label for="<%=chkMarketingConsent.ClientID%>">
-                            I consent to the use of my photo, name and bio in event marketing materials
-                        </label>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-footer">
-                <%-- <a href="Default.aspx" class="back-link">
+                <div class="form-footer">
+                    <%-- <a href="Default.aspx" class="back-link">
                     <i class="fas fa-arrow-left"></i>Back to Home
                 </a>--%>
-                <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary"
-                    OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" OnClientClick="return collectFormData();" />
-            </div>
-
+                    <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary"
+                        OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" OnClientClick="return collectFormData();" />
+                </div>
+            </asp:Panel>
             <!-- Agenda Details Modal -->
             <div id="agendaModal" class="modal">
                 <div class="modal-content">
@@ -1292,30 +1476,37 @@
 
                 function updateAgendaSelection() {
                     var selectedAgendas = [];
+
+                    // 1. Get all checked values
                     agendaCheckboxes.forEach(function (checkbox) {
                         if (checkbox.checked) {
                             selectedAgendas.push(checkbox.value);
                         }
                     });
 
+                    // 2. Update Hidden Field and Counter
                     hiddenField.value = selectedAgendas.join(',');
 
                     if (counter) {
                         counter.textContent = selectedAgendas.length;
                     }
 
-                    // Disable/enable checkboxes based on selection count
+                    // 3. LOGIC FIX: Handle Disabling/Enabling
                     if (selectedAgendas.length >= 3) {
+                        // Max limit reached: Disable only the UNCHECKED boxes
                         agendaCheckboxes.forEach(function (checkbox) {
                             if (!checkbox.checked) {
                                 checkbox.disabled = true;
+                                // Optional: Add visual cue class
+                                checkbox.closest('tr').style.opacity = '0.5';
                             }
                         });
                     } else {
+                        // Limit not reached: Enable ALL boxes
                         agendaCheckboxes.forEach(function (checkbox) {
-                            if (!checkbox.disabled) {
-                                checkbox.disabled = false;
-                            }
+                            checkbox.disabled = false;
+                            // Remove visual cue class
+                            checkbox.closest('tr').style.opacity = '1';
                         });
                     }
                 }

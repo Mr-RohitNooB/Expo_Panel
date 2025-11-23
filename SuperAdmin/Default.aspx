@@ -77,6 +77,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden; /* Add this to clip decorative elements */
+            border-radius: 25px;
         }
 
         /* Login Container */
@@ -140,23 +141,35 @@
             font-weight: 700;
             letter-spacing: -0.5px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: -50px;
+            margin-bottom: 15px; /* Changed from -50px */
         }
 
         .header-brand p {
             font-size: 15px;
             color: rgba(255, 255, 255, 0.95);
             font-weight: 500;
-            margin: 4px 0;
+            margin: 8px 0; /* Changed from 4px 0 */
         }
 
         .header-brand .tagline {
             font-size: 13px;
             color: rgba(255, 255, 255, 0.8);
             font-style: italic;
-            margin-top: -50px;
+            margin-top: 5px;
+            margin-bottom: -30px;
         }
 
+        /* Logo Responsive Styles - CRITICAL FIX */
+        .header-brand img {
+            max-width: 313px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            object-fit: contain;
+            margin-top: -50px;
+            margin-bottom: -41px;
+        }
         /* Body Styles */
         .login-body {
             padding: 45px 30px;
@@ -389,31 +402,37 @@
 
             .login-container {
                 border-radius: 16px;
-                max-width: 95%;
+                max-width: 100%;
             }
 
             .login-header {
-                padding: 40px 24px;
+                padding: 30px 20px; /* Reduced padding */
             }
 
             .header-brand h1 {
-                font-size: 28px;
+                font-size: 24px; /* Reduced */
+                margin-bottom: 10px;
             }
 
             .header-brand p {
-                font-size: 14px;
+                font-size: 13px;
+                margin: 6px 0;
+            }
+
+            .header-brand .tagline {
+                font-size: 11px;
+                margin-top: 6px;
             }
 
             .login-body {
-                padding: 35px 24px;
+                padding: 30px 20px;
             }
 
             .login-footer {
-                padding: 20px 24px;
+                padding: 20px;
             }
         }
 
-        /* Mobile Phones (480px and below) */
         @media (max-width: 480px) {
             body {
                 padding: 8px;
@@ -426,80 +445,119 @@
             }
 
             .login-header {
-                padding: 35px 20px;
+                padding: 20px 16px; /* Further reduced */
             }
 
             .header-brand h1 {
-                font-size: 24px;
-                margin-bottom: 6px;
+                font-size: 20px; /* Further reduced */
+                margin-bottom: 8px;
+            }
+
+            .header-brand img {
+                max-width: 250px;
+                width: 100%;
+                height: auto;
+                display: block;
+                margin: 15px auto;
+                object-fit: contain;
             }
 
             .header-brand p {
-                font-size: 13px;
-                margin: 2px 0;
+                font-size: 12px;
+                margin: 4px 0;
             }
 
             .header-brand .tagline {
-                font-size: 11px;
-                margin-top: 6px;
-            }
-
-            .login-body {
-                padding: 25px 20px;
-            }
-
-            .form-group {
-                margin-bottom: 20px;
-            }
-
-            .form-label {
-                font-size: 13px;
-            }
-
-            .form-control {
-                padding: 12px 14px;
-                font-size: 14px;
-            }
-
-            .btn-login {
-                padding: 12px;
-                font-size: 15px;
-            }
-
-            .login-footer {
-                padding: 18px 20px;
-            }
-
-                .login-footer p {
-                    font-size: 11px;
-                }
-
-            .decoration {
-                display: none;
-            }
-        }
-
-        /* Small Phones (360px and below) */
-        @media (max-width: 360px) {
-            .login-header {
-                padding: 30px 16px;
-            }
-
-            .header-brand h1 {
-                font-size: 22px;
+                font-size: 10px;
+                margin-top: 5px;
             }
 
             .login-body {
                 padding: 20px 16px;
             }
 
-            .login-footer {
-                padding: 16px;
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-label {
+                font-size: 12px;
             }
 
             .form-control {
                 padding: 11px 12px;
                 font-size: 14px;
+            }
+
+            .btn-login {
+                padding: 11px;
+                font-size: 14px;
+            }
+
+            .login-footer {
+                padding: 16px;
+            }
+
+                .login-footer p {
+                    font-size: 10px;
+                }
+
+            .decoration {
+                display: none;
+            }
+
+            .alert {
+                padding: 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-header {
+                padding: 18px 12px;
+            }
+
+            .header-brand h1 {
+                font-size: 18px;
+                margin-bottom: 6px;
+            }
+
+            .header-brand img {
+                max-width: 60%;
+                max-height: 40px;
+                margin: 6px auto;
+            }
+
+            .header-brand p {
+                font-size: 11px;
+                margin: 3px 0;
+            }
+
+            .header-brand .tagline {
+                font-size: 9px;
+                margin-top: 4px;
+            }
+
+            .login-body {
+                padding: 18px 12px;
+            }
+
+            .login-footer {
+                padding: 14px 12px;
+            }
+
+            .form-control {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .form-label {
+                font-size: 11px;
+            }
+
+            .btn-login {
+                padding: 10px;
+                font-size: 13px;
             }
         }
 
@@ -534,7 +592,7 @@
                 <div class="login-body">
                     <!-- Error Alert -->
                     <asp:Panel ID="pnlError" runat="server" CssClass="alert alert-error" Visible="false">
-                        <div class="alert-icon">⚠</div>
+                      <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
                         <asp:Label ID="lblError" runat="server"></asp:Label>
                     </asp:Panel>
 

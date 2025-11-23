@@ -1,4 +1,4 @@
-﻿
+﻿using System.Web;
 using System;
 using System.Configuration;
 using System.Data;
@@ -321,15 +321,25 @@ namespace Expo_Panel.Admin
                             hdnAgendaID.Value = agendaId.ToString();
                             hdnModalMode.Value = "edit";
 
-                            string day = reader["Day"].ToString().Replace("'", "\\'");
-                            string track = reader["Track"].ToString().Replace("'", "\\'");
-                            string time = reader["Time"].ToString().Replace("'", "\\'");
-                            string title = reader["Title"].ToString().Replace("'", "\\'");
-                            string brief = reader["Brief"].ToString().Replace("'", "\\'");
-                            string synopsis = reader["Synopsis"].ToString().Replace("'", "\\'");
+                            // 1. Get the raw string values without any replacing
+                            string day = reader["Day"].ToString();
+                            string track = reader["Track"].ToString();
+                            string time = reader["Time"].ToString();
+                            string title = reader["Title"].ToString();
+                            string brief = reader["Brief"].ToString();
+                            string synopsis = reader["Synopsis"].ToString();
                             bool isActive = Convert.ToBoolean(reader["IS_ACTIVE"]);
 
-                            string script = $"openModal('edit', {agendaId}, '{day}', '{track}', '{time}', '{title}', '{brief}', '{synopsis}', '{(isActive ? "1" : "0")}');";
+                            // 2. Build the script string using HttpUtility.JavaScriptStringEncode
+                            string script = $"openModal('edit', {agendaId}, " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(day)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(track)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(time)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(title)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(brief)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(synopsis)}', " +
+                                            $"'{(isActive ? "1" : "0")}');";
+
                             ScriptManager.RegisterStartupScript(this, GetType(), "openEditModal", script, true);
                         }
 
@@ -361,16 +371,27 @@ namespace Expo_Panel.Admin
                         {
                             hdnApprovalAgendaID.Value = agendaId.ToString();
 
-                            string day = reader["Day"].ToString().Replace("'", "\\'");
-                            string track = reader["Track"].ToString().Replace("'", "\\'");
-                            string time = reader["Time"].ToString().Replace("'", "\\'");
-                            string title = reader["Title"].ToString().Replace("'", "\\'");
-                            string brief = reader["Brief"].ToString().Replace("'", "\\'");
-                            string regType = reader["RegistrationType"].ToString().Replace("'", "\\'");
+                            // 1. Get the raw string values without any replacing
+                            string day = reader["Day"].ToString();
+                            string track = reader["Track"].ToString();
+                            string time = reader["Time"].ToString();
+                            string title = reader["Title"].ToString();
+                            string brief = reader["Brief"].ToString();
+                            string regType = reader["RegistrationType"].ToString();
                             string approvalStatus = reader["ApprovalStatus"].ToString();
-                            string remarks = reader["Remarks"].ToString().Replace("'", "\\'");
+                            string remarks = reader["Remarks"].ToString();
 
-                            string script = $"openApprovalModal({agendaId}, '{day}', '{track}', '{time}', '{title}', '{brief}', '{regType}', '{approvalStatus}', '{remarks}');";
+                            // 2. Build the script string using HttpUtility.JavaScriptStringEncode
+                            string script = $"openApprovalModal({agendaId}, " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(day)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(track)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(time)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(title)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(brief)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(regType)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(approvalStatus)}', " +
+                                            $"'{HttpUtility.JavaScriptStringEncode(remarks)}');";
+
                             ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal", script, true);
                         }
 
