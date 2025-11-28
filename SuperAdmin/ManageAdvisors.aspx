@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAdvisors.aspx.cs" Inherits="Expo_Panel.Admin.ManageAdvisors" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAdvisors.aspx.cs" Inherits="Expo_Panel.Admin.ManageAdvisors" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -591,28 +591,29 @@
             </div>
 
             <div class="dashboard-card">
-
-                <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
-
-                <div class="status-filters">
-                    <asp:Button ID="btnPending" runat="server" Text="Pending (0)" CssClass="btn-filter active" OnClick="btnStatusFilter_Click" CommandArgument="Pending" />
-                    <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" />
-                    <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" />
-                    <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="Pending" />
-                </div>
-
-                <div class="toolbar">
-                    <div class="search-box">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, company..."></asp:TextBox>
-                        <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
-                    </div>
-                    <button type="button" class="btn btn-success" onclick="openAdvisorModal('add')">
-                        <i class="fas fa-plus"></i>Add Advisor
-                    </button>
-                </div>
-
-                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
+
+                        <div class="status-filters">
+                            <asp:Button ID="btnPending" runat="server" Text="Pending (0)" CssClass="btn-filter active" OnClick="btnStatusFilter_Click" CommandArgument="Pending" />
+                            <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" />
+                            <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" />
+                            <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="Pending" />
+                        </div>
+
+                        <div class="toolbar">
+                            <asp:Panel ID="pnlSearch" runat="server" DefaultButton="btnSearch">
+                                <div class="search-box">
+                                    <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, company..."></asp:TextBox>
+                                    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
+                                </div>
+                            </asp:Panel>
+                            <button type="button" class="btn btn-success" onclick="openAdvisorModal('add')">
+                                <i class="fas fa-plus"></i>Add Advisor
+                            </button>
+                        </div>
+
+                        <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
                         <div class="grid-container">
                             <asp:GridView ID="gvAdvisors" runat="server" AutoGenerateColumns="False"
                                 OnRowCommand="gvAdvisors_RowCommand" DataKeyNames="AdvisorID"
@@ -698,17 +699,13 @@
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
                                             <div class="action-buttons">
-                                                <%-- --- CHANGED ---
-                                                     Replaced <asp:Button> with standard HTML <button>
-                                                     This PREVENTS the partial postback that was breaking things.
-                                                     The onclick calls our new JavaScript function. --%>
-                                                <button type="button" class="btn btn-edit" 
+                                                <button type="button" class="btn btn-edit"
                                                     onclick="loadAdvisorForEdit(<%# Eval("AdvisorID") %>)">
-                                                    <i class="fas fa-pencil-alt"></i> Edit
+                                                    <i class="fas fa-pencil-alt"></i>Edit
                                                 </button>
-                                                <button type="button" class="btn btn-warning" 
+                                                <button type="button" class="btn btn-warning"
                                                     onclick="loadAdvisorForApproval(<%# Eval("AdvisorID") %>)">
-                                                    <i class="fas fa-check-double"></i> Approve/Reject
+                                                    <i class="fas fa-check-double"></i>Approve/Reject
                                                 </button>
                                             </div>
                                         </ItemTemplate>
@@ -723,6 +720,9 @@
                             </asp:GridView>
                         </div>
                     </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="gvAdvisors" EventName="RowCommand" />
+                    </Triggers>
                 </asp:UpdatePanel>
             </div>
         </div>
@@ -999,7 +999,7 @@
                     passField.style.display = 'block';
                     if (passLabel) passLabel.innerHTML = 'Password <span style="color: red;">*</span>';
                     if (passReq) ValidatorEnable(passReq, true);
-                    
+
                     // Reset password field to 'password' type
                     passInput.type = 'password';
                     var icon = passField.querySelector('.password-toggle-icon');
@@ -1029,7 +1029,7 @@
 
                     // 3. Change the label text
                     if (passLabel) passLabel.innerHTML = 'Password (Leave blank to keep current)';
-                    
+
                     // 4. Disable the "Required" validator (it's optional on edit)
                     if (passReq) ValidatorEnable(passReq, false);
 

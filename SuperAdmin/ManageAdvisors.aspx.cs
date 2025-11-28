@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -91,6 +92,7 @@ namespace Expo_Panel.Admin
             {
                 ShowMessage($"Search results for '{searchText}' in {currentFilter} records", "info");
             }
+            
         }
 
         // Filter logic (adapted for Advisors)
@@ -104,6 +106,7 @@ namespace Expo_Panel.Admin
             LoadAdvisors(txtSearch.Text.Trim(), filterStatus); // Calls LoadAdvisors
             LoadAdvisorStatusCounts(); // Recalculate counts
             SetActiveFilterButton(filterStatus);
+            
         }
 
         // GridView logic (adapted for Advisors)
@@ -357,18 +360,24 @@ namespace Expo_Panel.Admin
         }
 
         // Adapted for Advisors
+        // ManageAdvisors.aspx.cs
+
         private void LoadAdvisors(string searchText, string approvalStatus)
         {
             try
             {
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
-                    // Calls NEW Stored Procedure
                     using (SqlCommand cmd = new SqlCommand("sp_GetAllAdvisors", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@SearchText", string.IsNullOrEmpty(searchText) ? (object)DBNull.Value : searchText);
-                        cmd.Parameters.AddWithValue("@ApprovalStatus", string.IsNullOrEmpty(approvalStatus) ? (object)DBNull.Value : approvalStatus);
+
+                        // CHANGE THIS SECTION - Remove the "%" + searchText + "%" part
+                        cmd.Parameters.AddWithValue("@SearchText",
+                            string.IsNullOrEmpty(searchText) ? (object)DBNull.Value : searchText);
+
+                        cmd.Parameters.AddWithValue("@ApprovalStatus",
+                            string.IsNullOrEmpty(approvalStatus) ? (object)DBNull.Value : approvalStatus);
 
                         DataTable dt = new DataTable();
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -376,7 +385,7 @@ namespace Expo_Panel.Admin
                             da.Fill(dt);
                         }
 
-                        gvAdvisors.DataSource = dt; // Bind to the new GridView
+                        gvAdvisors.DataSource = dt;
                         gvAdvisors.DataBind();
                     }
                 }

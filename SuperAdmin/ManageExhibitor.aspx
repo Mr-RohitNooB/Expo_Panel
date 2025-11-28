@@ -754,10 +754,12 @@
                 </div>
 
                 <div class="toolbar">
-                    <div class="search-box">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, company..."></asp:TextBox>
-                        <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
-                    </div>
+                    <asp:Panel ID="pnlSearch" runat="server" DefaultButton="btnSearch">
+                        <div class="search-box">
+                            <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by day, track, title..."></asp:TextBox>
+                            <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
+                        </div>
+                    </asp:Panel>
                     <div style="display: flex; gap: 10px;">
                         <a href="../User/RegisterExhibitor.aspx" class="btn btn-info" target="_blank">
                             <i class="fas fa-link"></i>Get Registration Link
@@ -1714,8 +1716,8 @@
 
                         if (nature.includes('Other:')) {
                             safeCheck('<%=chkNatureOther.ClientID%>', true);
-                    var otherMatch = nature.match(/Other:\s*([^,]+)/);
-                    if (otherMatch) safeSet('<%=txtNatureOther.ClientID%>', otherMatch[1].trim());
+                            var otherMatch = nature.match(/Other:\s*([^,]+)/);
+                            if (otherMatch) safeSet('<%=txtNatureOther.ClientID%>', otherMatch[1].trim());
                         }
 
                         // Company Category
@@ -1736,8 +1738,8 @@
 
                         if (category.includes('Others:')) {
                             safeCheck('<%=chkProductOther.ClientID%>', true);
-                    var otherMatch = category.match(/Others:\s*([^,]+)/);
-                    if (otherMatch) safeSet('<%=txtProductOther.ClientID%>', otherMatch[1].trim());
+                            var otherMatch = category.match(/Others:\s*([^,]+)/);
+                            if (otherMatch) safeSet('<%=txtProductOther.ClientID%>', otherMatch[1].trim());
                         }
 
                         // Markets Catered To
@@ -1756,8 +1758,8 @@
 
                         if (markets.includes('Other:')) {
                             safeCheck('<%=chkMarketOther.ClientID%>', true);
-                    var otherMatch = markets.match(/Other:\s*([^,]+)/);
-                    if (otherMatch) safeSet('<%=txtMarketOther.ClientID%>', otherMatch[1].trim());
+                            var otherMatch = markets.match(/Other:\s*([^,]+)/);
+                            if (otherMatch) safeSet('<%=txtMarketOther.ClientID%>', otherMatch[1].trim());
                         }
 
                         // Geographic Reach
@@ -1784,7 +1786,7 @@
 
                         if (data.otherReq) {
                             safeCheck('<%=chkReqOther.ClientID%>', true);
-                    safeSet('<%=txtReqOther.ClientID%>', data.otherReq);
+                            safeSet('<%=txtReqOther.ClientID%>', data.otherReq);
                         }
 
                         // Participation Objectives
@@ -1801,8 +1803,8 @@
 
                         if (objectives.includes('Other:')) {
                             safeCheck('<%=chkObjectiveOther.ClientID%>', true);
-                    var otherMatch = objectives.match(/Other:\s*([^,]+)/);
-                    if (otherMatch) safeSet('<%=txtObjectiveOther.ClientID%>', otherMatch[1].trim());
+                            var otherMatch = objectives.match(/Other:\s*([^,]+)/);
+                            if (otherMatch) safeSet('<%=txtObjectiveOther.ClientID%>', otherMatch[1].trim());
                         }
 
                         // Additional Notes

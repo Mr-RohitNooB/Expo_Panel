@@ -1049,6 +1049,201 @@
         .speaker-card.pink:hover {
             border-left-color: #ed64a6;
         }
+
+        /* Filter Section Container */
+        .filter-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Softer, deeper shadow */
+            margin-bottom: 30px;
+        }
+
+        /* 1. The Container Bar - slightly darker for contrast */
+        .filter-buttons {
+            display: inline-flex;
+            background: #e2e8f0; /* Darker grey background makes buttons stand out */
+            padding: 6px;
+            border-radius: 50px; /* Rounded Capsule Shape */
+            gap: 5px; /* Small gap between buttons */
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            border: 1px solid #cbd5e0; /* Subtle border to define the area */
+        }
+
+        /* 2. The Buttons (Inactive State) - Darker Text */
+        .btn-filter {
+            border: none;
+            background: transparent;
+            color: #4a5568; /* Dark Grey - Much easier to read now */
+            padding: 12px 28px;
+            border-radius: 40px; /* Fully rounded pill shape */
+            font-weight: 600;
+            font-size: 15px; /* Slightly larger text */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none !important;
+        }
+
+            /* 3. Hover Effect - Subtle light up */
+            .btn-filter:hover {
+                color: #1a202c; /* Almost black on hover */
+                background: rgba(255, 255, 255, 0.7);
+            }
+
+            /* 4. Active State - THE HIGHLIGHT (Teal Gradient) */
+            .btn-filter.active {
+                background: linear-gradient(135deg, #38b2ac 0%, #319795 100%); /* Your Theme Gradient */
+                color: white !important; /* Force White Text */
+                font-weight: 700;
+                box-shadow: 0 4px 15px rgba(56, 178, 172, 0.4); /* Teal Glow Shadow */
+                transform: translateY(-1px); /* Slight lift */
+            }
+
+        .agenda-info {
+            flex: 1; /* Forces it to fill the remaining width */
+            min-width: 0; /* Prevents flexbox layout issues with long text */
+            padding-right: 20px; /* Optional: Adds breathing room before the right-side buttons */
+        }
+
+        .progress-container {
+            margin-top: 15px;
+            max-width: 600px; /* Ensures the bar never gets wider than this */
+            width: 100%; /* Ensures it fills space up to the max-width */
+        }
+
+        /* 1. The Card Container - Clean & Modern */
+        .stat-card {
+            background: #fff;
+            border-radius: 20px; /* Matches your filter pills */
+            padding: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+            position: relative;
+            overflow: hidden;
+            /* Layout: Uses CSS Grid to align Icon Left, Text Right perfecty */
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-areas:
+                "icon value"
+                "icon label";
+            align-items: center;
+            column-gap: 20px;
+        }
+
+            /* Remove the old top stripe - we are going for a cleaner look */
+            .stat-card::before {
+                display: none;
+            }
+
+            /* Hover Effect - Lift & Deepen Shadow */
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+                border-color: #e2e8f0;
+            }
+
+        /* 2. The Icon - Soft Tinted Style */
+        .stat-card-icon {
+            grid-area: icon;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px; /* Soft "Squircle" shape */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 3. Text Typography */
+        .stat-card-value {
+            grid-area: value;
+            font-size: 32px; /* Bigger and bolder */
+            font-weight: 800;
+            color: #1a202c;
+            line-height: 1;
+            align-self: end; /* Pushes text down slightly to align with icon center */
+            margin-bottom: 4px;
+        }
+
+        .stat-card-label {
+            grid-area: label;
+            color: #718096;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            align-self: start;
+        }
+
+        /* 4. Color Themes - Soft Backgrounds & Hover Pop */
+
+        /* Purple (Teal in your logic) */
+        .stat-card-icon.purple {
+            background: rgba(56, 178, 172, 0.12);
+            color: #38b2ac;
+        }
+
+        .stat-card:hover .stat-card-icon.purple {
+            background: #38b2ac;
+            color: white;
+            transform: scale(1.1) rotate(6deg);
+            box-shadow: 0 10px 20px rgba(56, 178, 172, 0.3);
+        }
+
+        /* Blue */
+        .stat-card-icon.blue {
+            background: rgba(66, 153, 225, 0.12);
+            color: #4299e1;
+        }
+
+        .stat-card:hover .stat-card-icon.blue {
+            background: #4299e1;
+            color: white;
+            transform: scale(1.1) rotate(-6deg);
+            box-shadow: 0 10px 20px rgba(66, 153, 225, 0.3);
+        }
+
+        /* Green */
+        .stat-card-icon.green {
+            background: rgba(72, 187, 120, 0.12);
+            color: #48bb78;
+        }
+
+        .stat-card:hover .stat-card-icon.green {
+            background: #48bb78;
+            color: white;
+            transform: scale(1.1) rotate(6deg);
+            box-shadow: 0 10px 20px rgba(72, 187, 120, 0.3);
+        }
+
+        /* Orange */
+        .stat-card-icon.orange {
+            background: rgba(237, 137, 54, 0.12);
+            color: #ed8936;
+        }
+
+        .stat-card:hover .stat-card-icon.orange {
+            background: #ed8936;
+            color: white;
+            transform: scale(1.1) rotate(-6deg);
+            box-shadow: 0 10px 20px rgba(237, 137, 54, 0.3);
+        }
+
+        /* Red */
+        .stat-card-icon.red {
+            background: rgba(245, 101, 101, 0.12);
+            color: #f56565;
+        }
+
+        .stat-card:hover .stat-card-icon.red {
+            background: #f56565;
+            color: white;
+            transform: scale(1.1) rotate(6deg);
+            box-shadow: 0 10px 20px rgba(245, 101, 101, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -1065,8 +1260,8 @@
                 <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn-info">
                     <i class="fas fa-arrow-left"></i> Back
                 </asp:HyperLink>
-           <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout" 
-    OnClick="btnLogout_Click" UseSubmitBehavior="false" />
+                <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout"
+                    OnClick="btnLogout_Click" UseSubmitBehavior="false" />
             </div>
         </div>
 
@@ -1149,9 +1344,9 @@
                         CommandArgument="Pending" OnClick="btnStatusFilter_Click" />
                 </div>
                 <asp:Panel ID="pnlSearch" runat="server" CssClass="search-box" DefaultButton="btnSearch">
-    <asp:TextBox ID="txtSearch" runat="server" placeholder="🔍 Search agendas by title, day, or track..." />
-    <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
-</asp:Panel>
+                    <asp:TextBox ID="txtSearch" runat="server" placeholder="🔍 Search agendas by title, day, or track..." />
+                    <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+                </asp:Panel>
             </div>
 
             <!-- No Records Panel -->
@@ -1245,6 +1440,7 @@
     </form>
 
     <script>
+
         function toggleAgenda(agendaId) {
             if (event) {
                 event.preventDefault();
@@ -1263,10 +1459,7 @@
                 // Client-side collapse to prevent postback
                 hdnField.value = '0';
                 if (agendaCard) {
-                    // Remove the expanded class first
                     agendaCard.classList.remove('expanded');
-
-                    // Hide the speakers section
                     var pnlSpeakers = agendaCard.querySelector('.speakers-section');
                     if (pnlSpeakers) {
                         pnlSpeakers.style.display = 'none';
@@ -1275,8 +1468,8 @@
                 document.getElementById('loadingSpinner').classList.remove('show');
                 return false;
             } else {
-                // We want to EXPAND: Must call postback to load speaker data
-                hdnField.value = agendaId;
+                // We want to EXPAND:
+                // REMOVED: hdnField.value = agendaId;  <-- THIS WAS CAUSING THE BUG
 
                 // Show loading spinner
                 document.getElementById('loadingSpinner').classList.add('show');
@@ -1286,6 +1479,7 @@
                 return false;
             }
         }
+
         function closeProfileModal() {
             document.getElementById('profileModal').classList.remove('show');
         }

@@ -619,12 +619,13 @@
         }
 
         /* Footer */
-        .footer {
-            background: #3D3935;
-            color: #fff;
-            padding: 40px 20px;
-            text-align: center;
-        }
+   .footer {
+    background: #3D3935;
+    color: #fff;
+    /* Top: 40px, Left/Right: 20px, Bottom: 100px (Extra space for timer) */
+    padding: 40px 20px 100px 20px; 
+    text-align: center;
+}
 
         .footer-content {
             max-width: 1200px;
@@ -720,7 +721,6 @@
             border-top: 4px solid #D94A2B; /* Your Orange Brand Color */
             color: #fff;
             z-index: 9999;
-            transform: translateY(100%); /* Hidden by default */
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
             display: flex;
@@ -1042,7 +1042,7 @@
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="hero-content">
-                <h1>Lubricant India Expo 2026</h1>
+                <h1>LUBRICANT INDIA EXPO 2026</h1>
                 <p>Join India's premier lubricant industry event showcasing innovation, sustainability, and the future of lubricant technology</p>
                 <div class="event-details">
                     <div class="event-detail-item">
@@ -1067,7 +1067,8 @@
                         </div>
                     </div>
                 </div>
-                <a href="RegisterExhibitor.aspx" class="cta-button">Register Now</a>
+                <a href="/User/RegisterSpeaker.aspx" class="cta-button">Register As Speaker</a>
+                <a href="/User/RegisterExhibitor.aspx" class="cta-button">Register As Exhibitor</a>
             </div>
         </section>
 
@@ -1077,10 +1078,10 @@
             <h2 class="section-title">Featured Speakers</h2>
             <div class="speakers-grid">
                 <!-- 
-                    This grid is also intentionally left empty.
-                    The 'loadDynamicData()' function will fill this section
-                    with speaker data from the database.
-                -->
+                        This grid is also intentionally left empty.
+                        The 'loadDynamicData()' function will fill this section
+                        with speaker data from the database.
+                    -->
             </div>
         </section>
 
@@ -1228,59 +1229,25 @@
                     </div>
                 </div>
 
-                <a href="User/RegisterExhibitor.aspx" class="timer-btn">Register Now</a>
             </div>
         </div>
 
         <!-- Footer -->
         <footer class="footer">
-            <div style="margin-top: 40px;">
-                <h3 style="color: #fff; font-size: 20px; margin-bottom: 15px;">Sign up for Updates</h3>
-
-                <asp:Panel ID="pnlFooterSignup" runat="server" Style="max-width: 400px; margin: 0 auto;">
-
-                    <asp:TextBox ID="txtFooterEmail" runat="server" CssClass="input-compact"
-                        placeholder="Enter your email"
-                        Style="border-radius: 5px; padding: 10px; width: 100%;"></asp:TextBox>
-
-                    <asp:RequiredFieldValidator ID="rfvFooterEmail" runat="server"
-                        ControlToValidate="txtFooterEmail"
-                        ErrorMessage="Email is required"
-                        ForeColor="#FFB3B3" ValidationGroup="FooterSignup" Display="Dynamic" />
-
-                    <asp:RegularExpressionValidator ID="revFooterEmail" runat="server"
-                        ControlToValidate="txtFooterEmail"
-                        ErrorMessage="Invalid email"
-                        ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
-                        ForeColor="#FFB3B3" ValidationGroup="FooterSignup" Display="Dynamic" />
-
-                    <asp:Button ID="btnFooterSignup" runat="server"
-                        Text="Subscribe"
-                        CssClass="btn-compact"
-                        ValidationGroup="FooterSignup"
-                        OnClick="btnFooterSignup_Click"
-                        Style="margin-top: 10px;" />
-
-                    <asp:Label ID="lblFooterMsg" runat="server"
-                        Style="display: block; margin-top: 10px; color: #FFD9D9; font-size: 14px;"></asp:Label>
-                </asp:Panel>
-            </div>
-
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#agenda">Agenda</a>
-                    <a href="#speakers">Speakers</a>
-                    <a href="Exhibitors.aspx">Exhibitors</a>
-                    <a href="#venue">Venue</a>
-                    <a href="#">Terms & Conditions</a>
-                    <a href="#">Privacy Policy</a>
-                </div>
-                <p style="margin-top: 20px; opacity: 0.8;">
-                    &copy; 2026 Lubricant India Expo. All rights reserved.
-                </p>
-            </div>
-        </footer>
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="Conference.aspx">Conference</a>
+            <a href="#speakers">Speakers</a>
+            <a href="Exhibitors.aspx">Exhibitors</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <p style="margin-top: 20px; opacity: 0.8;">
+            © 2025 Lubricant India Expo. All rights reserved.
+        </p>
+    </div>
+</footer>
     </form>
 
     <div id="speakerModal" class="modal-overlay">
@@ -1321,8 +1288,47 @@
             </div>
         </div>
     </div>
+    <div id="exhibitorModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px;">
+            <button type="button" class="close-modal" onclick="closeExhibitorModal()">×</button>
 
+            <div style="padding: 30px;">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <h2 id="exhName" style="color: #1e293b; margin-bottom: 5px;"></h2>
+                    <p id="exhDesignation" style="color: #64748b; font-size: 16px;"></p>
+                    <div id="exhCompany" style="color: #D94A2B; font-weight: 700; font-size: 18px; margin-top: 5px;"></div>
+                </div>
+
+                <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 20px 0;">
+
+                <div id="exhProductSection" style="display: none; margin-bottom: 25px;">
+                    <h5 style="color: #1e293b; font-size: 14px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase;">Product Showcase</h5>
+                    <img id="exhProductImg" src="" style="width: 100%; border-radius: 8px; border: 1px solid #e2e8f0;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                    <a id="linkWeb" href="#" target="_blank" class="contact-item-compact" style="display: none; padding: 10px; background: #f8fafc; border-radius: 6px; text-align: center;">
+                        <i class="fas fa-globe" style="color: #64748b; font-size: 20px; display: block; margin-bottom: 5px;"></i>Website
+                    </a>
+                    <a id="linkLinkedIn" href="#" target="_blank" class="contact-item-compact" style="display: none; padding: 10px; background: #f8fafc; border-radius: 6px; text-align: center;">
+                        <i class="fab fa-linkedin" style="color: #0077b5; font-size: 20px; display: block; margin-bottom: 5px;"></i>LinkedIn
+                    </a>
+                    <a id="linkTwitter" href="#" target="_blank" class="contact-item-compact" style="display: none; padding: 10px; background: #f8fafc; border-radius: 6px; text-align: center;">
+                        <i class="fab fa-twitter" style="color: #1da1f2; font-size: 20px; display: block; margin-bottom: 5px;"></i>Twitter
+                    </a>
+                    <a id="linkFacebook" href="#" target="_blank" class="contact-item-compact" style="display: none; padding: 10px; background: #f8fafc; border-radius: 6px; text-align: center;">
+                        <i class="fab fa-facebook" style="color: #1877f2; font-size: 20px; display: block; margin-bottom: 5px;"></i>Facebook
+                    </a>
+                </div>
+
+                <a id="btnBrochure" href="#" download class="btn-compact" style="display: none; text-align: center; text-decoration: none; display: block;">
+                    <i class="fas fa-file-pdf" style="margin-right: 8px;"></i>Download Brochure
+                </a>
+            </div>
+        </div>
+    </div>
     <script>
+        let allExhibitors = []; // Store data here
         // Navbar scroll effect
         window.addEventListener('scroll', function () {
             const navbar = document.getElementById('navbar');
@@ -1411,14 +1417,14 @@
                         : `<div style="width:100%;height:100%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:24px;color:#555;">${getInitials(s.Name)}</div>`;
 
                     html += `
-                <div class="speaker-card">
-                    <div class="speaker-avatar">${imgHtml}</div>
-                    <div class="speaker-name">${s.Name}</div>
-                    <div class="speaker-title">${s.Designation}</div>
-                    <div class="speaker-company">${s.Company}</div>
-                    <button class="btn-view-profile" onclick="openSpeakerModal(${s.SpeakerID}); return false;">View Profile</button>
-                </div>
-            `;
+                    <div class="speaker-card">
+                        <div class="speaker-avatar">${imgHtml}</div>
+                        <div class="speaker-name">${s.Name}</div>
+                        <div class="speaker-title">${s.Designation}</div>
+                        <div class="speaker-company">${s.Company}</div>
+                        <button class="btn-view-profile" onclick="openSpeakerModal(${s.SpeakerID}); return false;">View Profile</button>
+                    </div>
+                `;
                 });
                 grid.innerHTML = html;
             } catch (err) { console.error('Speaker Error:', err); }
@@ -1495,27 +1501,24 @@
                     headers: { 'Content-Type': 'application/json; charset=utf-8' }
                 });
                 const data = await response.json();
-                const exhibitors = data.d;
-                const grid = document.querySelector('.exhibitors-grid');
+                allExhibitors = data.d; // Store data globally
 
-                if (!exhibitors || exhibitors.length === 0) {
+                const grid = document.querySelector('.exhibitors-grid');
+                if (!allExhibitors || allExhibitors.length === 0) {
                     grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Exhibitor list coming soon.</p>';
                     return;
                 }
 
                 let html = '';
-                exhibitors.forEach(e => {
-                    // 1. Format Location (City, State, Country)
+                allExhibitors.forEach((e, i) => {
                     let locParts = [];
                     if (e.City) locParts.push(e.City);
                     if (e.State) locParts.push(e.State);
                     if (e.Country) locParts.push(e.Country);
                     let locationStr = locParts.join(', ');
 
-                    // 2. Build Card HTML
                     html += `
                 <div class="exhibitor-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:130px;">
-                    
                     <div style="margin-bottom:12px;">
                         <div style="font-size:17px; font-weight:700; color:#D94A2B; line-height:1.3;">${e.FullName}</div>
                         <div style="font-size:13px; color:#64748b; font-weight:600; margin-top:2px;">${e.Designation}</div>
@@ -1525,15 +1528,18 @@
                          <div class="exhibitor-name" style="font-size:15px; margin-bottom:4px; color:#1e293b; font-weight:700;">
                             <i class="fas fa-building" style="color:#cbd5e1; margin-right:6px; font-size:12px;"></i>${e.Company}
                          </div>
-                         
+                     
                          ${locationStr ?
-                            `<div style="font-size:13px; color:#94a3b8;">
+                            `<div style="font-size:13px; color:#94a3b8; margin-bottom:10px;">
                                 <i class="fas fa-map-marker-alt" style="margin-right:8px; font-size:12px; margin-left:2px;"></i>${locationStr}
                             </div>` : ''
                         }
+                    
+                        <button type="button" class="btn-view-profile" onclick="openExhibitorModal(${i});" style="width:100%; margin-top:5px;">
+                            View Details
+                        </button>
                     </div>
-                </div>
-            `;
+                </div>`;
                 });
                 grid.innerHTML = html;
             } catch (err) {
@@ -1577,16 +1583,16 @@
                 let agendaHtml = '';
                 agendas.forEach(item => {
                     agendaHtml += `
-                <div class="agenda-card">
-                    <div class="agenda-day">${item.Day}</div>
-                    <div class="agenda-time">${item.Time}</div>
-                    <div class="agenda-title">${item.AgendaTitle}</div>
-                    <p style="color: #64748b; font-size: 14px; margin: 15px 0;">
-                        ${item.AgendaBrief}
-                    </p>
-                    <span class="agenda-track">${item.Track}</span>
-                </div>
-            `;
+                    <div class="agenda-card">
+                        <div class="agenda-day">${item.Day}</div>
+                        <div class="agenda-time">${item.Time}</div>
+                        <div class="agenda-title">${item.AgendaTitle}</div>
+                        <p style="color: #64748b; font-size: 14px; margin: 15px 0;">
+                            ${item.AgendaBrief}
+                        </p>
+                        <span class="agenda-track">${item.Track}</span>
+                    </div>
+                `;
                 });
 
                 agendaGrid.innerHTML = agendaHtml || '<p>Agenda details will be available soon.</p>';
@@ -1595,19 +1601,19 @@
                 let speakersHtml = '';
                 speakers.forEach(speaker => {
                     speakersHtml += `
-                <div class="speaker-card">
-                    <div class="speaker-avatar">
-                        ${speaker.SpeakerPhoto ?
+                    <div class="speaker-card">
+                        <div class="speaker-avatar">
+                            ${speaker.SpeakerPhoto ?
                             `<img src="${speaker.SpeakerPhoto}" alt="${speaker.SpeakerName}" 
-                                  style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` :
+                                      style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` :
                             getInitials(speaker.SpeakerName)
                         }
+                        </div>
+                        <div class="speaker-name">${speaker.SpeakerName}</div>
+                        <div class="speaker-title">${speaker.SpeakerDesignation}</div>
+                        <div class="speaker-company">${speaker.SpeakerCompany}</div>
                     </div>
-                    <div class="speaker-name">${speaker.SpeakerName}</div>
-                    <div class="speaker-title">${speaker.SpeakerDesignation}</div>
-                    <div class="speaker-company">${speaker.SpeakerCompany}</div>
-                </div>
-            `;
+                `;
                 });
 
                 speakersGrid.innerHTML = speakersHtml || '<p>Speaker details will be available soon.</p>';
@@ -1688,6 +1694,132 @@
                 timerBar.classList.remove('visible');
             }
         });
+
+
+        function openExhibitorModal(index) {
+            // Get data directly from our global array (MUST BE FIRST!)
+            const d = allExhibitors[index];
+
+            if (d) {
+                // 1. Basic Info
+                document.getElementById('exhName').innerText = d.FullName || "";
+                document.getElementById('exhDesignation').innerText = d.Designation || "";
+                document.getElementById('exhCompany').innerText = d.Company || "";
+
+                // 2. Product Image
+                const prodSection = document.getElementById('exhProductSection');
+                const prodImg = document.getElementById('exhProductImg');
+                if (d.ProductPicturePath) {
+                    prodImg.src = d.ProductPicturePath;
+                    prodSection.style.display = 'block';
+                } else {
+                    prodSection.style.display = 'none';
+                }
+
+                // 3. Social Links Helper
+                const setLink = (id, url) => {
+                    const el = document.getElementById(id);
+                    if (url && url.trim() !== "") {
+                        let finalUrl = url.trim();
+                        // Check if it starts with http:// or https://
+                        if (!finalUrl.match(/^https?:\/\//i)) {
+                            finalUrl = 'https://' + finalUrl;
+                        }
+
+                        el.href = finalUrl;
+                        el.target = "_blank";
+                        el.rel = "noopener noreferrer";
+                        el.style.display = 'block';
+                        el.style.pointerEvents = 'auto';
+                        el.style.cursor = 'pointer';
+
+                        // Force link to open in new tab
+                        el.onclick = function (e) {
+                            e.stopPropagation();
+                            window.open(finalUrl, '_blank', 'noopener,noreferrer');
+                            return false;
+                        };
+                    } else {
+                        el.style.display = 'none';
+                    }
+                };
+
+                setLink('linkWeb', d.Website);
+                setLink('linkLinkedIn', d.LinkedIn);
+                setLink('linkTwitter', d.Twitter);
+                setLink('linkFacebook', d.Facebook);
+
+                // 4. Brochure - Force download for JPEG/images
+                const btnBrochure = document.getElementById('btnBrochure');
+                if (d.BrochurePath) {
+                    // Extract filename for download
+                    const fileName = d.BrochurePath.substring(d.BrochurePath.lastIndexOf('/') + 1);
+
+                    // Add click handler to force download
+                    btnBrochure.onclick = function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Fetch and download the image
+                        fetch(d.BrochurePath)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Network response was not ok');
+                                return response.blob();
+                            })
+                            .then(blob => {
+                                // Create blob URL
+                                const blobUrl = window.URL.createObjectURL(blob);
+
+                                // Create temporary link
+                                const link = document.createElement('a');
+                                link.style.display = 'none';
+                                link.href = blobUrl;
+                                link.download = fileName || 'brochure.jpg';
+
+                                // Trigger download
+                                document.body.appendChild(link);
+                                link.click();
+
+                                // Cleanup
+                                setTimeout(() => {
+                                    document.body.removeChild(link);
+                                    window.URL.revokeObjectURL(blobUrl);
+                                }, 100);
+                            })
+                            .catch(err => {
+                                console.error('Download failed:', err);
+                                alert('Unable to download file. Opening in new tab instead.');
+                                window.open(d.BrochurePath, '_blank');
+                            });
+
+                        return false;
+                    };
+
+                    btnBrochure.style.display = 'block';
+                } else {
+                    btnBrochure.style.display = 'none';
+                }
+
+                // Show Modal
+                document.getElementById('exhibitorModal').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeExhibitorModal() {
+            document.getElementById('exhibitorModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal if clicked outside
+        window.addEventListener('click', function (e) {
+            const exhModal = document.getElementById('exhibitorModal');
+            if (e.target == exhModal) {
+                closeExhibitorModal();
+            }
+        });
+
+
     </script>
 </body>
 </html>

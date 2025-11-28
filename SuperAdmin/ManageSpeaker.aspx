@@ -853,6 +853,18 @@
                     border-color: #80bdff;
                     color: #0056b3;
                 }
+
+        .view-link {
+            color: #38a169; /* Matches your theme color */
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+            .view-link:hover {
+                color: #2f855a;
+                text-decoration: underline;
+            }
     </style>
 </head>
 <body>
@@ -886,15 +898,17 @@
                 </div>
 
                 <div class="toolbar">
-                    <div class="search-box">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by name, email, mobile, designation, or company..."></asp:TextBox>
-                        <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
-                    </div>
+                    <asp:Panel ID="pnlSearch" runat="server" DefaultButton="btnSearch">
+                        <div class="search-box">
+                            <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by day, track, title..."></asp:TextBox>
+                            <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
+                        </div>
+                    </asp:Panel>
                     <div style="display: flex; gap: 10px;">
                         <a href="/User/RegisterSpeaker.aspx" class="btn btn-info" target="_blank">
                             <i class="fas fa-link"></i>Get Registration Link
                         </a>
-                        <a style="background-color:darkorange" href="/User/SpeakerLogin.aspx" class="btn btn-info" target="_blank">
+                        <a style="background-color: darkorange" href="/User/SpeakerLogin.aspx" class="btn btn-info" target="_blank">
                             <i class="fas fa-link"></i>Get Login Link
                         </a>
                         <button type="button" class="btn btn-success" onclick="openModal('add')">
@@ -918,7 +932,16 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:BoundField DataField="Name" HeaderText="Name" />
+                                    <asp:TemplateField HeaderText="Name">
+                                        <ItemTemplate>
+                                            <asp:HyperLink ID="hlViewDetails" runat="server"
+                                                NavigateUrl='<%# "ViewSpeakerDetails.aspx?SpeakerID=" + Eval("SpeakerID") %>'
+                                                Text='<%# Eval("Name") %>'
+                                                Target="_blank"
+                                                CssClass="view-link">
+                                            </asp:HyperLink>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:BoundField DataField="Email" HeaderText="Email" />
                                     <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
                                     <asp:BoundField DataField="Designation" HeaderText="Designation" />

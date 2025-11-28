@@ -1250,10 +1250,17 @@
             }
 
             // View agenda details in modal
-            function viewAgenda(agendaId, day, track, time, title, brief, synopsis) {
-                var modalBody = document.getElementById('modalBody');
+            // --- NEW JAVASCRIPT FUNCTION START ---
+            function viewAgenda(btnElement, agendaId, day, track, time, title) {
 
+                // 1. Retrieve the safe text from the data attributes
+                // This ignores any quotes inside the text so it won't break anything
+                var brief = btnElement.getAttribute('data-brief');
+                var synopsis = btnElement.getAttribute('data-synopsis');
+
+                var modalBody = document.getElementById('modalBody');
                 var html = '';
+
                 html += '<div class="agenda-detail-row">';
                 html += '<div class="agenda-detail-label"><i class="fas fa-calendar"></i> Day</div>';
                 html += '<div class="agenda-detail-value">' + day + '</div>';
@@ -1274,14 +1281,16 @@
                 html += '<div class="agenda-detail-value">' + title + '</div>';
                 html += '</div>';
 
-                if (brief) {
+                // Check if brief exists and is not empty
+                if (brief && brief.length > 0) {
                     html += '<div class="agenda-detail-row">';
                     html += '<div class="agenda-detail-label"><i class="fas fa-align-left"></i> Brief</div>';
                     html += '<div class="agenda-detail-value">' + brief + '</div>';
                     html += '</div>';
                 }
 
-                if (synopsis) {
+                // Check if synopsis exists and is not empty
+                if (synopsis && synopsis.length > 0) {
                     html += '<div class="agenda-detail-row">';
                     html += '<div class="agenda-detail-label"><i class="fas fa-file-alt"></i> Full Synopsis</div>';
                     html += '<div class="agenda-detail-value">' + synopsis + '</div>';
@@ -1291,6 +1300,7 @@
                 modalBody.innerHTML = html;
                 document.getElementById('agendaModal').style.display = 'block';
             }
+            // --- NEW JAVASCRIPT FUNCTION END ---
 
             function closeModal() {
                 document.getElementById('agendaModal').style.display = 'none';

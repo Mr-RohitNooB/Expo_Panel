@@ -49,12 +49,21 @@ namespace Expo_Panel
     }
     public class ExhibitorDTO
     {
+        public int ExhibitorID { get; set; }
         public string Company { get; set; }
         public string FullName { get; set; }
         public string Designation { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+
+        // Add new fields
+        public string LinkedIn { get; set; }
+        public string Website { get; set; }
+        public string Twitter { get; set; }
+        public string Facebook { get; set; }
+        public string ProductPicturePath { get; set; }
+        public string BrochurePath { get; set; }
     }
     public partial class Index : System.Web.UI.Page
     {
@@ -181,39 +190,6 @@ namespace Expo_Panel
                 }
             }
         }
-        protected void btnFooterSignup_Click(object sender, EventArgs e)
-        {
-            if (!Page.IsValid) return;
-
-            try
-            {
-                string email = txtFooterEmail.Text.Trim();
-
-                // FIX: Changed "con" to "ExpoPanelDB" to match the rest of your project
-                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString))
-                {
-                    // Ensure this Stored Procedure exists in your SQL Database (see step 2 below)
-                    using (SqlCommand cmd = new SqlCommand("USP_SubscribeForUpdates", con))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Email", email);
-
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
-                lblFooterMsg.Text = "Thank you for subscribing!";
-                lblFooterMsg.ForeColor = System.Drawing.Color.LightGreen;
-                txtFooterEmail.Text = "";
-            }
-            catch (Exception ex)
-            {
-                // DEBUGGING: Temporarily show the real error message so we know what is wrong
-                lblFooterMsg.Text = "Error: " + ex.Message;
-                lblFooterMsg.ForeColor = System.Drawing.Color.LightCoral;
-            }
-        }
 
 
         [WebMethod]
@@ -309,13 +285,21 @@ namespace Expo_Panel
                         {
                             list.Add(new ExhibitorDTO
                             {
+                                ExhibitorID = Convert.ToInt32(rdr["ExhibitorID"]),
                                 Company = rdr["Company"].ToString(),
-                                // Handle potential NULLs safely
                                 FullName = rdr["FullName"] != DBNull.Value ? rdr["FullName"].ToString() : "",
                                 Designation = rdr["Designation"] != DBNull.Value ? rdr["Designation"].ToString() : "",
                                 City = rdr["City"] != DBNull.Value ? rdr["City"].ToString() : "",
                                 State = rdr["State"] != DBNull.Value ? rdr["State"].ToString() : "",
-                                Country = rdr["Country"] != DBNull.Value ? rdr["Country"].ToString() : ""
+                                Country = rdr["Country"] != DBNull.Value ? rdr["Country"].ToString() : "",
+
+                                // Map new fields
+                                LinkedIn = rdr["LinkedIn"] != DBNull.Value ? rdr["LinkedIn"].ToString() : "",
+                                Website = rdr["Website"] != DBNull.Value ? rdr["Website"].ToString() : "",
+                                Twitter = rdr["Twitter"] != DBNull.Value ? rdr["Twitter"].ToString() : "",
+                                Facebook = rdr["Facebook"] != DBNull.Value ? rdr["Facebook"].ToString() : "",
+                                ProductPicturePath = (rdr["ProductPicturePath"] != DBNull.Value ? rdr["ProductPicturePath"].ToString() : "").Replace("~", ""),
+                                BrochurePath = (rdr["BrochurePath"] != DBNull.Value ? rdr["BrochurePath"].ToString() : "").Replace("~", "")
                             });
                         }
                     }

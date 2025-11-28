@@ -824,12 +824,7 @@
                     <button type="button" class="btn-action" onclick="window.location='FinalSpeakerSelection.aspx'">
                         <i class="fas fa-user-tie"></i>Final Speaker Selection
                     </button>
-                    <button type="button" class="btn-action" onclick="window.location='ManageExhibitor.aspx'">
-                        <i class="fas fa-building"></i>Add New Exhibitor
-                    </button>
-                    <button type="button" class="btn-action" onclick="window.location='ManageInnovation.aspx'">
-                        <i class="fas fa-rocket"></i>Add Innovation Entry
-                    </button>
+                   
                 </div>
             </div>
         </div>

@@ -17,8 +17,10 @@ namespace Expo_Panel
 
         // DTO Class for transferring data to JavaScript
         public class ConferenceAgendaItem
+
         {
             public int AgendaID { get; set; }
+            public string AgendaSynopsis { get; set; }
             public string Day { get; set; }
             public string Track { get; set; }
             public string Time { get; set; }
@@ -44,6 +46,9 @@ namespace Expo_Panel
                         while (rdr.Read())
                         {
                             // Logic to handle potential DBNulls safely
+                            string synopsis = "";
+                            if (rdr["Synopsis"] != DBNull.Value) // Assumes column name is 'Synopsis' based on your SQL
+                                synopsis = rdr["Synopsis"].ToString();
                             string brief = "";
                             if (rdr["AgendaBrief"] != DBNull.Value)
                                 brief = rdr["AgendaBrief"].ToString();
@@ -55,7 +60,8 @@ namespace Expo_Panel
                                 Track = rdr["Track"].ToString(),
                                 Time = rdr["Time"].ToString(),
                                 AgendaTitle = rdr["AgendaTitle"].ToString(),
-                                AgendaBrief = brief
+                                AgendaBrief = brief,
+                                AgendaSynopsis = synopsis 
                             });
                         }
                     }

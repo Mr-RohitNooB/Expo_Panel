@@ -47,23 +47,51 @@ namespace Expo_Panel.SuperAdmin
                 return;
             }
 
+            if (IsPostBack && Request.Form["hdnExpandedAgendaID"] != null)
+            {
+                hdnExpandedAgendaID.Value = Request.Form["hdnExpandedAgendaID"];
+            }
+
+
+            // 1. HANDLE TOGGLE LOGIC (Must happen before Scrolling logic)
+            if (IsPostBack && Request.Form["__EVENTTARGET"] == "Toggle")
+            {
+                string agendaIdStr = Request.Form["__EVENTARGUMENT"];
+                int clicked = 0;
+                Int32.TryParse(agendaIdStr, out clicked);
+
+                int current = 0;
+                Int32.TryParse(hdnExpandedAgendaID.Value, out current);
+
+                // Logic: If clicking the same one, collapse (set to 0). Otherwise, set to clicked ID.
+                if (current == clicked)
+                    hdnExpandedAgendaID.Value = "0";
+                else
+                    hdnExpandedAgendaID.Value = clicked.ToString();
+
+                // Re-bind immediately to update the UI
+                BindAgendas(txtSearch.Text.Trim(), hdnCurrentFilter.Value);
+            }
+
+            // 2. HANDLE SCROLLING (Updated for robustness)
+            // We check if ExpandedAgendaID > 0 (meaning we just expanded something)
             if (IsPostBack && ExpandedAgendaID > 0)
             {
-                // We use jQuery .animate() here because it allows us to set the speed (400ms)
-                // 'scrollTop' calculation ensures the card isn't hidden behind your sticky header
                 string script = $@"
+        $(function() {{
+            console.log('Scrolling to agenda ID: {ExpandedAgendaID}');
             setTimeout(function() {{
                 var $target = $('#agenda_{ExpandedAgendaID}');
                 if ($target.length) {{
-                    // Calculate position: Element Top - Header Height (approx 140px) - Buffer (20px)
+                    // Calculate position: Element Top - Header Height (160px buffer)
                     var targetTop = $target.offset().top - 160;
-                    
-                    // 400 = 400 milliseconds (0.4 seconds) -> Fast and Snappy
-                    $('html, body').animate({{
-                        scrollTop: targetTop
-                    }}, 400); 
+                    console.log('Target found at: ' + targetTop);
+                    $('html, body').animate({{ scrollTop: targetTop }}, 600); 
+                }} else {{
+                    console.log('Target element not found in DOM');
                 }}
-            }}, 300);"; // Keep small delay to ensure DOM is ready
+            }}, 300); 
+        }});";
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "ScrollToAgenda", script, true);
             }
@@ -81,7 +109,6 @@ namespace Expo_Panel.SuperAdmin
                 BindAgendas(string.Empty, "All");
             }
         }
-
         private bool IsAdminLoggedIn()
         {
             return CurrentAdminID > 0;
@@ -451,26 +478,7 @@ namespace Expo_Panel.SuperAdmin
             </div>";
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            if (IsPostBack && Request.Form["__EVENTTARGET"] == "Toggle")
-            {
-                string agendaIdStr = Request.Form["__EVENTARGUMENT"];
-                int clicked = 0;
-                Int32.TryParse(agendaIdStr, out clicked);
-
-                int current = 0;
-                Int32.TryParse(hdnExpandedAgendaID.Value, out current);
-
-                if (current == clicked)
-                    hdnExpandedAgendaID.Value = "0"; // Collapse
-                else
-                    hdnExpandedAgendaID.Value = clicked.ToString();
-
-                BindAgendas(txtSearch.Text.Trim(), hdnCurrentFilter.Value);
-            }
-        }
+        
 
         public string GetStatusBadge(object statusCategoryObj)
         {

@@ -528,8 +528,8 @@ string selectedAgendas)
                                 string jsTrack = track.Replace("'", "\\'");
                                 string jsTime = time.Replace("'", "\\'");
                                 string jsTitle = title.Replace("'", "\\'");
-                                string jsBrief = brief.Replace("'", "\\'").Replace("\n", "<br/>").Replace("\r", "");
-                                string jsSynopsis = synopsis.Replace("'", "\\'").Replace("\n", "<br/>").Replace("\r", "");
+                                string safeBrief = brief.Replace("\"", "&quot;").Replace("\n", "<br/>").Replace("\r", "");
+                                string safeSynopsis = synopsis.Replace("\"", "&quot;").Replace("\n", "<br/>").Replace("\r", "");
 
                                 html.Append("<tr>");
 
@@ -557,7 +557,11 @@ string selectedAgendas)
 
                                 // View Details button column
                                 html.Append("<td style='text-align: center;'>");
-                                html.Append($"<button type='button' class='btn-view' onclick=\"viewAgenda({agendaId}, '{jsDay}', '{jsTrack}', '{jsTime}', '{jsTitle}', '{jsBrief}', '{jsSynopsis}')\">");
+                                // We store the long text in 'data-' attributes instead of passing them in the function
+                                html.Append($"<button type='button' class='btn-view' " +
+                                            $"data-brief=\"{safeBrief}\" " +
+                                            $"data-synopsis=\"{safeSynopsis}\" " +
+                                            $"onclick=\"viewAgenda(this, {agendaId}, '{jsDay}', '{jsTrack}', '{jsTime}', '{jsTitle}')\">");
                                 html.Append("<i class='fas fa-eye'></i> View");
                                 html.Append("</button>");
                                 html.Append("</td>");

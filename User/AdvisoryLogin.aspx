@@ -41,16 +41,16 @@
             overflow-x: hidden;
         }
 
-       .login-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 25px;
-}
+        .login-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 25px;
+        }
 
         .login-container {
             background: white;
@@ -536,6 +536,12 @@
                 box-shadow: none;
             }
         }
+        .login-footer p a {
+    color: #764ba2;
+    font-weight: 600;
+    text-decoration: none;
+}
+    
     </style>
 </head>
 
@@ -596,8 +602,8 @@
                 </div>
 
                 <div class="login-footer">
-                    <p>&copy; 2025 Lubricant India Expo and Smart Lubricants Summit 2026. All rights reserved.</p>
                     <p class="footer-text">Secure Advisory Access Only</p>
+                    <p>&copy; 2025 Lubricant India Expo. All rights reserved.</p>
                 </div>
             </div>
 

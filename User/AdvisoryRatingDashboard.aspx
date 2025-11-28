@@ -813,12 +813,12 @@
                         </div>
 
                         <div class="toolbar">
-                            <div class="search-box">
-                                <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control"
-                                    placeholder="Search by agenda title, track, day..."></asp:TextBox>
-                                <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary"
-                                    OnClick="btnSearch_Click" />
-                            </div>
+                            <asp:Panel ID="pnlSearch" runat="server" DefaultButton="btnSearch">
+                                <div class="search-box">
+                                    <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by day, track, title..."></asp:TextBox>
+                                    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="btnSearch_Click" />
+                                </div>
+                            </asp:Panel>
                         </div>
 
                         <div class="agenda-list">

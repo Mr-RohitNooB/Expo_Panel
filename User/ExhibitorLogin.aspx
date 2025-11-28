@@ -596,6 +596,13 @@
                 box-shadow: none;
             }
         }
+
+        
+.login-footer p a {
+    color: #dd6b20 ;
+    font-weight: 600;
+    text-decoration: none;
+}
     </style>
 </head>
 
@@ -664,11 +671,12 @@
 
                 <!-- Footer Section (Customized) -->
                 <div class="login-footer">
+                    <p>Don't have an account? <a href="RegisterExhibitor.aspx">Register as Exhibitor</a></p>
                     <p>&copy; 2025 Lubricant India Expo. All rights reserved.</p>
-                    <p class="footer-text">Secure Exhibitor Access</p>
                 </div>
             </div>
-
+                          
+          
             <!-- Decorative Elements -->
             <div class="decoration decoration-top"></div>
             <div class="decoration decoration-bottom"></div>

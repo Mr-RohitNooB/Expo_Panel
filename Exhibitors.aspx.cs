@@ -17,6 +17,14 @@ namespace Expo_Panel
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+
+        // --- NEW FIELDS FOR MODAL ---
+        public string LinkedIn { get; set; }
+        public string Website { get; set; }
+        public string Twitter { get; set; }
+        public string Facebook { get; set; }
+        public string ProductPicturePath { get; set; }
+        public string BrochurePath { get; set; }
     }
 
     public partial class Exhibitors : System.Web.UI.Page
@@ -38,8 +46,6 @@ namespace Expo_Panel
 
             using (SqlConnection con = new SqlConnection(connStr))
             {
-                // We use the same Stored Procedure "sp_GetPublicExhibitors"
-                // Assuming this SP returns ALL approved exhibitors
                 using (SqlCommand cmd = new SqlCommand("sp_GetPublicExhibitors", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -55,7 +61,16 @@ namespace Expo_Panel
                                 Designation = rdr["Designation"] != DBNull.Value ? rdr["Designation"].ToString() : "",
                                 City = rdr["City"] != DBNull.Value ? rdr["City"].ToString() : "",
                                 State = rdr["State"] != DBNull.Value ? rdr["State"].ToString() : "",
-                                Country = rdr["Country"] != DBNull.Value ? rdr["Country"].ToString() : ""
+                                Country = rdr["Country"] != DBNull.Value ? rdr["Country"].ToString() : "",
+
+                                // --- MAP NEW FIELDS ---
+                                LinkedIn = rdr["LinkedIn"] != DBNull.Value ? rdr["LinkedIn"].ToString() : "",
+                                Website = rdr["Website"] != DBNull.Value ? rdr["Website"].ToString() : "",
+                                Twitter = rdr["Twitter"] != DBNull.Value ? rdr["Twitter"].ToString() : "",
+                                Facebook = rdr["Facebook"] != DBNull.Value ? rdr["Facebook"].ToString() : "",
+                                // Remove Tilde (~) from paths so they work in <img> tags
+                                ProductPicturePath = (rdr["ProductPicturePath"] != DBNull.Value ? rdr["ProductPicturePath"].ToString() : "").Replace("~", ""),
+                                BrochurePath = (rdr["BrochurePath"] != DBNull.Value ? rdr["BrochurePath"].ToString() : "").Replace("~", "")
                             });
                         }
                     }
