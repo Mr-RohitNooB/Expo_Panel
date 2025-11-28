@@ -73,6 +73,7 @@
     <Content Include="Conference.aspx" />
     <Content Include="Exhibitors.aspx" />
     <Content Include="SuperAdmin\FinalSpeakerSelection.aspx" />
+    <Content Include="SuperAdmin\ViewExhibitorDetails.aspx" />
     <Content Include="SuperAdmin\ViewSpeakerDetails.aspx" />
     <Content Include="User\SpeakerDashboard.aspx" />
     <Content Include="User\SpeakerLogin.aspx" />
@@ -125,6 +126,13 @@
     </Compile>
     <Compile Include="SuperAdmin\FinalSpeakerSelection.aspx.designer.cs">
       <DependentUpon>FinalSpeakerSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SuperAdmin\ViewExhibitorDetails.aspx.cs">
+      <DependentUpon>ViewExhibitorDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SuperAdmin\ViewExhibitorDetails.aspx.designer.cs">
+      <DependentUpon>ViewExhibitorDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="SuperAdmin\ViewSpeakerDetails.aspx.cs">
       <DependentUpon>ViewSpeakerDetails.aspx</DependentUpon>

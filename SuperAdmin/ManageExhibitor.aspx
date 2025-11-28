@@ -788,9 +788,13 @@
 
                                     <asp:TemplateField HeaderText="Name">
                                         <ItemTemplate>
-                                            <span class="truncate-cell" title='<%# Eval("Name") %>'>
-                                                <%# Eval("Name") %>
-                                            </span>
+                                            <asp:HyperLink ID="hlViewDetails" runat="server"
+                                                NavigateUrl='<%# "ViewExhibitorDetails.aspx?ID=" + Eval("ExhibitorID") %>'
+                                                Text='<%# Eval("Name") %>'
+                                                Target="_blank"
+                                                CssClass="truncate-cell"
+                                                Style="color: #dd6b20; font-weight: 600; text-decoration: none; cursor: pointer;">
+                                            </asp:HyperLink>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 

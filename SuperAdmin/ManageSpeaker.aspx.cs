@@ -457,6 +457,13 @@ namespace Expo_Panel.Admin
                         return;
                     }
                 }
+                else
+                {
+                    // Use the existing path stored in the hidden field
+                    photoPath = hdnCurrentPhotoPath.Value;
+                    if (string.IsNullOrWhiteSpace(photoPath)) photoPath = null;
+                }
+
                 if (fuLogo.HasFile)
                 {
                     logoPath = UploadLogo();
@@ -465,6 +472,12 @@ namespace Expo_Panel.Admin
                         ShowMessage("Error uploading logo. Please try again.", "danger");
                         return;
                     }
+                }
+                else
+                {
+                    // Use the existing path stored in the hidden field
+                    logoPath = hdnCurrentLogoPath.Value;
+                    if (string.IsNullOrWhiteSpace(logoPath)) logoPath = null;
                 }
 
                 if (mode == "add")

@@ -1030,6 +1030,8 @@
 
                 <asp:HiddenField ID="hdnSpeakerID" runat="server" Value="0" />
                 <asp:HiddenField ID="hdnModalMode" runat="server" Value="add" />
+                <asp:HiddenField ID="hdnCurrentPhotoPath" runat="server" />
+                <asp:HiddenField ID="hdnCurrentLogoPath" runat="server" />
                 <asp:HiddenField ID="hdnApproveSpeakerID" runat="server" Value="0" />
                 <asp:Button ID="btnTriggerApproval" runat="server" OnClick="btnTriggerApproval_Click" Style="display: none;" />
                 <asp:HiddenField ID="hdnEditSpeakerID" runat="server" Value="0" />
@@ -1109,14 +1111,14 @@
                             <label>Upload Your Photo</label>
                             <asp:FileUpload ID="fuPhoto" runat="server" CssClass="form-control-file" />
                             <small class="form-text text-muted">JPG, PNG</small>
-                            <asp:Label ID="lblCurrentPhoto" runat="server" CssClass="text-info mt-2" Visible="false"></asp:Label>
+                            <asp:Label ID="lblCurrentPhoto" runat="server" CssClass="text-info mt-2" Style="display:none;"></asp:Label>
                         </div>
 
                         <div class="form-group col-md-6">
                             <label for="fuLogo">Company Logo (High Resolution)</label>
                             <asp:FileUpload ID="fuLogo" runat="server" CssClass="form-control-file" accept="image/*" />
                             <small class="form-text text-muted">Upload company logo (JPG or PNG)</small>
-                            <asp:Label ID="lblCurrentLogo" runat="server" CssClass="text-info mt-2" Visible="false"></asp:Label>
+                            <asp:Label ID="lblCurrentLogo" runat="server" CssClass="text-info mt-2" Style="display:none;"></asp:Label>
                         </div>
                     </div>
                 </div>
@@ -1752,7 +1754,10 @@
                     document.getElementById('<%=ddlStatus.ClientID%>').value = '1';
                     document.getElementById('<%=ddlIsAvailable.ClientID%>').value = 'Yes';
                     document.getElementById('<%=chkMarketingConsent.ClientID%>').checked = false;
-
+                    document.getElementById('<%=hdnCurrentPhotoPath.ClientID%>').value = '';
+                    document.getElementById('<%=hdnCurrentLogoPath.ClientID%>').value = '';
+                    document.getElementById('<%=lblCurrentPhoto.ClientID%>').textContent = '';
+                    document.getElementById('<%=lblCurrentLogo.ClientID%>').textContent = '';
                     // Clear checkboxes
                     document.querySelectorAll('.agenda-checkbox').forEach(cb => cb.checked = false);
                     document.getElementById('topicCount').textContent = '0';
@@ -1762,6 +1767,27 @@
                     modalTitle.textContent = 'Edit Speaker';
                     document.getElementById('<%=hdnSpeakerID.ClientID%>').value = speakerData.id;
                     document.getElementById('<%=hdnModalMode.ClientID%>').value = 'edit';
+                    document.getElementById('<%=hdnCurrentPhotoPath.ClientID%>').value = speakerData.photoPath || '';
+                    document.getElementById('<%=hdnCurrentLogoPath.ClientID%>').value = speakerData.logoPath || '';
+
+                    // Optional: Show the user they have a photo currently uploaded
+                    var lblPhoto = document.getElementById('<%=lblCurrentPhoto.ClientID%>');
+                    if (speakerData.photoPath) {
+                        lblPhoto.textContent = "Current photo exists (upload new to replace)";
+                        lblPhoto.style.display = 'block';
+                    } else {
+                        lblPhoto.textContent = "";
+                        lblPhoto.style.display = 'none';
+                    }
+
+                    var lblLogo = document.getElementById('<%=lblCurrentLogo.ClientID%>');
+                    if (speakerData.logoPath) {
+                        lblLogo.textContent = "Current logo exists (upload new to replace)";
+                        lblLogo.style.display = 'block';
+                    } else {
+                        lblLogo.textContent = "";
+                        lblLogo.style.display = 'none';
+                    }
 
                     // Populate form fields
                     document.getElementById('<%=txtName.ClientID%>').value = speakerData.name || '';

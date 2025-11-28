@@ -177,6 +177,24 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.HiddenField hdnModalMode;
 
         /// <summary>
+        /// hdnCurrentPhotoPath control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnCurrentPhotoPath;
+
+        /// <summary>
+        /// hdnCurrentLogoPath control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnCurrentLogoPath;
+
+        /// <summary>
         /// hdnApproveSpeakerID control.
         /// </summary>
         /// <remarks>
