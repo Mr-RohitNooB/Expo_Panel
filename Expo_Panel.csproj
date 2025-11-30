@@ -83,6 +83,7 @@
     <Content Include="SuperAdmin\ViewExhibitorDetails.aspx" />
     <Content Include="SuperAdmin\ViewSpeakerDetails.aspx" />
     <Content Include="TermsConditions.aspx" />
+    <Content Include="User\ExhibitorDashboard.aspx" />
     <Content Include="User\SpeakerDashboard.aspx" />
     <Content Include="User\SpeakerLogin.aspx" />
     <Content Include="SuperAdmin\ManageAdvisors.aspx" />
@@ -197,6 +198,13 @@
     </Compile>
     <Compile Include="TermsConditions.aspx.designer.cs">
       <DependentUpon>TermsConditions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\ExhibitorDashboard.aspx.cs">
+      <DependentUpon>ExhibitorDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\ExhibitorDashboard.aspx.designer.cs">
+      <DependentUpon>ExhibitorDashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\SpeakerDashboard.aspx.cs">
       <DependentUpon>SpeakerDashboard.aspx</DependentUpon>

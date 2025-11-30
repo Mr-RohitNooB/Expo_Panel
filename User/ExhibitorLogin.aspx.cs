@@ -17,10 +17,10 @@ namespace Expo_Panel
         {
             if (!IsPostBack)
             {
-                // If they are already logged in, send them to the profile page
+                // If they are already logged in, send them directly to the Dashboard
                 if (Session["ExhibitorID"] != null)
                 {
-                    Response.Redirect("PostApprovalExhibitor.aspx");
+                    Response.Redirect("ExhibitorDashboard.aspx"); // <--- CHANGED FROM PostApprovalExhibitor.aspx
                 }
             }
         }
@@ -63,9 +63,9 @@ namespace Expo_Panel
 
                             if (approvalStatus == "Approved")
                             {
-                                // Success! Create session and redirect.
+                                // Success! Create session and redirect to DASHBOARD.
                                 Session["ExhibitorID"] = exhibitorId;
-                                Response.Redirect("PostApprovalExhibitor.aspx");
+                                Response.Redirect("ExhibitorDashboard.aspx"); // <--- CHANGED HERE
                             }
                             else if (approvalStatus == "Pending")
                             {
