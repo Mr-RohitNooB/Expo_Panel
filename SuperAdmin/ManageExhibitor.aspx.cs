@@ -35,6 +35,17 @@ namespace Expo_Panel.Admin
                 return;
             }
 
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
+
+            if (role != "SuperAdmin")
+            {
+                // STOP! They are not allowed.
+                // Redirect them back to the dashboard immediately.
+                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return; // Stop processing this page
+            }
+
             if (!IsPostBack)
             {
                 if (Session["AdminUsername"] != null)

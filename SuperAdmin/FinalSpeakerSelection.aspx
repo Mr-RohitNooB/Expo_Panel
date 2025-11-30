@@ -8,6 +8,21 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
     <style>
         * {
             box-sizing: border-box;
@@ -1255,13 +1270,17 @@
             <h2>
                 <img src="../Images/Expo_logo_Full.png" style="vertical-align: middle; border-style: none; height: 122px; margin: -44px 0px -44px -23px;">Final Speaker Selection Dashboard</h2>
             <div class="admin-info">
-                <span><i class="fas fa-user-shield"></i>
-                    <asp:Label ID="lblAdminName" runat="server" /></span>
+                <span>
+                    <i class="fas fa-user-shield"></i>
+                    <asp:Label ID="lblAdminName" runat="server" />
+                </span>
+
                 <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn-info">
-                    <i class="fas fa-arrow-left"></i> Back
+        <i class="fas fa-arrow-left"></i> Back
                 </asp:HyperLink>
+
                 <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout"
-                    OnClick="btnLogout_Click" UseSubmitBehavior="false" />
+                    OnClick="btnLogout_Click" />
             </div>
         </div>
 
@@ -1276,7 +1295,7 @@
                     <div class="stat-card-value">
                         <asp:Label ID="lblTotalAgendas" runat="server" Text="0" />
                     </div>
-                    <div class="stat-card-label">Total Agendas</div>
+                    <div class="stat-card-label">Total Sessions</div>
                 </div>
 
                 <div class="stat-card card-blue">
@@ -1326,15 +1345,15 @@
                     <div class="stat-card-value">
                         <asp:Label ID="lblFinalizedAgendas" runat="server" Text="0" />
                     </div>
-                    <div class="stat-card-label">Finalized Agendas</div>
+                    <div class="stat-card-label">Finalized Sessions</div>
                 </div>
             </div>
 
             <!-- Filter Section -->
             <div class="filter-section">
-                <h3><i class="fas fa-filter"></i>Filter Agendas</h3>
+                <h3><i class="fas fa-filter"></i>Filter Sessions</h3>
                 <div class="filter-buttons">
-                    <asp:Button ID="btnAll" runat="server" Text="All Agendas (0)" CssClass="btn-filter active"
+                    <asp:Button ID="btnAll" runat="server" Text="All Sessions (0)" CssClass="btn-filter active"
                         CommandArgument="All" OnClick="btnStatusFilter_Click" />
                     <asp:Button ID="btnNeedsReview" runat="server" Text="Needs Review (0)" CssClass="btn-filter"
                         CommandArgument="NeedsReview" OnClick="btnStatusFilter_Click" />

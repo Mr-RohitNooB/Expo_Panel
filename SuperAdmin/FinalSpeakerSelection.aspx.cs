@@ -46,6 +46,16 @@ namespace Expo_Panel.SuperAdmin
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
+
+            if (role != "SuperAdmin")
+            {
+                // STOP! They are not allowed.
+                // Redirect them back to the dashboard immediately.
+                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return; // Stop processing this page
+            }
 
             if (IsPostBack && Request.Form["hdnExpandedAgendaID"] != null)
             {
@@ -116,9 +126,13 @@ namespace Expo_Panel.SuperAdmin
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
+            // 1. Clear the session (Log out)
             Session.Clear();
             Session.Abandon();
-            Response.Redirect("~/Default.aspx", false);
+
+            // 2. Redirect to the Dashboard as requested
+            // Note: If Dashboard is protected, it might kick the user back to Login automatically.
+            Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
             Context.ApplicationInstance.CompleteRequest();
         }
 
@@ -178,7 +192,7 @@ namespace Expo_Panel.SuperAdmin
                             int finalized = reader["Finalized"] != DBNull.Value ? Convert.ToInt32(reader["Finalized"]) : 0;
                             int pending = reader["Pending"] != DBNull.Value ? Convert.ToInt32(reader["Pending"]) : 0;
 
-                            btnAll.Text = $"All Agendas ({totalAgendas})";
+                            btnAll.Text = $"All Sessions ({totalAgendas})";
                             btnNeedsReview.Text = $"Needs Review ({needsReview})";
                             btnFinalized.Text = $"Finalized ({finalized})";
                             btnPending.Text = $"Pending Ratings ({pending})";

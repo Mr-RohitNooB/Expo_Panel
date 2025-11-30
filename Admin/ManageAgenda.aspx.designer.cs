@@ -11,7 +11,7 @@ namespace Expo_Panel.Admin
 {
 
 
-    public partial class ManageAdvisors
+    public partial class TeamAgendaDashboard
     {
 
         /// <summary>
@@ -69,13 +69,13 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.Button btnLogout;
 
         /// <summary>
-        /// UpdatePanel1 control.
+        /// litMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.WebControls.Literal litMessage;
 
         /// <summary>
         /// btnPending control.
@@ -141,31 +141,31 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
-        /// litMessage control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litMessage;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// gvAdvisors control.
+        /// gvAgenda control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvAdvisors;
+        protected global::System.Web.UI.WebControls.GridView gvAgenda;
 
         /// <summary>
-        /// hdnAdvisorID control.
+        /// hdnAgendaID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnAdvisorID;
+        protected global::System.Web.UI.WebControls.HiddenField hdnAgendaID;
 
         /// <summary>
         /// hdnModalMode control.
@@ -177,94 +177,58 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.HiddenField hdnModalMode;
 
         /// <summary>
-        /// txtName control.
+        /// ddlDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDay;
 
         /// <summary>
-        /// rfvName control.
+        /// rfvDay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvName;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDay;
 
         /// <summary>
-        /// txtEmail control.
+        /// ddlStream control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+        protected global::System.Web.UI.WebControls.DropDownList ddlStream;
 
         /// <summary>
-        /// rfvEmail control.
+        /// rfvStream control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvStream;
 
         /// <summary>
-        /// revEmail control.
+        /// txtTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtTime;
 
         /// <summary>
-        /// txtMobile control.
+        /// rfvTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMobile;
-
-        /// <summary>
-        /// txtPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
-
-        /// <summary>
-        /// rfvPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPassword;
-
-        /// <summary>
-        /// txtDesignation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDesignation;
-
-        /// <summary>
-        /// txtCompany control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCompany;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTime;
 
         /// <summary>
         /// ddlStatus control.
@@ -276,49 +240,85 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
 
         /// <summary>
-        /// btnSaveAdvisor control.
+        /// txtTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSaveAdvisor;
+        protected global::System.Web.UI.WebControls.TextBox txtTitle;
 
         /// <summary>
-        /// hdnApprovalAdvisorID control.
+        /// rfvTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnApprovalAdvisorID;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTitle;
 
         /// <summary>
-        /// txtApprovalName control.
+        /// txtBrief control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtApprovalName;
+        protected global::System.Web.UI.WebControls.TextBox txtBrief;
 
         /// <summary>
-        /// txtApprovalEmail control.
+        /// txtSynopsis control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtApprovalEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtSynopsis;
 
         /// <summary>
-        /// txtApprovalCompany control.
+        /// btnSaveAgenda control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtApprovalCompany;
+        protected global::System.Web.UI.WebControls.Button btnSaveAgenda;
+
+        /// <summary>
+        /// hdnApprovalAgendaID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnApprovalAgendaID;
+
+        /// <summary>
+        /// txtApprovalDay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalDay;
+
+        /// <summary>
+        /// txtApprovalTrack control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalTrack;
+
+        /// <summary>
+        /// txtApprovalTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalTime;
 
         /// <summary>
         /// txtApprovalRegType control.
@@ -330,13 +330,22 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.TextBox txtApprovalRegType;
 
         /// <summary>
-        /// txtApprovalDesignation control.
+        /// txtApprovalTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtApprovalDesignation;
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalTitle;
+
+        /// <summary>
+        /// txtApprovalBrief control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalBrief;
 
         /// <summary>
         /// ddlApprovalStatus control.

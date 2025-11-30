@@ -619,13 +619,13 @@
         }
 
         /* Footer */
-   .footer {
-    background: #3D3935;
-    color: #fff;
-    /* Top: 40px, Left/Right: 20px, Bottom: 100px (Extra space for timer) */
-    padding: 40px 20px 100px 20px; 
-    text-align: center;
-}
+        .footer {
+            background: #3D3935;
+            color: #fff;
+            /* Top: 40px, Left/Right: 20px, Bottom: 100px (Extra space for timer) */
+            padding: 40px 20px 100px 20px;
+            text-align: center;
+        }
 
         .footer-content {
             max-width: 1200px;
@@ -896,7 +896,7 @@
         .modal-body-grid {
             display: grid;
             grid-template-columns: 250px 1fr;
-            gap: 30px;
+            gap: 2px;
             padding: 40px;
         }
 
@@ -1234,56 +1234,63 @@
 
         <!-- Footer -->
         <footer class="footer">
-    <div class="footer-content">
-        <div class="footer-links">
-            <a href="#home">Home</a>
-            <a href="Conference.aspx">Conference</a>
-            <a href="#speakers">Speakers</a>
-            <a href="Exhibitors.aspx">Exhibitors</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Privacy Policy</a>
-        </div>
-        <p style="margin-top: 20px; opacity: 0.8;">
-            © 2025 Lubricant India Expo. All rights reserved.
-        </p>
-    </div>
-</footer>
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="Conference.aspx">Conference</a>
+                    <a href="#speakers">Speakers</a>
+                    <a href="Exhibitors.aspx">Exhibitors</a>
+                    <a href="TermsConditions.aspx">Terms & Conditions</a>
+                    <a href="PrivacyPolicy.aspx">Privacy Policy</a>
+                </div>
+                <p style="margin-top: 20px; opacity: 0.8;">
+                    © 2025 Lubricant India Expo. All rights reserved.
+                </p>
+            </div>
+        </footer>
     </form>
 
     <div id="speakerModal" class="modal-overlay">
         <div class="modal-content">
-            <button type="button" class="close-modal" onclick="closeSpeakerModal()">&times;</button>
+            <button type="button" class="close-modal" onclick="closeSpeakerModal()">×</button>
             <div class="modal-body-grid">
+
                 <div class="modal-sidebar" style="text-align: center;">
 
                     <div class="speaker-avatar-container">
                         <img id="modalPhoto" src="" alt="Speaker" class="modal-profile-img-circle">
-
                         <img id="modalLogo" src="" alt="Logo" class="modal-company-logo-circle" style="display: none;">
                     </div>
 
                     <div style="margin-top: 15px; text-align: center;">
                         <h4 id="modalCompany" style="margin-top: 5px; color: #D94A2B; font-weight: 700;"></h4>
                     </div>
+
+                    <a id="modalLinkedIn" href="#" target="_blank" style="display: none; margin-top: 15px; padding: 10px 30px; background-color: #0077b5; color: white; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                        <i class="fab fa-linkedin" style="margin-right: 6px; font-size: 16px;"></i>Connect
+                    </a>
+
                 </div>
+
                 <div class="modal-main-info">
                     <h2 id="modalName" class="modal-title"></h2>
                     <p id="modalDesignation" class="modal-designation"></p>
-                    <div class="modal-badge">Experience: <span id="modalYEO"></span>Years</div>
+
                     <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 20px 0;">
 
-                    <div class="modal-section">
-                        <h5>Professional Bio</h5>
-                        <p id="modalBio"></p>
+                    <div class="modal-section" id="bioSection">
+                        <h5 style="color: #1e293b; font-size: 16px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase;">Professional Bio</h5>
+                        <p id="modalBio" style="line-height: 1.6; color: #4a5568;"></p>
                     </div>
-                    <div class="modal-section">
-                        <h5>Areas of Expertise</h5>
-                        <p id="modalExpertise"></p>
+
+                    <div class="modal-section" id="sessionSection" style="display: none; margin-top: 20px;">
+                        <h5 style="color: #D94A2B; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+                            <i class="fas fa-microphone-alt" style="margin-right: 8px;"></i>Speaking Sessions
+                        </h5>
+                        <ul id="modalSessionList" style="padding-left: 20px; list-style-type: disc; color: #333;">
+                        </ul>
                     </div>
-                    <div class="modal-section">
-                        <h5>Current Projects</h5>
-                        <p id="modalProjects"></p>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -1432,46 +1439,68 @@
 
         async function openSpeakerModal(speakerId) {
             try {
-                // Fetch data from the C# WebMethod
                 const response = await fetch('Index.aspx/GetSpeakerDetails', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json; charset=utf-8' },
                     body: JSON.stringify({ speakerId: speakerId })
                 });
-
                 const data = await response.json();
-                const d = data.d; // The SpeakerDetailsDTO object
+                const d = data.d;
 
                 if (d) {
-                    // Fill text fields
+                    // 1. Basic Info
                     document.getElementById('modalName').innerText = d.Name || "";
                     document.getElementById('modalDesignation').innerText = d.Designation || "";
                     document.getElementById('modalCompany').innerText = d.Company || "";
-                    document.getElementById('modalYEO').innerText = d.YearsOfExperience || "0";
-                    document.getElementById('modalBio').innerText = d.ProfessionalBio || "No bio available.";
-                    document.getElementById('modalExpertise').innerText = d.AreasOfExpertise || "N/A";
-                    document.getElementById('modalProjects').innerText = d.CurrentWorkProjects || "N/A";
 
-                    // Handle Profile Photo
+                    // 2. RESTORED: Bio
+                    const bioEl = document.getElementById('modalBio');
+                    if (d.ProfessionalBio) {
+                        bioEl.innerText = d.ProfessionalBio;
+                        document.getElementById('bioSection').style.display = 'block';
+                    } else {
+                        document.getElementById('bioSection').style.display = 'none';
+                    }
+
+                    // 3. Images
                     const img = document.getElementById('modalPhoto');
                     img.src = d.PhotoPath ? d.PhotoPath : 'Images/default_user.png';
 
-                    // Handle Company Logo
                     const logo = document.getElementById('modalLogo');
                     const companyHeader = document.getElementById('modalCompany');
 
                     if (d.LogoPath) {
                         logo.src = d.LogoPath;
                         logo.style.display = 'inline-block';
-                        companyHeader.style.display = 'none'; // Hide text if logo exists (optional preference)
+                        companyHeader.style.display = 'none';
                     } else {
                         logo.style.display = 'none';
-                        companyHeader.style.display = 'block'; // Show text if no logo
+                        companyHeader.style.display = 'block';
                     }
 
-                    // Show the Modal
+                    // 4. LinkedIn
+                    const lnk = document.getElementById('modalLinkedIn');
+                    if (d.LinkedInProfile && d.LinkedInProfile.trim() !== "") {
+                        lnk.href = d.LinkedInProfile;
+                        lnk.style.display = 'inline-block';
+                    } else {
+                        lnk.style.display = 'none';
+                    }
+
+                    // 5. UPDATED: Session List (HTML)
+                    const sessionBox = document.getElementById('sessionSection');
+                    const sessionList = document.getElementById('modalSessionList');
+
+                    if (d.SessionTitle && d.SessionTitle !== "") {
+                        // We use innerHTML because SQL sends formatted <li> tags
+                        sessionList.innerHTML = d.SessionTitle;
+                        sessionBox.style.display = 'block';
+                    } else {
+                        sessionBox.style.display = 'none';
+                    }
+
+                    // Show Modal
                     document.getElementById('speakerModal').style.display = 'flex';
-                    // Stop background scrolling
                     document.body.style.overflow = 'hidden';
                 }
             } catch (err) {

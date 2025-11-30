@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace Expo_Panel.Admin
 {
-    public partial class SpeakerDashboard : System.Web.UI.Page
+    public partial class TeamSpeakerDashboard : System.Web.UI.Page
     {
         private string ConnectionString
         {
@@ -34,17 +34,6 @@ namespace Expo_Panel.Admin
                 Response.Redirect("Default.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
-            }
-
-            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
-
-            if (role != "SuperAdmin")
-            {
-                // STOP! They are not allowed.
-                // Redirect them back to the dashboard immediately.
-                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
-                Context.ApplicationInstance.CompleteRequest();
-                return; // Stop processing this page
             }
 
             if (!IsPostBack)

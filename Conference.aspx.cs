@@ -61,13 +61,109 @@ namespace Expo_Panel
                                 Time = rdr["Time"].ToString(),
                                 AgendaTitle = rdr["AgendaTitle"].ToString(),
                                 AgendaBrief = brief,
-                                AgendaSynopsis = synopsis 
+                                AgendaSynopsis = synopsis
                             });
                         }
                     }
                 }
             }
             return list;
+        }
+
+        // 1. DTO Class (You can put this inside the Conference class or outside)
+        public class SessionSpeakerDTO
+        {
+            public int SpeakerID { get; set; } // <--- ADD THIS LINE
+            public string Name { get; set; }
+            public string Designation { get; set; }
+            public string Company { get; set; }
+            public string PhotoPath { get; set; }
+        }
+
+        // 2. WebMethod (Put this inside the Conference class)
+        [WebMethod]
+        public static List<SessionSpeakerDTO> GetSpeakersForSession(int agendaId)
+        {
+            List<SessionSpeakerDTO> list = new List<SessionSpeakerDTO>();
+            string connStr = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                using (SqlCommand cmd = new SqlCommand("[dbo].[sp_GetSpeakersByAgendaID]", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@AgendaID", agendaId);
+                    con.Open();
+
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            string rawPath = rdr["PhotoPath"] != DBNull.Value ? rdr["PhotoPath"].ToString() : "";
+
+                            list.Add(new SessionSpeakerDTO
+                            {
+                                SpeakerID = Convert.ToInt32(rdr["SpeakerID"]),
+                                Name = rdr["Name"].ToString(),
+                                Designation = rdr["Designation"].ToString(),
+                                Company = rdr["Company"].ToString(),
+                                // Clean up path if it starts with ~
+                                PhotoPath = rawPath.Replace("~", "")
+                            });
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+
+        public class SpeakerDetailsDTO
+        {
+            public string Name { get; set; }
+            public string Designation { get; set; }
+            public string Company { get; set; }
+            public string PhotoPath { get; set; }
+            public string LogoPath { get; set; }
+            public string LinkedInProfile { get; set; }
+            public string ProfessionalBio { get; set; }
+            // Note: We are ignoring SessionTitle here as requested
+        }
+
+        [WebMethod]
+        public static SpeakerDetailsDTO GetSpeakerDetails(int speakerId)
+        {
+            SpeakerDetailsDTO details = new SpeakerDetailsDTO();
+            string connStr = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                // Re-using the same SP from Index page
+                using (SqlCommand cmd = new SqlCommand("[eventExpo].[sp_GetPublicSpeakerDetails]", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                    con.Open();
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            details.Name = rdr["Name"].ToString();
+                            details.Designation = rdr["Designation"].ToString();
+                            details.Company = rdr["Company"].ToString();
+
+                            string rawPhoto = rdr["PhotoPath"] != DBNull.Value ? rdr["PhotoPath"].ToString() : "";
+                            string rawLogo = rdr["LogoPath"] != DBNull.Value ? rdr["LogoPath"].ToString() : "";
+
+                            details.PhotoPath = rawPhoto.Replace("~", "");
+                            details.LogoPath = rawLogo.Replace("~", "");
+                            details.LinkedInProfile = rdr["LinkedInProfile"] != DBNull.Value ? rdr["LinkedInProfile"].ToString() : "";
+                            details.ProfessionalBio = rdr["ProfessionalBio"] != DBNull.Value ? rdr["ProfessionalBio"].ToString() : "";
+                        }
+                    }
+                }
+            }
+            return details;
         }
     }
 }

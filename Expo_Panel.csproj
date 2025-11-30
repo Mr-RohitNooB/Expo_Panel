@@ -70,11 +70,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\Dashboard.aspx" />
+    <Content Include="Admin\Default.aspx" />
+    <Content Include="Admin\ManageAgenda.aspx" />
+    <Content Include="Admin\ManageSpeaker.aspx" />
+    <Content Include="Admin\ViewSpeakerDetails.aspx" />
     <Content Include="Conference.aspx" />
     <Content Include="Exhibitors.aspx" />
+    <Content Include="Images\Expo_logo_white.png" />
+    <Content Include="PrivacyPolicy.aspx" />
     <Content Include="SuperAdmin\FinalSpeakerSelection.aspx" />
     <Content Include="SuperAdmin\ViewExhibitorDetails.aspx" />
     <Content Include="SuperAdmin\ViewSpeakerDetails.aspx" />
+    <Content Include="TermsConditions.aspx" />
     <Content Include="User\SpeakerDashboard.aspx" />
     <Content Include="User\SpeakerLogin.aspx" />
     <Content Include="SuperAdmin\ManageAdvisors.aspx" />
@@ -99,6 +107,41 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ManageAgenda.aspx.cs">
+      <DependentUpon>ManageAgenda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageAgenda.aspx.designer.cs">
+      <DependentUpon>ManageAgenda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ManageSpeaker.aspx.cs">
+      <DependentUpon>ManageSpeaker.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageSpeaker.aspx.designer.cs">
+      <DependentUpon>ManageSpeaker.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ViewSpeakerDetails.aspx.cs">
+      <DependentUpon>ViewSpeakerDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewSpeakerDetails.aspx.designer.cs">
+      <DependentUpon>ViewSpeakerDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Conference.aspx.cs">
       <DependentUpon>Conference.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -112,6 +155,13 @@
     </Compile>
     <Compile Include="Exhibitors.aspx.designer.cs">
       <DependentUpon>Exhibitors.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PrivacyPolicy.aspx.cs">
+      <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PrivacyPolicy.aspx.designer.cs">
+      <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>
@@ -140,6 +190,13 @@
     </Compile>
     <Compile Include="SuperAdmin\ViewSpeakerDetails.aspx.designer.cs">
       <DependentUpon>ViewSpeakerDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TermsConditions.aspx.cs">
+      <DependentUpon>TermsConditions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TermsConditions.aspx.designer.cs">
+      <DependentUpon>TermsConditions.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\SpeakerDashboard.aspx.cs">
       <DependentUpon>SpeakerDashboard.aspx</DependentUpon>
@@ -272,6 +329,7 @@
     <None Include="packages.config" />
     <Content Include="Site1.Master" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

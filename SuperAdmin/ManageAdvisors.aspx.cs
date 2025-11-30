@@ -41,6 +41,17 @@ namespace Expo_Panel.Admin
                 return;
             }
 
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
+
+            if (role != "SuperAdmin")
+            {
+                // STOP! They are not allowed.
+                // Redirect them back to the dashboard immediately.
+                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return; // Stop processing this page
+            }
+
             if (!IsPostBack)
             {
                 // Load username and session status (copied from your file)
@@ -92,7 +103,7 @@ namespace Expo_Panel.Admin
             {
                 ShowMessage($"Search results for '{searchText}' in {currentFilter} records", "info");
             }
-            
+
         }
 
         // Filter logic (adapted for Advisors)
@@ -106,7 +117,7 @@ namespace Expo_Panel.Admin
             LoadAdvisors(txtSearch.Text.Trim(), filterStatus); // Calls LoadAdvisors
             LoadAdvisorStatusCounts(); // Recalculate counts
             SetActiveFilterButton(filterStatus);
-            
+
         }
 
         // GridView logic (adapted for Advisors)

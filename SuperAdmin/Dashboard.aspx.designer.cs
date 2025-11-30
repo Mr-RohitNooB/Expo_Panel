@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Expo_Panel.Admin
+namespace Expo_Panel.SuperAdmin
 {
 
 

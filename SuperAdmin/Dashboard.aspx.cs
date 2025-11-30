@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Web;
 
-namespace Expo_Panel.Admin
+namespace Expo_Panel.SuperAdmin
 {
     public partial class Dashboard : System.Web.UI.Page
     {
@@ -25,6 +25,15 @@ namespace Expo_Panel.Admin
             if (!IsAdminLoggedIn())
             {
                 Response.Redirect("Default.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
+
+            if (role != "SuperAdmin")
+            {
+                // Send them to the TEAM Dashboard instead
+                Response.Redirect("~/Admin/Dashboard.aspx", false); // <--- ADD THIS
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }

@@ -72,15 +72,15 @@
         }
 
         .login-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 25px;
-}
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 25px;
+        }
 
         /* Login Container */
         .login-container {
@@ -166,14 +166,14 @@
         }
 
         .header-brand img {
-            max-width: 313px;
-            width: 100%;
+            max-width: 301px;
+            width: 104%;
             height: auto;
             display: block;
             margin: 15px auto;
             object-fit: contain;
-            margin-top: -50px;
-            margin-bottom: -41px;
+            margin-top: -42px;
+            margin-bottom: -25px;
         }
 
 
@@ -628,7 +628,7 @@
                 <div class="login-header">
                     <div class="header-brand">
                         <h1>Speaker Login Panel</h1>
-                        <img src="../Images/Expo_logo_Full.png" />
+                        <img src="../Images/Expo_logo_white.png" />
                         <p class="tagline">Access your speaker profile</p>
                     </div>
                 </div>

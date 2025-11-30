@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Expo_Panel.Admin.Dashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Expo_Panel.SuperAdmin.Dashboard" %>
+
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">

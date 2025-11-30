@@ -199,6 +199,7 @@
             height: 100%;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
             .agenda-card:hover {
@@ -775,6 +776,149 @@
                 justify-content: space-between;
             }
         }
+
+        /* --- SPEAKER LIST MODAL STYLES --- */
+        .session-speakers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 10px;
+        }
+
+        .modal-speaker-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            transition: all 0.2s ease;
+        }
+
+            .modal-speaker-item:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+                transform: translateX(5px); /* Subtle movement effect */
+            }
+
+        .modal-speaker-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D94A2B; /* Brand Color Border */
+            flex-shrink: 0;
+        }
+
+        .modal-speaker-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border: 2px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .modal-speaker-info {
+            flex-grow: 1;
+        }
+
+        .modal-speaker-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .modal-speaker-role {
+            font-size: 0.9rem;
+            color: #D94A2B; /* Brand Color */
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .modal-speaker-company {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* --- SPEAKER PROFILE MODAL STYLES --- */
+        .modal-body-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .modal-sidebar {
+            text-align: center;
+        }
+
+        .speaker-avatar-container {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
+        .modal-profile-img-circle {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .modal-company-logo-circle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: contain;
+            background: #fff;
+            border: 2px solid #f1f5f9;
+            padding: 4px;
+        }
+
+        .modal-main-info h2 {
+            font-size: 1.8rem;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .modal-designation {
+            font-size: 1.1rem;
+            color: #D94A2B;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .modal-body-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .modal-main-info {
+                text-align: center;
+            }
+
+                .modal-main-info h2 {
+                    font-size: 1.5rem;
+                }
+        }
     </style>
 </head>
 <body>
@@ -860,16 +1004,63 @@
                 </div>
             </div>
         </div>
+        <div id="sessionSpeakersModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h2>Session Speakers</h2>
+                    <button type="button" class="close-modal" onclick="closeSessionSpeakersModal()">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="sessionSpeakersList" class="session-speakers-list">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="speakerProfileModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content" style="max-width: 800px; position: relative;">
+
+                <button type="button" class="close-modal" onclick="closeSpeakerProfile()"
+                    style="position: absolute; right: 25px; top: 25px; z-index: 10; width: 35px; height: 35px; font-size: 24px;">
+                    &times;
+                </button>
+
+                <div class="modal-body-grid">
+                    <div class="modal-sidebar">
+                        <div class="speaker-avatar-container">
+                            <img id="profPhoto" src="" class="modal-profile-img-circle">
+                            <img id="profLogo" src="" class="modal-company-logo-circle" style="display: none;">
+                        </div>
+                        <h4 id="profCompany" style="color: #D94A2B; font-weight: 700; margin-bottom: 15px;"></h4>
+
+                        <a id="profLinkedIn" href="#" target="_blank" style="display: none; padding: 8px 25px; background-color: #0077b5; color: white; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 13px;">
+                            <i class="fab fa-linkedin" style="margin-right: 5px;"></i>Connect
+                        </a>
+                    </div>
+
+                    <div class="modal-main-info">
+                        <h2 id="profName"></h2>
+                        <p id="profDesignation" class="modal-designation"></p>
+
+                        <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 20px 0;">
+
+                        <h5 style="color: #1e293b; font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">Professional Bio</h5>
+                        <p id="profBio" style="line-height: 1.6; color: #4a5568;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-links">
                     <a href="#home">Home</a>
                     <a href="Conference.aspx">Conference</a>
-                    <a href="Index.aspx#speakers">Speakers</a>
+                    <a href="#speakers">Speakers</a>
                     <a href="Exhibitors.aspx">Exhibitors</a>
-                    <a href="#">Terms & Conditions</a>
-                    <a href="#">Privacy Policy</a>
+                    <a href="TermsConditions.aspx">Terms & Conditions</a>
+                    <a href="PrivacyPolicy.aspx">Privacy Policy</a>
                 </div>
                 <p style="margin-top: 20px; opacity: 0.8;">
                     © 2025 Lubricant India Expo. All rights reserved.
@@ -1016,27 +1207,27 @@
             let html = '';
             data.forEach(item => {
                 html += `
-        <div class="agenda-card">
+        <div class="agenda-card" onclick="openModal(${item.AgendaID})">
+            
             <div class="agenda-meta">
                 <span class="agenda-day">${item.Day}</span>
+                <span class="agenda-track" style="font-size: 0.75rem; padding: 4px 8px;">${item.Track}</span>
                 <span class="agenda-time"><i class="far fa-clock"></i> ${item.Time}</span>
             </div>
              
             <h3 class="agenda-title">${item.AgendaTitle}</h3>
             
-            <p class="agenda-brief">${item.AgendaBrief || 'No description available.'}</p>
-            
-            <div class="card-footer-row">
-                <span class="agenda-track">${item.Track}</span>
-                
+            <div class="card-footer-row" style="justify-content: center;">
                 <div class="action-group">
-                    <button type="button" class="btn-view-details" onclick="openModal(${item.AgendaID})" title="View Details">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
+                    
+                    <button type="button" class="btn-view-details" onclick="event.stopPropagation(); loadSessionSpeakers(${item.AgendaID})" title="View Speakers">
+    <i class="fas fa-users"></i> View Speakers
+</button>
 
-                    <a href="User/RegisterSpeaker.aspx" class="btn-register">
+                    <a href="User/RegisterSpeaker.aspx" class="btn-register" onclick="event.stopPropagation()">
                         Register Now <i class="fas fa-arrow-right" style="margin-left:5px;"></i>
                     </a>
+
                 </div>
             </div>
         </div>`;
@@ -1080,6 +1271,133 @@
                 closeModal();
             }
         }
+
+        async function loadSessionSpeakers(agendaId) {
+            try {
+                document.body.style.cursor = 'wait';
+
+                const response = await fetch('Conference.aspx/GetSpeakersForSession', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                    body: JSON.stringify({ agendaId: agendaId })
+                });
+
+                const data = await response.json();
+                const speakers = data.d;
+
+                document.body.style.cursor = 'default';
+
+                // Container for the list
+                const listContainer = document.getElementById('sessionSpeakersList');
+
+                if (!speakers || speakers.length === 0) {
+                    listContainer.innerHTML = '<p style="text-align:center; color:#666; padding:20px;">Speakers for this session are being finalized.</p>';
+                } else {
+                    // Generate HTML for each speaker
+                    let html = '';
+                    speakers.forEach(s => {
+                        // Decide whether to show Image or Initials
+                        let imageHtml = '';
+                        if (s.PhotoPath) {
+                            imageHtml = `<img src="${s.PhotoPath}" alt="${s.Name}" class="modal-speaker-avatar">`;
+                        } else {
+                            // Get initials
+                            const initials = s.Name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                            imageHtml = `<div class="modal-speaker-placeholder">${initials}</div>`;
+                        }
+
+                        html += `
+    <div class="modal-speaker-item" onclick="openSpeakerProfile(${s.SpeakerID})" style="cursor: pointer;">
+        ${imageHtml}
+        <div class="modal-speaker-info">
+            <div class="modal-speaker-name">${s.Name}</div>
+            <div class="modal-speaker-role">${s.Designation}</div>
+            <div class="modal-speaker-company">${s.Company}</div>
+        </div>
+        <i class="fas fa-chevron-right" style="color:#cbd5e1;"></i> </div>`;
+                    });
+
+                    listContainer.innerHTML = html;
+                }
+
+                // Show the Modal
+                document.getElementById('sessionSpeakersModal').style.display = 'flex';
+
+            } catch (err) {
+                document.body.style.cursor = 'default';
+                console.error("Error loading speakers:", err);
+            }
+        }
+
+        function closeSessionSpeakersModal() {
+            document.getElementById('sessionSpeakersModal').style.display = 'none';
+        }
+
+        // Close if clicking outside the white box (Optional, for better UX)
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('sessionSpeakersModal');
+            if (event.target == modal) {
+                closeSessionSpeakersModal();
+            }
+        });
+
+        async function openSpeakerProfile(speakerId) {
+            try {
+                // 1. Fetch Details
+                const response = await fetch('Conference.aspx/GetSpeakerDetails', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                    body: JSON.stringify({ speakerId: speakerId })
+                });
+                const data = await response.json();
+                const d = data.d;
+
+                if (d) {
+                    // 2. Populate Data
+                    document.getElementById('profName').innerText = d.Name || "";
+                    document.getElementById('profDesignation').innerText = d.Designation || "";
+                    document.getElementById('profCompany').innerText = d.Company || "";
+                    document.getElementById('profBio').innerText = d.ProfessionalBio || "Bio not available.";
+
+                    // 3. Images
+                    document.getElementById('profPhoto').src = d.PhotoPath ? d.PhotoPath : 'Images/default_user.png';
+
+                    const logo = document.getElementById('profLogo');
+                    if (d.LogoPath) {
+                        logo.src = d.LogoPath;
+                        logo.style.display = 'block';
+                    } else {
+                        logo.style.display = 'none';
+                    }
+
+                    // 4. LinkedIn
+                    const lnk = document.getElementById('profLinkedIn');
+                    if (d.LinkedInProfile && d.LinkedInProfile.trim() !== "") {
+                        lnk.href = d.LinkedInProfile;
+                        lnk.style.display = 'inline-block';
+                    } else {
+                        lnk.style.display = 'none';
+                    }
+
+                    // 5. Open Modal (Stacked on top of the list)
+                    document.getElementById('speakerProfileModal').style.display = 'flex';
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function closeSpeakerProfile() {
+            document.getElementById('speakerProfileModal').style.display = 'none';
+        }
+
+        // Close profile on outside click
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('speakerProfileModal');
+            if (event.target == modal) {
+                closeSpeakerProfile();
+            }
+        });
     </script>
 </body>
 </html>

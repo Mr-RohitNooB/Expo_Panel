@@ -379,21 +379,21 @@
             </div>
         </section>
 
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="Conference.aspx">Conference</a>
-                    <a href="Index.aspx#speakers">Speakers</a>
-                    <a href="Exhibitors.aspx">Exhibitors</a>
-                    <a href="#">Terms & Conditions</a>
-                    <a href="#">Privacy Policy</a>
-                </div>
-                <p style="margin-top: 20px; opacity: 0.8;">
-                    © 2025 Lubricant India Expo. All rights reserved.
-                </p>
-            </div>
-        </footer>
+          <footer class="footer">
+      <div class="footer-content">
+          <div class="footer-links">
+              <a href="#home">Home</a>
+              <a href="Conference.aspx">Conference</a>
+              <a href="#speakers">Speakers</a>
+              <a href="Exhibitors.aspx">Exhibitors</a>
+              <a href="TermsConditions.aspx">Terms & Conditions</a>
+              <a href="PrivacyPolicy.aspx">Privacy Policy</a>
+          </div>
+          <p style="margin-top: 20px; opacity: 0.8;">
+              © 2025 Lubricant India Expo. All rights reserved.
+          </p>
+      </div>
+  </footer>
 
     </form>
     <div id="exhibitorModal" class="modal-overlay">

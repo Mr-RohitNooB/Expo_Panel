@@ -40,12 +40,13 @@ namespace Expo_Panel
         public string Name { get; set; }
         public string Designation { get; set; }
         public string Company { get; set; }
-        public int YearsOfExperience { get; set; }
         public string PhotoPath { get; set; }
         public string LogoPath { get; set; }
+        public string LinkedInProfile { get; set; }
+        public string SessionTitle { get; set; }
+
+        // NEW: Add this back
         public string ProfessionalBio { get; set; }
-        public string AreasOfExpertise { get; set; }
-        public string CurrentWorkProjects { get; set; }
     }
     public class ExhibitorDTO
     {
@@ -248,18 +249,19 @@ namespace Expo_Panel
                             details.Name = rdr["Name"].ToString();
                             details.Designation = rdr["Designation"].ToString();
                             details.Company = rdr["Company"].ToString();
-                            details.YearsOfExperience = rdr["YearsOfExperience"] != DBNull.Value ? Convert.ToInt32(rdr["YearsOfExperience"]) : 0;
 
-                            // FIX: Remove Tilde (~) from both Photo and Logo paths
+                            // Photos
                             string rawPhoto = rdr["PhotoPath"] != DBNull.Value ? rdr["PhotoPath"].ToString() : "";
                             string rawLogo = rdr["LogoPath"] != DBNull.Value ? rdr["LogoPath"].ToString() : "";
-
                             details.PhotoPath = rawPhoto.Replace("~", "");
                             details.LogoPath = rawLogo.Replace("~", "");
 
-                            details.ProfessionalBio = rdr["ProfessionalBio"] != DBNull.Value ? rdr["ProfessionalBio"].ToString() : "No bio available.";
-                            details.AreasOfExpertise = rdr["AreasOfExpertise"] != DBNull.Value ? rdr["AreasOfExpertise"].ToString() : "";
-                            details.CurrentWorkProjects = rdr["CurrentWorkProjects"] != DBNull.Value ? rdr["CurrentWorkProjects"].ToString() : "";
+                            // Social & Session
+                            details.LinkedInProfile = rdr["LinkedInProfile"] != DBNull.Value ? rdr["LinkedInProfile"].ToString() : "";
+                            details.SessionTitle = rdr["SessionTitle"] != DBNull.Value ? rdr["SessionTitle"].ToString() : "";
+
+                            // NEW: Bio
+                            details.ProfessionalBio = rdr["ProfessionalBio"] != DBNull.Value ? rdr["ProfessionalBio"].ToString() : "";
                         }
                     }
                 }

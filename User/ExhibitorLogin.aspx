@@ -168,16 +168,16 @@
             margin-bottom: -30px;
         }
 
-        .header-brand img {
-            max-width: 313px;
-            width: 100%;
-            height: auto;
-            display: block;
-            margin: 15px auto;
-            object-fit: contain;
-            margin-top: -50px;
-            margin-bottom: -41px;
-        }
+       .header-brand img {
+    max-width: 301px;
+    width: 104%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    object-fit: contain;
+    margin-top: -50px;
+    margin-bottom: -25px;
+}
 
 
 
@@ -614,7 +614,8 @@
                 <div class="login-header">
                     <div class="header-brand">
                         <h1>Exhibitor Login Panel</h1>
-                        <img src="../Images/Expo_logo_Full.png" />
+                        <%--400x254--%>
+                        <img src="../Images/Expo_logo_white.png" /> 
                         <p class="tagline">Access your post-approval profile</p>
                     </div>
                 </div>

@@ -11,14 +11,11 @@ namespace Expo_Panel.Admin
         {
             if (!IsPostBack)
             {
-                // Check if already logged in
+                // 1. If already logged in, redirect immediately based on role
                 if (Session["IsAdminLoggedIn"] != null && (bool)Session["IsAdminLoggedIn"])
                 {
-                    Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
-                    Context.ApplicationInstance.CompleteRequest();
+                    RedirectBasedOnRole();
                 }
-
-                // Set focus to username field
                 txtUsername.Focus();
             }
         }
@@ -30,17 +27,11 @@ namespace Expo_Panel.Admin
                 string username = txtUsername.Text.Trim();
                 string password = txtPassword.Text.Trim();
 
-
+                // 2. ValidateAdmin now handles ALL Session setting (Role, ID, etc.)
                 if (ValidateAdmin(username, password))
                 {
-                    // Set all required session variables
-                    Session["AdminUsername"] = username;
-                    Session["IsAdminLoggedIn"] = true;
-                    Session["IsAuthenticated"] = true;
-
-                    // Redirect to dashboard
-                    Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
-                    Context.ApplicationInstance.CompleteRequest();
+                    // 3. Login Success -> Route to correct dashboard
+                    RedirectBasedOnRole();
                 }
                 else
                 {
@@ -51,7 +42,23 @@ namespace Expo_Panel.Admin
             }
         }
 
-        // *** REPLACE THIS FUNCTION IN Default.aspx.cs ***
+        // Helper function to handle routing logic in one place
+        private void RedirectBasedOnRole()
+        {
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
+
+            if (role == "SuperAdmin")
+            {
+                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
+            }
+            else
+            {
+                Session["IsTeamAdminLoggedIn"] = true; // Required for Admin folder
+                Response.Redirect("~/Admin/Dashboard.aspx", false);
+            }
+            Context.ApplicationInstance.CompleteRequest();
+        }
+
         private bool ValidateAdmin(string username, string password)
         {
             bool isValid = false;
@@ -61,20 +68,20 @@ namespace Expo_Panel.Admin
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    // This query now joins to TBL.Advisory to find the "bridge"
                     string query = @"
-                SELECT 
-                    a.AdminID, 
-                    a.IsActive,
-                    adv.AdvisorID AS LinkedAdvisorID,
-                    adv.Name AS AdvisorName
-                FROM 
-                    TBL.Admin a
-                LEFT JOIN 
-                    TBL.Advisory adv ON a.AdminID = adv.LinkedAdminID AND adv.IS_ACTIVE = 1
-                WHERE 
-                    a.Username = @Username 
-                    AND a.Password = @Password";
+                        SELECT 
+                            a.AdminID, 
+                            a.IsActive,
+                            a.Role, 
+                            adv.AdvisorID AS LinkedAdvisorID,
+                            adv.Name AS AdvisorName
+                        FROM 
+                            TBL.Admin a
+                        LEFT JOIN 
+                            TBL.Advisory adv ON a.AdminID = adv.LinkedAdminID AND adv.IS_ACTIVE = 1
+                        WHERE 
+                            a.Username = @Username 
+                            AND a.Password = @Password";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -91,18 +98,23 @@ namespace Expo_Panel.Admin
 
                                 if (isActive)
                                 {
-                                    Session["AdminID"] = adminId; // Standard Admin ID
+                                    // --- SET SESSIONS HERE (While Reader is Open) ---
+                                    Session["AdminID"] = adminId;
+                                    Session["AdminUsername"] = username;
+                                    Session["IsAdminLoggedIn"] = true;
+                                    Session["IsAuthenticated"] = true;
 
-                                    // *** NEW CODE (The "Bridge") ***
-                                    // Check if we found a linked advisor profile
+                                    // SAVE THE ROLE
+                                    string role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : "Admin";
+                                    Session["Role"] = role;
+
+                                    // Bridge for Advisor
                                     if (reader["LinkedAdvisorID"] != DBNull.Value)
                                     {
-                                        // This is your "Advisor Hat" session
                                         Session["AdminAdvisorID"] = Convert.ToInt32(reader["LinkedAdvisorID"]);
                                         Session["AdvisorUsername"] = reader["AdvisorName"].ToString();
-                                        Session["IsAdvisorLoggedIn"] = true; // This is the key for the rating page
+                                        Session["IsAdvisorLoggedIn"] = true;
                                     }
-                                    // *** END NEW CODE ***
 
                                     isValid = true;
                                 }
@@ -117,13 +129,12 @@ namespace Expo_Panel.Admin
             }
             catch (Exception ex)
             {
-                ShowError("An error occurred during login. Please try again later.");
+                ShowError("An error occurred during login.");
                 System.Diagnostics.Debug.WriteLine($"Login Error: {ex.Message}");
             }
 
             return isValid;
         }
-
 
         private void ShowError(string message)
         {

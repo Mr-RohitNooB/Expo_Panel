@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace Expo_Panel.Admin
 {
-    public partial class AgendaDashboard : System.Web.UI.Page
+    public partial class TeamAgendaDashboard : System.Web.UI.Page
     {
         private string ConnectionString
         {
@@ -64,18 +64,6 @@ namespace Expo_Panel.Admin
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
-
-            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
-
-            if (role != "SuperAdmin")
-            {
-                // STOP! They are not allowed.
-                // Redirect them back to the dashboard immediately.
-                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
-                Context.ApplicationInstance.CompleteRequest();
-                return; // Stop processing this page
-            }
-
 
             string userRole = GetUserRole(CurrentAdminID);
             IsSuperAdmin = (userRole == "SuperAdmin");

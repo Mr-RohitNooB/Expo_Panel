@@ -116,14 +116,14 @@
 
 
         .header-brand img {
-            max-width: 313px;
-            width: 100%;
+            max-width: 301px;
+            width: 104%;
             height: auto;
             display: block;
             margin: 15px auto;
             object-fit: contain;
-            margin-top: -50px;
-            margin-bottom: -41px;
+            margin-top: -44px;
+            margin-bottom: -25px;
         }
 
         .header-brand p {
@@ -536,12 +536,12 @@
                 box-shadow: none;
             }
         }
+
         .login-footer p a {
-    color: #764ba2;
-    font-weight: 600;
-    text-decoration: none;
-}
-    
+            color: #764ba2;
+            font-weight: 600;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -552,7 +552,7 @@
                 <div class="login-header">
                     <div class="header-brand">
                         <h1>Advisory Login Panel</h1>
-                        <img src="../Images/Expo_logo_Full.png" />
+                        <img src="../Images/Expo_logo_white.png" />
                         <p class="tagline">Smart Lubricants Summit 2026</p>
                     </div>
                 </div>
