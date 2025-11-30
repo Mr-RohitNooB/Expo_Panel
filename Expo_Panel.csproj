@@ -76,6 +76,7 @@
     <Content Include="Admin\ManageSpeaker.aspx" />
     <Content Include="Admin\ViewSpeakerDetails.aspx" />
     <Content Include="Conference.aspx" />
+    <Content Include="ExhibitorDetails.aspx" />
     <Content Include="Exhibitors.aspx" />
     <Content Include="Images\Expo_logo_white.png" />
     <Content Include="PrivacyPolicy.aspx" />
@@ -149,6 +150,13 @@
     </Compile>
     <Compile Include="Conference.aspx.designer.cs">
       <DependentUpon>Conference.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExhibitorDetails.aspx.cs">
+      <DependentUpon>ExhibitorDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExhibitorDetails.aspx.designer.cs">
+      <DependentUpon>ExhibitorDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="Exhibitors.aspx.cs">
       <DependentUpon>Exhibitors.aspx</DependentUpon>

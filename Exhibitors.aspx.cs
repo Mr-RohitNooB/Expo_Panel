@@ -4,49 +4,34 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.Services;
-using System.Web.UI;
 
 namespace Expo_Panel
 {
-    // We reuse the same DTO structure
-    public class ExhibitorPageDTO
+    public class ExhibitorCardDTO
     {
+        public int ExhibitorID { get; set; }
         public string Company { get; set; }
-        public string FullName { get; set; }
-        public string Designation { get; set; }
+        public string LogoPath { get; set; }
         public string City { get; set; }
-        public string State { get; set; }
         public string Country { get; set; }
-
-        // --- NEW FIELDS FOR MODAL ---
-        public string LinkedIn { get; set; }
-        public string Website { get; set; }
-        public string Twitter { get; set; }
-        public string Facebook { get; set; }
-        public string ProductPicturePath { get; set; }
-        public string BrochurePath { get; set; }
+        public string HallNo { get; set; }
+        public string BoothNo { get; set; }
     }
 
     public partial class Exhibitors : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
-            {
-                // Update the browser tab title
-                Page.Title = "Exhibitor List | Lubricant India Expo 2026";
-            }
-        }
+        protected void Page_Load(object sender, EventArgs e) { }
 
         [WebMethod]
-        public static List<ExhibitorPageDTO> GetAllExhibitors()
+        public static List<ExhibitorCardDTO> GetExhibitorsList()
         {
-            List<ExhibitorPageDTO> list = new List<ExhibitorPageDTO>();
+            List<ExhibitorCardDTO> list = new List<ExhibitorCardDTO>();
             string connStr = ConfigurationManager.ConnectionStrings["ExpoPanelDB"].ConnectionString;
 
             using (SqlConnection con = new SqlConnection(connStr))
             {
-                using (SqlCommand cmd = new SqlCommand("sp_GetPublicExhibitors", con))
+                // Updated Stored Procedure Name
+                using (SqlCommand cmd = new SqlCommand("sp_GetPublicExhibitorsList", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     con.Open();
@@ -54,23 +39,15 @@ namespace Expo_Panel
                     {
                         while (rdr.Read())
                         {
-                            list.Add(new ExhibitorPageDTO
+                            list.Add(new ExhibitorCardDTO
                             {
+                                ExhibitorID = Convert.ToInt32(rdr["ExhibitorID"]),
                                 Company = rdr["Company"].ToString(),
-                                FullName = rdr["FullName"] != DBNull.Value ? rdr["FullName"].ToString() : "",
-                                Designation = rdr["Designation"] != DBNull.Value ? rdr["Designation"].ToString() : "",
+                                LogoPath = rdr["LogoPath"] != DBNull.Value ? rdr["LogoPath"].ToString() : "",
                                 City = rdr["City"] != DBNull.Value ? rdr["City"].ToString() : "",
-                                State = rdr["State"] != DBNull.Value ? rdr["State"].ToString() : "",
                                 Country = rdr["Country"] != DBNull.Value ? rdr["Country"].ToString() : "",
-
-                                // --- MAP NEW FIELDS ---
-                                LinkedIn = rdr["LinkedIn"] != DBNull.Value ? rdr["LinkedIn"].ToString() : "",
-                                Website = rdr["Website"] != DBNull.Value ? rdr["Website"].ToString() : "",
-                                Twitter = rdr["Twitter"] != DBNull.Value ? rdr["Twitter"].ToString() : "",
-                                Facebook = rdr["Facebook"] != DBNull.Value ? rdr["Facebook"].ToString() : "",
-                                // Remove Tilde (~) from paths so they work in <img> tags
-                                ProductPicturePath = (rdr["ProductPicturePath"] != DBNull.Value ? rdr["ProductPicturePath"].ToString() : "").Replace("~", ""),
-                                BrochurePath = (rdr["BrochurePath"] != DBNull.Value ? rdr["BrochurePath"].ToString() : "").Replace("~", "")
+                                HallNo = rdr["HallNo"] != DBNull.Value ? rdr["HallNo"].ToString() : "",
+                                BoothNo = rdr["BoothNo"] != DBNull.Value ? rdr["BoothNo"].ToString() : ""
                             });
                         }
                     }
