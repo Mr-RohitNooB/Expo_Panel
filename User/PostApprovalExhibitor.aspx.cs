@@ -52,6 +52,7 @@ namespace Expo_Panel
                     // Make file uploads OPTIONAL for updates
                     rfvProductPicture.Enabled = false;
                     rfvBrochure.Enabled = false;
+                    rfvLogo.Enabled = false;
                 }
                 else
                 {
@@ -81,11 +82,19 @@ namespace Expo_Panel
                 // File upload handling
                 string productPicturePath = "";
                 string brochurePath = "";
+                string logoPath = "";
 
-                if (fuProductPicture.HasFile || fuBrochure.HasFile)
+                if (fuProductPicture.HasFile || fuBrochure.HasFile || fuLogo.HasFile)
                 {
                     string uploadFolder = Server.MapPath($"~/Uploads/Exhibitor_{ExhibitorID}/");
 
+                    if (fuLogo.HasFile)
+                    {
+                        string logoFileName = "Logo_" + DateTime.Now.Ticks + Path.GetExtension(fuLogo.FileName);
+                        string logoFullPath = Path.Combine(uploadFolder, logoFileName);
+                        fuLogo.SaveAs(logoFullPath);
+                        logoPath = $"~/Uploads/Exhibitor_{ExhibitorID}/{logoFileName}";
+                    }
                     // Create directory if not exists
                     if (!Directory.Exists(uploadFolder))
                     {
@@ -160,7 +169,7 @@ namespace Expo_Panel
                         powerSupplyRequired, powerSupplyKwh, internetRequired, furnitureRequired,
                         avEquipmentRequired, interpreterRequired, otherRequirements,
                         participationObjectives, additionalNotes,
-                        productPicturePath, brochurePath
+                        productPicturePath, brochurePath, logoPath
                     );
                     ShowMessage("Your profile has been updated successfully!", "success");
                 }
@@ -175,7 +184,7 @@ namespace Expo_Panel
                         powerSupplyRequired, powerSupplyKwh, internetRequired, furnitureRequired,
                         avEquipmentRequired, interpreterRequired, otherRequirements,
                         participationObjectives, additionalNotes,
-                        productPicturePath, brochurePath
+                        productPicturePath, brochurePath, logoPath
                     );
 
                     if (profileId > 0)
@@ -186,6 +195,7 @@ namespace Expo_Panel
                         // Make file uploads OPTIONAL after first submission
                         rfvProductPicture.Enabled = false;
                         rfvBrochure.Enabled = false;
+                        rfvLogo.Enabled = false;
                     }
                     else
                     {
@@ -573,7 +583,7 @@ namespace Expo_Panel
             bool powerSupplyRequired, decimal? powerSupplyKwh, bool internetRequired, bool furnitureRequired,
             bool avEquipmentRequired, bool interpreterRequired, string otherRequirements,
             string participationObjectives, string additionalNotes,
-            string productPicturePath, string brochurePath)
+            string productPicturePath, string brochurePath, string logoPath)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -609,7 +619,7 @@ namespace Expo_Panel
                     cmd.Parameters.AddWithValue("@AdditionalNotes", string.IsNullOrEmpty(additionalNotes) ? (object)DBNull.Value : additionalNotes);
                     cmd.Parameters.AddWithValue("@ProductPicturePath", string.IsNullOrEmpty(productPicturePath) ? (object)DBNull.Value : productPicturePath);
                     cmd.Parameters.AddWithValue("@BrochurePath", string.IsNullOrEmpty(brochurePath) ? (object)DBNull.Value : brochurePath);
-
+                    cmd.Parameters.AddWithValue("@LogoPath", string.IsNullOrEmpty(logoPath) ? (object)DBNull.Value : logoPath);
                     SqlParameter outParam = new SqlParameter("@ProfileID", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -632,7 +642,7 @@ namespace Expo_Panel
             bool powerSupplyRequired, decimal? powerSupplyKwh, bool internetRequired, bool furnitureRequired,
             bool avEquipmentRequired, bool interpreterRequired, string otherRequirements,
             string participationObjectives, string additionalNotes,
-            string productPicturePath, string brochurePath)
+            string productPicturePath, string brochurePath, string logoPath)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -668,7 +678,7 @@ namespace Expo_Panel
                     cmd.Parameters.AddWithValue("@AdditionalNotes", string.IsNullOrEmpty(additionalNotes) ? (object)DBNull.Value : additionalNotes);
                     cmd.Parameters.AddWithValue("@ProductPicturePath", string.IsNullOrEmpty(productPicturePath) ? (object)DBNull.Value : productPicturePath);
                     cmd.Parameters.AddWithValue("@BrochurePath", string.IsNullOrEmpty(brochurePath) ? (object)DBNull.Value : brochurePath);
-
+                    cmd.Parameters.AddWithValue("@LogoPath", string.IsNullOrEmpty(logoPath) ? (object)DBNull.Value : logoPath);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }

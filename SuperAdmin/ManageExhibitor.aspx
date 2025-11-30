@@ -1434,6 +1434,15 @@
                     <i class="fas fa-upload"></i>Upload Documents
                 </div>
 
+                <div class="form-group full-width">
+                    <label for="<%=fuLogo.ClientID%>">Company Logo</label>
+                    <div class="file-upload">
+                        <asp:FileUpload ID="fuLogo" runat="server" />
+                    </div>
+                    <small style="color: #6b7280; font-size: 12px;">Accepted: PNG, JPG, JPEG (High Res)</small>
+                    <asp:Label ID="lblLogoStatus" runat="server" CssClass="file-status" Visible="false"></asp:Label>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="<%=fuProductPicture.ClientID%>">Product Picture</label>
@@ -1561,20 +1570,35 @@
                 $id('<%=btnTriggerApproval.ClientID%>').click();
             }
 
-            function openApprovalModal(id, name, email, company, regType, approvalStatus, remarks, password) {
-                $id('<%=hdnApprovalExhibitorID.ClientID%>').value = id;
-                $id('<%=txtApprovalName.ClientID%>').value = name;
-                $id('<%=txtApprovalEmail.ClientID%>').value = email;
-                $id('<%=txtApprovalCompany.ClientID%>').value = company;
-                $id('<%=txtApprovalRegType.ClientID%>').value = regType;
-                $id('<%=ddlApprovalStatus.ClientID%>').value = approvalStatus;
-                $id('<%=txtApprovalRemarks.ClientID%>').value = remarks || '';
-                $id('<%=txtPassword.ClientID%>').value = password || '';
+            function openApprovalModal(id, name, email, company, regType, approvalStatus, remarks, password, hall, booth, area) {
+                // Hidden ID
+                safeSet('<%=hdnApprovalExhibitorID.ClientID%>', id);
 
+                // Read-only info fields
+                safeSet('<%=txtApprovalName.ClientID%>', name);
+                safeSet('<%=txtApprovalEmail.ClientID%>', email);
+                safeSet('<%=txtApprovalCompany.ClientID%>', company);
+                safeSet('<%=txtApprovalRegType.ClientID%>', regType);
+
+                // --- NEW LOGISTICS FIELDS ---
+                safeSet('<%=txtApprovalHall.ClientID%>', hall);
+                safeSet('<%=txtApprovalBooth.ClientID%>', booth);
+                safeSet('<%=txtApprovalArea.ClientID%>', area);
+                // ----------------------------
+
+                // Status and Remarks
+                var ddl = $id('<%=ddlApprovalStatus.ClientID%>');
+                if (ddl) ddl.value = approvalStatus;
+
+                safeSet('<%=txtApprovalRemarks.ClientID%>', remarks || '');
+                safeSet('<%=txtPassword.ClientID%>', password || '');
+
+                // Show Modal
                 var modal = $id('approvalModal');
-                modal.classList.add('show');
-
-                toggleRemarksAndPasswordRequired();
+                if (modal) {
+                    modal.classList.add('show');
+                    toggleRemarksAndPasswordRequired();
+                }
             }
 
             function closeApprovalModal() {
@@ -1814,6 +1838,19 @@
                         // Additional Notes
                         safeSet('<%=txtAdditionalNotes.ClientID%>', data.additionalNotes);
 
+
+                        // New Logo Logic started here
+                        var lblLogo = $id('<%=lblLogoStatus.ClientID%>');
+                        if (lblLogo) lblLogo.style.display = 'none'; // Reset first
+
+                        if (data.logo) {
+                            if (lblLogo) {
+                                lblLogo.innerHTML = '<i class="fas fa-check-circle"></i> File uploaded: ' + data.logo.split('/').pop();
+                                lblLogo.className = 'file-status exists';
+                                lblLogo.style.display = 'block';
+                            }
+                        }
+
                         // File Upload Status
                         if (data.productPicture) {
                             if (lblProduct) {
@@ -1988,6 +2025,21 @@
                         <div class="form-group">
                             <label for="txtApprovalRegType">Registration Type</label>
                             <asp:TextBox ID="txtApprovalRegType" runat="server" Enabled="false"></asp:TextBox>
+                        </div>
+                    </div>
+
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label for="txtApprovalHall">Hall No</label>
+                            <asp:TextBox ID="txtApprovalHall" runat="server" placeholder="Hall No"></asp:TextBox>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtApprovalBooth">Booth No</label>
+                            <asp:TextBox ID="txtApprovalBooth" runat="server" placeholder="Booth No"></asp:TextBox>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtApprovalArea">Size (Sqm)</label>
+                            <asp:TextBox ID="txtApprovalArea" runat="server" placeholder="Area" TextMode="Number"></asp:TextBox>
                         </div>
                     </div>
 

@@ -41,11 +41,11 @@
             align-items: center;
         }
 
-        .header h1 {
-            color: #dd6b20; /* Matches theme */
-            font-size: 24px;
-            font-weight: 600;
-        }
+            .header h1 {
+                color: #dd6b20; /* Matches theme */
+                font-size: 24px;
+                font-weight: 600;
+            }
 
         .dashboard-card {
             background: rgba(255, 255, 255, 0.95);
@@ -103,12 +103,29 @@
             display: inline-block;
         }
 
-        .badge-approved { background: #d1fae5; color: #065f46; }
-        .badge-pending { background: #fef3c7; color: #92400e; }
-        .badge-rejected { background: #fee2e2; color: #991b1b; }
-        
-        .badge-bool-yes { color: #059669; font-weight: bold; }
-        .badge-bool-no { color: #94a3b8; }
+        .badge-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-bool-yes {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .badge-bool-no {
+            color: #94a3b8;
+        }
 
         .btn {
             padding: 10px 20px;
@@ -127,7 +144,10 @@
             background: #e2e8f0;
             color: #475569;
         }
-        .btn-back:hover { background: #cbd5e1; }
+
+            .btn-back:hover {
+                background: #cbd5e1;
+            }
 
         .btn-doc {
             background: #3b82f6;
@@ -135,7 +155,10 @@
             font-size: 13px;
             padding: 6px 12px;
         }
-        .btn-doc:hover { background: #2563eb; }
+
+            .btn-doc:hover {
+                background: #2563eb;
+            }
 
         .social-links a {
             color: #64748b;
@@ -143,7 +166,10 @@
             margin-right: 15px;
             transition: color 0.3s;
         }
-        .social-links a:hover { color: #dd6b20; }
+
+            .social-links a:hover {
+                color: #dd6b20;
+            }
 
         /* Profile Missing State */
         .no-profile-banner {
@@ -157,7 +183,9 @@
         }
 
         @media (max-width: 768px) {
-            .info-grid { grid-template-columns: 1fr; }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -165,86 +193,100 @@
     <form id="form1" runat="server">
         <div class="container">
             <div class="header">
-                <h1><i class="fas fa-id-card-alt"></i> Exhibitor Details</h1>
+                <h1><i class="fas fa-id-card-alt"></i>Exhibitor Details</h1>
                 <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/ManageExhibitor.aspx" CssClass="btn btn-back">
                     <i class="fas fa-arrow-left"></i> Back to List
                 </asp:HyperLink>
             </div>
 
             <div class="dashboard-card">
-                
+
                 <div class="section-divider">
-                    <i class="fas fa-user-check"></i> Basic Registration Info
+                    <i class="fas fa-user-check"></i>Basic Registration Info
                 </div>
 
                 <div class="info-grid">
                     <div class="info-row">
                         <span class="info-label">Full Name</span>
-                        <span class="info-value"><asp:Label ID="lblName" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblName" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Designation</span>
-                        <span class="info-value"><asp:Label ID="lblDesignation" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblDesignation" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Email Address</span>
-                        <span class="info-value"><asp:Label ID="lblEmail" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblEmail" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Mobile</span>
-                        <span class="info-value"><asp:Label ID="lblMobile" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblMobile" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Company Name</span>
-                        <span class="info-value"><asp:Label ID="lblCompany" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblCompany" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Approval Status</span>
-                        <span class="info-value"><asp:Label ID="lblApprovalStatus" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblApprovalStatus" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Registration Type</span>
-                        <span class="info-value"><asp:Label ID="lblRegType" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblRegType" runat="server"></asp:Label></span>
                     </div>
-                     <div class="info-row">
+                    <div class="info-row">
                         <span class="info-label">Registered On</span>
-                        <span class="info-value"><asp:Label ID="lblRegDate" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblRegDate" runat="server"></asp:Label></span>
                     </div>
                 </div>
 
                 <div class="section-divider">
-                     <i class="fas fa-map-marker-alt"></i> Address & Billing
+                    <i class="fas fa-map-marker-alt"></i>Address & Billing
                 </div>
                 <div class="info-grid">
                     <div class="info-row">
                         <span class="info-label">Head Office Address</span>
-                        <span class="info-value"><asp:Label ID="lblHeadOffice" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblHeadOffice" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">City / State / Country</span>
-                        <span class="info-value"><asp:Label ID="lblLocation" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblLocation" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">GST Number</span>
-                        <span class="info-value"><asp:Label ID="lblGST" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblGST" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Billing Address</span>
-                        <span class="info-value"><asp:Label ID="lblBillingAddress" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblBillingAddress" runat="server"></asp:Label></span>
                     </div>
                 </div>
 
                 <div class="section-divider">
-                    <i class="fas fa-store"></i> Booth & Participation Interests
+                    <i class="fas fa-store"></i>Booth & Participation Interests
                 </div>
                 <div class="info-grid">
                     <div class="info-row">
                         <span class="info-label">Booth Type</span>
-                        <span class="info-value"><asp:Label ID="lblBoothType" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblBoothType" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Area (Sqm)</span>
-                        <span class="info-value"><asp:Label ID="lblArea" runat="server"></asp:Label></span>
+                        <span class="info-value">
+                            <asp:Label ID="lblArea" runat="server"></asp:Label></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Interests</span>
@@ -256,33 +298,38 @@
 
 
                 <asp:Panel ID="pnlProfile" runat="server" Visible="false">
-                    
+
                     <div class="section-divider" style="margin-top: 50px; background: #fff7ed; padding: 10px; border-radius: 5px;">
-                        <i class="fas fa-star"></i> Exhibitor Profile Details
+                        <i class="fas fa-star"></i>Exhibitor Profile Details
                     </div>
 
                     <div class="info-grid">
                         <div class="info-row">
                             <span class="info-label">Booth Number</span>
-                            <span class="info-value" style="font-size: 18px; color: #dd6b20;"><asp:Label ID="lblBoothNo" runat="server"></asp:Label></span>
+                            <span class="info-value" style="font-size: 18px; color: #dd6b20;">
+                                <asp:Label ID="lblBoothNo" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Hall Number</span>
-                            <span class="info-value"><asp:Label ID="lblHallNo" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblHallNo" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Year Established</span>
-                            <span class="info-value"><asp:Label ID="lblYearEst" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblYearEst" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Website</span>
-                            <span class="info-value"><asp:HyperLink ID="hlWebsite" runat="server" Target="_blank" style="color:#3b82f6;"></asp:HyperLink></span>
+                            <span class="info-value">
+                                <asp:HyperLink ID="hlWebsite" runat="server" Target="_blank" Style="color: #3b82f6;"></asp:HyperLink></span>
                         </div>
                     </div>
 
                     <div class="info-row" style="margin-bottom: 20px;">
                         <span class="info-label">Exhibitor Profile (Bio)</span>
-                        <span class="info-value" style="line-height: 1.6;"><asp:Label ID="lblProfileBio" runat="server"></asp:Label></span>
+                        <span class="info-value" style="line-height: 1.6;">
+                            <asp:Label ID="lblProfileBio" runat="server"></asp:Label></span>
                     </div>
 
                     <div class="info-row">
@@ -296,98 +343,125 @@
                     </div>
 
                     <div class="section-divider">
-                        <i class="fas fa-briefcase"></i> Business Categories
+                        <i class="fas fa-briefcase"></i>Business Categories
                     </div>
                     <div class="info-grid">
                         <div class="info-row">
                             <span class="info-label">Nature of Business</span>
-                            <span class="info-value"><asp:Label ID="lblNature" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblNature" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Company Category</span>
-                            <span class="info-value"><asp:Label ID="lblCategory" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblCategory" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Markets Catered To</span>
-                            <span class="info-value"><asp:Label ID="lblMarkets" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblMarkets" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Geographic Reach</span>
-                            <span class="info-value"><asp:Label ID="lblGeoReach" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblGeoReach" runat="server"></asp:Label></span>
                         </div>
                     </div>
 
                     <div class="section-divider">
-                        <i class="fas fa-headset"></i> Customer Support
+                        <i class="fas fa-headset"></i>Customer Support
                     </div>
                     <div class="info-grid">
                         <div class="info-row">
                             <span class="info-label">Contact Person</span>
-                            <span class="info-value"><asp:Label ID="lblSupportName" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblSupportName" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Contact Number</span>
-                            <span class="info-value"><asp:Label ID="lblSupportContact" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblSupportContact" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Support Email</span>
-                            <span class="info-value"><asp:Label ID="lblSupportEmail" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblSupportEmail" runat="server"></asp:Label></span>
                         </div>
                     </div>
 
                     <div class="section-divider">
-                        <i class="fas fa-plug"></i> Logistics & Requirements
+                        <i class="fas fa-plug"></i>Logistics & Requirements
                     </div>
                     <div class="info-grid">
                         <div class="info-row">
                             <span class="info-label">Power Supply</span>
-                            <span class="info-value"><asp:Label ID="lblPower" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblPower" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Internet</span>
-                            <span class="info-value"><asp:Label ID="lblInternet" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblInternet" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">Furniture Rental</span>
-                            <span class="info-value"><asp:Label ID="lblFurniture" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblFurniture" runat="server"></asp:Label></span>
                         </div>
                         <div class="info-row">
                             <span class="info-label">AV Equipment</span>
-                            <span class="info-value"><asp:Label ID="lblAV" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblAV" runat="server"></asp:Label></span>
                         </div>
-                         <div class="info-row">
+                        <div class="info-row">
                             <span class="info-label">Interpreter</span>
-                            <span class="info-value"><asp:Label ID="lblInterpreter" runat="server"></asp:Label></span>
+                            <span class="info-value">
+                                <asp:Label ID="lblInterpreter" runat="server"></asp:Label></span>
                         </div>
                     </div>
                     <div class="info-row" style="margin-top: 10px;">
-                         <span class="info-label">Other Requirements</span>
-                         <span class="info-value"><asp:Label ID="lblOtherReq" runat="server"></asp:Label></span>
+                        <span class="info-label">Other Requirements</span>
+                        <span class="info-value">
+                            <asp:Label ID="lblOtherReq" runat="server"></asp:Label></span>
                     </div>
 
                     <div class="section-divider">
-                        <i class="fas fa-bullseye"></i> Objectives & Notes
+                        <i class="fas fa-bullseye"></i>Objectives & Notes
                     </div>
-                     <div class="info-row">
-                         <span class="info-label">Participation Objectives</span>
-                         <span class="info-value"><asp:Label ID="lblObjectives" runat="server"></asp:Label></span>
+                    <div class="info-row">
+                        <span class="info-label">Participation Objectives</span>
+                        <span class="info-value">
+                            <asp:Label ID="lblObjectives" runat="server"></asp:Label></span>
                     </div>
-                     <div class="info-row" style="margin-top: 10px;">
-                         <span class="info-label">Additional Notes</span>
-                         <span class="info-value"><asp:Label ID="lblNotes" runat="server"></asp:Label></span>
+                    <div class="info-row" style="margin-top: 10px;">
+                        <span class="info-label">Additional Notes</span>
+                        <span class="info-value">
+                            <asp:Label ID="lblNotes" runat="server"></asp:Label></span>
                     </div>
 
-                     <div class="section-divider">
-                        <i class="fas fa-file-alt"></i> Uploaded Documents
+                    <div class="section-divider">
+                        <i class="fas fa-file-alt"></i>Uploaded Documents
                     </div>
                     <div class="info-grid">
                         <div class="info-row">
-                            <span class="info-label">Product Picture</span>
-                            <span class="info-value"><asp:Literal ID="litProductPic" runat="server"></asp:Literal></span>
+                            <span class="info-label">Company Logo</span>
+                            <span class="info-value">
+                                <asp:Literal ID="litLogo" runat="server"></asp:Literal>
+                            </span>
                         </div>
+
+                        <div class="info-row">
+                            <span class="info-label">Product Picture</span>
+                            <span class="info-value">
+                                <asp:Literal ID="litProductPic" runat="server"></asp:Literal>
+                            </span>
+                        </div>
+
                         <div class="info-row">
                             <span class="info-label">Company Brochure</span>
-                            <span class="info-value"><asp:Literal ID="litBrochure" runat="server"></asp:Literal></span>
+                            <span class="info-value">
+                                <asp:Literal ID="litBrochure" runat="server"></asp:Literal>
+                            </span>
                         </div>
                     </div>
 

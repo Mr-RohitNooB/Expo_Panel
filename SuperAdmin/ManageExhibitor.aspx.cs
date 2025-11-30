@@ -333,10 +333,11 @@ namespace Expo_Panel.Admin
             string additionalNotes = txtAdditionalNotes.Text.Trim();
 
             // Handle File Uploads
-            string productPicturePath = "";
-            string brochurePath = "";
+            string productPicturePath = null; // Changed to null for logic consistency
+            string brochurePath = null;       // Changed to null
+            string logoPath = null;
 
-            if (fuProductPicture.HasFile || fuBrochure.HasFile)
+            if (fuProductPicture.HasFile || fuBrochure.HasFile || fuLogo.HasFile)
             {
                 string uploadFolder = Server.MapPath($"~/Uploads/Exhibitor_{exhibitorId}/");
 
@@ -360,6 +361,13 @@ namespace Expo_Panel.Admin
                     fuBrochure.SaveAs(brochureFullPath);
                     brochurePath = $"~/Uploads/Exhibitor_{exhibitorId}/{brochureFileName}";
                 }
+                if (fuLogo.HasFile)
+                {
+                    string logoFileName = "Logo_" + DateTime.Now.Ticks + Path.GetExtension(fuLogo.FileName);
+                    string logoFullPath = Path.Combine(uploadFolder, logoFileName);
+                    fuLogo.SaveAs(logoFullPath);
+                    logoPath = $"~/Uploads/Exhibitor_{exhibitorId}/{logoFileName}";
+                }
             }
 
             // Check if profile exists
@@ -376,7 +384,7 @@ namespace Expo_Panel.Admin
                     powerSupplyRequired, powerSupplyKwh, internetRequired, furnitureRequired,
                     avEquipmentRequired, interpreterRequired, otherRequirements,
                     participationObjectives, additionalNotes,
-                    productPicturePath, brochurePath);
+                    productPicturePath, brochurePath, logoPath);
             }
             else
             {
@@ -388,7 +396,7 @@ namespace Expo_Panel.Admin
                     powerSupplyRequired, powerSupplyKwh, internetRequired, furnitureRequired,
                     avEquipmentRequired, interpreterRequired, otherRequirements,
                     participationObjectives, additionalNotes,
-                    productPicturePath, brochurePath);
+                    productPicturePath, brochurePath, logoPath);
             }
         }
 
@@ -415,7 +423,7 @@ namespace Expo_Panel.Admin
             bool powerSupplyRequired, decimal? powerSupplyKwh, bool internetRequired, bool furnitureRequired,
             bool avEquipmentRequired, bool interpreterRequired, string otherRequirements,
             string participationObjectives, string additionalNotes,
-            string productPicturePath, string brochurePath)
+            string productPicturePath, string brochurePath, string logoPath)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -451,6 +459,7 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@AdditionalNotes", string.IsNullOrEmpty(additionalNotes) ? (object)DBNull.Value : additionalNotes);
                     cmd.Parameters.AddWithValue("@ProductPicturePath", string.IsNullOrEmpty(productPicturePath) ? (object)DBNull.Value : productPicturePath);
                     cmd.Parameters.AddWithValue("@BrochurePath", string.IsNullOrEmpty(brochurePath) ? (object)DBNull.Value : brochurePath);
+                    cmd.Parameters.AddWithValue("@LogoPath", string.IsNullOrEmpty(logoPath) ? (object)DBNull.Value : logoPath);
 
                     SqlParameter outParam = new SqlParameter("@ProfileID", SqlDbType.Int)
                     {
@@ -472,7 +481,7 @@ namespace Expo_Panel.Admin
             bool powerSupplyRequired, decimal? powerSupplyKwh, bool internetRequired, bool furnitureRequired,
             bool avEquipmentRequired, bool interpreterRequired, string otherRequirements,
             string participationObjectives, string additionalNotes,
-            string productPicturePath, string brochurePath)
+            string productPicturePath, string brochurePath, string logoPath)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -508,7 +517,7 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@AdditionalNotes", string.IsNullOrEmpty(additionalNotes) ? (object)DBNull.Value : additionalNotes);
                     cmd.Parameters.AddWithValue("@ProductPicturePath", string.IsNullOrEmpty(productPicturePath) ? (object)DBNull.Value : productPicturePath);
                     cmd.Parameters.AddWithValue("@BrochurePath", string.IsNullOrEmpty(brochurePath) ? (object)DBNull.Value : brochurePath);
-
+                    cmd.Parameters.AddWithValue("@LogoPath", string.IsNullOrEmpty(logoPath) ? (object)DBNull.Value : logoPath);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
@@ -552,7 +561,14 @@ namespace Expo_Panel.Admin
                 string approvalStatus = ddlApprovalStatus.SelectedValue;
                 string remarks = txtApprovalRemarks.Text.Trim();
                 string password = txtPassword.Text.Trim();
+                string hallNo = txtApprovalHall.Text.Trim();
+                string boothNo = txtApprovalBooth.Text.Trim();
+                decimal? area = null;
 
+                if (!string.IsNullOrEmpty(txtApprovalArea.Text.Trim()))
+                {
+                    area = Convert.ToDecimal(txtApprovalArea.Text.Trim());
+                }
 
                 if (approvalStatus == "Rejected" && string.IsNullOrEmpty(remarks))
                 {
@@ -566,7 +582,12 @@ namespace Expo_Panel.Admin
                     password = GenerateRandomPassword();
                 }
 
-                UpdateApprovalStatus(exhibitorId, approvalStatus, remarks, password, CurrentAdminID);
+                UpdateApprovalStatusWithArea(exhibitorId, approvalStatus, remarks, password, CurrentAdminID, area);
+
+                if (!string.IsNullOrEmpty(hallNo) || !string.IsNullOrEmpty(boothNo))
+                {
+                    UpdateExhibitorLogistics(exhibitorId, hallNo, boothNo);
+                }
 
                 Session["FlashMessage"] = $"Exhibitor {approvalStatus.ToLower()} successfully!";
 
@@ -1035,9 +1056,19 @@ namespace Expo_Panel.Admin
             {
                 using (SqlConnection con = new SqlConnection(ConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_GetExhibitorById", con))
+                    string query = @"
+                        SELECT 
+                            e.ExhibitorID, e.Name, e.Email, e.Company, e.RegistrationType, 
+                            e.ApprovalStatus, e.Remarks, e.Password, e.AreaInSqm,
+                            p.HallNo, p.BoothNo
+                        FROM TBL.Exhibitor e
+                        LEFT JOIN TBL.PostApprovalExhibitor p ON e.ExhibitorID = p.ExhibitorID AND p.IS_ACTIVE = 1
+                        WHERE e.ExhibitorID = @ExhibitorID";
+
+                    // ✅ FIXED: Use 'query' variable and CommandType.Text
+                    using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandType = CommandType.Text;
                         cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
                         con.Open();
 
@@ -1052,13 +1083,17 @@ namespace Expo_Panel.Admin
                             string company = reader["Company"] != DBNull.Value ? reader["Company"].ToString().Replace("'", "\\'") : "";
                             string regType = reader["RegistrationType"] != DBNull.Value ? reader["RegistrationType"].ToString().Replace("'", "\\'") : "Admin";
                             string approvalStatus = reader["ApprovalStatus"] != DBNull.Value ? reader["ApprovalStatus"].ToString() : "Pending";
-                            string remarks = reader["Remarks"] != DBNull.Value ? reader["Remarks"].ToString().Replace("'", "\\'") : "";
+                            string remarks = reader["Remarks"] != DBNull.Value ? reader["Remarks"].ToString().Replace("'", "\\'").Replace("\r", "").Replace("\n", "\\n") : "";
 
                             // This is the line that reads the password you added
+                            // This is the line that reads the password you added
                             string password = reader["Password"] != DBNull.Value ? reader["Password"].ToString().Replace("'", "\\'") : "";
+                            string hall = reader["HallNo"] != DBNull.Value ? reader["HallNo"].ToString().Replace("'", "\\'") : "";
+                            string booth = reader["BoothNo"] != DBNull.Value ? reader["BoothNo"].ToString().Replace("'", "\\'") : "";
+                            string area = reader["AreaInSqm"] != DBNull.Value ? reader["AreaInSqm"].ToString() : "";
 
-                            // Pass the password to the modal
-                            string script = $"openApprovalModal({exhibitorId}, '{name}', '{email}', '{company}', '{regType}', '{approvalStatus}', '{remarks}', '{password}');";
+                            // ✅ FIXED: Added hall, booth, and area to the function call
+                            string script = $"openApprovalModal({exhibitorId}, '{name}', '{email}', '{company}', '{regType}', '{approvalStatus}', '{remarks}', '{password}', '{hall}', '{booth}', '{area}');";
                             ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal", script, true);
                         }
                         reader.Close();
@@ -1119,7 +1154,8 @@ namespace Expo_Panel.Admin
                         sb.AppendFormat("\"objectives\": \"{0}\",", EscapeJson(dr["ParticipationObjectives"]));
                         sb.AppendFormat("\"additionalNotes\": \"{0}\",", EscapeJson(dr["AdditionalNotes"]));
                         sb.AppendFormat("\"productPicture\": \"{0}\",", EscapeJson(dr["ProductPicturePath"]));
-                        sb.AppendFormat("\"brochure\": \"{0}\"", EscapeJson(dr["BrochurePath"]));
+                        sb.AppendFormat("\"brochure\": \"{0}\",", EscapeJson(dr["BrochurePath"])); // <--- Comma added
+                        sb.AppendFormat("\"logo\": \"{0}\"", EscapeJson(dr["LogoPath"]));
 
                         dr.Close();
 
@@ -1605,6 +1641,86 @@ namespace Expo_Panel.Admin
 
                     reader.Close();
                     return "{}";
+                }
+            }
+        }
+
+        // Helper 1: Updates Status + Area
+        private void UpdateApprovalStatusWithArea(int exhibitorId, string approvalStatus, string remarks, string password, int approvedBy, decimal? area)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(@"
+                    UPDATE TBL.Exhibitor
+                    SET 
+                        ApprovalStatus = @ApprovalStatus,
+                        Remarks = @Remarks,
+                        Password = CASE WHEN @ApprovalStatus = 'Approved' THEN @Password ELSE Password END,
+                        ApprovedBy = @ApprovedBy,
+                        ApprovalDate = GETDATE(),
+                        ModifiedDate = GETDATE(),
+                        AreaInSqm = @Area  -- Update Area here
+                    WHERE ExhibitorID = @ExhibitorID", con))
+                {
+                    cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
+                    cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
+                    cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
+                    cmd.Parameters.AddWithValue("@Password", string.IsNullOrEmpty(password) ? (object)DBNull.Value : password);
+                    cmd.Parameters.AddWithValue("@ApprovedBy", approvedBy);
+                    cmd.Parameters.AddWithValue("@Area", area.HasValue ? (object)area.Value : DBNull.Value);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // Helper 2: Updates Hall/Booth (Creates profile if missing)
+        private void UpdateExhibitorLogistics(int exhibitorId, string hallNo, string boothNo)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                con.Open();
+                // Check if profile exists
+                bool exists = false;
+                using (SqlCommand checkCmd = new SqlCommand("SELECT COUNT(1) FROM TBL.PostApprovalExhibitor WHERE ExhibitorID = @ID", con))
+                {
+                    checkCmd.Parameters.AddWithValue("@ID", exhibitorId);
+                    exists = (int)checkCmd.ExecuteScalar() > 0;
+                }
+
+                if (exists)
+                {
+                    // Update existing
+                    using (SqlCommand cmd = new SqlCommand("UPDATE TBL.PostApprovalExhibitor SET HallNo = @Hall, BoothNo = @Booth, ModifiedDate = GETDATE() WHERE ExhibitorID = @ID", con))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", exhibitorId);
+                        cmd.Parameters.AddWithValue("@Hall", hallNo);
+                        cmd.Parameters.AddWithValue("@Booth", boothNo);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    // Create new partial profile
+                    // Note: We fill required fields with placeholders or defaults to avoid SQL errors if columns are NOT NULL
+                    string query = @"
+                        INSERT INTO TBL.PostApprovalExhibitor 
+                        (ExhibitorID, HallNo, BoothNo, CreatedDate, IS_ACTIVE, 
+                         CustomerSupportName, CustomerSupportContact, CustomerSupportEmail, 
+                         NatureOfBusiness, CompanyCategory, MarketsCateredTo, GeographicReach, ParticipationObjectives)
+                        VALUES 
+                        (@ID, @Hall, @Booth, GETDATE(), 1, 
+                         'Pending', 'Pending', 'Pending', 
+                         '', '', '', '', '')";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", exhibitorId);
+                        cmd.Parameters.AddWithValue("@Hall", hallNo);
+                        cmd.Parameters.AddWithValue("@Booth", boothNo);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }

@@ -344,16 +344,16 @@
                     <asp:RequiredFieldValidator ID="rfvHallNo" runat="server" ControlToValidate="txtHallNo"
                         ErrorMessage="Hall number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
                 </div>
-                
+
 
             </div>
 
             <div class="form-group">
-    <label for="<%=txtExhibitorProfile.ClientID%>">Exhibitor Profile <span class="required">*</span></label>
-    <asp:TextBox ID="txtExhibitorProfile" runat="server" placeholder="Enter exhibitor profile"></asp:TextBox>
-    <asp:RequiredFieldValidator ID="rfvExhibitorProfile" runat="server" ControlToValidate="txtExhibitorProfile"
-        ErrorMessage="Exhibitor Profile is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
-</div>
+                <label for="<%=txtExhibitorProfile.ClientID%>">Exhibitor Profile <span class="required">*</span></label>
+                <asp:TextBox ID="txtExhibitorProfile" runat="server" placeholder="Enter exhibitor profile"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvExhibitorProfile" runat="server" ControlToValidate="txtExhibitorProfile"
+                    ErrorMessage="Exhibitor Profile is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
+            </div>
 
             <div class="form-row">
                 <div class="form-group">
@@ -711,6 +711,18 @@
 
             <!-- File Uploads -->
             <div class="section-title"><i class="fas fa-upload"></i>Upload Documents</div>
+
+            <div class="form-group full-width">
+                <label for="<%=fuLogo.ClientID%>">Company Logo <span class="required">*</span></label>
+                <div class="file-upload">
+                    <asp:FileUpload ID="fuLogo" runat="server" />
+                    <asp:RequiredFieldValidator ID="rfvLogo" runat="server"
+                        ControlToValidate="fuLogo"
+                        ErrorMessage="Company Logo is required"
+                        ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
+                </div>
+                <small style="color: #6b7280; font-size: 13px;">Accepted: PNG, JPG, JPEG (High Resolution preferred)</small>
+            </div>
 
             <div class="form-row">
                 <div class="form-group">

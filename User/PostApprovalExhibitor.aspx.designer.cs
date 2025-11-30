@@ -771,6 +771,24 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.TextBox txtAdditionalNotes;
 
         /// <summary>
+        /// fuLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuLogo;
+
+        /// <summary>
+        /// rfvLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvLogo;
+
+        /// <summary>
         /// fuProductPicture control.
         /// </summary>
         /// <remarks>

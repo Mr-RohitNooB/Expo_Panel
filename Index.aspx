@@ -1267,7 +1267,7 @@
                     </div>
 
                     <a id="modalLinkedIn" href="#" target="_blank" style="display: none; margin-top: 15px; padding: 10px 30px; background-color: #0077b5; color: white; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
-                        <i class="fab fa-linkedin" style="margin-right: 6px; font-size: 16px;"></i>Connect
+                        <i class="fab fa-linkedin" style="margin-right: 6px; font-size: 16px;"></i>LinkedIn
                     </a>
 
                 </div>

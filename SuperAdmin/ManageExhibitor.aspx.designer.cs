@@ -1032,6 +1032,24 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.TextBox txtAdditionalNotes;
 
         /// <summary>
+        /// fuLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuLogo;
+
+        /// <summary>
+        /// lblLogoStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLogoStatus;
+
+        /// <summary>
         /// fuProductPicture control.
         /// </summary>
         /// <remarks>
@@ -1192,6 +1210,33 @@ namespace Expo_Panel.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtApprovalRegType;
+
+        /// <summary>
+        /// txtApprovalHall control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalHall;
+
+        /// <summary>
+        /// txtApprovalBooth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalBooth;
+
+        /// <summary>
+        /// txtApprovalArea control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalArea;
 
         /// <summary>
         /// ddlApprovalStatus control.

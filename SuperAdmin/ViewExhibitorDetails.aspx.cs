@@ -139,6 +139,21 @@ namespace Expo_Panel.Admin
                                 lblObjectives.Text = reader["ParticipationObjectives"].ToString().Replace(",", ", ");
                                 lblNotes.Text = reader["AdditionalNotes"].ToString();
 
+                                string logoPath = reader["LogoPath"].ToString();
+                                if (!string.IsNullOrEmpty(logoPath))
+                                {
+                                    // Check extension to see if it's viewable in browser
+                                    string ext = System.IO.Path.GetExtension(logoPath).ToLower();
+                                    litLogo.Text = $"<a href='{ResolveUrl(logoPath)}' target='_blank' class='btn btn-doc'><i class='fas fa-image'></i> View Logo</a>";
+
+                                    // Optional: If you want to actually SHOW the image on the page instead of a button:
+                                    // litLogo.Text = $"<img src='{ResolveUrl(logoPath)}' style='max-width:150px; border-radius:5px; border:1px solid #ddd;' />";
+                                }
+                                else
+                                {
+                                    litLogo.Text = "<span style='color:#ccc'>Not Uploaded</span>";
+                                }
+
                                 // Documents
                                 string picPath = reader["ProductPicturePath"].ToString();
                                 if (!string.IsNullOrEmpty(picPath))

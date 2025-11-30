@@ -86,6 +86,108 @@ namespace Expo_Panel
             }
         }
 
+        protected void lnkForgot_Click(object sender, EventArgs e)
+        {
+            pnlLogin.Visible = false;
+            pnlVerify.Visible = true;
+            pnlReset.Visible = false;
+            litMessage.Text = ""; // Clear any old errors
+        }
+
+        protected void lnkBackToLogin_Click(object sender, EventArgs e)
+        {
+            pnlLogin.Visible = true;
+            pnlVerify.Visible = false;
+            pnlReset.Visible = false;
+            litMessage.Text = "";
+        }
+
+        // 3. Logic: Verify if email exists
+        protected void btnVerify_Click(object sender, EventArgs e)
+        {
+            string email = txtResetEmail.Text.Trim();
+
+            if (CheckEmailExists(email, "Exhibitor")) // Passing "Exhibitor" type
+            {
+                // Success: Store email temporarily to use in the next step
+                ViewState["ResetEmail"] = email;
+
+                pnlVerify.Visible = false;
+                pnlReset.Visible = true; // Show password fields
+                litMessage.Text = "";
+            }
+            else
+            {
+                ShowMessage("Email not found in Exhibitor records.", "danger");
+            }
+        }
+
+        protected void btnUpdatePass_Click(object sender, EventArgs e)
+        {
+            string newPass = txtNewPass.Text.Trim();
+            string email = ViewState["ResetEmail"] as string;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                ShowMessage("Session expired. Please start over.", "danger");
+                lnkBackToLogin_Click(sender, e);
+                return;
+            }
+
+            try
+            {
+                UpdatePassword(email, "Exhibitor", newPass); // Passing "Exhibitor" type
+
+                // Success! Go back to login screen
+                pnlLogin.Visible = true;
+                pnlVerify.Visible = false;
+                pnlReset.Visible = false;
+
+                // Auto-fill the email field for convenience
+                txtEmail.Text = email;
+
+                // Clear reset fields
+                txtResetEmail.Text = "";
+                txtNewPass.Text = "";
+                txtConfirmPass.Text = "";
+
+                ShowMessage("Password updated successfully! Please login.", "success");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error: " + ex.Message, "danger");
+            }
+        }
+        private bool CheckEmailExists(string email, string userType)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_ValidateEmailForReset", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@UserType", userType);
+                    con.Open();
+                    return Convert.ToBoolean(cmd.ExecuteScalar());
+                }
+            }
+        }
+
+        private void UpdatePassword(string email, string userType, string password)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_UpdatePasswordByEmail", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@UserType", userType);
+                    cmd.Parameters.AddWithValue("@NewPassword", password);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         private void ShowMessage(string message, string type)
         {
             litMessage.Text = $@"
