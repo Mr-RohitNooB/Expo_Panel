@@ -272,5 +272,67 @@ namespace Expo_Panel
                     {message}
                 </div>";
         }
+
+        protected void btnSavePassword_Click(object sender, EventArgs e)
+        {
+            string oldPass = txtOldPass.Text.Trim();
+            string newPass = txtNewPass.Text.Trim();
+            string confPass = txtConfPass.Text.Trim();
+            int speakerId = Convert.ToInt32(Session["SpeakerID"]);
+
+            // 1. Basic Validation
+            if (string.IsNullOrEmpty(oldPass) || string.IsNullOrEmpty(newPass))
+            {
+                ShowMessage("Please fill in all password fields.", "danger");
+                return;
+            }
+
+            if (newPass != confPass)
+            {
+                ShowMessage("New password and confirm password do not match.", "danger");
+                return;
+            }
+
+            if (newPass.Length < 6)
+            {
+                ShowMessage("New password must be at least 6 characters long.", "danger");
+                return;
+            }
+
+            // 2. Database Update
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_ChangeSpeakerPassword", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@SpeakerID", speakerId);
+                        cmd.Parameters.AddWithValue("@OldPassword", oldPass);
+                        cmd.Parameters.AddWithValue("@NewPassword", newPass);
+
+                        con.Open();
+                        int result = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        if (result == 1)
+                        {
+                            ShowMessage("Password changed successfully!", "success");
+                            // Clear fields after success
+                            txtOldPass.Text = "";
+                            txtNewPass.Text = "";
+                            txtConfPass.Text = "";
+                        }
+                        else
+                        {
+                            ShowMessage("Incorrect current password.", "danger");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error changing password: " + ex.Message, "danger");
+            }
+        }
     }
 }

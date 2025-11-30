@@ -8,7 +8,7 @@
     <title>Speaker Dashboard - Expo Panel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
     <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
     <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
@@ -485,6 +485,149 @@
         .agenda-card.applied {
             border-left-color: #3b82f6; /* Blue border */
         }
+
+        /* Change Password Button */
+        .btn-password {
+            padding: 10px 20px;
+            background: #4a5568; /* Slate Gray */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+            .btn-password:hover {
+                background: #2d3748;
+                transform: translateY(-1px);
+            }
+
+        /* Password Modal */
+        .pwd-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .pwd-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 13px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+            .form-input:focus {
+                border-color: #38a169;
+            }
+
+        .pwd-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #edf2f7;
+            color: #4a5568;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background: #38a169;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Wrapper to hold Input + Eye Icon */
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+            /* Adjust input padding so text doesn't hit the icon */
+            .password-wrapper .form-input {
+                padding-right: 40px;
+            }
+
+        /* The Eye Icon Style */
+        .toggle-eye {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            cursor: pointer;
+            z-index: 5;
+            font-size: 14px;
+        }
+
+            .toggle-eye:hover {
+                color: #2d3748;
+            }
+
+        /* Validation Hint Text */
+        .pass-hint {
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+            color: #64748b; /* Gray by default */
+            transition: all 0.3s ease;
+        }
+
+            .pass-hint.invalid {
+                color: #e53e3e;
+            }
+            /* Red */
+            .pass-hint.valid {
+                color: #38a169;
+                font-weight: 600;
+            }
+        /* Green */
     </style>
 </head>
 <body>
@@ -539,9 +682,14 @@
                 <div class="profile-card">
                     <div class="profile-header">
                         <h2><i class="fas fa-id-card"></i>Profile Information</h2>
-                        <a href="RegisterSpeaker.aspx" class="btn-edit">
-                            <i class="fas fa-edit"></i>Update Profile
-                        </a>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="btn-password" onclick="openPwdModal()">
+                                <i class="fas fa-key"></i>Change Password
+                            </button>
+                            <a href="RegisterSpeaker.aspx" class="btn-edit">
+                                <i class="fas fa-edit"></i>Update Profile
+                            </a>
+                        </div>
                     </div>
 
                     <div class="profile-info">
@@ -637,7 +785,56 @@
             </div>
         </div>
 
+        <div id="pwdModal" class="pwd-modal">
+            <div class="pwd-content">
+                <h3 style="margin-bottom: 20px; color: #1e293b;">Change Password</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Current Password</label>
+                    <div class="password-wrapper">
+                        <asp:TextBox ID="txtOldPass" runat="server" CssClass="form-input" TextMode="Password"></asp:TextBox>
+                        <i class="fas fa-eye toggle-eye" onclick="togglePassword(this)"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <div class="password-wrapper">
+                        <asp:TextBox ID="txtNewPass" runat="server" CssClass="form-input" TextMode="Password" onkeyup="validateLength(this); validateMatch();"></asp:TextBox>
+                        <i class="fas fa-eye toggle-eye" onclick="togglePassword(this)"></i>
+                    </div>
+                    <span id="lenHint" class="pass-hint">Must be at least 6 characters</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <div class="password-wrapper">
+                        <asp:TextBox ID="txtConfPass" runat="server" CssClass="form-input" TextMode="Password" onkeyup="validateMatch()"></asp:TextBox>
+                        <i class="fas fa-eye toggle-eye" onclick="togglePassword(this)"></i>
+                    </div>
+                    <span id="matchHint" class="pass-hint"></span>
+                </div>
+
+                <div class="pwd-actions">
+                    <button type="button" class="btn-cancel" onclick="closePwdModal()">Cancel</button>
+                    <asp:Button ID="btnSavePassword" runat="server" Text="Update Password"
+                        CssClass="btn-save" OnClick="btnSavePassword_Click" />
+                </div>
+            </div>
+        </div>
+
         <script>
+            function openPwdModal() {
+                document.getElementById('pwdModal').style.display = 'flex';
+            }
+            function closePwdModal() {
+                document.getElementById('pwdModal').style.display = 'none';
+                // Optional: Clear fields
+                document.getElementById('<%= txtOldPass.ClientID %>').value = '';
+                document.getElementById('<%= txtNewPass.ClientID %>').value = '';
+                document.getElementById('<%= txtConfPass.ClientID %>').value = '';
+            }
+
             function openTab(evt, tabName) {
                 var i, tabcontent, tablinks;
 
@@ -680,6 +877,68 @@
                         card.style.display = 'none';
                     }
                 });
+            }
+            function togglePassword(icon) {
+                // Find the input field inside the same wrapper
+                const wrapper = icon.parentElement;
+                const input = wrapper.querySelector('input');
+
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash'); // Change icon to 'crossed eye'
+                } else {
+                    input.type = "password";
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye'); // Reset icon
+                }
+            }
+
+            // 2. Real-time Length Validation
+            function validateLength(input) {
+                const hint = document.getElementById('lenHint');
+                const val = input.value;
+
+                if (val.length === 0) {
+                    // Reset if empty
+                    hint.className = "pass-hint";
+                    hint.innerText = "Must be at least 6 characters";
+                }
+                else if (val.length < 6) {
+                    // Invalid (Red)
+                    hint.className = "pass-hint invalid";
+                    hint.innerText = "Too short (at least 6 characters required)";
+                }
+                else {
+                    // Valid (Green)
+                    hint.className = "pass-hint valid";
+                    hint.innerHTML = '<i class="fas fa-check"></i> Password length is good';
+                }
+            }
+            // 3. Real-time Match Validation
+            function validateMatch() {
+                // Get the actual DOM elements using ClientID
+                const pass1 = document.getElementById('<%= txtNewPass.ClientID %>').value;
+                const pass2 = document.getElementById('<%= txtConfPass.ClientID %>').value;
+                const hint = document.getElementById('matchHint');
+
+                // If confirm box is empty, clear the message
+                if (pass2.length === 0) {
+                    hint.innerHTML = "";
+                    hint.className = "pass-hint";
+                    return;
+                }
+
+                // Compare values
+                if (pass1 === pass2) {
+                    // Match (Green)
+                    hint.innerHTML = '<i class="fas fa-check"></i> Passwords match';
+                    hint.className = "pass-hint valid";
+                } else {
+                    // No Match (Red)
+                    hint.innerHTML = '<i class="fas fa-times"></i> Passwords do not match';
+                    hint.className = "pass-hint invalid";
+                }
             }
         </script>
     </form>
