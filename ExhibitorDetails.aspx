@@ -30,7 +30,7 @@
         }
 
         /* --- NAVBAR STYLES (MATCHING CONFERENCE.ASPX) --- */
-        .navbar {
+        .custom-navbar {
             background: #ffffff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
@@ -41,7 +41,7 @@
             border-bottom: 3px solid #D94A2B;
         }
 
-            .navbar.scrolled {
+            .custom-navbar .scrolled {
                 background: rgba(255, 255, 255, 0.98);
                 backdrop-filter: blur(10px);
                 box-shadow: 0 4px 15px rgba(0,0,0,0.15);
@@ -325,12 +325,34 @@
             opacity: 0.5;
             font-size: 13px;
         }
+        /* --- RESPONSIVE PROFILE BUTTONS --- */
+        .btn-profile-action {
+            width: 100%; /* Full width on mobile for easier tapping */
+            padding: 10px 0; /* Consistent height */
+            margin-bottom: 10px; /* Spacing between stacked buttons on mobile */
+            text-align: center;
+        }
+
+        /* For Desktop and Tablets (screens wider than 768px) */
+        @media (min-width: 768px) {
+            .btn-profile-action {
+                width: 180px; /* Fixed equal width for both buttons */
+                margin-bottom: 0; /* Remove the mobile bottom margin */
+                margin-left: 15px; /* Add space between the buttons */
+                display: inline-block;
+            }
+        }
+
+        .bootstrap-iso {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
 
-        <nav class="navbar" id="navbar">
+        <nav class="custom-navbar" id="navbar">
             <div class="nav-container">
                 <div class="logo">
                     <a href="Index.aspx">
@@ -384,9 +406,16 @@
                                 <asp:Label ID="lblBooth" runat="server"></asp:Label></span>
                         </div>
                     </div>
-                    <div class="col-md-3 text-center text-md-end mt-4 mt-md-0">
-                        <button type="button" class="btn btn-outline-light me-2 mb-2"><i class="far fa-bookmark me-1"></i>Bookmark</button>
-                        <button type="button" class="btn btn-danger mb-2" style="background: #D94A2B; border: none; padding: 8px 20px;">Meeting Request</button>
+                    <div class="col-md-3 d-flex flex-column gap-2 align-items-center align-items-md-end mt-4 mt-md-0">
+
+                        <button type="button" class="btn btn-outline-light" style="min-width: 170px; padding: 8px 20px;">
+                            <i class="far fa-bookmark me-1"></i>Bookmark
+                        </button>
+
+                        <button type="button" class="btn btn-danger" style="background: #D94A2B; border: none; padding: 8px 20px; min-width: 170px;">
+                            Meeting Request
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -400,7 +429,7 @@
                         <div class="card border-0 shadow-sm p-4">
                             <table class="table table-borderless info-table mb-0">
                                 <tr>
-                                    <td class="info-label">Year Est.</td>
+                                    <td class="info-label">Establishment Year</td>
                                     <td>
                                         <asp:Label ID="lblYearEst" runat="server"></asp:Label></td>
                                 </tr>
@@ -410,16 +439,25 @@
                                         <asp:Label ID="lblNature" runat="server"></asp:Label></td>
                                 </tr>
                                 <tr>
-                                    <td class="info-label">Categories</td>
+                                    <td class="info-label">Product Index</td>
                                     <td>
                                         <asp:Label ID="lblCategories" runat="server"></asp:Label></td>
                                 </tr>
                                 <tr>
-                                    <td class="info-label">Markets</td>
+                                    <td class="info-label">Market Index</td>
                                     <td>
                                         <asp:Label ID="lblMarkets" runat="server"></asp:Label></td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <h4 class="section-title">Exhibitor Profile</h4>
+                        <div class="card border-0 shadow-sm p-4">
+                            <p class="mb-0" style="white-space: pre-wrap;">
+                                <asp:Label ID="lblProfile" runat="server"></asp:Label>
+                            </p>
                         </div>
                     </div>
 
@@ -526,6 +564,25 @@
                     }
                 }
             });
+        });
+
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            // Ensure we toggle the new class name
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+
+        // Close menu click outside logic (around line 520)
+        document.addEventListener('click', function (e) {
+            const navMenu = document.getElementById('navMenu');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const navbar = document.getElementById('navbar');
+
+            // This logic relies on the ID="navbar", so it still works fine without changes.
+            if (!navbar.contains(e.target) && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
         });
     </script>
 </body>

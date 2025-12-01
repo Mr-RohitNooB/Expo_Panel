@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" />
 
     <!-- Bootstrap & FontAwesome -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-iso@5.3.0/dist/css/bootstrap-iso.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
@@ -256,6 +256,10 @@
             text-decoration: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
             border: 1px solid #f0f0f0;
+            /* --- NEW LINES ADDED --- */
+            max-width: 300px; /* Limits the card width like the reference */
+            width: 100%; /* Fills space up to 300px */
+            margin: 0 auto; /* Centers the card if the grid column is wider */
         }
 
             .ex-card:hover {
@@ -540,6 +544,30 @@
                 justify-content: center;
             }
         }
+
+        /* Add this to your <style> block */
+    .custom-exhibitor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    width: 100%;
+    padding-bottom: 50px;
+
+    /* --- ADDED THESE LINES TO FIX ALIGNMENT --- */
+    max-width: 1200px;   /* Matches your Navbar width */
+    margin: 0 auto;      /* Centers the grid container on the screen */
+    padding: 0 20px;     /* Adds the left/right spacing you wanted */
+}
+
+
+        /* Ensure the spinner centers correctly in the grid */
+        .spinner-wrapper {
+            grid-column: 1 / -1; /* Span all columns */
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -586,22 +614,24 @@
             <h1>Our Exhibitors</h1>
             <p>Discover the industry leaders showcasing at Lubricant India Expo 2026</p>
         </header>
+        <div class="bootstrap-iso">
 
-        <div class="container" style="min-height: 60vh;">
+            <div class="container" style="min-height: 60vh;">
 
-            <!-- ALPHABET FILTER -->
-            <div class="filter-dock" id="alphaContainer">
-                <a class="alpha-btn active" onclick="filterByAlpha('ALL', this)">All</a>
-            </div>
-
-            <!-- EXHIBITOR GRID -->
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="exhibitorGrid">
-                <div class="spinner-container">
-                    <div class="spinner-border text-secondary" role="status"></div>
-                    <div class="mt-2">Loading Directory...</div>
+                <!-- ALPHABET FILTER -->
+                <div class="filter-dock" id="alphaContainer">
+                    <a class="alpha-btn active" onclick="filterByAlpha('ALL', this)">All</a>
                 </div>
-            </div>
 
+                <!-- EXHIBITOR GRID -->
+                <div class="custom-exhibitor-grid" id="exhibitorGrid">
+                    <div class="spinner-wrapper">
+                        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #D94A2B; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+                        <div style="margin-left: 15px; align-self: center; color: #666;">Loading Directory...</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <!-- FOOTER -->
@@ -708,30 +738,30 @@
                 let location = [ex.City, ex.Country].filter(Boolean).join(', ');
                 if (!location) location = "India";
                 let booth = ex.BoothNo ? ex.BoothNo : 'TBA';
-                let hall = ex.HallNo ? `H:${ex.HallNo}` : '';
 
+                // CHANGE: Removed <div class="col"> wrapper
+                // The <a> tag now sits directly in the grid
                 let html = `
-        <div class="col">
-            <a href="ExhibitorDetails.aspx?id=${ex.ExhibitorID}" class="ex-card">
-                <div class="card-bar"></div>
-                <i class="far fa-bookmark bookmark-icon" title="Bookmark"></i>
-                
-                <div class="card-body-custom">
-                    <div class="logo-box">
-                        <img src="${logo}" alt="${ex.Company}">
-                    </div>
-                    <div class="co-name">${ex.Company}</div>
-                    <div class="co-loc"><i class="fas fa-map-marker-alt me-1"></i>${location}</div>
-                </div>
+    <a href="ExhibitorDetails.aspx?id=${ex.ExhibitorID}" class="ex-card">
+        <div class="card-bar"></div>
+        <i class="far fa-bookmark bookmark-icon" title="Bookmark"></i>
+        
+        <div class="card-body-custom">
+            <div class="logo-box">
+                <img src="${logo}" alt="${ex.Company}">
+            </div>
+            <div class="co-name">${ex.Company}</div>
+            <div class="co-loc"><i class="fas fa-map-marker-alt me-1"></i>${location}</div>
+        </div>
 
-                <div class="card-actions">
-                    <div class="booth-badge" title="Location">
-                        <i class="fas fa-store"></i> ${booth} ${hall}
-                    </div>
-                    <div class="btn-meet-req">Meeting</div>
-                </div>
-            </a>
-        </div>`;
+        <div class="card-actions">
+            <div class="booth-badge" title="Location">
+                <i class="fas fa-store"></i> BOOTH NO: ${booth}
+            </div>
+            <div class="btn-meet-req">Contact</div>
+        </div>
+    </a>`;
+
                 grid.innerHTML += html;
             });
         }

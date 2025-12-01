@@ -56,9 +56,16 @@ namespace Expo_Panel
                             lblNature.Text = rdr["NatureOfBusiness"].ToString();
                             lblCategories.Text = rdr["CompanyCategory"].ToString(); // Consider replacing commas with line breaks if needed
                             lblMarkets.Text = rdr["MarketsCateredTo"].ToString();
+                            lblProfile.Text = rdr["ExhibitorProfile"].ToString();
 
                             // Socials
-                            SetLink(lnkWebsite, rdr["Website"].ToString());
+                            string websiteUrl = rdr["Website"].ToString();
+                            SetLink(lnkWebsite, websiteUrl);
+                            if (!string.IsNullOrEmpty(websiteUrl))
+                            {
+                                // This sets the visible text to the URL itself (e.g., www.google.com)
+                                lnkWebsite.Text = websiteUrl;
+                            }
                             SetLink(lnkFb, rdr["Facebook"].ToString());
                             SetLink(lnkTwitter, rdr["Twitter"].ToString());
                             SetLink(lnkIn, rdr["LinkedIn"].ToString());
