@@ -681,6 +681,26 @@
             border-collapse: collapse;
             min-width: 1000px; /* Ensure table doesn't shrink too much */
         }
+
+
+        .card.exhibitor-card {
+            border-left-color: #dd6b20; /* Pink color */
+        }
+
+            .card.exhibitor-card .card-icon {
+                background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            }
+
+        /* Add this to your <style> section */
+        .card.admin-card {
+            border-left-color: #ed8936 ; /* Purple Border */
+        }
+
+            .card.admin-card .card-icon {
+                /* Purple Gradient Background for the Icon */
+                background: linear-gradient(135deg, #c05621 0%, #ed8936 100%);
+                color: white; /* Ensures the icon itself is white */
+            }
     </style>
 </head>
 <body>
@@ -758,6 +778,18 @@
                     </div>
                 </asp:HyperLink>
 
+                <a href="ManageAdmins.aspx" class="card admin-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <i class="fas fa-arrow-right" style="color: #cbd5e0;"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Admins</h3>
+                        <p>Create new Admin and Super Admin accounts.</p>
+                    </div>
+                </a>
                 <asp:HyperLink ID="lnkAdvisorRating" runat="server" NavigateUrl="~/User/AdvisoryRatingDashboard.aspx" CssClass="card advisor-card" Target="_blank">
     <div class="card-header">
         <div class="card-icon">
@@ -825,7 +857,7 @@
                     <button type="button" class="btn-action" onclick="window.location='FinalSpeakerSelection.aspx'">
                         <i class="fas fa-user-tie"></i>Final Speaker Selection
                     </button>
-                   
+
                 </div>
             </div>
         </div>

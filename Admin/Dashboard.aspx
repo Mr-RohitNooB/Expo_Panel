@@ -283,13 +283,7 @@
         }
         /* Add this below the .card.agenda-card styles */
 
-        .card.exhibitor-card {
-            border-left-color: #dd6b20 ; /* Pink color */
-        }
 
-            .card.exhibitor-card .card-icon {
-               background:linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
-            }
     </style>
 </head>
 <body>
