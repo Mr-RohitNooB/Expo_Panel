@@ -73,6 +73,7 @@
     <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Admin\Default.aspx" />
     <Content Include="Admin\ManageAgenda.aspx" />
+    <Content Include="Admin\ManageExhibitor.aspx" />
     <Content Include="Admin\ManageSpeaker.aspx" />
     <Content Include="Admin\ViewSpeakerDetails.aspx" />
     <Content Include="Conference.aspx" />
@@ -81,6 +82,7 @@
     <Content Include="Images\Expo_logo_white.png" />
     <Content Include="PrivacyPolicy.aspx" />
     <Content Include="SuperAdmin\FinalSpeakerSelection.aspx" />
+    <Content Include="SuperAdmin\ManageAdmins.aspx" />
     <Content Include="SuperAdmin\ViewExhibitorDetails.aspx" />
     <Content Include="SuperAdmin\ViewSpeakerDetails.aspx" />
     <Content Include="TermsConditions.aspx" />
@@ -129,6 +131,13 @@
     </Compile>
     <Compile Include="Admin\ManageAgenda.aspx.designer.cs">
       <DependentUpon>ManageAgenda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ManageExhibitor.aspx.cs">
+      <DependentUpon>ManageExhibitor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageExhibitor.aspx.designer.cs">
+      <DependentUpon>ManageExhibitor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ManageSpeaker.aspx.cs">
       <DependentUpon>ManageSpeaker.aspx</DependentUpon>
@@ -185,6 +194,13 @@
     </Compile>
     <Compile Include="SuperAdmin\FinalSpeakerSelection.aspx.designer.cs">
       <DependentUpon>FinalSpeakerSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SuperAdmin\ManageAdmins.aspx.cs">
+      <DependentUpon>ManageAdmins.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SuperAdmin\ManageAdmins.aspx.designer.cs">
+      <DependentUpon>ManageAdmins.aspx</DependentUpon>
     </Compile>
     <Compile Include="SuperAdmin\ViewExhibitorDetails.aspx.cs">
       <DependentUpon>ViewExhibitorDetails.aspx</DependentUpon>

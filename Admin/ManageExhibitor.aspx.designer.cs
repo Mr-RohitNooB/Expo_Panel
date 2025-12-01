@@ -11,7 +11,7 @@ namespace Expo_Panel.Admin
 {
 
 
-    public partial class ManageExhibitor
+    public partial class TeamManageExhibitor
     {
 
         /// <summary>

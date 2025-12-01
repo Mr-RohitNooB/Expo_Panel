@@ -281,6 +281,15 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Add this below the .card.agenda-card styles */
+
+        .card.exhibitor-card {
+            border-left-color: #dd6b20 ; /* Pink color */
+        }
+
+            .card.exhibitor-card .card-icon {
+               background:linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            }
     </style>
 </head>
 <body>
@@ -355,17 +364,18 @@
                         <p>View and update the event schedule and timeline.</p>
                     </div>
                 </a>
-                <asp:TemplateField HeaderText="Company">
-                    <itemtemplate>
-                        <asp:HyperLink ID="hlViewDetails" runat="server"
-                            NavigateUrl='<%# "ViewExhibitorDetails.aspx?ID=" + Eval("ExhibitorID") %>'
-                            Text='<%# Eval("Company") %>'
-                            Target="_blank"
-                            CssClass="truncate-cell"
-                            Style="color: #dd6b20; font-weight: 600; text-decoration: none; cursor: pointer;">
-                        </asp:HyperLink>
-                    </itemtemplate>
-                </asp:TemplateField>
+                <a href="ManageExhibitor.aspx" class="card exhibitor-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <i class="fas fa-arrow-right" style="color: #cbd5e0;"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Exhibitors</h3>
+                        <p>Approve registrations, assign booths, and manage profiles.</p>
+                    </div>
+                </a>
 
             </div>
         </div>

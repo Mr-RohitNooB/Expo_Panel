@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageExhibitor.aspx.cs" Inherits="Expo_Panel.Admin.ManageExhibitor" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageExhibitor.aspx.cs" Inherits="Expo_Panel.Admin.TeamManageExhibitor" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -736,7 +736,7 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span>Welcome,
                         <asp:Label ID="lblUsername" runat="server" Text=""></asp:Label></span>
-                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
+                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
                         <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
@@ -748,8 +748,8 @@
 
                 <div class="status-filters">
                     <asp:Button ID="btnPending" runat="server" Text="Pending (0)" CssClass="btn-filter active" OnClick="btnStatusFilter_Click" CommandArgument="Pending" />
-                    <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" />
-                    <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" />
+                    <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" Visible="false" />
+                    <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected"  Visible="false"/>
                     <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="Pending" />
                 </div>
 
@@ -840,7 +840,7 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Status">
+                                    <asp:TemplateField HeaderText="Status" Visible="false">
                                         <ItemTemplate>
                                             <label class="toggle-switch">
                                                 <input type="checkbox"
@@ -872,7 +872,7 @@
                                                 Text="Approve/Reject"
                                                 CssClass="btn btn-sm btn-success"
                                                 CommandName="ApprovalAction"
-                                                CommandArgument='<%# Eval("ExhibitorID") %>' />
+                                                CommandArgument='<%# Eval("ExhibitorID") %>' Visible="false" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
@@ -1465,21 +1465,21 @@
 
                 <!-- System Settings -->
                 <div class="section-divider">
-                    <i class="fas fa-cog"></i>System Settings
+                    <i class="fas fa-cog"></i>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="<%=ddlStatus.ClientID%>">Status</label>
-                        <asp:DropDownList ID="ddlStatus" runat="server">
+                        <label for="<%=ddlStatus.ClientID%>"></label>
+                        <asp:DropDownList ID="ddlStatus" runat="server" Visible="false">
                             <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
                             <asp:ListItem Text="Inactive" Value="0"></asp:ListItem>
                         </asp:DropDownList>
                     </div>
 
                     <div class="form-group">
-                        <label for="<%=ddlRegistrationType.ClientID%>">Registration Type</label>
-                        <asp:DropDownList ID="ddlRegistrationType" runat="server">
+                        <label for="<%=ddlRegistrationType.ClientID%>"></label>
+                        <asp:DropDownList ID="ddlRegistrationType" runat="server"  Visible="false" >
                             <asp:ListItem Text="Admin" Value="Admin" Selected="True"></asp:ListItem>
                             <asp:ListItem Text="Online" Value="Online"></asp:ListItem>
                         </asp:DropDownList>

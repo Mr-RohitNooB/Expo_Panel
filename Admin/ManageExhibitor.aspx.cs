@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace Expo_Panel.Admin
 {
-    public partial class ManageExhibitor : System.Web.UI.Page
+    public partial class TeamManageExhibitor : System.Web.UI.Page
     {
         private string ConnectionString
         {
@@ -28,6 +28,7 @@ namespace Expo_Panel.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 1. Check if ANY user is authenticated
             if (Session["IsAuthenticated"] == null || !(bool)Session["IsAuthenticated"])
             {
                 Response.Redirect("Default.aspx", false);
@@ -35,19 +36,22 @@ namespace Expo_Panel.Admin
                 return;
             }
 
-            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
-
-            if (role != "SuperAdmin")
-            {
-                // STOP! They are not allowed.
-                // Redirect them back to the dashboard immediately.
-                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
-                Context.ApplicationInstance.CompleteRequest();
-                return; // Stop processing this page
-            }
-
             if (!IsPostBack)
             {
+                // ---------------------------------------------------------
+                // NEW CODE: Dynamic Back Button Navigation
+                // ---------------------------------------------------------
+                string role = Session["Role"] != null ? Session["Role"].ToString() : "";
+
+                if (role == "Admin") // This is the Team Admin
+                {
+                    // Send Team Admins back to their specific dashboard
+                    hlBack.NavigateUrl = "Dashboard.aspx";
+                }
+                
+                // ---------------------------------------------------------
+
+                // Existing logic for username display
                 if (Session["AdminUsername"] != null)
                 {
                     lblUsername.Text = Session["AdminUsername"].ToString();

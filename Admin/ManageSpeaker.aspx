@@ -970,9 +970,9 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                <%--    <asp:TemplateField HeaderText="Status">
+                                    <asp:TemplateField HeaderText="Status" Visible="false">
                                         <ItemTemplate>
-                                            <label class="toggle-switch">
+                                            <label class="toggle-switch" style="display:none">
                                                 <input type="checkbox"
                                                     <%# (bool)Eval("IS_ACTIVE") ? "checked" : "" %>
                                                     onchange="toggleStatusSimple(this)">
@@ -985,9 +985,9 @@
                                                 CommandName="QuickToggle"
                                                 CommandArgument='<%# Eval("SpeakerID") %>'
                                                 CssClass="toggle-button-hidden"
-                                                ID="btnToggleHidden" />
+                                                ID="btnToggleHidden" Visible="false"/>
                                         </ItemTemplate>
-                                    </asp:TemplateField>--%>
+                                    </asp:TemplateField>
 
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
@@ -997,10 +997,10 @@
                                                     <i class="fas fa-edit"></i>Edit
                                                 </button>
 
-                                               <%-- <button type="button" class="btn btn-warning"
+                                                <button style="display:none" type="button" class="btn btn-warning"
                                                     onclick="handleApprovalClick(<%# Eval("SpeakerID") %>)">
                                                     <i class="fas fa-check-circle"></i>Approve/Reject
-                                                </button>--%>
+                                                </button>
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -1442,7 +1442,7 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Status">
+                                <asp:TemplateField HeaderText="Status" Visible="false">
                                     <ItemTemplate>
                                         <span class='<%# "badge-status badge-" + Eval("Status").ToString().ToLower() %>'>
                                             <%# Eval("Status") %>

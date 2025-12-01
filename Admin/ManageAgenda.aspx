@@ -673,7 +673,7 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Status">
+                                    <asp:TemplateField HeaderText="Status" Visible="false">
                                         <ItemTemplate>
                                             <label class="toggle-switch">
                                                 <input type="checkbox"

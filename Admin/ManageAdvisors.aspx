@@ -596,8 +596,8 @@
 
                         <div class="status-filters">
                             <asp:Button ID="btnPending" runat="server" Text="Pending (0)" CssClass="btn-filter active" OnClick="btnStatusFilter_Click" CommandArgument="Pending" />
-                            <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" />
-                            <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" />
+                            <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" Visible="false"/>
+                            <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" Visible="false"/>
                             <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="Pending" />
                         </div>
 
@@ -677,7 +677,7 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Status">
+                                    <asp:TemplateField HeaderText="Status" Visible="false">
                                         <ItemTemplate>
                                             <label class="toggle-switch">
                                                 <input type="checkbox"
@@ -703,7 +703,7 @@
                                                     onclick="loadAdvisorForEdit(<%# Eval("AdvisorID") %>)">
                                                     <i class="fas fa-pencil-alt"></i>Edit
                                                 </button>
-                                                <button type="button" class="btn btn-warning"
+                                                <button type="button" class="btn btn-warning" style="display:none"
                                                     onclick="loadAdvisorForApproval(<%# Eval("AdvisorID") %>)">
                                                     <i class="fas fa-check-double"></i>Approve/Reject
                                                 </button>
@@ -789,7 +789,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display:none">
                     <label for="<%=ddlStatus.ClientID%>">Status</label>
                     <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
                         <asp:ListItem Text="Active" Value="1" Selected="True"></asp:ListItem>
