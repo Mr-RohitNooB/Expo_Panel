@@ -72,9 +72,12 @@
   <ItemGroup>
     <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Admin\Default.aspx" />
+    <Content Include="Admin\ManageAdvisors.aspx" />
     <Content Include="Admin\ManageAgenda.aspx" />
     <Content Include="Admin\ManageExhibitor.aspx" />
     <Content Include="Admin\ManageSpeaker.aspx" />
+    <Content Include="Admin\ViewExhibitorDetails.aspx" />
+    <Content Include="Admin\ViewFinalSpeaker.aspx" />
     <Content Include="Admin\ViewSpeakerDetails.aspx" />
     <Content Include="Conference.aspx" />
     <Content Include="ExhibitorDetails.aspx" />
@@ -83,15 +86,17 @@
     <Content Include="PrivacyPolicy.aspx" />
     <Content Include="SuperAdmin\FinalSpeakerSelection.aspx" />
     <Content Include="SuperAdmin\ManageAdmins.aspx" />
+    <Content Include="SuperAdmin\ManageVisitor.aspx" />
     <Content Include="SuperAdmin\ViewExhibitorDetails.aspx" />
     <Content Include="SuperAdmin\ViewSpeakerDetails.aspx" />
     <Content Include="TermsConditions.aspx" />
     <Content Include="User\ExhibitorDashboard.aspx" />
+    <Content Include="User\RegisterVisitor.aspx" />
     <Content Include="User\SpeakerDashboard.aspx" />
     <Content Include="User\SpeakerLogin.aspx" />
     <Content Include="SuperAdmin\ManageAdvisors.aspx" />
     <Content Include="User\AdvisoryLogin.aspx" />
-    <Content Include="Images\Expo_logo_Full.png" />
+    <None Include="Images\Expo_logo_Full.pnga" />
     <Content Include="Images\Lubricant_India_Expo_Cropped.png" />
     <Content Include="Images\Lubricant_India_Expo_Logo.jpg" />
     <Content Include="Index.aspx" />
@@ -108,6 +113,8 @@
     <Content Include="RegisterAgenda.aspx" />
     <Content Include="User\RegisterExhibitor.aspx" />
     <Content Include="User\RegisterSpeaker.aspx" />
+    <Content Include="User\VisitorDashboard.aspx" />
+    <Content Include="User\VisitorLogin.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +131,13 @@
     </Compile>
     <Compile Include="Admin\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ManageAdvisors.aspx.cs">
+      <DependentUpon>ManageAdvisors.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageAdvisors.aspx.designer.cs">
+      <DependentUpon>ManageAdvisors.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ManageAgenda.aspx.cs">
       <DependentUpon>ManageAgenda.aspx</DependentUpon>
@@ -145,6 +159,20 @@
     </Compile>
     <Compile Include="Admin\ManageSpeaker.aspx.designer.cs">
       <DependentUpon>ManageSpeaker.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ViewExhibitorDetails.aspx.cs">
+      <DependentUpon>ViewExhibitorDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewExhibitorDetails.aspx.designer.cs">
+      <DependentUpon>ViewExhibitorDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ViewFinalSpeaker.aspx.cs">
+      <DependentUpon>ViewFinalSpeaker.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ViewFinalSpeaker.aspx.designer.cs">
+      <DependentUpon>ViewFinalSpeaker.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\ViewSpeakerDetails.aspx.cs">
       <DependentUpon>ViewSpeakerDetails.aspx</DependentUpon>
@@ -202,6 +230,13 @@
     <Compile Include="SuperAdmin\ManageAdmins.aspx.designer.cs">
       <DependentUpon>ManageAdmins.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SuperAdmin\ManageVisitor.aspx.cs">
+      <DependentUpon>ManageVisitor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SuperAdmin\ManageVisitor.aspx.designer.cs">
+      <DependentUpon>ManageVisitor.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SuperAdmin\ViewExhibitorDetails.aspx.cs">
       <DependentUpon>ViewExhibitorDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -229,6 +264,13 @@
     </Compile>
     <Compile Include="User\ExhibitorDashboard.aspx.designer.cs">
       <DependentUpon>ExhibitorDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\RegisterVisitor.aspx.cs">
+      <DependentUpon>RegisterVisitor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\RegisterVisitor.aspx.designer.cs">
+      <DependentUpon>RegisterVisitor.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\SpeakerDashboard.aspx.cs">
       <DependentUpon>SpeakerDashboard.aspx</DependentUpon>
@@ -355,6 +397,20 @@
     </Compile>
     <Compile Include="User\RegisterSpeaker.aspx.designer.cs">
       <DependentUpon>RegisterSpeaker.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\VisitorDashboard.aspx.cs">
+      <DependentUpon>VisitorDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\VisitorDashboard.aspx.designer.cs">
+      <DependentUpon>VisitorDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\VisitorLogin.aspx.cs">
+      <DependentUpon>VisitorLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\VisitorLogin.aspx.designer.cs">
+      <DependentUpon>VisitorLogin.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

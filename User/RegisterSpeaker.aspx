@@ -661,49 +661,62 @@
         }
 
         /* --- Modern Success Card Styles --- */
-       .success-card {
-    background: white;
-    /* Optional: Add a very subtle border/shadow if you want it to look like a card, 
+        .success-card {
+            background: white;
+            /* Optional: Add a very subtle border/shadow if you want it to look like a card, 
        or remove these two lines if you want it completely flat like the image */
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-    
-    padding: 60px 20px;
-    text-align: center;
-    max-width: 600px;
-    margin: 40px auto;
-    animation: slideUp 0.6s ease-out;
-}
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 40px auto;
+            animation: slideUp 0.6s ease-out;
+        }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-/* Icon Container */
-.success-icon-container {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 30px auto;
-    position: relative;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-/* The Green Circle */
-.success-circle {
-    width: 100%;
-    height: 100%;
-    background-color: #8cd47e; /* The soft green from your image */
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+        /* Icon Container */
+        .success-icon-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px auto;
+            position: relative;
+        }
 
-@keyframes popIn {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
+        /* The Green Circle */
+        .success-circle {
+            width: 100%;
+            height: 100%;
+            background-color: #8cd47e; /* The soft green from your image */
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
         @keyframes pulseGreen {
             0% {
@@ -724,107 +737,134 @@
 
         /* The Checkmark Drawing Animation */
         /* --- Clean "Thank You" Style --- */
-.success-card {
-    background: white;
-    /* Optional: Add a very subtle border/shadow if you want it to look like a card, 
+        .success-card {
+            background: white;
+            /* Optional: Add a very subtle border/shadow if you want it to look like a card, 
        or remove these two lines if you want it completely flat like the image */
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-    
-    padding: 60px 20px;
-    text-align: center;
-    max-width: 600px;
-    margin: 40px auto;
-    animation: slideUp 0.6s ease-out;
-}
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 40px auto;
+            animation: slideUp 0.6s ease-out;
+        }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-/* Icon Container */
-.success-icon-container {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 30px auto;
-    position: relative;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-/* The Green Circle */
-.success-circle {
-    width: 100%;
-    height: 100%;
-    background-color: #8cd47e; /* The soft green from your image */
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+        /* Icon Container */
+        .success-icon-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px auto;
+            position: relative;
+        }
 
-@keyframes popIn {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
+        /* The Green Circle */
+        .success-circle {
+            width: 100%;
+            height: 100%;
+            background-color: #8cd47e; /* The soft green from your image */
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-/* The White Checkmark */
-.checkmark {
-    width: 35px;
-    height: 70px;
-    border-bottom: 8px solid white; /* Thicker line */
-    border-right: 8px solid white;  /* Thicker line */
-    border-radius: 4px; /* Rounds the edges of the checkmark */
-    position: absolute;
-    top: 48%;
-    left: 50%;
-    transform: translate(-50%, -60%) rotate(45deg);
-    opacity: 0;
-    animation: drawCheck 0.5s 0.4s ease-out forwards;
-}
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
 
-@keyframes drawCheck {
-    0% { height: 0; width: 0; opacity: 0; }
-    40% { height: 70px; width: 0; opacity: 1; }
-    100% { height: 70px; width: 35px; opacity: 1; }
-}
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-/* Typography matching the image */
-.success-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: #1e2046; /* The Dark Navy Blue from the image */
-    margin-bottom: 10px;
-    letter-spacing: -0.5px;
-}
+        /* The White Checkmark */
+        .checkmark {
+            width: 35px;
+            height: 70px;
+            border-bottom: 8px solid white; /* Thicker line */
+            border-right: 8px solid white; /* Thicker line */
+            border-radius: 4px; /* Rounds the edges of the checkmark */
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -60%) rotate(45deg);
+            opacity: 0;
+            animation: drawCheck 0.5s 0.4s ease-out forwards;
+        }
 
-.success-text {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    color: #5a6b85; /* The Grey-Blue subtext color */
-    margin-bottom: 40px;
-    line-height: 1.5;
-}
+        @keyframes drawCheck {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 0;
+            }
 
-/* Button to match */
-.btn-home {
-    background: #1e2046; /* Match the dark title color */
-    color: white;
-    padding: 12px 35px;
-    border-radius: 50px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 15px;
-}
+            40% {
+                height: 70px;
+                width: 0;
+                opacity: 1;
+            }
 
-.btn-home:hover {
-    background: #8cd47e; /* Green on hover */
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(140, 212, 126, 0.4);
-}
+            100% {
+                height: 70px;
+                width: 35px;
+                opacity: 1;
+            }
+        }
+
+        /* Typography matching the image */
+        .success-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e2046; /* The Dark Navy Blue from the image */
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .success-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: #5a6b85; /* The Grey-Blue subtext color */
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        /* Button to match */
+        .btn-home {
+            background: #1e2046; /* Match the dark title color */
+            color: white;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+            .btn-home:hover {
+                background: #8cd47e; /* Green on hover */
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(140, 212, 126, 0.4);
+            }
     </style>
 </head>
 <body>
@@ -833,26 +873,31 @@
             <div class="header">
                 <h1><i class="fas fa-microphone"></i>Register as Speaker</h1>
                 <p>Share your expertise and insights as a speaker at our expo</p>
+
+                <button type="button" class="btn btn-view" onclick="openGuidelinesModal()" style="margin-top: 10px; background-color: #475569;">
+                    <i class="fas fa-book-open"></i>Read Speaker Guidelines
+                </button>
             </div>
 
             <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
-           <asp:Panel ID="pnlSuccessMessage" runat="server" Visible="false">
-    <div class="success-card">
-        
-        <div class="success-icon-container">
-            <div class="success-circle"></div>
-            <div class="checkmark"></div>
-        </div>
+            <asp:Panel ID="pnlSuccessMessage" runat="server" Visible="false">
+                <div class="success-card">
 
-        <h2 class="success-title">Thank you!</h2>
-        
-        <p class="success-text">
-            Your submission has been sent. <br />
-            <span style="font-size: 14px; opacity: 0.8;">We will contact you shortly via email.</span>
-        </p>
+                    <div class="success-icon-container">
+                        <div class="success-circle"></div>
+                        <div class="checkmark"></div>
+                    </div>
 
-    </div>
-</asp:Panel>
+                    <h2 class="success-title">Thank you!</h2>
+
+                    <p class="success-text">
+                        Your submission has been sent.
+                        <br />
+                        <span style="font-size: 14px; opacity: 0.8;">We will contact you shortly via email.</span>
+                    </p>
+
+                </div>
+            </asp:Panel>
             <asp:Panel ID="pnlFormFields" runat="server">
 
                 <!-- Section 1: Personal Information -->
@@ -1171,6 +1216,110 @@
                     </div>
                 </div>
             </div>
+
+        </div>
+        <div id="guidelinesModal" class="modal">
+            <div class="modal-content" style="max-width: 800px;">
+                <div class="modal-header">
+                    <h2><i class="fas fa-file-contract"></i>Speaker Guidelines & Policy</h2>
+                    <button type="button" class="modal-close" onclick="closeGuidelinesModal()">&times;</button>
+                </div>
+                <div class="modal-body" style="line-height: 1.6; color: #334155;">
+
+                    <div class="agenda-detail-row">
+                        <div class="agenda-detail-label"><i class="fas fa-bullseye"></i>Purpose of the Summit</div>
+                        <div class="agenda-detail-value">
+                            <ul style="list-style-type: disc; margin-left: 20px;">
+                                <li>Our Objective is to build India’s credible, knowledge-driven platform for the lubricants sector.</li>
+                                <li>Sessions are curated to address technology, regulatory, sustainability and market developments across the ecosystem.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="agenda-detail-row">
+                        <div class="agenda-detail-label"><i class="fas fa-user-tie"></i>Who We Invite as Speaker</div>
+                        <div class="agenda-detail-value">
+                            <ul style="list-style-type: disc; margin-left: 20px;">
+                                <li>Subject matter experts</li>
+                                <li>Technical leaders</li>
+                                <li>Policy influencers</li>
+                                <li>CXOs and senior strategists</li>
+                                <li>OEM and R&D specialists</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="agenda-detail-row">
+                        <div class="agenda-detail-label"><i class="fas fa-clipboard-check"></i>Content Expectation</div>
+                        <div class="agenda-detail-value">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                                    <strong style="color: #166534; display: block; margin-bottom: 10px;"><i class="fas fa-check"></i>Allowed:</strong>
+                                    <ul style="list-style-type: none; padding: 0;">
+                                        <li><i class="fas fa-check" style="color: #166534; font-size: 12px; margin-right: 5px;"></i>Industry insights</li>
+                                        <li><i class="fas fa-check" style="color: #166534; font-size: 12px; margin-right: 5px;"></i>Research-backed perspectives</li>
+                                        <li><i class="fas fa-check" style="color: #166534; font-size: 12px; margin-right: 5px;"></i>Case studies</li>
+                                        <li><i class="fas fa-check" style="color: #166534; font-size: 12px; margin-right: 5px;"></i>Technology trends</li>
+                                        <li><i class="fas fa-check" style="color: #166534; font-size: 12px; margin-right: 5px;"></i>Regulation & policy outlook</li>
+                                    </ul>
+                                </div>
+                                <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border: 1px solid #fecaca;">
+                                    <strong style="color: #991b1b; display: block; margin-bottom: 10px;"><i class="fas fa-times"></i>Not Allowed:</strong>
+                                    <ul style="list-style-type: none; padding: 0;">
+                                        <li><i class="fas fa-times" style="color: #991b1b; font-size: 12px; margin-right: 5px;"></i>Product pitches</li>
+                                        <li><i class="fas fa-times" style="color: #991b1b; font-size: 12px; margin-right: 5px;"></i>Brand comparisons</li>
+                                        <li><i class="fas fa-times" style="color: #991b1b; font-size: 12px; margin-right: 5px;"></i>Commercial messaging</li>
+                                        <li><i class="fas fa-times" style="color: #991b1b; font-size: 12px; margin-right: 5px;"></i>Sales-oriented storytelling</li>
+                                        <li><i class="fas fa-times" style="color: #991b1b; font-size: 12px; margin-right: 5px;"></i>Company advertisements</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="agenda-detail-row">
+                        <div class="agenda-detail-label"><i class="fas fa-chart-pie"></i>Product/Commercial Presentation</div>
+                        <div class="agenda-detail-value">
+                            <p>If brand wishes to promote products, business offerings or commercial solutions, this will be facilitated only via the Session Sponsorship.</p>
+                            <p style="margin-top: 10px;"><strong>Companies may opt for:</strong></p>
+                            <ul style="list-style-type: disc; margin-left: 20px;">
+                                <li>Session Sponsorship (includes product presentation slot)</li>
+                                <li>Exhibition showcase</li>
+                                <li>Innovation Demo zone</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="agenda-detail-row">
+                        <div class="agenda-detail-label"><i class="fas fa-clock"></i>Timeline & Requirement</div>
+                        <div class="agenda-detail-value">
+                            <ul style="list-style-type: disc; margin-left: 20px;">
+                                <li><strong>Final speaker confirmation:</strong> TBD (provided upon acceptance)</li>
+                                <li><strong>Technical Presentation:</strong> Submit 25 days before event</li>
+                                <li><strong>Duration:</strong> 45–60 min per session including Q&A</li>
+                                <li><strong>Format:</strong> Panel discussion / technical presentation / keynote / fireside chat (as assigned)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="agenda-detail-row">
+                        <div class="agenda-detail-label"><i class="fas fa-puzzle-piece"></i>Session Structure</div>
+                        <div class="agenda-detail-value">
+                            <ul style="list-style-type: disc; margin-left: 20px;">
+                                <li>Moderated discussions aligned to predefined session theme</li>
+                                <li>Audience Q&A encouraged</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                        <button type="button" class="btn btn-primary" onclick="closeGuidelinesModal()">
+                            <i class="fas fa-check-double"></i>I have read all
+                        </button>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <script type="text/javascript">
             // Photo preview function
@@ -1373,7 +1522,7 @@
                 if (bioTextbox) {
                     bioTextbox.addEventListener('input', function () {
                         updateCharCount('<%=txtProfessionalBio.ClientID%>', 'bioCharCount');
-                    });
+                  });
                 }
 
                 var workTextbox = document.getElementById('<%=txtCurrentWorkProjects.ClientID%>');
@@ -1561,6 +1710,40 @@
                     });
                 }
             }
+            // Function to open Guidelines Modal with console log for debugging
+            function openGuidelinesModal() {
+                console.log("Opening guidelines modal...");
+                var modal = document.getElementById('guidelinesModal');
+                if (modal) {
+                    modal.style.display = 'block';
+                } else {
+                    console.error('Guidelines modal NOT found. Check HTML placement.');
+                }
+            }
+
+            // Function to close Guidelines Modal
+            function closeGuidelinesModal() {
+                var modal = document.getElementById('guidelinesModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            // SINGLE Window Click Handler for BOTH modals
+            window.onclick = function (event) {
+                var agendaModal = document.getElementById('agendaModal');
+                var guidelinesModal = document.getElementById('guidelinesModal');
+
+                // Close Agenda Modal if clicked outside
+                if (agendaModal && event.target == agendaModal) {
+                    agendaModal.style.display = 'none';
+                }
+
+                // Close Guidelines Modal if clicked outside
+                if (guidelinesModal && event.target == guidelinesModal) {
+                    guidelinesModal.style.display = 'none';
+                }
+            };
 
         </script>
     </form>

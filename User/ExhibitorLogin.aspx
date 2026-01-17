@@ -169,15 +169,16 @@
         }
 
         .header-brand img {
-            max-width: 301px;
-            width: 104%;
-            height: auto;
-            display: block;
-            margin: 15px auto;
-            object-fit: contain;
-            margin-top: -50px;
-            margin-bottom: -25px;
-        }
+    max-width: 301px;
+    width: 104%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    object-fit: contain;
+    margin-top: -14px;
+    margin-bottom: 0px;
+}
+
 
 
 
@@ -650,18 +651,15 @@
                         </div>
 
                         <div style="text-align: right; margin-bottom: 15px;">
-                        <%--    <asp:LinkButton ID="lnkForgot" runat="server" OnClick="lnkForgot_Click" CausesValidation="false" Style="color: #dd6b20; font-size: 13px; font-weight: 600; text-decoration: none;">
+                            <asp:LinkButton ID="lnkForgot" runat="server" OnClick="lnkForgot_Click" CausesValidation="false" Style="color: #dd6b20; font-size: 13px; font-weight: 600; text-decoration: none;">
                 Forgot Password?
-                            </asp:LinkButton>--%>
+                            </asp:LinkButton>
                         </div>
 
                         <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn-login" OnClick="btnLogin_Click" ValidationGroup="LoginGroup" />
                     </asp:Panel>
 
                     <asp:Panel ID="pnlVerify" runat="server" Visible="false">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>Enter your registered email to reset your password.
-                        </div>
                         <div class="form-group">
                             <label class="form-label">Registered Email</label>
                             <asp:TextBox ID="txtResetEmail" runat="server" CssClass="form-control" placeholder="e.g. exhibitor@company.com"></asp:TextBox>
@@ -676,80 +674,96 @@
                         </div>
                     </asp:Panel>
 
+                    <asp:Panel ID="pnlOTP" runat="server" Visible="false">
+                        <div class="form-group">
+                            <label class="form-label">Enter OTP Code</label>
+                            <asp:TextBox ID="txtOTP" runat="server" CssClass="form-control" placeholder="123456" MaxLength="6"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvOTP" runat="server" ControlToValidate="txtOTP"
+                                ErrorMessage="OTP is required" CssClass="error-message" Display="Dynamic" ValidationGroup="OTPGroup">
+                            </asp:RequiredFieldValidator>
+                        </div>
+
+                        <asp:Button ID="btnSubmitOTP" runat="server" Text="Verify OTP" CssClass="btn-login"
+                            OnClick="btnSubmitOTP_Click" ValidationGroup="OTPGroup" />
+
+                        <div style="text-align: center; margin-top: 15px;">
+                            <asp:LinkButton ID="lnkResend" runat="server" OnClick="btnVerify_Click"
+                                CausesValidation="false" Style="color: #dd6b20; font-size: 13px; text-decoration: none;">
+            Resend Code
+                            </asp:LinkButton>
+                        </div>
+                    </asp:Panel>
+
                     <asp:Panel ID="pnlReset" runat="server" Visible="false">
-    <div class="alert alert-success">
-        <i class="fas fa-check-circle"></i>Account verified! Set your new password below.
-    </div>
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
 
-    <div class="form-group">
-        <label class="form-label">New Password</label>
-        
-        <div class="password-container">
-            <asp:TextBox ID="txtNewPass" runat="server" CssClass="form-control" TextMode="Password" placeholder="Enter new password"></asp:TextBox>
-            
-            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
-                <i class="fas fa-eye toggle-icon"></i>
-            </button>
-        </div>
+                            <div class="password-container">
+                                <asp:TextBox ID="txtNewPass" runat="server" CssClass="form-control" TextMode="Password" placeholder="Enter new password"></asp:TextBox>
 
-        <asp:RequiredFieldValidator ID="rfvNewPass" runat="server"
-            ControlToValidate="txtNewPass"
-            ErrorMessage="New Password is required"
-            CssClass="error-message"
-            Display="Dynamic"
-            ValidationGroup="ResetGroup">
-        </asp:RequiredFieldValidator>
+                                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
+                                    <i class="fas fa-eye toggle-icon"></i>
+                                </button>
+                            </div>
 
-        <asp:RegularExpressionValidator ID="revMinLen" runat="server"
-            ControlToValidate="txtNewPass"
-            ValidationExpression="^.{6,}$"
-            ErrorMessage="Password must be at least 6 characters"
-            CssClass="error-message"
-            Display="Dynamic"
-            ValidationGroup="ResetGroup">
-        </asp:RegularExpressionValidator>
-    </div>
+                            <asp:RequiredFieldValidator ID="rfvNewPass" runat="server"
+                                ControlToValidate="txtNewPass"
+                                ErrorMessage="New Password is required"
+                                CssClass="error-message"
+                                Display="Dynamic"
+                                ValidationGroup="ResetGroup">
+                            </asp:RequiredFieldValidator>
 
-    <div class="form-group">
-        <label class="form-label">Confirm Password</label>
-        
-        <div class="password-container">
-            <asp:TextBox ID="txtConfirmPass" runat="server" CssClass="form-control" TextMode="Password" placeholder="Confirm new password"></asp:TextBox>
-            
-            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
-                <i class="fas fa-eye toggle-icon"></i>
-            </button>
-        </div>
+                            <asp:RegularExpressionValidator ID="revMinLen" runat="server"
+                                ControlToValidate="txtNewPass"
+                                ValidationExpression="^.{6,}$"
+                                ErrorMessage="Password must be at least 6 characters"
+                                CssClass="error-message"
+                                Display="Dynamic"
+                                ValidationGroup="ResetGroup">
+                            </asp:RegularExpressionValidator>
+                        </div>
 
-        <asp:RequiredFieldValidator ID="rfvConfirm" runat="server"
-            ControlToValidate="txtConfirmPass"
-            ErrorMessage="Confirm Password is required"
-            CssClass="error-message"
-            Display="Dynamic"
-            ValidationGroup="ResetGroup">
-        </asp:RequiredFieldValidator>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
 
-        <asp:CompareValidator ID="cvPass" runat="server"
-            ControlToValidate="txtConfirmPass"
-            ControlToCompare="txtNewPass"
-            Operator="Equal"
-            Type="String"
-            ErrorMessage="Passwords do not match"
-            CssClass="error-message"
-            Display="Dynamic"
-            ValidationGroup="ResetGroup">
-        </asp:CompareValidator>
-    </div>
+                            <div class="password-container">
+                                <asp:TextBox ID="txtConfirmPass" runat="server" CssClass="form-control" TextMode="Password" placeholder="Confirm new password"></asp:TextBox>
 
-    <asp:Button ID="btnUpdatePass" runat="server" Text="Update Password" CssClass="btn-login" OnClick="btnUpdatePass_Click" ValidationGroup="ResetGroup" />
-</asp:Panel>
+                                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
+                                    <i class="fas fa-eye toggle-icon"></i>
+                                </button>
+                            </div>
+
+                            <asp:RequiredFieldValidator ID="rfvConfirm" runat="server"
+                                ControlToValidate="txtConfirmPass"
+                                ErrorMessage="Confirm Password is required"
+                                CssClass="error-message"
+                                Display="Dynamic"
+                                ValidationGroup="ResetGroup">
+                            </asp:RequiredFieldValidator>
+
+                            <asp:CompareValidator ID="cvPass" runat="server"
+                                ControlToValidate="txtConfirmPass"
+                                ControlToCompare="txtNewPass"
+                                Operator="Equal"
+                                Type="String"
+                                ErrorMessage="Passwords do not match"
+                                CssClass="error-message"
+                                Display="Dynamic"
+                                ValidationGroup="ResetGroup">
+                            </asp:CompareValidator>
+                        </div>
+
+                        <asp:Button ID="btnUpdatePass" runat="server" Text="Update Password" CssClass="btn-login" OnClick="btnUpdatePass_Click" ValidationGroup="ResetGroup" />
+                    </asp:Panel>
 
                 </div>
 
                 <!-- Footer Section (Customized) -->
                 <div class="login-footer">
                     <p>Don't have an account? <a href="RegisterExhibitor.aspx">Register as Exhibitor</a></p>
-                    <p>&copy; 2025 Lubricant India Expo. All rights reserved.</p>
+                   <p>&copy; 2025 Lubricant India Expo and Summit. All rights reserved.</p>
                 </div>
             </div>
 

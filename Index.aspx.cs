@@ -74,7 +74,7 @@ namespace Expo_Panel
         {
             if (!IsPostBack)
             {
-                Page.Title = "Lubricant India Expo | 24-26 September 2026 | Yashoobhumi, New Delhi";
+                Page.Title = "Lubricant India Expo | 10-12 September 2026 | Yashoobhumi, New Delhi";
             }
         }
 

@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Web.UI;
 
 namespace Expo_Panel
@@ -76,6 +80,67 @@ namespace Expo_Panel
 
                 if (exhibitorId > 0)
                 {
+                    // 1. Prepare Admin Notification (To admin@lubricantindia.com)
+                    string adminSubject = $"New Exhibitor Registration: {company}";
+                    StringBuilder adminBody = new StringBuilder();
+                    adminBody.Append("<h3>New Exhibitor Registration Received</h3>");
+                    adminBody.Append("<table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse; width:100%; max-width:600px;'>");
+
+                    // Basic Info
+                    adminBody.Append($"<tr><td style='background:#f2f2f2; width:30%;'><b>Name:</b></td><td>{name}</td></tr>");
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Designation:</b></td><td>{designation}</td></tr>");
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Company:</b></td><td>{company}</td></tr>");
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Email:</b></td><td>{email}</td></tr>");
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Mobile:</b></td><td>{mobile}</td></tr>");
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>GST Number:</b></td><td>{gstNumber}</td></tr>");
+
+                    // Address Info
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Head Office:</b></td><td>{headOffice}, {city}, {state}, {country}</td></tr>");
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Billing Address:</b></td><td>{billingAddress}</td></tr>");
+
+                    // Booth Details
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Booth Type:</b></td><td>{boothType}</td></tr>");
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Area Required:</b></td><td>{areaInSqm} Sqm</td></tr>");
+
+                    // Interests (Checkboxes)
+                    List<string> interests = new List<string>();
+                    if (interestedInConference) interests.Add("Conference Speaking");
+                    if (interestedInSponsorship) interests.Add("Sponsorship");
+                    if (interestedInAdvertising) interests.Add("Advertising");
+                    if (interestedInCustomPackage) interests.Add("Custom Package");
+
+                    adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Additional Interests:</b></td><td>{(interests.Count > 0 ? string.Join(", ", interests) : "None")}</td></tr>");
+
+                    adminBody.Append("</table>");
+                    adminBody.Append("<p>Please login to the admin panel to review details.</p>");
+
+                    // SEND TO ADMIN
+                    SendEmail("admin@lubricantindia.com", adminSubject, adminBody.ToString());
+                    // SendEmail("rcbm68615@gmail.com", adminSubject, adminBody.ToString()); // Uncomment for testing
+
+                    // 2. Prepare User Acknowledgement (To the User)
+                    string userSubject = "Registration Successful - Lubricant India Expo";
+                    string userBody = $@"
+        <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px;'>
+            <h2 style='color: #dd6b20;'>Thank You for Registering!</h2>
+            <p>Dear {name},</p>
+            <p>Thank you for registering as an Exhibitor for the Lubricant India Expo. We have successfully received your request for <strong>{company}</strong>.</p>
+            <p>Our team will review your requirements for the <strong>{boothType}</strong> ({areaInSqm} Sqm) and get back to you shortly with the floor plan and available options.</p>
+            
+            <hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;' />
+            
+            <p><strong>Contact Us:</strong></p>
+            <p>If you have any questions, please feel free to reach out to us:</p>
+            <p>
+                Email: <a href='mailto:confex@lubricantindia.com' style='color: #1e40af; font-weight:bold;'>confex@lubricantindia.com</a><br/>
+                Phone: <a href='tel:+919464700955' style='color: #1e40af; font-weight:bold;'>+91 94647 00955</a>
+            </p>
+            <br/>
+            <p>Best Regards,<br/><strong>Lubricant India Expo Team</strong></p>
+        </div>";
+
+                    // SEND TO USER
+                    SendEmail(email, userSubject, userBody);
                     ShowMessage("Your registration has been submitted successfully!", "success");
                     ClearForm();
                 }
@@ -147,6 +212,39 @@ namespace Expo_Panel
 
                     return Convert.ToInt32(outParam.Value);
                 }
+            }
+        }
+
+        private void SendEmail(string toEmail, string subject, string body)
+        {
+            try
+            {
+                // Read settings from Web.config
+                string smtpHost = ConfigurationManager.AppSettings["SMTP_Host"];
+                int smtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"]);
+                string smtpUser = ConfigurationManager.AppSettings["SMTP_User"];
+                string smtpPass = ConfigurationManager.AppSettings["SMTP_Pass"];
+
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress(smtpUser, "Lubricant India Expo");
+                    mail.To.Add(toEmail);
+                    mail.Subject = subject;
+                    mail.Body = body;
+                    mail.IsBodyHtml = true;
+
+                    using (SmtpClient smtp = new SmtpClient(smtpHost, smtpPort))
+                    {
+                        smtp.Credentials = new NetworkCredential(smtpUser, smtpPass);
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error safely so the user still sees the success screen
+                System.Diagnostics.Debug.WriteLine("Email sending failed: " + ex.Message);
             }
         }
 

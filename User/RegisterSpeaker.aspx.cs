@@ -6,6 +6,8 @@ using System.IO;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net;
+using System.Net.Mail;
 
 namespace Expo_Panel
 {
@@ -20,11 +22,11 @@ namespace Expo_Panel
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
             if (!IsPostBack)
             {
                 LoadAvailableAgendas();
-
+                ClientScript.RegisterStartupScript(this.GetType(), "ShowGuidelines", "openGuidelinesModal();", true);
                 // Check if speaker is logged in (Edit Mode)
                 if (Session["IsSpeakerLoggedIn"] != null && (bool)Session["IsSpeakerLoggedIn"])
                 {
@@ -245,6 +247,51 @@ namespace Expo_Panel
 
                     if (newSpeakerId > 0)
                     {
+
+                        string adminSubject = $"New Speaker Registration: {name}";
+                        StringBuilder adminBody = new StringBuilder();
+                        adminBody.Append("<h3>New Speaker Registration Received</h3>");
+                        adminBody.Append("<table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse; width:100%; max-width:600px;'>");
+                        adminBody.Append($"<tr><td style='background:#f2f2f2; width:150px;'><b>Name:</b></td><td>{name}</td></tr>");
+                        adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Email:</b></td><td>{email}</td></tr>");
+                        adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Mobile:</b></td><td>{mobile}</td></tr>");
+                        adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Company:</b></td><td>{company}</td></tr>");
+                        adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Designation:</b></td><td>{designation}</td></tr>");
+                        adminBody.Append($"<tr><td style='background:#f2f2f2'><b>LinkedIn:</b></td><td>{linkedIn}</td></tr>");
+                        // Show selected agenda IDs if available
+                        string agendaNamesFormatted = GetAgendaDetailsByIds(selectedAgendas);
+
+                        adminBody.Append($"<tr><td style='background:#f2f2f2'><b>Selected Topics:</b></td><td>{agendaNamesFormatted}</td></tr>");
+                        adminBody.Append("</table>");
+                        adminBody.Append("<p>Please login to the admin panel to review details.</p>");
+
+                        // SEND TO ADMIN
+                        SendEmail("admin@lubricantindia.com", adminSubject, adminBody.ToString());
+                        //SendEmail("rcbm68615@gmail.com", adminSubject, adminBody.ToString());
+
+                        // 2. Prepare User Acknowledgement (To the User)
+                        string userSubject = "Registration Successful - Lubricant India Expo";
+                        string userBody = $@"
+        <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px;'>
+            <h2 style='color: #38a169;'>Thank You for Registering!</h2>
+            <p>Dear {name},</p>
+            <p>Thank you for registering as a speaker for the Lubricant India Expo. We have successfully received your details.</p>
+            <p>Our team will review your profile and agenda selection. We will get back to you shortly regarding the next steps.</p>
+            
+            <hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;' />
+            
+            <p><strong>Contact Us:</strong></p>
+            <p>If you have any questions, please feel free to reach out to us:</p>
+            <p>
+                Email: <a href='mailto:confex@lubricantindia.com' style='color: #1e40af; font-weight:bold;'>confex@lubricantindia.com</a><br/>
+                Phone: <a href='tel:+919464700955' style='color: #1e40af; font-weight:bold;'>+91 94647 00955</a>
+            </p>
+            <br/>
+            <p>Best Regards,<br/><strong>Lubricant India Expo Team</strong></p>
+        </div>";
+
+                        // SEND TO USER
+                        SendEmail(email, userSubject, userBody);
                         // 1. Hide the form
                         pnlFormFields.Visible = false;
 
@@ -849,6 +896,97 @@ string selectedAgendas)
                 }
             }
         }
+
+
+        private void SendEmail(string toEmail, string subject, string body)
+        {
+            try
+            {
+                // Read settings from Web.config
+                string smtpHost = ConfigurationManager.AppSettings["SMTP_Host"];
+                int smtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"]);
+                string smtpUser = ConfigurationManager.AppSettings["SMTP_User"];
+                string smtpPass = ConfigurationManager.AppSettings["SMTP_Pass"];
+
+                using (MailMessage mail = new MailMessage())
+                {
+                    // The "From" address usually needs to match the authenticated user
+                    mail.From = new MailAddress(smtpUser, "Lubricant India Expo");
+                    mail.To.Add(toEmail);
+                    mail.Subject = subject;
+                    mail.Body = body;
+                    mail.IsBodyHtml = true;
+
+                    using (SmtpClient smtp = new SmtpClient(smtpHost, smtpPort))
+                    {
+                        smtp.Credentials = new NetworkCredential(smtpUser, smtpPass);
+                        smtp.EnableSsl = true; // Titan Email usually requires SSL/TLS
+                        smtp.Send(mail);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error safely so the user still sees the success screen
+                System.Diagnostics.Debug.WriteLine("Email sending failed: " + ex.Message);
+            }
+        }
+
+        private string GetAgendaDetailsByIds(string agendaIds)
+        {
+            if (string.IsNullOrEmpty(agendaIds)) return "None";
+
+            // 1. Split the selected IDs into an array for comparison
+            string[] selectedIdArray = agendaIds.Split(',');
+            StringBuilder agendaNames = new StringBuilder();
+
+            // Start a clean HTML list
+            agendaNames.Append("<ul style='margin: 0; padding-left: 15px;'>");
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConnectionString))
+                {
+                    // 2. Reuse your EXISTING Stored Procedure to get agenda details
+                    using (SqlCommand cmd = new SqlCommand("sp_GetAvailableAgendasForSelection", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        con.Open();
+
+                        using (SqlDataReader rdr = cmd.ExecuteReader())
+                        {
+                            // 3. Loop through all available agendas
+                            while (rdr.Read())
+                            {
+                                string dbId = rdr["AgendaID"].ToString();
+
+                                // 4. Check if this row's ID matches one of our selected IDs
+                                foreach (string selectedId in selectedIdArray)
+                                {
+                                    if (selectedId.Trim() == dbId)
+                                    {
+                                        string title = rdr["Title"].ToString();
+                                        string day = rdr["Day"].ToString(); // Optional: Add Day/Time if you want
+
+                                        // Add to our list
+                                        agendaNames.Append($"<li style='margin-bottom:5px;'>{title}</li>");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // If something goes wrong, fallback to showing the IDs so we don't lose data
+                return agendaIds + " (Error fetching names)";
+            }
+
+            agendaNames.Append("</ul>");
+            return agendaNames.ToString();
+        }
+
 
         private void ClearForm()
         {

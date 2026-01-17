@@ -42,15 +42,6 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.TextBox txtBoothNo;
 
         /// <summary>
-        /// rfvBoothNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBoothNo;
-
-        /// <summary>
         /// txtHallNo control.
         /// </summary>
         /// <remarks>
@@ -60,13 +51,13 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.TextBox txtHallNo;
 
         /// <summary>
-        /// rfvHallNo control.
+        /// txtAreaInSqm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvHallNo;
+        protected global::System.Web.UI.WebControls.TextBox txtAreaInSqm;
 
         /// <summary>
         /// txtExhibitorProfile control.

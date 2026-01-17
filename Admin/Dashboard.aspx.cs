@@ -19,7 +19,7 @@ namespace Expo_Panel.Admin
             // 1. CHECK TEAM SESSION
             if (Session["IsTeamAdminLoggedIn"] == null || !(bool)Session["IsTeamAdminLoggedIn"])
             {
-                Response.Redirect("Login.aspx"); // Go to TEAM Login
+                Response.Redirect("Default.aspx"); // Go to TEAM Login
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }

@@ -11,7 +11,7 @@ namespace Expo_Panel.Admin
 {
 
 
-    public partial class ManageAdvisors
+    public partial class ManageAdvisorsTeam
     {
 
         /// <summary>

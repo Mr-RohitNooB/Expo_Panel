@@ -1048,15 +1048,15 @@
                     <div class="event-detail-item">
                         <i class="fas fa-calendar-alt"></i>
                         <div>
-                            <div><strong>24-26 September 2026</strong></div>
+                            <div><strong>10-12 September 2026</strong></div>
                             <small>3 Days of Innovation</small>
                         </div>
                     </div>
                     <div class="event-detail-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
-                            <div><strong>Yashoobhumi</strong></div>
-                            <small>New Delhi, India</small>
+                            <div><strong>Bharat Mandapam</strong></div>
+                            <small>Pragati Maidan, New Delhi</small>
                         </div>
                     </div>
                     <div class="event-detail-item">
@@ -1109,8 +1109,8 @@
                                 <h3>Location</h3>
                             </div>
                             <p class="info-text-compact">
-                                Yashoobhumi Convention Centre<br>
-                                Dwarka, New Delhi, India
+                                Bharat Mandapam<br>
+                                Pragati Maidan, New Delhi
                             </p>
                         </div>
 
@@ -1147,13 +1147,13 @@
                             </div>
                             <div class="timing-list-compact">
                                 <div class="timing-item-compact">
-                                    <strong>Thu, Sept 24, 2026:</strong> <span>10:00 AM – 6:30 PM</span>
+                                    <strong>Thu, Sept 10, 2026:</strong> <span>10:00 AM – 6:30 PM</span>
                                 </div>
                                 <div class="timing-item-compact">
-                                    <strong>Fri, Sept 25 2026:</strong> <span>10:00 AM – 6:30 PM</span>
+                                    <strong>Fri, Sept 11, 2026:</strong> <span>10:00 AM – 6:30 PM</span>
                                 </div>
                                 <div class="timing-item-compact">
-                                    <strong>Sat, Sept 26 2026:</strong> <span>10:00 AM – 6:00 PM</span>
+                                    <strong>Sat, Sept 12, 2026:</strong> <span>10:00 AM – 6:00 PM</span>
                                 </div>
                             </div>
                         </div>
@@ -1199,7 +1199,7 @@
                     </div>
                 </div>
 
-                <a href="https://maps.app.goo.gl/pDFdFGjQq9trFb43A" target="_blank" class="cta-button" style="margin-top: 25px;">
+                <a href="https://maps.app.goo.gl/J1zPJVKvwD7HuRcDA" target="_blank" class="cta-button" style="margin-top: 25px;">
                     <i class="fas fa-map-marked-alt" style="margin-right: 8px;"></i>View on Google Maps
                 </a>
             </div>
@@ -1678,8 +1678,8 @@
 
         // --- COUNTDOWN TIMER LOGIC ---
 
-        // 1. Set the date we're counting down to (Sept 24, 2026 10:00:00)
-        const countDownDate = new Date("Sep 24, 2026 10:00:00").getTime();
+        // 1. Set the date we're counting down to (Sept 10, 2026 10:00:00)
+        const countDownDate = new Date("Sep 10, 2026 10:00:00").getTime();
 
         const updateTimer = setInterval(function () {
             // Get today's date and time

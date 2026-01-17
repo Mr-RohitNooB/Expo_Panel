@@ -172,9 +172,9 @@
             padding-left: 5px;
         }
 
-        .cards-grid {
+      .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(5, 1fr); 
             gap: 24px;
             margin-bottom: 40px;
         }
@@ -222,6 +222,15 @@
 
                 .card.agenda-card .card-icon {
                     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                }
+
+            .card.exhibitor-card {
+                border-left-color: #ed8936;
+            }
+
+                .card.exhibitor-card .card-icon {
+                    /* Gradient background for the icon container */
+                    background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
                 }
 
         .card-header {
@@ -281,16 +290,22 @@
                 grid-template-columns: 1fr;
             }
         }
-        /* Add this below the .card.agenda-card styles */
 
+        .card.final-speaker-card {
+            border-left-color: #38b2ac;
+        }
 
+            .card.final-speaker-card .card-icon {
+                /* Darker Teal icon background to contrast with the light card background */
+                background: linear-gradient(135deg, #319795 0%, #285e61 100%);
+            }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="header">
             <div class="header-left">
-                <img src="/Images/Lubricant_India_Expo_Cropped.png" style="height: 50px; /* background: white; *//* padding: 5px; */border-radius: -10px; margin-right: 15px;" />
+                <img src="/Images/Expo logo3.png" style="height: 50px; /* background: white; *//* padding: 5px; */border-radius: -10px; margin-right: 15px;" />
                 <h1>Lubricant India Admin Team Panel</h1>
             </div>
             <div class="header-right">
@@ -319,7 +334,6 @@
 
             <h2 class="section-title">Your Workspace</h2>
             <div class="cards-grid">
-
                 <a href="ManageAdvisors.aspx" class="card advisor-card">
                     <div class="card-header">
                         <div class="card-icon">
@@ -370,6 +384,18 @@
                         <p>Approve registrations, assign booths, and manage profiles.</p>
                     </div>
                 </a>
+                <a href="ViewFinalSpeaker.aspx" class="card final-speaker-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <i class="fas fa-arrow-right" style="color: #4a5568;"></i>
+                </div>
+                <div class="card-body">
+                    <h3>View Final Speaker</h3>
+                    <p>View final speaker selections and advisor ratings.</p>
+                </div>
+            </a>
 
             </div>
         </div>

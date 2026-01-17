@@ -468,7 +468,7 @@ namespace Expo_Panel.SuperAdmin
                     sb.AppendFormat("      <input type='hidden' id='hdnRating_{0}' value='{1}' />", speakerId, currentRating);
                     sb.Append("    </div>");
                     sb.Append("    <div class='form-group'>");
-                    sb.AppendFormat("      <label for='txtComments_{0}'>Comments (Optional)</label>", speakerId);
+                    sb.AppendFormat("      <label for='txtComments_{0}'>Comments</label>", speakerId);
                     sb.AppendFormat("      <textarea id='txtComments_{0}' class='form-control' rows='3' placeholder='Add your comments...'>{1}</textarea>",
                                       speakerId, HttpUtility.HtmlEncode(currentComments));
                     sb.Append("    </div>");
@@ -482,7 +482,7 @@ namespace Expo_Panel.SuperAdmin
                 sb.Append("<div class='save-ratings-section'>");
                 sb.AppendFormat("<div id='validationMsg_{0}' class='alert alert-danger' style='display:none; width: 100%;'></div>", agendaId);
                 sb.AppendFormat("<button type='button' class='btn btn-secondary' onclick='collapseAgenda({0})'><i class='fas fa-times'></i> Cancel</button>", agendaId);
-                sb.AppendFormat("<button type='button' class='btn btn-success' onclick='return saveAgendaRatings({0});'><i class='fas fa-save'></i> Save All Ratings</button>", agendaId);
+                sb.AppendFormat("<button type='button' class='btn btn-success' onclick='return saveAgendaRatings({0});'><i class='fas fa-save'></i> Submit</button>", agendaId);
                 sb.Append("</div>");
 
                 pnlSpeakers.Controls.Add(new Literal { Text = sb.ToString() });

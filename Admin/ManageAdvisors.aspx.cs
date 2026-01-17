@@ -13,7 +13,7 @@ using System.Web.UI.WebControls;
 
 namespace Expo_Panel.Admin
 {
-    public partial class ManageAdvisors : System.Web.UI.Page
+    public partial class ManageAdvisorsTeam : System.Web.UI.Page
     {
         // Re-used from your other files
         private string ConnectionString
@@ -36,20 +36,19 @@ namespace Expo_Panel.Admin
             // Standard session check from your ManageAgenda.aspx.cs
             if (Session["IsAuthenticated"] == null || !(bool)Session["IsAuthenticated"])
             {
-                Response.Redirect("Default.aspx", false);
+                Response.Redirect("~/Admin/Default.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
 
-            string role = Session["Role"] != null ? Session["Role"].ToString() : "Admin";
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "";
 
-            if (role != "SuperAdmin")
+            // If the user is NOT "Admin" (e.g., they are "SuperAdmin"), kick them out.
+            if (role != "Admin")
             {
-                // STOP! They are not allowed.
-                // Redirect them back to the dashboard immediately.
-                Response.Redirect("~/SuperAdmin/Dashboard.aspx", false);
+                Response.Redirect("~/Admin/Default.aspx", false); // Send back to Login
                 Context.ApplicationInstance.CompleteRequest();
-                return; // Stop processing this page
+                return;
             }
 
             if (!IsPostBack)
@@ -87,7 +86,7 @@ namespace Expo_Panel.Admin
         {
             Session.Clear();
             Session.Abandon();
-            Response.Redirect("Default.aspx", false);
+            Response.Redirect("~/Admin/Default.aspx", false);
             Context.ApplicationInstance.CompleteRequest();
         }
 

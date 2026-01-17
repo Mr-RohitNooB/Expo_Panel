@@ -748,8 +748,8 @@
 
                 <div class="status-filters">
                     <asp:Button ID="btnPending" runat="server" Text="Pending (0)" CssClass="btn-filter active" OnClick="btnStatusFilter_Click" CommandArgument="Pending" />
-                    <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" Visible="false" />
-                    <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected"  Visible="false"/>
+                    <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved"  />
+                    <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected"  />
                     <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="Pending" />
                 </div>
 
@@ -808,10 +808,10 @@
 
                                     <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
 
-                                    <asp:TemplateField HeaderText="Company">
+                                    <asp:TemplateField HeaderText="Name">
                                         <ItemTemplate>
-                                            <span class="truncate-cell" title='<%# Eval("Company") %>'>
-                                                <%# Eval("Company") %>
+                                            <span class="truncate-cell" title='<%# Eval("Name") %>'>
+                                                <%# Eval("Name") %>
                                             </span>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -1479,7 +1479,7 @@
 
                     <div class="form-group">
                         <label for="<%=ddlRegistrationType.ClientID%>"></label>
-                        <asp:DropDownList ID="ddlRegistrationType" runat="server"  Visible="false" >
+                        <asp:DropDownList ID="ddlRegistrationType" runat="server" Visible="false">
                             <asp:ListItem Text="Admin" Value="Admin" Selected="True"></asp:ListItem>
                             <asp:ListItem Text="Online" Value="Online"></asp:ListItem>
                         </asp:DropDownList>

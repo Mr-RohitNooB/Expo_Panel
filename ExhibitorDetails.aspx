@@ -347,6 +347,101 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
         }
+
+        .bookmark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .bookmark-modal {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .bookmark-icon-box {
+            width: 70px;
+            height: 70px;
+            background: rgba(217, 74, 43, 0.1);
+            color: #D94A2B;
+            font-size: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .bookmark-modal h3 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .bookmark-modal p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .bookmark-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #64748b;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-login-theme {
+            background: linear-gradient(135deg, #D94A2B 0%, #FF6B4A 100%);
+            color: white;
+            text-decoration: none;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(217, 74, 43, 0.3);
+        }
+
+            .btn-login-theme:hover {
+                color: #fff;
+                transform: translateY(-2px);
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -408,7 +503,9 @@
                     </div>
                     <div class="col-md-3 d-flex flex-column gap-2 align-items-center align-items-md-end mt-4 mt-md-0">
 
-                        <button type="button" class="btn btn-outline-light" style="min-width: 170px; padding: 8px 20px;">
+                        <button type="button" class="btn btn-outline-light"
+                            style="min-width: 170px; padding: 8px 20px;"
+                            onclick="showBookmarkPopup()">
                             <i class="far fa-bookmark me-1"></i>Bookmark
                         </button>
 
@@ -534,7 +631,19 @@
         </footer>
 
     </form>
-
+    <div id="bookmarkPopup" class="bookmark-overlay" style="display: none;">
+        <div class="bookmark-modal">
+            <div class="bookmark-icon-box">
+                <i class="fas fa-bookmark"></i>
+            </div>
+            <h3>Shortlist Exhibitors</h3>
+            <p>Please login to your <b>Visitor Dashboard</b> to bookmark exhibitors and manage your shortlist.</p>
+            <div class="bookmark-actions">
+                <button type="button" class="btn-cancel" onclick="closeBookmarkPopup()">Cancel</button>
+                <a href="User/VisitorLogin.aspx" class="btn-login-theme">Login to Dashboard</a>
+            </div>
+        </div>
+    </div>
     <script>
         // Navbar Scroll Effect
         window.addEventListener('scroll', function () {
@@ -584,6 +693,19 @@
                 navMenu.classList.remove('active');
             }
         });
+
+        function showBookmarkPopup() {
+            document.getElementById('bookmarkPopup').style.display = 'flex';
+        }
+        function closeBookmarkPopup() {
+            document.getElementById('bookmarkPopup').style.display = 'none';
+        }
+        // Close on outside click
+        window.onclick = function (e) {
+            if (e.target == document.getElementById('bookmarkPopup')) {
+                closeBookmarkPopup();
+            }
+        }
     </script>
 </body>
 </html>

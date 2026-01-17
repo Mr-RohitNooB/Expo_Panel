@@ -315,6 +315,13 @@
                 gap: 15px;
             }
         }
+
+        .input-locked {
+            background-color: #e2e8f0 !important; /* Grey Background */
+            color: #64748b !important; /* Muted Text Color */
+            cursor: not-allowed !important; /* The "Warning/Stop" Cursor */
+            border-color: #cbd5e1 !important; /* Darker border to show it's different */
+        }
     </style>
 </head>
 <body>
@@ -332,20 +339,36 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="<%=txtBoothNo.ClientID%>">Booth No <span class="required">*</span></label>
-                    <asp:TextBox ID="txtBoothNo" runat="server" placeholder="Enter booth number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvBoothNo" runat="server" ControlToValidate="txtBoothNo"
-                        ErrorMessage="Booth number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
+                    <label for="<%=txtBoothNo.ClientID%>">Booth No</label>
+
+                    <asp:TextBox ID="txtBoothNo" runat="server"
+                        ReadOnly="true"
+                        CssClass="input-locked"
+                        ToolTip="Assigned by Organiser"
+                        placeholder="Assigned by Organiser"></asp:TextBox>
+
                 </div>
 
                 <div class="form-group">
-                    <label for="<%=txtHallNo.ClientID%>">Hall No <span class="required">*</span></label>
-                    <asp:TextBox ID="txtHallNo" runat="server" placeholder="Enter hall number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvHallNo" runat="server" ControlToValidate="txtHallNo"
-                        ErrorMessage="Hall number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="ProfileValidation"></asp:RequiredFieldValidator>
+                    <label for="<%=txtHallNo.ClientID%>">Hall No</label>
+
+                    <asp:TextBox ID="txtHallNo" runat="server"
+                        ReadOnly="true"
+                        CssClass="input-locked"
+                        ToolTip="Assigned by Organiser"
+                        placeholder="Assigned by Organiser"></asp:TextBox>
+
                 </div>
+            </div>
 
+            <div class="form-group">
+                <label>Size (Sqm)</label>
 
+                <asp:TextBox ID="txtAreaInSqm" runat="server"
+                    ReadOnly="true"
+                    CssClass="input-locked"
+                    ToolTip="Assigned by Organiser"
+                    placeholder="Allocated Area"></asp:TextBox>
             </div>
 
             <div class="form-group">
@@ -752,7 +775,7 @@
 
             <!-- Form Footer -->
             <div class="form-footer">
-                <a href="Dashboard.aspx" class="back-link">
+                <a href="ExhibitorDashboard.aspx" class="back-link">
                     <i class="fas fa-arrow-left"></i>Back to Dashboard
                 </a>
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit Profile"
@@ -766,6 +789,8 @@
     <script>
         // Show filename after selection
         document.addEventListener('DOMContentLoaded', function () {
+
+            // 1. File Upload Logic (Kept exactly as you had it)
             const fileInputs = document.querySelectorAll('input[type="file"]');
             fileInputs.forEach(input => {
                 input.addEventListener('change', function () {
@@ -779,21 +804,46 @@
                 });
             });
 
-            // Enable/disable Power Supply Kwh input based on checkbox
-            const chkPowerSupply = document.getElementById('<%=chkPowerSupply.ClientID%>');
-            const txtPowerSupplyKwh = document.getElementById('<%=txtPowerSupplyKwh.ClientID%>');
+            // 2. HELPER FUNCTION: Handles the "Grey Out" logic for any checkbox/textbox pair
+            function toggleState(chkId, txtId) {
+                const chk = document.getElementById(chkId);
+                const txt = document.getElementById(txtId);
 
-            if (chkPowerSupply && txtPowerSupplyKwh) {
-                chkPowerSupply.addEventListener('change', function () {
-                    txtPowerSupplyKwh.disabled = !this.checked;
-                    if (!this.checked) {
-                        txtPowerSupplyKwh.value = '';
-                    }
-                });
+                if (chk && txt) {
+                    // Logic to enable/disable
+                    const update = () => {
+                        txt.disabled = !chk.checked; // Grey out if unchecked
+                        if (!chk.checked) {
+                            txt.value = ''; // Clear text if unchecked
+                        }
+                    };
 
-                // Initialize on page load
-                txtPowerSupplyKwh.disabled = !chkPowerSupply.checked;
+                    // Run on click
+                    chk.addEventListener('change', update);
+                    // Run immediately on load (to handle saved data)
+                    update();
+                }
             }
+
+            // 3. Apply the logic to ALL your checkboxes
+            // Power Supply (Existing)
+            toggleState('<%=chkPowerSupply.ClientID%>', '<%=txtPowerSupplyKwh.ClientID%>');
+
+            // Nature of Business "Other" [cite: 87]
+            toggleState('<%=chkNatureOther.ClientID%>', '<%=txtNatureOther.ClientID%>');
+
+            // Company Category "Other" [cite: 100]
+            toggleState('<%=chkProductOther.ClientID%>', '<%=txtProductOther.ClientID%>');
+
+        // Markets Catered "Other" [cite: 112]
+        toggleState('<%=chkMarketOther.ClientID%>', '<%=txtMarketOther.ClientID%>');
+
+        // Additional Requirements "Other" [cite: 125]
+        toggleState('<%=chkReqOther.ClientID%>', '<%=txtReqOther.ClientID%>');
+
+        // Objectives "Other" [cite: 135]
+            toggleState('<%=chkObjectiveOther.ClientID%>', '<%=txtObjectiveOther.ClientID%>');
+
         });
     </script>
 </body>

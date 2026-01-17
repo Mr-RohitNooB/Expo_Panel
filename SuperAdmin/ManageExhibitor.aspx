@@ -808,10 +808,10 @@
 
                                     <asp:BoundField DataField="Mobile" HeaderText="Mobile" />
 
-                                    <asp:TemplateField HeaderText="Company">
+                                    <asp:TemplateField HeaderText="Name">
                                         <ItemTemplate>
-                                            <span class="truncate-cell" title='<%# Eval("Company") %>'>
-                                                <%# Eval("Company") %>
+                                            <span class="truncate-cell" title='<%# Eval("Name") %>'>
+                                                <%# Eval("Name") %>
                                             </span>
                                         </ItemTemplate>
                                     </asp:TemplateField>

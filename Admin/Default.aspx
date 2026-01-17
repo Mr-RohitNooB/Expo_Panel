@@ -117,15 +117,16 @@
         }
 
         .header-brand img {
-            max-width: 313px;
-            width: 100%;
-            height: auto;
-            display: block;
-            margin: 15px auto;
-            object-fit: contain;
-            margin-top: -50px;
-            margin-bottom: -41px;
-        }
+    max-width: 301px;
+    width: 104%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    object-fit: contain;
+    margin-top: -14px;
+    margin-bottom: 0px;
+}
+
 
         .login-body { padding: 45px 30px; }
         .form-group { margin-bottom: 24px; }
@@ -256,8 +257,8 @@
                 <div class="login-header">
                     <div class="header-brand">
                         <h1>Team Admin Login</h1>
-                        <img src="/Images/Expo_logo_Full.png" alt="Logo" />
-                        <p class="tagline">Smart Lubricants Summit 2026</p>
+                        <img src="/Images/Expo logo3.png" alt="Logo" />
+                        
                     </div>
                 </div>
 
@@ -306,7 +307,7 @@
                 </div>
 
                 <div class="login-footer">
-                    <p>&copy; 2025 Lubricant India Expo. All rights reserved.</p>
+                   <p>&copy; 2025 Lubricant India Expo and Summit. All rights reserved.</p>
                     <p class="footer-text">Restricted Team Access</p>
                 </div>
             </div>

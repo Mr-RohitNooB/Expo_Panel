@@ -1,5 +1,4 @@
-﻿﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAdvisors.aspx.cs" Inherits="Expo_Panel.Admin.ManageAdvisors" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAdvisors.aspx.cs" Inherits="Expo_Panel.Admin.ManageAdvisorsTeam" %>
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
@@ -583,7 +582,7 @@
                         Session Status:
                         <asp:Label ID="lblSessionStatus" runat="server" Text=""></asp:Label>
                     </span>
-                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn btn-info">
+                    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" CssClass="btn btn-info">
                         <i class="fas fa-arrow-left"></i> Back
                     </asp:HyperLink>
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
@@ -596,8 +595,8 @@
 
                         <div class="status-filters">
                             <asp:Button ID="btnPending" runat="server" Text="Pending (0)" CssClass="btn-filter active" OnClick="btnStatusFilter_Click" CommandArgument="Pending" />
-                            <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" Visible="false"/>
-                            <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" Visible="false"/>
+                            <asp:Button ID="btnApproved" runat="server" Text="Approved (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Approved" />
+                            <asp:Button ID="btnRejected" runat="server" Text="Rejected (0)" CssClass="btn-filter" OnClick="btnStatusFilter_Click" CommandArgument="Rejected" />
                             <asp:HiddenField ID="hdnCurrentFilter" runat="server" Value="Pending" />
                         </div>
 

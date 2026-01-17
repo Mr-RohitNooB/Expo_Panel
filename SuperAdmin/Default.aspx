@@ -161,15 +161,16 @@
 
         /* Logo Responsive Styles - CRITICAL FIX */
         .header-brand img {
-            max-width: 313px;
-            width: 100%;
+            max-width: 301px;
+            width: 104%;
             height: auto;
             display: block;
             margin: 15px auto;
             object-fit: contain;
-            margin-top: -50px;
-            margin-bottom: -41px;
+            margin-top: -14px;
+            margin-bottom: 0px;
         }
+
         /* Body Styles */
         .login-body {
             padding: 45px 30px;
@@ -583,8 +584,8 @@
                 <div class="login-header">
                     <div class="header-brand">
                         <h1>Super Admin Panel</h1>
-                        <img src="../Images/Expo_logo_Full.png" />
-                        <p class="tagline">Smart Lubricants Summit 2026</p>
+                        <img src="../Images/Expo logo3.png" />
+                        
                     </div>
                 </div>
 
@@ -592,7 +593,7 @@
                 <div class="login-body">
                     <!-- Error Alert -->
                     <asp:Panel ID="pnlError" runat="server" CssClass="alert alert-error" Visible="false">
-                      <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
                         <asp:Label ID="lblError" runat="server"></asp:Label>
                     </asp:Panel>
 
@@ -639,7 +640,7 @@
 
                 <!-- Footer Section -->
                 <div class="login-footer">
-                    <p>&copy; 2025 Lubricant India Expo and Smart Lubricants Summit 2026. All rights reserved.</p>
+                    <p>&copy; 2025 Lubricant India Expo and Summit. All rights reserved.</p>
                     <p class="footer-text">Secure Admin Access Only</p>
                 </div>
             </div>

@@ -6,7 +6,7 @@
     <%-- ... HEAD content (styles, fonts, etc.) is UNCHANGED ... --%>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Advisory Rating Dashboard - Expo Panel</title>
+    <title>Advisory Member Dashboard - Expo Panel</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -777,7 +777,76 @@
             align-items: center;
             flex-shrink: 0; /* Prevents shrinking */
         }
-        /* ... Your other styles ... */
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 992px) {
+            /* Stack the Title and the Action Buttons vertically */
+            .header {
+                flex-direction: column;
+                align-items: stretch !important; /* Forces full width */
+                gap: 15px;
+                text-align: center;
+                padding: 20px; /* Reduce padding slightly */
+            }
+
+            /* Allow buttons to wrap to new lines if needed */
+            .header-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+                /* Make buttons bigger and touch-friendly on mobile */
+                .header-actions .btn {
+                    flex: 1 1 auto; /* Grow to fill space */
+                    min-width: 200px; /* Don't get too small */
+                    justify-content: center;
+                    margin-bottom: 5px;
+                }
+
+                /* Center the welcome text */
+                .header-actions span {
+                    width: 100%;
+                    display: block;
+                    margin: 5px 0;
+                }
+        }
+
+        /* --- Mobile Fix for Status Filters --- */
+        @media (max-width: 768px) {
+            .status-filters {
+                /* Change from row to column layout so buttons stack */
+                flex-direction: column;
+                gap: 10px;
+            }
+
+                /* Make the buttons fill the width of the screen */
+                .status-filters .btn-filter {
+                    width: 100%;
+                    display: block; /* Ensures they behave like block elements */
+                    text-align: center; /* Centers the text inside the button */
+                    padding: 12px; /* Slightly larger touch target */
+                }
+
+            .agenda-data-row > span[data-label="Title"] {
+                flex-direction: column; /* Stack the label on top of the text */
+                align-items: flex-start; /* Align everything to the left side */
+                text-align: left; /* Ensure the text is left-aligned */
+                gap: 5px; /* Add a small gap between "Title" and the text */
+                margin-bottom: 5px; /* Add a little breathing room below the title */
+            }
+
+            /* Optional: Make the actual title text slightly larger/bolder */
+            .agenda-data-row > span[data-label="Title"] {
+                font-weight: 600;
+                line-height: 1.4;
+            }
+        }
     </style>
 </head>
 <body>
@@ -787,10 +856,21 @@
         <div class="container">
             <!-- ... Header is UNCHANGED ... -->
             <div class="header">
-                <h1><i class="fas fa-star"></i>Advisory Rating Dashboard</h1>
-                <div style="display: flex; align-items: center; gap: 10px;">
+                <h1><i class="fas fa-star"></i>Advisory Member Dashboard</h1>
+
+                <div class="header-actions">
+
+                    <a href="RegisterExhibitor.aspx" class="btn btn-info" style="text-decoration: none;">
+                        <i class="fas fa-store"></i>Register as Exhibitor
+                    </a>
+
+                    <a href="RegisterSpeaker.aspx" class="btn btn-success" style="text-decoration: none;">
+                        <i class="fas fa-microphone"></i>Register as Speaker
+                    </a>
+
                     <span>Welcome,
                         <asp:Label ID="lblAdvisorName" runat="server" Text=""></asp:Label></span>
+
                     <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-danger" OnClick="btnLogout_Click" />
                 </div>
             </div>

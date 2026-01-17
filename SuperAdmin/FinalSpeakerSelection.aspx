@@ -40,37 +40,42 @@
         .admin-header {
             background: linear-gradient(106deg, #d3fffa 45%, #d3fffa 100%, transparent);
             backdrop-filter: blur(10px);
-            padding: 20px 30px;
+            padding: 15px 30px; /* Adjusted padding for better height */
             color: #2d3748;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; /* Key for alignment */
+            justify-content: space-between; /* Pushes Logo left, Info right */
+            align-items: center; /* Vertically centers everything */
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-            .admin-header h2 {
-                margin: 0;
-                font-weight: 700;
-                background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                font-size: 24px;
-            }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
 
-            .admin-header .admin-info {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
+        .admin-header h2 {
+            margin: 0;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 24px;
+        }
 
-                .admin-header .admin-info span {
-                    color: #4a5568;
-                    font-weight: 500;
-                }
+        .admin-header .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+            .admin-header .admin-info span {
+                color: #4a5568;
+                font-weight: 500;
+            }
 
         .btn-logout, .btn-info {
             background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
@@ -1259,6 +1264,31 @@
             transform: scale(1.1) rotate(6deg);
             box-shadow: 0 10px 20px rgba(245, 101, 101, 0.3);
         }
+
+        /* Clean Logo Styling */
+        .header-logo {
+            height: 55px; /* Fixed height from your original code */
+            width: auto; /* Maintain aspect ratio */
+            display: block;
+            /* REMOVED: all negative margins */
+        }
+
+        /* Admin Info (Right side) */
+        .admin-header .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-label {
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 16px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1267,16 +1297,18 @@
 
         <!-- Header -->
         <div class="admin-header">
-            <h2>
-                <img src="../Images/Expo_logo_Full.png" style="vertical-align: middle; border-style: none; height: 122px; margin: -44px 0px -44px -23px;">Final Speaker Selection Dashboard</h2>
+            <div class="header-left">
+                <img src="../Images/Expo_logo_Full.png" alt="Expo Logo" class="header-logo" />
+            </div>
+
             <div class="admin-info">
-                <span>
+                <span class="user-label">
                     <i class="fas fa-user-shield"></i>
                     <asp:Label ID="lblAdminName" runat="server" />
                 </span>
 
                 <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="~/SuperAdmin/Dashboard.aspx" CssClass="btn-info">
-        <i class="fas fa-arrow-left"></i> Back
+            <i class="fas fa-arrow-left"></i> Back
                 </asp:HyperLink>
 
                 <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn-logout"

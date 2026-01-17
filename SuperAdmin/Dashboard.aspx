@@ -692,6 +692,16 @@
             }
 
         /* Add this to your <style> section */
+        .card.visitor-card {
+            border-left-color: #d97706; /* Golden Border */
+        }
+
+            .card.visitor-card .card-icon {
+                /* Golden Gradient Background for the Icon */
+                background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+                color: white; /* Ensures the icon itself is white */
+            }
+
         .card.admin-card {
             border-left-color: #ed8936 ; /* Purple Border */
         }
@@ -826,6 +836,19 @@
                     <div class="card-body">
                         <h3>Manage Exhibitors</h3>
                         <p>Handle exhibitor applications, booth assignments, and company profile management.</p>
+                    </div>
+                </asp:HyperLink>
+
+                <asp:HyperLink ID="lnkVisitor" runat="server" NavigateUrl="~/SuperAdmin/ManageVisitor.aspx" CssClass="card visitor-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <i class="fas fa-arrow-right card-arrow"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3>Manage Delegates, Visitor & Students</h3>
+                        <p>Manage registrations and details for all delegates, visitors, and students attending the expo.</p>
                     </div>
                 </asp:HyperLink>
 

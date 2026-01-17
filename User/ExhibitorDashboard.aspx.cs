@@ -60,7 +60,7 @@ namespace Expo_Panel
 
                             litUserName.Text = name;
                             litUserEmail.Text = rdr["Email"].ToString();
-                            litWelcomeName.Text = name.Split(' ')[0]; // First name
+                            litWelcomeName.Text = company; // First name
                             litUserInitials.Text = GetInitials(name);
 
                             // 2. Profile Tab

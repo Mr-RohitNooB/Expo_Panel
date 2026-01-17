@@ -115,16 +115,17 @@
         }
 
 
-        .header-brand img {
-            max-width: 301px;
-            width: 104%;
-            height: auto;
-            display: block;
-            margin: 15px auto;
-            object-fit: contain;
-            margin-top: -44px;
-            margin-bottom: -25px;
-        }
+       .header-brand img {
+    max-width: 301px;
+    width: 104%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    object-fit: contain;
+    margin-top: -14px;
+    margin-bottom: 0px;
+}
+
 
         .header-brand p {
             font-size: 15px;
@@ -553,57 +554,120 @@
                     <div class="header-brand">
                         <h1>Advisory Login Panel</h1>
                         <img src="../Images/Expo_logo_white.png" />
-                        <p class="tagline">Smart Lubricants Summit 2026</p>
+                        
                     </div>
                 </div>
 
                 <div class="login-body">
-                    <asp:Panel ID="pnlError" runat="server" CssClass="alert alert-error" Visible="false">
-                        <div class="alert-icon">⚠</div>
-                        <asp:Label ID="lblError" runat="server"></asp:Label>
+                    <asp:Literal ID="litMessage" runat="server" />
+
+                    <asp:Panel ID="pnlLogin" runat="server">
+                        <div class="form-group">
+                            <label for="txtUsername" class="form-label">
+                                <span class="label-icon"><i class="fas fa-user"></i></span>Email
+                            </label>
+                            <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control"
+                                placeholder="Enter your email" MaxLength="100" TextMode="Email"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvUsername" runat="server"
+                                ControlToValidate="txtUsername"
+                                ErrorMessage="Email is required"
+                                CssClass="error-message"
+                                Display="Dynamic"
+                                ValidationGroup="LoginGroup"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtPassword" class="form-label">
+                                <span class="label-icon"><i class="fas fa-lock"></i></span>Password
+                            </label>
+                            <div class="password-container">
+                                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
+                                    CssClass="form-control" placeholder="Enter your password"
+                                    MaxLength="255"></asp:TextBox>
+                                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
+                                    <i class="fas fa-eye toggle-icon"></i>
+                                </button>
+                            </div>
+                            <asp:RequiredFieldValidator ID="rfvPassword" runat="server"
+                                ControlToValidate="txtPassword"
+                                ErrorMessage="Password is required"
+                                CssClass="error-message"
+                                Display="Dynamic"
+                                ValidationGroup="LoginGroup"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div style="text-align: right; margin-bottom: 15px;">
+                            <asp:LinkButton ID="lnkForgot" runat="server" OnClick="lnkForgot_Click" CausesValidation="false"
+                                Style="color: #667eea; font-size: 13px; font-weight: 600; text-decoration: none;">
+                Forgot Password?
+                            </asp:LinkButton>
+                        </div>
+
+                        <asp:Button ID="btnLogin" runat="server" Text="Sign In"
+                            CssClass="btn-login" OnClick="btnLogin_Click" ValidationGroup="LoginGroup" />
                     </asp:Panel>
 
-                    <div class="form-group">
-                        <label for="txtUsername" class="form-label">
-                            <span class="label-icon"><i class="fas fa-user"></i></span>
-                            Email
-                        </label>
-                        <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control"
-                            placeholder="Enter your email" MaxLength="100" TextMode="Email"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvUsername" runat="server"
-                            ControlToValidate="txtUsername"
-                            ErrorMessage="Email is required"
-                            CssClass="error-message"
-                            Display="Dynamic"></asp:RequiredFieldValidator>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txtPassword" class="form-label">
-                            <span class="label-icon"><i class="fas fa-lock"></i></span>
-                            Password
-                        </label>
-                        <div class="password-container">
-                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
-                                CssClass="form-control" placeholder="Enter your password"
-                                MaxLength="255"></asp:TextBox>
-                            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
-                                <i class="fas fa-eye toggle-icon"></i>
-                            </button>
+                    <asp:Panel ID="pnlVerify" runat="server" Visible="false">
+                        <div class="form-group">
+                            <label class="form-label">Registered Email</label>
+                            <asp:TextBox ID="txtResetEmail" runat="server" CssClass="form-control" placeholder="advisor@example.com"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvResetEmail" runat="server" ControlToValidate="txtResetEmail"
+                                ErrorMessage="Email is required" CssClass="error-message" Display="Dynamic" ValidationGroup="VerifyGroup"></asp:RequiredFieldValidator>
                         </div>
-                        <asp:RequiredFieldValidator ID="rfvPassword" runat="server"
-                            ControlToValidate="txtPassword"
-                            ErrorMessage="Password is required"
-                            CssClass="error-message"
-                            Display="Dynamic"></asp:RequiredFieldValidator>
-                    </div>
+                        <asp:Button ID="btnVerify" runat="server" Text="Verify Email" CssClass="btn-login" OnClick="btnVerify_Click" ValidationGroup="VerifyGroup" />
+                        <div style="text-align: center; margin-top: 15px;">
+                            <asp:LinkButton ID="lnkBackToLogin" runat="server" OnClick="lnkBackToLogin_Click" CausesValidation="false"
+                                Style="color: #718096; font-size: 13px; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Back to Login
+                            </asp:LinkButton>
+                        </div>
+                    </asp:Panel>
 
-                    <asp:Button ID="btnLogin" runat="server" Text="Sign In"
-                        CssClass="btn-login" OnClick="btnLogin_Click" />
+                    <asp:Panel ID="pnlOTP" runat="server" Visible="false">
+                        <div class="form-group">
+                            <label class="form-label">Enter OTP Code</label>
+                            <asp:TextBox ID="txtOTP" runat="server" CssClass="form-control" placeholder="123456" MaxLength="6"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvOTP" runat="server" ControlToValidate="txtOTP"
+                                ErrorMessage="OTP is required" CssClass="error-message" Display="Dynamic" ValidationGroup="OTPGroup">
+                            </asp:RequiredFieldValidator>
+                        </div>
+                        <asp:Button ID="btnSubmitOTP" runat="server" Text="Verify OTP" CssClass="btn-login"
+                            OnClick="btnSubmitOTP_Click" ValidationGroup="OTPGroup" />
+                    </asp:Panel>
+
+                    <asp:Panel ID="pnlReset" runat="server" Visible="false">
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <div class="password-container">
+                                <asp:TextBox ID="txtNewPass" runat="server" CssClass="form-control" TextMode="Password" placeholder="Enter new password"></asp:TextBox>
+                                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
+                                    <i class="fas fa-eye toggle-icon"></i>
+                                </button>
+                            </div>
+                            <asp:RequiredFieldValidator ID="rfvNewPass" runat="server" ControlToValidate="txtNewPass"
+                                ErrorMessage="Required" CssClass="error-message" Display="Dynamic" ValidationGroup="ResetGroup"></asp:RequiredFieldValidator>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <div class="password-container">
+                                <asp:TextBox ID="txtConfirmPass" runat="server" CssClass="form-control" TextMode="Password" placeholder="Confirm password"></asp:TextBox>
+                                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)">
+                                    <i class="fas fa-eye toggle-icon"></i>
+                                </button>
+                            </div>
+                            <asp:CompareValidator ID="cvPass" runat="server" ControlToValidate="txtConfirmPass"
+                                ControlToCompare="txtNewPass" Operator="Equal" Type="String"
+                                ErrorMessage="Passwords do not match" CssClass="error-message" Display="Dynamic" ValidationGroup="ResetGroup">
+                            </asp:CompareValidator>
+                        </div>
+                        <asp:Button ID="btnUpdatePass" runat="server" Text="Update Password" CssClass="btn-login" OnClick="btnUpdatePass_Click" ValidationGroup="ResetGroup" />
+                    </asp:Panel>
                 </div>
 
                 <div class="login-footer">
                     <p class="footer-text">Secure Advisory Access Only</p>
-                    <p>&copy; 2025 Lubricant India Expo. All rights reserved.</p>
+                   <p>&copy; 2025 Lubricant India Expo and Summit. All rights reserved.</p>
                 </div>
             </div>
 
