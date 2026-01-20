@@ -6,6 +6,9 @@ using System.IO;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 
 namespace Expo_Panel.Admin
 {
@@ -266,6 +269,107 @@ namespace Expo_Panel.Admin
             }
         }
 
+        private bool SendApprovalEmail(string toEmail, string companyName, string password, string hallNo, string boothNo, string area)
+        {
+            try
+            {
+                // 1. Fetch Config Data
+                string smtpHost = ConfigurationManager.AppSettings["SMTP_Host"];
+                int smtpPort = int.Parse(ConfigurationManager.AppSettings["SMTP_Port"]);
+                string smtpUser = ConfigurationManager.AppSettings["SMTP_User"];
+                string smtpPass = ConfigurationManager.AppSettings["SMTP_Pass"];
+
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+
+                string brandColor = "#ed8936";
+                string imagePath = Server.MapPath("~/Images/Expo_logo_Full.png");
+
+                // --- NEW: Generate Absolute Login URL for the button ---
+                string loginUrl = Request.Url.GetLeftPart(UriPartial.Authority) + ResolveUrl("~/User/ExhibitorLogin.aspx");
+
+                // 2. Construct HTML Body
+                string emailBody = $@"
+<div style='font-family: Segoe UI, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; margin: 0 auto;'>
+    <div style='background-color: {brandColor}; padding: 30px; text-align: center;'>
+        <h2 style='color: #ffffff; margin: 0; letter-spacing: 1px;'>REGISTRATION APPROVED</h2>
+    </div>
+
+    <div style='padding: 40px 30px; color: #4a5568; background-color: #ffffff;'>
+        <p style='font-size: 16px; margin-bottom: 20px;'>Dear <strong>{companyName}</strong>,</p>
+        <p style='font-size: 16px; line-height: 1.5;'>Congratulations! Your exhibitor registration for <strong>Lubricant India Expo 2026</strong> has been approved.</p>
+        
+        <div style='background-color: #f7fafc; border-left: 4px solid {brandColor}; padding: 15px; margin: 25px 0;'>
+            <p style='margin: 0 0 10px 0; font-weight: bold; color: #2d3748; text-transform: uppercase;'>Your Allocated Space</p>
+            <table style='width: 100%; border-collapse: collapse;'>
+                <tr>
+                    <td style='padding: 5px 0; width: 120px; color: #718096;'>Hall No:</td>
+                    <td style='padding: 5px 0; font-weight: 600; color: #2d3748;'>{hallNo}</td>
+                </tr>
+                <tr>
+                    <td style='padding: 5px 0; color: #718096;'>Size:</td>
+                    <td style='padding: 5px 0; font-weight: 600; color: #2d3748;'>{area} Sqm</td>
+                </tr>
+            </table>
+        </div>
+
+        <p style='font-size: 16px; line-height: 1.5;'>You can now log in to the Exhibitor Panel to update your profile.</p>
+
+        <div style='text-align: center; margin: 30px 0;'>
+            <a href='{loginUrl}' style='background-color: {brandColor}; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; font-size: 16px;'>Login to Exhibitor Panel</a>
+        </div>
+
+        <div style='background-color: #edf2f7; padding: 15px; border-radius: 8px; margin-top: 20px;'>
+            <p style='margin: 0 0 5px 0; font-size: 14px; color: #718096;'>Login Email:</p>
+            <p style='margin: 0 0 15px 0; font-weight: bold; color: #2d3748;'>{toEmail}</p>
+            
+            <p style='margin: 0 0 5px 0; font-size: 14px; color: #718096;'>Password:</p>
+            <p style='margin: 0; font-weight: bold; color: #2d3748; font-family: monospace; font-size: 16px;'>{password}</p>
+
+            <p style='margin: 15px 0 0 0; font-size: 13px; color: #e53e3e; font-style: italic;'>
+                Note: We recommend you to change the password after your first login.
+            </p>
+        </div>
+    </div>
+
+    <div style='background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
+            <img src='cid:ExpoLogo' alt='Lubricant India Expo' style='display: block; width: 240px; height: auto; margin: 0 auto;' />
+            <p style='font-size: 12px; color: #a0aec0; margin-top: 10px;'>&copy; 2026 Lubricant India Expo. All rights reserved.</p>
+    </div>
+</div>";
+
+                using (MailMessage EmailMsg = new MailMessage())
+                {
+                    EmailMsg.From = new MailAddress(smtpUser, "Lubricant India Expo 2026");
+                    EmailMsg.To.Add(new MailAddress(toEmail));
+                    EmailMsg.Subject = "Approved: Your Stand Details - Lubricant India Expo 2026";
+                    EmailMsg.Priority = MailPriority.High;
+
+                    using (AlternateView htmlView = AlternateView.CreateAlternateViewFromString(emailBody, null, MediaTypeNames.Text.Html))
+                    {
+                        if (File.Exists(imagePath))
+                        {
+                            LinkedResource logo = new LinkedResource(imagePath, "image/png");
+                            logo.ContentId = "ExpoLogo";
+                            htmlView.LinkedResources.Add(logo);
+                        }
+                        EmailMsg.AlternateViews.Add(htmlView);
+                        EmailMsg.IsBodyHtml = true;
+
+                        using (SmtpClient MailClient = new SmtpClient(smtpHost, smtpPort))
+                        {
+                            MailClient.Credentials = new NetworkCredential(smtpUser, smtpPass);
+                            MailClient.EnableSsl = true;
+                            MailClient.Send(EmailMsg);
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         private int GetExhibitorIdByEmail(string email)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
@@ -552,8 +656,7 @@ namespace Expo_Panel.Admin
 
         protected void btnSaveApproval_Click(object sender, EventArgs e)
         {
-            if (!Page.IsValid)
-                return;
+            if (!Page.IsValid) return;
 
             try
             {
@@ -566,9 +669,7 @@ namespace Expo_Panel.Admin
                 decimal? area = null;
 
                 if (!string.IsNullOrEmpty(txtApprovalArea.Text.Trim()))
-                {
                     area = Convert.ToDecimal(txtApprovalArea.Text.Trim());
-                }
 
                 if (approvalStatus == "Rejected" && string.IsNullOrEmpty(remarks))
                 {
@@ -577,19 +678,67 @@ namespace Expo_Panel.Admin
                 }
 
                 if (approvalStatus == "Approved" && string.IsNullOrEmpty(password))
-                {
-                    // ...generate a random one instead of showing an error.
                     password = GenerateRandomPassword();
-                }
 
+                // 1. Update Database
                 UpdateApprovalStatusWithArea(exhibitorId, approvalStatus, remarks, password, CurrentAdminID, area);
 
                 if (!string.IsNullOrEmpty(hallNo) || !string.IsNullOrEmpty(boothNo))
-                {
                     UpdateExhibitorLogistics(exhibitorId, hallNo, boothNo);
-                }
 
-                Session["FlashMessage"] = $"Exhibitor {approvalStatus.ToLower()} successfully!";
+                // 2. Send Email if Approved
+                if (approvalStatus == "Approved")
+                {
+                    string emailToSend = "";
+                    string companyToSend = ""; // Changed from nameToSend
+                    string passwordToSend = password;
+
+                    using (SqlConnection con = new SqlConnection(ConnectionString))
+                    {
+                        // CHANGED SQL: Select 'Company' instead of 'Name'
+                        string query = "SELECT Company, Email, Password FROM TBL.Exhibitor WHERE ExhibitorID = @ID";
+                        using (SqlCommand cmd = new SqlCommand(query, con))
+                        {
+                            cmd.Parameters.AddWithValue("@ID", exhibitorId);
+                            con.Open();
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    companyToSend = reader["Company"].ToString(); // Fetch Company
+                                    emailToSend = reader["Email"].ToString();
+
+                                    if (string.IsNullOrEmpty(txtPassword.Text.Trim()))
+                                    {
+                                        passwordToSend = reader["Password"].ToString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(emailToSend))
+                    {
+                        // Pass 'companyToSend' instead of name
+                        bool sent = SendApprovalEmail(
+                            emailToSend,
+                            companyToSend,
+                            passwordToSend,
+                            string.IsNullOrEmpty(hallNo) ? "Not Assigned" : hallNo,
+                            string.IsNullOrEmpty(boothNo) ? "Not Assigned" : boothNo,
+                            area.HasValue ? area.Value.ToString() : "0"
+                        );
+
+                        if (sent)
+                            Session["FlashMessage"] = $"Exhibitor approved and email sent to {emailToSend}!";
+                        else
+                            Session["FlashMessage"] = "Exhibitor approved, but email failed to send.";
+                    }
+                }
+                else
+                {
+                    Session["FlashMessage"] = $"Exhibitor {approvalStatus.ToLower()} successfully!";
+                }
 
                 Response.Redirect(Request.RawUrl, false);
                 Context.ApplicationInstance.CompleteRequest();
@@ -1681,7 +1830,8 @@ namespace Expo_Panel.Admin
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 con.Open();
-                // Check if profile exists
+
+                // 1. Check if a profile row already exists for this exhibitor
                 bool exists = false;
                 using (SqlCommand checkCmd = new SqlCommand("SELECT COUNT(1) FROM TBL.PostApprovalExhibitor WHERE ExhibitorID = @ID", con))
                 {
@@ -1691,7 +1841,8 @@ namespace Expo_Panel.Admin
 
                 if (exists)
                 {
-                    // Update existing
+                    // CASE A: Profile exists. Just update the Logistics (Hall/Booth).
+                    // We do NOT touch the user's profile data here.
                     using (SqlCommand cmd = new SqlCommand("UPDATE TBL.PostApprovalExhibitor SET HallNo = @Hall, BoothNo = @Booth, ModifiedDate = GETDATE() WHERE ExhibitorID = @ID", con))
                     {
                         cmd.Parameters.AddWithValue("@ID", exhibitorId);
@@ -1702,23 +1853,37 @@ namespace Expo_Panel.Admin
                 }
                 else
                 {
-                    // Create new partial profile
-                    // Note: We fill required fields with placeholders or defaults to avoid SQL errors if columns are NOT NULL
+                    // CASE B: Profile does NOT exist yet.
+                    // We must create a "Skeleton" record so we can save the Hall/Booth.
+                    // We provide default values (0, empty strings) to satisfy Database NOT NULL constraints.
+
                     string query = @"
-                        INSERT INTO TBL.PostApprovalExhibitor 
-                        (ExhibitorID, HallNo, BoothNo, CreatedDate, IS_ACTIVE, 
-                         CustomerSupportName, CustomerSupportContact, CustomerSupportEmail, 
-                         NatureOfBusiness, CompanyCategory, MarketsCateredTo, GeographicReach, ParticipationObjectives)
-                        VALUES 
-                        (@ID, @Hall, @Booth, GETDATE(), 1, 
-                         'Pending', 'Pending', 'Pending', 
-                         '', '', '', '', '')";
+                INSERT INTO TBL.PostApprovalExhibitor 
+                (
+                    ExhibitorID, HallNo, BoothNo, CreatedDate, IS_ACTIVE, 
+                    CustomerSupportName, CustomerSupportContact, CustomerSupportEmail, 
+                    NatureOfBusiness, CompanyCategory, MarketsCateredTo, GeographicReach, ParticipationObjectives,
+                    YearOfEstablishment, Website, 
+                    LinkedIn, Twitter, Facebook, YouTube, ExhibitorProfile
+                )
+                VALUES 
+                (
+                    @ID, @Hall, @Booth, GETDATE(), 1, 
+                    'Pending', 'Pending', 'Pending', 
+                    '', '', '', '', '',
+                    0, '', 
+                    '', '', '', '', ''
+                )";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@ID", exhibitorId);
                         cmd.Parameters.AddWithValue("@Hall", hallNo);
                         cmd.Parameters.AddWithValue("@Booth", boothNo);
+
+                        // Note: We don't need parameters for the empty strings/0 values hardcoded above
+                        // because they are just placeholders waiting for the user to update them.
+
                         cmd.ExecuteNonQuery();
                     }
                 }

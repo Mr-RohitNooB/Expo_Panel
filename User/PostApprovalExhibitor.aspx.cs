@@ -88,17 +88,19 @@ namespace Expo_Panel
                 {
                     string uploadFolder = Server.MapPath($"~/Uploads/Exhibitor_{ExhibitorID}/");
 
+                    // --- FIX: Create Directory FIRST, before saving any files ---
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    // Now it is safe to save the Logo
                     if (fuLogo.HasFile)
                     {
                         string logoFileName = "Logo_" + DateTime.Now.Ticks + Path.GetExtension(fuLogo.FileName);
                         string logoFullPath = Path.Combine(uploadFolder, logoFileName);
                         fuLogo.SaveAs(logoFullPath);
                         logoPath = $"~/Uploads/Exhibitor_{ExhibitorID}/{logoFileName}";
-                    }
-                    // Create directory if not exists
-                    if (!Directory.Exists(uploadFolder))
-                    {
-                        Directory.CreateDirectory(uploadFolder);
                     }
 
                     // Save Product Picture

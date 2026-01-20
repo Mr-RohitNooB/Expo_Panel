@@ -750,7 +750,7 @@
             <div class="bookmark-icon-box">
                 <i class="fas fa-bookmark"></i>
             </div>
-            <h3>Shortlist Exhibitors</h3>
+            <h3>Bookmark Exhibitors</h3>
             <p>Please login to your <b>Visitor Dashboard</b> to bookmark exhibitors .</p>
             <div class="bookmark-actions">
                 <button type="button" class="btn-cancel" onclick="closeBookmarkPopup()">Cancel</button>

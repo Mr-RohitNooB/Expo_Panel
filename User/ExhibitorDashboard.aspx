@@ -608,6 +608,32 @@
                 box-shadow: 0 6px 15px rgba(0,0,0,0.2);
                 color: #c05621; /* Darker orange on hover */
             }
+
+            /* PROGRESS BAR STYLES */
+    .progress-track {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white */
+        border-radius: 20px;
+        margin-top: 15px;
+        height: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .progress-fill {
+        height: 100%;
+        background-color: #fff; /* White fill to contrast against orange bg */
+        border-radius: 20px;
+        width: 0%; /* Dynamic */
+        transition: width 1s ease-in-out;
+    }
+
+    .progress-text {
+        font-size: 14px;
+        margin-top: 8px;
+        font-weight: 500;
+        color: white;
+    }
     </style>
 </head>
 <body>
@@ -639,18 +665,19 @@
         <div class="dashboard-container">
 
             <!-- WELCOME BANNER -->
-            <div class="welcome-section">
-                <div class="welcome-content">
-                    <div>
-                        <h1>Welcome, <asp:Literal ID="litWelcomeName" runat="server"></asp:Literal>! 👋</h1>
-                        <p>Manage your booth, update your profile, and request additional supplies.</p>
-                    </div>
-                    
-                    <a href="PostApprovalExhibitor.aspx" class="btn-banner-action">
-                        <i class="fas fa-file-signature"></i> Fill Post-Approval Form
-                    </a>
-                </div>
-            </div>
+       <div class="welcome-section">
+    <div class="welcome-content">
+        <div style="flex: 1;"> <h1>Welcome, <asp:Literal ID="litWelcomeName" runat="server"></asp:Literal>! 👋</h1>
+            <p>Manage your booth, update your profile, and request additional supplies.</p>
+            
+            <asp:Literal ID="litProgress" runat="server"></asp:Literal>
+        </div>
+        
+        <a href="PostApprovalExhibitor.aspx" class="btn-banner-action">
+            <i class="fas fa-file-signature"></i> Fill Post-Approval Form
+        </a>
+    </div>
+</div>
 
             <asp:Literal ID="litMessage" runat="server"></asp:Literal>
 

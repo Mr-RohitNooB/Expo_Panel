@@ -152,100 +152,148 @@ namespace Expo_Panel
                 </div>",
                 name, company, email, ticket);
 
-            //SendEmail("admin@lubricantindia.com", subject, body);
-            SendEmail("rohitchauhaninfo@gmail.com", subject, body);
+            SendEmail("admin@lubricantindia.com", subject, body);
+            //SendEmail("rohitchauhaninfo@gmail.com", subject, body);
         }
 
         private void SendUserAcknowledgement(string name, string email, string password)
         {
-            string subject = "Registration Approved - Lubricant India Expo";
-
-            // 1. Define URLs
-            string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority;
-            string loginUrl = baseUrl + "/User/VisitorLogin.aspx";
-
-            // 2. Define Image Path (Physical path on server/PC)
+            // 1. Setup Configuration & Paths
+            string smtpHost = ConfigurationManager.AppSettings["SMTP_Host"];
+            int smtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"]);
+            string smtpUser = ConfigurationManager.AppSettings["SMTP_User"];
+            string smtpPass = ConfigurationManager.AppSettings["SMTP_Pass"];
             string imagePath = Server.MapPath("~/Images/Expo_logo_Full.png");
+            string loginUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/User/VisitorLogin.aspx";
 
-            // 3. Create HTML Body (Note the src='cid:ExpoLogo')
-            string body = string.Format(@"
+            if (string.IsNullOrEmpty(smtpHost) || string.IsNullOrEmpty(smtpUser)) return;
+
+            // 2. Define Calendar Event Details
+            string eventStart = "20260910T043000Z"; // UTC: Sept 10 10:00 AM IST
+            string eventEnd = "20260912T123000Z"; // UTC: Sept 12 06:00 PM IST
+            string eventName = "LUBEiNX - LUBRICANT INDIA EXPO 2026";
+            string location = "Bharat Mandapam, Pragati Maidan, New Delhi";
+            string mapLink = "https://maps.app.goo.gl/8ANvB29YDhRzKsgp6";
+            string descText = "Opening Times:\\nThu, Sept 10: 10:00 AM – 6:30 PM\\nFri, Sept 11: 10:00 AM – 6:30 PM\\nSat, Sept 12: 10:00 AM – 6:00 PM\\n\\nContacts:\\nBooth Bookings: Amit Gautam (sales@lubricantindia.com)\\nSpeaking: Hema Sharma (confex@lubricantindia.com)\\nSponsorship: Shubham Kumar (partner@lubricantindia.com)";
+
+            // 3. JSON-LD Script (Gmail Silent Integration)
+            string jsonLd = $@"
+    <script type='application/ld+json'>
+    {{
+        ""@context"": ""http://schema.org"",
+        ""@type"": ""Event"",
+        ""name"": ""{eventName}"",
+        ""startDate"": ""2026-09-10T10:00:00+05:30"",
+        ""endDate"": ""2026-09-12T18:00:00+05:30"",
+        ""location"": {{
+        ""@type"": ""Place"",
+        ""name"": ""Bharat Mandapam"",
+        ""hasMap"": ""{mapLink}"",
+        ""address"": {{
+            ""@type"": ""PostalAddress"",
+            ""streetAddress"": ""Pragati Maidan"",
+            ""addressLocality"": ""New Delhi"",
+            ""addressCountry"": ""IN""
+        }}
+        }},
+        ""description"": ""{descText.Replace("\\n", " ")}"",
+        ""organizer"": {{
+        ""@type"": ""Organization"",
+        ""name"": ""Lubricant India Expo"",
+        ""email"": ""sales@lubricantindia.com""
+        }}
+    }}
+    </script>";
+
+            // 4. Create HTML Body Content (Preserving your styling)
+            string contentBody = string.Format(@"
         <div style='font-family: ""Poppins"", Arial, sans-serif; color: #1f2937; line-height: 1.6; max-width: 600px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; margin: 0 auto;'>
-            
             <div style='background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); padding: 30px; text-align: center;'>
                 <h1 style='color: white; margin: 0; font-size: 24px;'>Registration Approved!</h1>
             </div>
-
             <div style='padding: 30px;'>
                 <p>Dear <strong>{0}</strong>,</p>
                 <p>We are delighted to confirm that your registration has been <strong>approved</strong>.</p>
-                
                 <div style='background: #fffbeb; border: 1px solid #fed7aa; border-radius: 8px; padding: 20px; margin: 25px 0; text-align: center;'>
                     <h3 style='color: #d97706; margin-top: 0; margin-bottom: 15px;'>Your Login Credentials</h3>
-                    
                     <p style='margin: 5px 0;'><strong>Username:</strong> {2}</p>
                     <div style='margin: 15px 0;'>
                         <span style='background: #fef3c7; color: #92400e; padding: 8px 16px; border-radius: 4px; font-weight: 600; font-size: 18px; letter-spacing: 1px;'>{3}</span>
                     </div>
-                    
                     <div style='margin-top: 20px;'>
                         <a href='{1}' style='background: #d97706; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: 500;'>Login to Dashboard</a>
                     </div>
                 </div>
-
-                <p style='font-size: 14px; color: #6b7280; text-align: center;'>* We recommend changing your password after your first login.</p>
+                <p style='font-size: 14px; color: #6b7280; text-align: center;'>* The event dates have been added to your calendar attachment.</p>
             </div>
-
             <div style='background: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;'>
                 <div style='margin-bottom: 15px;'>
                     <img src='cid:ExpoLogo' alt='Lubricant India Expo' style='width: 100%; max-width: 250px; height: auto;' />
                 </div>
                 <p style='font-size: 12px; color: #9ca3af; margin: 0;'>&copy; 2026 Lubricant India Expo. All rights reserved.</p>
             </div>
-        </div>",
-                name, loginUrl, email, password);
+        </div>", name, loginUrl, email, password);
 
-            // 4. Send Email using AlternateView (Same logic as SpeakerLogin)
-            try
+            // 5. Wrap Body in HTML/Head for Script
+            string fullHtmlBody = $@"<!DOCTYPE html><html><head>{jsonLd}</head><body>{contentBody}</body></html>";
+
+            // 6. Send Email
+            // We removed the inner try-catch so errors bubble up to btnSubmit_Click
+            using (MailMessage msg = new MailMessage())
             {
-                string smtpHost = ConfigurationManager.AppSettings["SMTP_Host"];
-                string smtpPort = ConfigurationManager.AppSettings["SMTP_Port"];
-                string smtpUser = ConfigurationManager.AppSettings["SMTP_User"];
-                string smtpPass = ConfigurationManager.AppSettings["SMTP_Pass"];
+                msg.From = new MailAddress(smtpUser, "Lubricant India Expo");
+                msg.To.Add(email);
+                msg.Subject = "Registration Approved - Lubricant India Expo";
 
-                if (string.IsNullOrEmpty(smtpHost) || string.IsNullOrEmpty(smtpUser)) return;
+                // A. Add HTML View (Body + JSON-LD)
+                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(fullHtmlBody, null, MediaTypeNames.Text.Html);
 
-                using (MailMessage msg = new MailMessage())
+                // B. Embed Logo
+                if (File.Exists(imagePath))
                 {
-                    msg.From = new MailAddress(smtpUser, "Lubricant India Expo");
-                    msg.To.Add(email);
-                    msg.Subject = subject;
+                    LinkedResource logo = new LinkedResource(imagePath, "image/png");
+                    logo.ContentId = "ExpoLogo";
+                    htmlView.LinkedResources.Add(logo);
+                }
+                msg.AlternateViews.Add(htmlView);
 
-                    // --- THIS IS THE PART THAT FIXES THE IMAGE ---
-                    // Create the HTML View
-                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, null, MediaTypeNames.Text.Html);
+                // C. Create ICS Attachment (Outlook/Apple)
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("BEGIN:VCALENDAR");
+                sb.AppendLine("VERSION:2.0");
+                sb.AppendLine("PRODID:-//Lubricant India Expo//LUBEiNX 2026//EN");
+                sb.AppendLine("METHOD:REQUEST");
+                sb.AppendLine("BEGIN:VEVENT");
+                sb.AppendLine("UID:" + Guid.NewGuid().ToString());
+                sb.AppendLine("DTSTAMP:" + DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ"));
+                sb.AppendLine("ORGANIZER;CN=Lubricant India Expo:MAILTO:sales@lubricantindia.com");
+                sb.AppendLine("DTSTART:" + eventStart);
+                sb.AppendLine("DTEND:" + eventEnd);
+                sb.AppendLine("SUMMARY:" + eventName);
+                sb.AppendLine("LOCATION:" + location);
+                sb.AppendLine("DESCRIPTION:" + descText);
+                sb.AppendLine("PRIORITY:5");
+                sb.AppendLine("TRANSP:OPAQUE");
+                sb.AppendLine("END:VEVENT");
+                sb.AppendLine("END:VCALENDAR");
 
-                    // Attach the image from your hard drive/server
-                    if (File.Exists(imagePath))
-                    {
-                        LinkedResource logo = new LinkedResource(imagePath, "image/png");
-                        logo.ContentId = "ExpoLogo"; // MUST match the src='cid:ExpoLogo' in HTML above
-                        htmlView.LinkedResources.Add(logo);
-                    }
-
-                    // Add the view to the message
-                    msg.AlternateViews.Add(htmlView);
-                    // ---------------------------------------------
+                byte[] calendarBytes = Encoding.UTF8.GetBytes(sb.ToString());
+                using (MemoryStream stream = new MemoryStream(calendarBytes))
+                {
+                    Attachment icsAttachment = new Attachment(stream, "invite.ics", "text/calendar");
+                    icsAttachment.ContentType.Parameters.Add("method", "REQUEST");
+                    // Note: 'name' is automatically added by constructor, do not add it again
+                    msg.Attachments.Add(icsAttachment);
 
                     using (SmtpClient client = new SmtpClient(smtpHost))
                     {
-                        client.Port = int.Parse(smtpPort);
+                        client.Port = int.Parse(smtpPort.ToString());
                         client.Credentials = new NetworkCredential(smtpUser, smtpPass);
                         client.EnableSsl = true;
                         client.Send(msg);
                     }
                 }
             }
-            catch { /* Log error silently */ }
         }
 
         private void SendEmail(string toEmail, string subject, string body)

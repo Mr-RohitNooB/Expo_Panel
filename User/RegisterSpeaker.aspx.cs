@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 
 namespace Expo_Panel
 {
@@ -272,23 +273,45 @@ namespace Expo_Panel
                         // 2. Prepare User Acknowledgement (To the User)
                         string userSubject = "Registration Successful - Lubricant India Expo";
                         string userBody = $@"
-        <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px;'>
-            <h2 style='color: #38a169;'>Thank You for Registering!</h2>
-            <p>Dear {name},</p>
-            <p>Thank you for registering as a speaker for the Lubricant India Expo. We have successfully received your details.</p>
-            <p>Our team will review your profile and agenda selection. We will get back to you shortly regarding the next steps.</p>
-            
-            <hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;' />
-            
-            <p><strong>Contact Us:</strong></p>
-            <p>If you have any questions, please feel free to reach out to us:</p>
-            <p>
-                Email: <a href='mailto:confex@lubricantindia.com' style='color: #1e40af; font-weight:bold;'>confex@lubricantindia.com</a><br/>
-                Phone: <a href='tel:+919464700955' style='color: #1e40af; font-weight:bold;'>+91 94647 00955</a>
-            </p>
-            <br/>
-            <p>Best Regards,<br/><strong>Lubricant India Expo Team</strong></p>
-        </div>";
+<div style='font-family: Segoe UI, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; margin: 0 auto;'>
+    
+    <div style='background-color: #2d2d2d; padding: 30px; text-align: center; border-bottom: 5px solid #dd6b20;'>
+        <h2 style='color: #ffffff; margin: 0; letter-spacing: 1px;'>REGISTRATION RECEIVED</h2>
+    </div>
+
+    <div style='padding: 40px 30px; color: #4a5568; background-color: #ffffff;'>
+        <p style='font-size: 16px; margin-bottom: 20px;'>Dear <strong>{name}</strong>,</p>
+        
+        <p style='font-size: 16px; line-height: 1.5;'>Thank you for registering as a speaker for the <strong>Lubricant India Expo 2026</strong>.</p>
+        
+        <p style='font-size: 16px; line-height: 1.5;'>We have successfully received your details. Our team will review your profile and agenda selection. We will get back to you shortly regarding the next steps.</p>
+        
+        <hr style='border: 0; border-top: 1px solid #e0e0e0; margin: 30px 0;' />
+        
+        <p style='font-weight: bold; margin-bottom: 10px; color: #2d3748;'>Contact Us</p>
+        <p style='font-size: 14px; margin: 5px 0;'>If you have any questions, please feel free to reach out:</p>
+        
+        <table style='width: 100%; margin-top: 10px;'>
+            <tr>
+                <td style='padding-bottom: 5px; width: 60px; color: #718096;'>Email:</td>
+                <td style='padding-bottom: 5px;'>
+                    <a href='mailto:confex@lubricantindia.com' style='color: #dd6b20; font-weight:bold; text-decoration: none;'>confex@lubricantindia.com</a>
+                </td>
+            </tr>
+            <tr>
+                <td style='color: #718096;'>Phone:</td>
+                <td>
+                    <a href='tel:+919464700955' style='color: #dd6b20; font-weight:bold; text-decoration: none;'>+91 94647 00955</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style='background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
+         <img src='cid:ExpoLogo' alt='Lubricant India Expo' style='display: block; width: 200px; height: auto; margin: 0 auto; border: 0;' />
+         <p style='font-size: 12px; color: #a0aec0; margin-top: 10px; margin-bottom: 0;'>&copy; 2026 Lubricant India Expo. All rights reserved.</p>
+    </div>
+</div>";
 
                         // SEND TO USER
                         SendEmail(email, userSubject, userBody);
@@ -902,33 +925,113 @@ string selectedAgendas)
         {
             try
             {
-                // Read settings from Web.config
+                // 1. Fetch Config & Paths
                 string smtpHost = ConfigurationManager.AppSettings["SMTP_Host"];
                 int smtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_Port"]);
                 string smtpUser = ConfigurationManager.AppSettings["SMTP_User"];
                 string smtpPass = ConfigurationManager.AppSettings["SMTP_Pass"];
+                string imagePath = Server.MapPath("~/Images/Expo_logo_Full.png");
 
+                // 2. Define Event Details (for Calendar)
+                string eventStart = "20260910T043000Z"; // UTC Time
+                string eventEnd = "20260912T123000Z";
+                string mapLink = "https://maps.app.goo.gl/8ANvB29YDhRzKsgp6";
+                string eventName = "LUBEiNX - LUBRICANT INDIA EXPO 2026";
+                string descText = "Opening Times:\\nThu, Sept 10: 10:00 AM – 6:30 PM\\nFri, Sept 11: 10:00 AM – 6:30 PM\\nSat, Sept 12: 10:00 AM – 6:00 PM\\n\\nContacts:\\nBooth Bookings: Amit Gautam (sales@lubricantindia.com)\\nSpeaking: Hema Sharma (confex@lubricantindia.com)";
+
+                // 3. JSON-LD Script (for Gmail Silent Calendar)
+                string jsonLd = $@"
+        <script type='application/ld+json'>
+        {{
+          ""@context"": ""http://schema.org"",
+          ""@type"": ""Event"",
+          ""name"": ""{eventName}"",
+          ""startDate"": ""2026-09-10T10:00:00+05:30"",
+          ""endDate"": ""2026-09-12T18:00:00+05:30"",
+          ""location"": {{
+            ""@type"": ""Place"",
+            ""name"": ""Bharat Mandapam"",
+            ""hasMap"": ""{mapLink}"",
+            ""address"": {{
+              ""@type"": ""PostalAddress"",
+              ""streetAddress"": ""Pragati Maidan"",
+              ""addressLocality"": ""New Delhi"",
+              ""addressCountry"": ""IN""
+            }}
+          }},
+          ""description"": ""{descText.Replace("\\n", " ")}"",
+          ""organizer"": {{
+            ""@type"": ""Organization"",
+            ""name"": ""Lubricant India Expo"",
+            ""email"": ""confex@lubricantindia.com""
+          }}
+        }}
+        </script>";
+
+                // 4. Wrap Body with JSON-LD
+                string fullHtmlBody = $@"<!DOCTYPE html><html><head>{jsonLd}</head><body style='margin:0;padding:0;'>{body}</body></html>";
+
+                // 5. Create Email
                 using (MailMessage mail = new MailMessage())
                 {
-                    // The "From" address usually needs to match the authenticated user
                     mail.From = new MailAddress(smtpUser, "Lubricant India Expo");
                     mail.To.Add(toEmail);
                     mail.Subject = subject;
-                    mail.Body = body;
-                    mail.IsBodyHtml = true;
 
-                    using (SmtpClient smtp = new SmtpClient(smtpHost, smtpPort))
+                    // --- A. HTML View with Embedded Logo ---
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(fullHtmlBody, null, MediaTypeNames.Text.Html);
+
+                    // Embed Logo if file exists
+                    if (File.Exists(imagePath))
                     {
-                        smtp.Credentials = new NetworkCredential(smtpUser, smtpPass);
-                        smtp.EnableSsl = true; // Titan Email usually requires SSL/TLS
-                        smtp.Send(mail);
+                        LinkedResource logo = new LinkedResource(imagePath, "image/png");
+                        logo.ContentId = "ExpoLogo"; // Matches src='cid:ExpoLogo' in userBody
+                        htmlView.LinkedResources.Add(logo);
+                    }
+                    mail.AlternateViews.Add(htmlView);
+
+                    // --- B. ICS Attachment (Outlook/Apple) ---
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("BEGIN:VCALENDAR");
+                    sb.AppendLine("VERSION:2.0");
+                    sb.AppendLine("PRODID:-//Lubricant India Expo//LUBEiNX 2026//EN");
+                    sb.AppendLine("METHOD:REQUEST");
+                    sb.AppendLine("BEGIN:VEVENT");
+                    sb.AppendLine("UID:" + Guid.NewGuid().ToString());
+                    sb.AppendLine("DTSTAMP:" + DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ"));
+                    sb.AppendLine("ORGANIZER;CN=Lubricant India Expo:MAILTO:confex@lubricantindia.com");
+                    sb.AppendLine("DTSTART:" + eventStart);
+                    sb.AppendLine("DTEND:" + eventEnd);
+                    sb.AppendLine("SUMMARY:" + eventName);
+                    sb.AppendLine("LOCATION:Bharat Mandapam, Pragati Maidan, New Delhi");
+                    sb.AppendLine("DESCRIPTION:" + descText);
+                    sb.AppendLine("PRIORITY:5");
+                    sb.AppendLine("TRANSP:OPAQUE");
+                    sb.AppendLine("END:VEVENT");
+                    sb.AppendLine("END:VCALENDAR");
+
+                    byte[] calendarBytes = Encoding.UTF8.GetBytes(sb.ToString());
+                    using (MemoryStream stream = new MemoryStream(calendarBytes))
+                    {
+                        Attachment icsAttachment = new Attachment(stream, "invite.ics", "text/calendar");
+                        icsAttachment.ContentType.Parameters.Add("method", "REQUEST");
+                        // Note: 'name' is automatically added by constructor
+                        mail.Attachments.Add(icsAttachment);
+
+                        // 6. Send
+                        using (SmtpClient smtp = new SmtpClient(smtpHost, smtpPort))
+                        {
+                            smtp.Credentials = new NetworkCredential(smtpUser, smtpPass);
+                            smtp.EnableSsl = true;
+                            smtp.Send(mail);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Log error safely so the user still sees the success screen
-                System.Diagnostics.Debug.WriteLine("Email sending failed: " + ex.Message);
+                // Throw exception so main button can catch and display
+                throw ex;
             }
         }
 

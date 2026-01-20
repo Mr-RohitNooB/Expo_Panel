@@ -36,15 +36,15 @@ namespace Expo_Panel
             {
                 // Join basic info with post-approval profile
                 string query = @"
-                    SELECT 
-                        e.Name, e.Company, e.Email, e.Designation, e.BoothType, e.AreaInSqm,
-                        p.BoothNo, p.HallNo, p.ExhibitorProfile, p.YearOfEstablishment, p.Website,
-                        p.PowerSupplyRequired, p.PowerSupplyKwh, 
-                        p.InternetRequired, p.FurnitureRentalRequired, p.AVEquipmentRequired,
-                        p.OtherRequirements
-                    FROM TBL.Exhibitor e
-                    LEFT JOIN TBL.PostApprovalExhibitor p ON e.ExhibitorID = p.ExhibitorID AND p.IS_ACTIVE = 1
-                    WHERE e.ExhibitorID = @ExhibitorID";
+            SELECT 
+                e.Name, e.Company, e.Email, e.Designation, e.BoothType, e.AreaInSqm,
+                p.BoothNo, p.HallNo, p.ExhibitorProfile, p.YearOfEstablishment, p.Website,
+                p.PowerSupplyRequired, p.PowerSupplyKwh, 
+                p.InternetRequired, p.FurnitureRentalRequired, p.AVEquipmentRequired,
+                p.OtherRequirements
+            FROM TBL.Exhibitor e
+            LEFT JOIN TBL.PostApprovalExhibitor p ON e.ExhibitorID = p.ExhibitorID AND p.IS_ACTIVE = 1
+            WHERE e.ExhibitorID = @ExhibitorID";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -60,8 +60,28 @@ namespace Expo_Panel
 
                             litUserName.Text = name;
                             litUserEmail.Text = rdr["Email"].ToString();
-                            litWelcomeName.Text = company; // First name
+                            litWelcomeName.Text = company;
                             litUserInitials.Text = GetInitials(name);
+
+                            // --- PROGRESS LOGIC FIX ---
+                            // 1. Get the raw profile text safe from NULLs
+                            string profileDesc = rdr["ExhibitorProfile"] != DBNull.Value ? rdr["ExhibitorProfile"].ToString() : "";
+
+                            // 2. Check if it's truly filled (Not NULL, Not Empty, Not just whitespace, and Not "0")
+                            bool isProfileFilled = !string.IsNullOrWhiteSpace(profileDesc) && profileDesc != "0";
+
+                            int percentage = isProfileFilled ? 100 : 50;
+                            string text = isProfileFilled ? "Profile Completed" : "Profile 50% Complete (Action Required)";
+
+                            // Generate Progress Bar HTML
+                            litProgress.Text = $@"
+                        <div class='progress-track'>
+                            <div class='progress-fill' style='width: {percentage}%;'></div>
+                        </div>
+                        <div class='progress-text'>
+                            <i class='fas fa-chart-pie'></i> {text}
+                        </div>";
+
 
                             // 2. Profile Tab
                             litCompany.Text = company;
@@ -73,10 +93,11 @@ namespace Expo_Panel
 
                             // 3. Booth Tab
                             litBoothType.Text = rdr["BoothType"].ToString();
+                            // Admin fills these, so they might show up even if profile isn't done
                             litHallNo.Text = rdr["HallNo"] != DBNull.Value ? rdr["HallNo"].ToString() : "Pending";
                             litBoothNo.Text = rdr["BoothNo"] != DBNull.Value ? rdr["BoothNo"].ToString() : "Pending";
                             litArea.Text = rdr["AreaInSqm"].ToString();
-                            litProfileDesc.Text = rdr["ExhibitorProfile"] != DBNull.Value ? rdr["ExhibitorProfile"].ToString() : "No description provided.";
+                            litProfileDesc.Text = isProfileFilled ? profileDesc : "No description provided.";
 
                             // 4. Supplies Tab
                             bool hasPower = rdr["PowerSupplyRequired"] != DBNull.Value && Convert.ToBoolean(rdr["PowerSupplyRequired"]);

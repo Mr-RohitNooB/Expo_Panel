@@ -11,28 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- Light Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: light)" />
 
-<!-- Dark Mode Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
-<link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
-<link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
-<link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
+    <!-- Dark Mode Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: dark)" />
+    <link rel="shortcut icon" href="/Images/favicon_io_Lubricant_India_Expo/favicon.ico" media="(prefers-color-scheme: dark)" />
 
-<!-- Android / PWA -->
-<link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
-<link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
+    <!-- Android / PWA -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/Images/favicon_io_Lubricant_India_Expo/android-chrome-512x512.png" />
+    <link rel="manifest" href="/Images/favicon_io_Lubricant_India_Expo/site.webmanifest" />
 
-<!-- Theme Colors -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
-<!-- Windows Tile Support -->
-<meta name="msapplication-TileColor" content="#ffffff" />
+    <!-- Windows Tile Support -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <style>
         * {
@@ -65,17 +65,17 @@
             margin-bottom: 30px;
         }
 
-        .header h1 {
-            color: #dd6b20;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+            .header h1 {
+                color: #dd6b20;
+                font-size: 28px;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
 
-        .header p {
-            color: #6b7280;
-            font-size: 16px;
-        }
+            .header p {
+                color: #6b7280;
+                font-size: 16px;
+            }
 
         .form-row {
             display: grid;
@@ -88,43 +88,43 @@
             margin-bottom: 20px;
         }
 
-        .form-group.full-width {
-            grid-column: span 2;
-        }
+            .form-group.full-width {
+                grid-column: span 2;
+            }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #374151;
-            font-weight: 500;
-        }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #374151;
+                font-weight: 500;
+            }
 
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="tel"],
-        .form-group input[type="number"],
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-        }
+            .form-group input[type="text"],
+            .form-group input[type="email"],
+            .form-group input[type="tel"],
+            .form-group input[type="number"],
+            .form-group textarea,
+            .form-group select {
+                width: 100%;
+                padding: 12px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                transition: all 0.3s;
+                font-family: 'Poppins', sans-serif;
+            }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
+            .form-group textarea {
+                resize: vertical;
+                min-height: 80px;
+            }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #ed8936;
-        }
+                .form-group input:focus,
+                .form-group textarea:focus,
+                .form-group select:focus {
+                    outline: none;
+                    border-color: #ed8936;
+                }
 
         .booth-options {
             display: flex;
@@ -144,17 +144,17 @@
             transition: all 0.3s;
         }
 
-        .booth-option:hover {
-            border-color: #fbd38d;
-            background: #fff7ed;
-        }
+            .booth-option:hover {
+                border-color: #fbd38d;
+                background: #fff7ed;
+            }
 
-        .booth-option input[type="radio"] {
-            margin-top: 3px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
+            .booth-option input[type="radio"] {
+                margin-top: 3px;
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
 
         .booth-option-content {
             flex: 1;
@@ -184,17 +184,17 @@
             gap: 10px;
         }
 
-        .checkbox-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
+            .checkbox-item input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
 
-        .checkbox-item label {
-            margin: 0;
-            cursor: pointer;
-            font-weight: 400;
-        }
+            .checkbox-item label {
+                margin: 0;
+                cursor: pointer;
+                font-weight: 400;
+            }
 
         .declaration-box {
             background: #fff7ed;
@@ -204,11 +204,11 @@
             margin: 25px 0;
         }
 
-        .declaration-box h3 {
-            color: #dd6b20;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
+            .declaration-box h3 {
+                color: #dd6b20;
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
 
         .declaration-text {
             font-size: 14px;
@@ -235,20 +235,20 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background: #ed8936;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(221, 107, 32, 0.4);
-        }
+            .btn-primary:hover {
+                background: #ed8936;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(221, 107, 32, 0.4);
+            }
 
         .btn-secondary {
             background: #e2e8f0;
             color: #374151;
         }
 
-        .btn-secondary:hover {
-            background: #fbd38d;
-        }
+            .btn-secondary:hover {
+                background: #fbd38d;
+            }
 
         .form-footer {
             display: flex;
@@ -266,9 +266,9 @@
             gap: 5px;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
+            .back-link:hover {
+                text-decoration: underline;
+            }
 
         .alert {
             padding: 15px 20px;
@@ -318,54 +318,54 @@
                 gap: 15px;
             }
         }
+
         .alert .close-btn {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: inherit;
-    opacity: 0.5;
-    line-height: 1;
-    padding: 0;
-    width: 24px;
-    height: 24px;
-}
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: inherit;
+            opacity: 0.5;
+            line-height: 1;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
 
-.alert .close-btn:hover {
-    opacity: 1;
-}
-
+            .alert .close-btn:hover {
+                opacity: 1;
+            }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="registration-container">
             <div class="header">
-                <h1><i class="fas fa-store"></i> Exhibitor Registration Form</h1>
+                <h1><i class="fas fa-store"></i>Exhibitor Registration Form</h1>
                 <p>Lubricant India Expo & Summit 2026</p>
             </div>
 
             <asp:Literal ID="litMessage" runat="server" EnableViewState="false"></asp:Literal>
 
             <!-- Basic Information -->
-            <div class="section-title"><i class="fas fa-user"></i> Basic Information</div>
+            <div class="section-title"><i class="fas fa-user"></i>Basic Information</div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="<%=txtName.ClientID%>">Full Name <span class="required">*</span></label>
                     <asp:TextBox ID="txtName" runat="server" placeholder="Enter your full name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
+                    <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName"
                         ErrorMessage="Full name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtDesignation.ClientID%>">Designation <span class="required">*</span></label>
                     <asp:TextBox ID="txtDesignation" runat="server" placeholder="Enter your designation"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation" 
+                    <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="txtDesignation"
                         ErrorMessage="Designation is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -373,30 +373,38 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="<%=txtMobile.ClientID%>">Phone Number <span class="required">*</span></label>
-                    <asp:TextBox ID="txtMobile" runat="server" placeholder="Enter your phone number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtMobile" 
-                        ErrorMessage="Phone number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+
+                    <asp:TextBox ID="txtMobile" runat="server" placeholder="Enter your phone number"
+                        MaxLength="10" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"></asp:TextBox>
+
+                    <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="txtMobile"
+                        ErrorMessage="Phone number is required" ForeColor="Red" Display="Dynamic"
+                        ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
+
+                    <asp:RegularExpressionValidator ID="revMobile" runat="server" ControlToValidate="txtMobile"
+                        ErrorMessage="Please enter a valid 10-digit mobile number" ForeColor="Red" Display="Dynamic"
+                        ValidationExpression="^[0-9]{10}$" ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtEmail.ClientID%>">Email Address <span class="required">*</span></label>
                     <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" placeholder="Enter your email"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail" 
+                    <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="txtEmail"
                         ErrorMessage="Email is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" 
-                        ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic" 
+                    <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail"
+                        ErrorMessage="Invalid email format" ForeColor="Red" Display="Dynamic"
                         ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" ValidationGroup="RegistrationValidation"></asp:RegularExpressionValidator>
                 </div>
             </div>
 
             <!-- Company Information -->
-            <div class="section-title"><i class="fas fa-building"></i> Company Information</div>
+            <div class="section-title"><i class="fas fa-building"></i>Company Information</div>
 
             <div class="form-row">
                 <div class="form-group full-width">
                     <label for="<%=txtCompany.ClientID%>">Company Name <span class="required">*</span></label>
                     <asp:TextBox ID="txtCompany" runat="server" placeholder="Enter your company name"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany" 
+                    <asp:RequiredFieldValidator ID="rfvCompany" runat="server" ControlToValidate="txtCompany"
                         ErrorMessage="Company name is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -405,7 +413,7 @@
                 <div class="form-group full-width">
                     <label for="<%=txtHeadOffice.ClientID%>">Head Office Address <span class="required">*</span></label>
                     <asp:TextBox ID="txtHeadOffice" runat="server" TextMode="MultiLine" placeholder="Enter complete head office address"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvHeadOffice" runat="server" ControlToValidate="txtHeadOffice" 
+                    <asp:RequiredFieldValidator ID="rfvHeadOffice" runat="server" ControlToValidate="txtHeadOffice"
                         ErrorMessage="Head office address is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -414,14 +422,14 @@
                 <div class="form-group">
                     <label for="<%=txtCity.ClientID%>">City <span class="required">*</span></label>
                     <asp:TextBox ID="txtCity" runat="server" placeholder="Enter city"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvCity" runat="server" ControlToValidate="txtCity" 
+                    <asp:RequiredFieldValidator ID="rfvCity" runat="server" ControlToValidate="txtCity"
                         ErrorMessage="City is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtState.ClientID%>">State <span class="required">*</span></label>
                     <asp:TextBox ID="txtState" runat="server" placeholder="Enter state"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvState" runat="server" ControlToValidate="txtState" 
+                    <asp:RequiredFieldValidator ID="rfvState" runat="server" ControlToValidate="txtState"
                         ErrorMessage="State is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -430,14 +438,14 @@
                 <div class="form-group">
                     <label for="<%=txtCountry.ClientID%>">Country <span class="required">*</span></label>
                     <asp:TextBox ID="txtCountry" runat="server" placeholder="Enter country"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvCountry" runat="server" ControlToValidate="txtCountry" 
+                    <asp:RequiredFieldValidator ID="rfvCountry" runat="server" ControlToValidate="txtCountry"
                         ErrorMessage="Country is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
 
                 <div class="form-group">
                     <label for="<%=txtGSTNumber.ClientID%>">GST Number <span class="required">*</span></label>
                     <asp:TextBox ID="txtGSTNumber" runat="server" placeholder="Enter GST number"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvGSTNumber" runat="server" ControlToValidate="txtGSTNumber" 
+                    <asp:RequiredFieldValidator ID="rfvGSTNumber" runat="server" ControlToValidate="txtGSTNumber"
                         ErrorMessage="GST number is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -446,13 +454,13 @@
                 <div class="form-group full-width">
                     <label for="<%=txtBillingAddress.ClientID%>">Billing Address <span class="required">*</span></label>
                     <asp:TextBox ID="txtBillingAddress" runat="server" TextMode="MultiLine" placeholder="Enter billing address"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvBillingAddress" runat="server" ControlToValidate="txtBillingAddress" 
+                    <asp:RequiredFieldValidator ID="rfvBillingAddress" runat="server" ControlToValidate="txtBillingAddress"
                         ErrorMessage="Billing address is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
                 </div>
             </div>
 
-           <!-- Booth Requirements -->
-            <div class="section-title"><i class="fas fa-warehouse"></i> Booth Requirements</div>
+            <!-- Booth Requirements -->
+            <div class="section-title"><i class="fas fa-warehouse"></i>Booth Requirements</div>
 
             <div class="form-group">
                 <label>Preferred Booth Size / Area Required (in sq. m) <span class="required">*</span></label>
@@ -479,16 +487,16 @@
                 <div class="form-group">
                     <label for="<%=txtAreaInSqm.ClientID%>">Area in Sqm <span class="required">*</span></label>
                     <asp:TextBox ID="txtAreaInSqm" runat="server" TextMode="Number" placeholder="Enter area in square meters"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="rfvAreaInSqm" runat="server" ControlToValidate="txtAreaInSqm" 
+                    <asp:RequiredFieldValidator ID="rfvAreaInSqm" runat="server" ControlToValidate="txtAreaInSqm"
                         ErrorMessage="Area is required" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RequiredFieldValidator>
-                    <asp:RangeValidator ID="rvAreaInSqm" runat="server" ControlToValidate="txtAreaInSqm" 
-                        Type="Double" MinimumValue="1" MaximumValue="10000" 
+                    <asp:RangeValidator ID="rvAreaInSqm" runat="server" ControlToValidate="txtAreaInSqm"
+                        Type="Double" MinimumValue="1" MaximumValue="10000"
                         ErrorMessage="Please enter a valid area" ForeColor="Red" Display="Dynamic" ValidationGroup="RegistrationValidation"></asp:RangeValidator>
                 </div>
             </div>
 
             <!-- Additional Interests -->
-            <div class="section-title"><i class="fas fa-star"></i> Additional Interests</div>
+            <div class="section-title"><i class="fas fa-star"></i>Additional Interests</div>
 
             <div class="form-group">
                 <label>Would you be interested in any of the following? (tick if interested)</label>
@@ -514,7 +522,7 @@
 
             <!-- Declaration -->
             <div class="declaration-box">
-                <h3><i class="fas fa-file-signature"></i> Declaration</h3>
+                <h3><i class="fas fa-file-signature"></i>Declaration</h3>
                 <p class="declaration-text">
                     I hereby confirm that the above information is accurate to the best of my knowledge and express my interest in exhibiting at Lubricant India Expo & Summit 2026. 
                     I understand that this form does not confirm booth allocation and the organizers will follow up with the exhibitor package and formal agreement.
@@ -526,7 +534,7 @@
             </div>
 
             <div class="form-footer">
-                <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary" 
+                <asp:Button ID="btnRegister" runat="server" Text="Submit Registration" CssClass="btn btn-primary"
                     OnClick="btnRegister_Click" ValidationGroup="RegistrationValidation" />
             </div>
 
