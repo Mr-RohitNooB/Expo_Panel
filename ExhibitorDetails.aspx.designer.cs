@@ -51,15 +51,6 @@ namespace Expo_Panel
         protected global::System.Web.UI.WebControls.Label lblLocation;
 
         /// <summary>
-        /// lblHall control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHall;
-
-        /// <summary>
         /// lblBooth control.
         /// </summary>
         /// <remarks>

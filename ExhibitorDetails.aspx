@@ -495,8 +495,7 @@
                             <asp:Label ID="lblLocation" runat="server"></asp:Label>
                         </p>
                         <div>
-                            <span class="badge bg-light text-dark me-2 p-2 border">Hall:
-                                <asp:Label ID="lblHall" runat="server"></asp:Label></span>
+                            
                             <span class="badge p-2" style="background: #D94A2B; color: #fff;">Booth:
                                 <asp:Label ID="lblBooth" runat="server"></asp:Label></span>
                         </div>
@@ -625,6 +624,7 @@
                     <a href="Exhibitors.aspx">Exhibitors</a>
                     <a href="TermsConditions.aspx">Terms & Conditions</a>
                     <a href="PrivacyPolicy.aspx">Privacy Policy</a>
+                    <a href="RefundPolicy.aspx">Refund Policy</a>
                 </div>
                 <p>© 2025 Lubricant India Expo. All rights reserved.</p>
             </div>

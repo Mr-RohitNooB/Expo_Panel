@@ -1,13 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TermsConditions.aspx.cs" Inherits="Expo_Panel.TermsConditions" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RefundPolicy.aspx.cs" Inherits="Expo_Panel.RefundPolicy" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms & Conditions | Lubricant India Expo</title>
+    <title>Refund Policy | Lubricant India Expo</title>
 
-    <!-- Favicons -->
+    <!-- Favicons (Same as Index) -->
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon_io_Lubricant_India_Expo/favicon-32x32.png" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon_io_Lubricant_India_Expo/favicon-16x16.png" media="(prefers-color-scheme: light)" />
     <link rel="apple-touch-icon" href="/Images/favicon_io_Lubricant_India_Expo/apple-touch-icon.png" media="(prefers-color-scheme: light)" />
@@ -20,7 +20,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-    <!-- CSS Styles -->
+    <!-- CSS Styles (Copied from Index for consistency) -->
     <style>
         * {
             margin: 0;
@@ -158,7 +158,7 @@
             cursor: pointer;
         }
 
-        /* Page Banner */
+        /* Page Banner (Modified Hero) */
         .page-banner {
             background: linear-gradient(135deg, #3D3935 0%, #5C5550 50%, #3D3935 100%);
             padding: 120px 20px 60px;
@@ -199,17 +199,17 @@
 
         /* Content Section */
         .content-section {
-    padding: 1px 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-    background: white;
-    margin-top: 3px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    position: relative;
-    z-index: 2;
-    margin-bottom: 60px;
-}
+            padding: 1px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            margin-top: 3px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 2;
+            margin-bottom: 60px;
+        }
 
         .policy-text h2 {
             color: #3D3935;
@@ -240,7 +240,7 @@
             color: #333;
         }
 
-        /* Footer */
+        /* Footer (Same as Index) */
         .footer {
             background: #3D3935;
             color: #fff;
@@ -355,55 +355,36 @@
 
         <!-- Page Banner -->
         <section class="page-banner">
-            <h1>Terms and Conditions</h1>
-            <p>Guidelines for usage</p>
+            <h1>Refund Policy</h1>
+            <p>Please read our refund policy carefully before registering</p>
         </section>
 
-        <!-- Terms Content -->
+        <!-- Refund Policy Content -->
         <div class="content-section">
             <div class="policy-text">
-                <h2>Welcome to Lubricant India Expo</h2>
-                <p>These terms and conditions govern your use of the website, located at <a href="http://www.lubricantindia.com" style="color: #D94A2B;">www.lubricantindia.com</a>. By using this website, you are considered a user, implying complete acceptance of these terms and conditions.</p>
-                <p>Etaily Events & Exhibitions, is the rightful owner of the website www.lubricantindia.com, and is responsible for the management and functioning of the aforementioned website.</p>
+                <h2>No Refund Policy</h2>
+                <p>All registrations and payments made for the <strong>Lubricant India Expo 2026</strong> are <strong>final and non-refundable</strong>. Once a registration is confirmed and payment has been processed, no refunds will be issued under any circumstances.</p>
 
-                <h2>Use of Cookies</h2>
-                <p>We utilize cookies to enhance your browsing experience and to collect certain information about your visits to our website. By using our website, you consent to the use of cookies in accordance with our Privacy Policy.</p>
-
-                <h2>Intellectual Property Rights</h2>
-                <p>All intellectual property rights, including copyrights, trademarks, and any other proprietary rights, in the content and materials available on this website are owned by Lubricant India Expo or its licensors. You are granted a limited, non-exclusive, non-transferable license to access and use the website for your personal, non-commercial purposes only.</p>
-
-                <h2>Restrictions on Use</h2>
-                <p>You are expressly prohibited from:</p>
+                <h2>Scope</h2>
+                <p>This No Refund Policy applies to all categories of participants, including but not limited to:</p>
                 <ul>
-                    <li>Republishing material from this website</li>
-                    <li>Selling, renting, or sub-licensing material from this website</li>
-                    <li>Reproducing, duplicating, or copying material from this website</li>
-                    <li>Redistributing content from this website</li>
+                    <li>Exhibitors</li>
+                    <li>Speakers</li>
+                    <li>Visitors / Delegates</li>
+                    <li>Sponsors</li>
                 </ul>
 
-                <h2>User Comments</h2>
-                <p>Certain sections of our website may allow users to post and exchange comments and opinions. Lubricant India Expo does not endorse or control these comments and is not liable for any damages or losses arising from their use. By posting comments, you agree to take full responsibility for their content and to indemnify Bharat Global Expo against any claims or liabilities resulting from your comments.</p>
+                <h2>Non-Transferable Registrations</h2>
+                <p>Registrations are personal and non-transferable. They may not be assigned or transferred to another individual or organisation without prior written approval from the event organiser.</p>
 
-                <h2>Hyperlinking to Our Content</h2>
-                <p>Certain organizations, such as search engines, news organizations, and accredited businesses, may link to our website without prior written approval. However, they must adhere to specific guidelines, such as ensuring the link is not misleading and does not falsely imply sponsorship or endorsement. Other organizations may request approval by contacting us via email.</p>
+                <h2>Event Cancellation or Postponement</h2>
+                <p>In the unlikely event that the Lubricant India Expo 2026 is cancelled or postponed due to circumstances beyond our control (including but not limited to natural disasters, government restrictions, or force majeure events), the organiser reserves the right to reschedule the event. In such cases, registrations will be carried forward to the rescheduled date. <strong>No refunds will be issued</strong> in these circumstances.</p>
 
-                <h2>Liability for Content</h2>
-                <p>We are not liable for any content that appears on your website if you link to our website. You agree to indemnify and defend us against any claims arising out of your linking to our website.</p>
-
-                <h2>Reservation of Rights</h2>
-                <p>We reserve the right to request the removal of any link to our website, and you agree to comply promptly with such requests. We also reserve the right to modify these terms and conditions and our linking policy at any time.</p>
-
-                <h2>Disclaimer of Warranties</h2>
-                <p>We provide this website on an “as is” and “as available” basis. We make no representations or warranties of any kind, express or implied, as to the operation of this website or the information, content, materials, or products included on this website.</p>
-
-                <h2>Limitation of Liability</h2>
-                <p>To the fullest extent permitted by applicable law, we shall not be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with the use of this website.</p>
-
-                <h2>Governing Law</h2>
-                <p>These terms and conditions shall be governed by and construed in accordance with the laws of Delhi Jurisdiction, without regard to its conflict of law provisions.</p>
+                <h2>Acknowledgement</h2>
+                <p>By completing your registration and submitting payment, you acknowledge that you have read, understood, and agreed to this No Refund Policy.</p>
 
                 <p style="margin-top: 30px; padding: 20px; background: #f1f5f9; border-left: 4px solid #D94A2B;">
-                    If you have any questions about these Terms and Conditions, please contact us by email: <a href="mailto:admin@lubricantindia.com" style="color: #D94A2B; text-decoration: none; font-weight: bold;">admin@lubricantindia.com</a>
+                    If you have any questions regarding our Refund Policy, please contact us at <a href="mailto:admin@lubricantindia.com" style="color: #D94A2B; text-decoration: none; font-weight: bold;">admin@lubricantindia.com</a>
                 </p>
             </div>
         </div>
@@ -416,12 +397,12 @@
                     <a href="Index.aspx#conference">Conference</a>
                     <a href="Index.aspx#speakers">Speakers</a>
                     <a href="Index.aspx#exhibitors">Exhibitors</a>
-                    <a href="TermsConditions.aspx">Terms & Conditions</a>
+                    <a href="TermsConditions.aspx">Terms &amp; Conditions</a>
                     <a href="PrivacyPolicy.aspx">Privacy Policy</a>
                     <a href="RefundPolicy.aspx">Refund Policy</a>
                 </div>
                 <p style="margin-top: 20px; opacity: 0.8;">
-                    © 2025 Lubricant India Expo. All rights reserved.
+                    &copy; 2025 Lubricant India Expo. All rights reserved.
                 </p>
             </div>
         </footer>

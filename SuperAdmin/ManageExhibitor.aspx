@@ -1570,8 +1570,7 @@
                 $id('<%=btnTriggerApproval.ClientID%>').click();
             }
 
-            function openApprovalModal(id, name, email, company, regType, approvalStatus, remarks, password, hall, booth, area) {
-                // Hidden ID
+            function openApprovalModal(id, name, email, company, regType, approvalStatus, remarks, password, hall, booth, area, boothType) {
                 safeSet('<%=hdnApprovalExhibitorID.ClientID%>', id);
 
                 // Read-only info fields
@@ -1584,6 +1583,11 @@
                 safeSet('<%=txtApprovalHall.ClientID%>', hall);
                 safeSet('<%=txtApprovalBooth.ClientID%>', booth);
                 safeSet('<%=txtApprovalArea.ClientID%>', area);
+
+                var ddlBoothType = $id('<%=ddlApprovalBoothType.ClientID%>');
+                if (ddlBoothType) {
+                    ddlBoothType.value = boothType || "";
+                }
                 // ----------------------------
 
                 // Status and Remarks
@@ -2028,7 +2032,16 @@
                         </div>
                     </div>
 
-                    <div class="form-row-3">
+                    <div class="form-row-3" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="ddlApprovalBoothType">Booth Type</label>
+                            <asp:DropDownList ID="ddlApprovalBoothType" runat="server">
+                                <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                <asp:ListItem Text="Shell Scheme" Value="Shell Scheme"></asp:ListItem>
+                                <asp:ListItem Text="Raw Space" Value="Raw Space"></asp:ListItem>
+                            </asp:DropDownList>
+                        </div>
+
                         <div class="form-group">
                             <label for="txtApprovalHall">Hall No</label>
                             <asp:TextBox ID="txtApprovalHall" runat="server" placeholder="Hall No"></asp:TextBox>

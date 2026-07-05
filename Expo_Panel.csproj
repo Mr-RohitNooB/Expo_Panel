@@ -84,6 +84,7 @@
     <Content Include="Exhibitors.aspx" />
     <Content Include="Images\Expo_logo_white.png" />
     <Content Include="PrivacyPolicy.aspx" />
+    <Content Include="RefundPolicy.aspx" />
     <Content Include="SuperAdmin\FinalSpeakerSelection.aspx" />
     <Content Include="SuperAdmin\ManageAdmins.aspx" />
     <Content Include="SuperAdmin\ManageVisitor.aspx" />
@@ -208,6 +209,13 @@
     </Compile>
     <Compile Include="PrivacyPolicy.aspx.designer.cs">
       <DependentUpon>PrivacyPolicy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RefundPolicy.aspx.cs">
+      <DependentUpon>RefundPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RefundPolicy.aspx.designer.cs">
+      <DependentUpon>RefundPolicy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>

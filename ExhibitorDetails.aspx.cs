@@ -36,7 +36,6 @@ namespace Expo_Panel
                             // Basic Info
                             lblCompanyName.Text = rdr["Company"].ToString();
                             lblLocation.Text = $"{rdr["City"]}, {rdr["Country"]}";
-                            lblHall.Text = rdr["HallNo"].ToString();
                             lblBooth.Text = rdr["BoothNo"].ToString();
                             lblFullAddress.Text = rdr["HeadOfficeAddress"].ToString();
 

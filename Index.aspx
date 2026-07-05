@@ -998,6 +998,70 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Lift it up a bit */
             z-index: 10; /* Ensure it sits ON TOP of the speaker photo */
         }
+
+        /* --- Organizer Section --- */
+        .organizer-block {
+            margin-top: 35px;
+            padding: 25px;
+            background: #f8fafc; /* Off-white background */
+            border: 1px solid #e2e8f0; /* Subtle border for clean definition */
+            border-bottom: 4px solid #D94A2B; /* Keeps your orange brand accent */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .organizer-logo-wrap {
+            text-align: center;
+        }
+
+            .organizer-logo-wrap span {
+                display: block;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 10px;
+                color: #64748b; /* Medium-dark slate grey */
+            }
+
+            .organizer-logo-wrap img {
+                max-width: 180px;
+                height: auto;
+                border-radius: 6px; /* Optional: adds a slight curve to the jpeg edges */
+            }
+
+        .organizer-details {
+            text-align: left;
+        }
+
+            .organizer-details h4 {
+                margin: 0 0 8px 0;
+                font-size: 16px;
+                font-weight: 700;
+                color: #1e293b; /* Deep, near-black text for high contrast */
+            }
+
+            .organizer-details p {
+                margin: 0 0 4px 0;
+                font-size: 13px;
+                color: #4a5568; /* Dark grey for standard text */
+            }
+
+        /* Mobile Responsive adjustment */
+        @media (max-width: 600px) {
+            .organizer-block {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .organizer-details {
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1042,7 +1106,7 @@
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="hero-content">
-                <h1>LUBRICANT INDIA EXPO 2026</h1>
+               <h1>Lubricant India Expo & Summit 2026</h1>
                 <p>Join India's premier lubricant industry event showcasing innovation, sustainability, and the future of lubricant technology</p>
                 <div class="event-details">
                     <div class="event-detail-item">
@@ -1147,13 +1211,13 @@
                             </div>
                             <div class="timing-list-compact">
                                 <div class="timing-item-compact">
-                                    <strong>Thu, Sept 10, 2026:</strong> <span>10:00 AM – 6:30 PM</span>
+                                    <strong>Thu, Sept 10, 2026:</strong> <span>10:00 AM – 6:00 PM</span>
                                 </div>
                                 <div class="timing-item-compact">
-                                    <strong>Fri, Sept 11, 2026:</strong> <span>10:00 AM – 6:30 PM</span>
+                                    <strong>Fri, Sept 11, 2026:</strong> <span>10:00 AM – 6:00 PM</span>
                                 </div>
                                 <div class="timing-item-compact">
-                                    <strong>Sat, Sept 12, 2026:</strong> <span>10:00 AM – 6:00 PM</span>
+                                    <strong>Sat, Sept 12, 2026:</strong> <span>10:00 AM – 5:30 PM</span>
                                 </div>
                             </div>
                         </div>
@@ -1202,6 +1266,18 @@
                 <a href="https://maps.app.goo.gl/J1zPJVKvwD7HuRcDA" target="_blank" class="cta-button" style="margin-top: 25px;">
                     <i class="fas fa-map-marked-alt" style="margin-right: 8px;"></i>View on Google Maps
                 </a>
+
+                <div class="organizer-block">
+                    <div class="organizer-logo-wrap">
+                        <span>Organised By</span>
+                        <img src="Images/Etaily.jpeg" alt="ETAILY MARKTECH PRIVATE LIMITED">
+                    </div>
+                    <div class="organizer-details">
+                        <h4>ETAILY MARKTECH PRIVATE LIMITED</h4>
+                        <p><strong>CIN:</strong> U82300PB2025PTC065724</p>
+                        <p><strong>GST:</strong> 03AAJCE1624N1ZO</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1242,9 +1318,10 @@
                     <a href="Exhibitors.aspx">Exhibitors</a>
                     <a href="TermsConditions.aspx">Terms & Conditions</a>
                     <a href="PrivacyPolicy.aspx">Privacy Policy</a>
+                    <a href="RefundPolicy.aspx">Refund Policy</a>
                 </div>
                 <p style="margin-top: 20px; opacity: 0.8;">
-                    © 2025 Lubricant India Expo. All rights reserved.
+                    © 2025 Lubricant India Expo and Summit. All rights reserved.
                 </p>
             </div>
         </footer>

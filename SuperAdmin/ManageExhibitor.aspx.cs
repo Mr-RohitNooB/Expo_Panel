@@ -269,7 +269,7 @@ namespace Expo_Panel.Admin
             }
         }
 
-        private bool SendApprovalEmail(string toEmail, string companyName, string password, string hallNo, string boothNo, string area)
+        private bool SendApprovalEmail(string toEmail, string companyName, string password, string hallNo, string boothNo, string area, string boothType)
         {
             try
             {
@@ -284,38 +284,62 @@ namespace Expo_Panel.Admin
                 string brandColor = "#ed8936";
                 string imagePath = Server.MapPath("~/Images/Expo_logo_Full.png");
 
-                // --- NEW: Generate Absolute Login URL for the button ---
+                // Format Booth Type Description
+                string boothTypeDisplay = boothType;
+                if (!string.IsNullOrEmpty(boothType))
+                {
+                    if (boothType.Equals("Shell Scheme", StringComparison.OrdinalIgnoreCase))
+                    {
+                        boothTypeDisplay = "Shell Scheme<br/><span style='font-size:12px; font-weight:normal; color:#718096;'>(With basic furniture, fascia, etc.)</span>";
+                    }
+                    else if (boothType.Equals("Raw Space", StringComparison.OrdinalIgnoreCase))
+                    {
+                        boothTypeDisplay = "Raw Space<br/><span style='font-size:12px; font-weight:normal; color:#718096;'>(For custom-built booth)</span>";
+                    }
+                }
+
                 string loginUrl = Request.Url.GetLeftPart(UriPartial.Authority) + ResolveUrl("~/User/ExhibitorLogin.aspx");
 
                 // 2. Construct HTML Body
+                // EXPLANATION: I have updated the HTML string below.
+                // - Header is now 'WELCOME TO LUBEiNX'
+                // - Body text is updated with the 'Summit 2026' and 'Features' text.
+                // - The 'Hall No' <tr> row has been deleted from the table.
+                // - Added the 'Harman Singh' contact details near the bottom.
                 string emailBody = $@"
 <div style='font-family: Segoe UI, sans-serif; max-width: 600px; border: 1px solid #e0e0e0; margin: 0 auto;'>
     <div style='background-color: {brandColor}; padding: 30px; text-align: center;'>
-        <h2 style='color: #ffffff; margin: 0; letter-spacing: 1px;'>REGISTRATION APPROVED</h2>
+        <h2 style='color: #ffffff; margin: 0; letter-spacing: 1px;'>WELCOME TO LUBEiNX 2026</h2>
     </div>
 
     <div style='padding: 40px 30px; color: #4a5568; background-color: #ffffff;'>
         <p style='font-size: 16px; margin-bottom: 20px;'>Dear <strong>{companyName}</strong>,</p>
-        <p style='font-size: 16px; line-height: 1.5;'>Congratulations! Your exhibitor registration for <strong>Lubricant India Expo 2026</strong> has been approved.</p>
         
+        <p style='font-size: 16px; line-height: 1.5;'>
+            Congratulations! Your exhibitor registration for <strong>Lubricant India Expo and Summit 2026</strong> has been approved.
+        </p>        
         <div style='background-color: #f7fafc; border-left: 4px solid {brandColor}; padding: 15px; margin: 25px 0;'>
             <p style='margin: 0 0 10px 0; font-weight: bold; color: #2d3748; text-transform: uppercase;'>Your Allocated Space</p>
             <table style='width: 100%; border-collapse: collapse;'>
                 <tr>
-                    <td style='padding: 5px 0; width: 120px; color: #718096;'>Hall No:</td>
-                    <td style='padding: 5px 0; font-weight: 600; color: #2d3748;'>{hallNo}</td>
+                    <td style='padding: 5px 0; color: #718096; vertical-align: top; width: 120px;'>Booth No:</td>
+                    <td style='padding: 5px 0; font-weight: 600; color: #2d3748;'>{boothNo}</td>
                 </tr>
                 <tr>
-                    <td style='padding: 5px 0; color: #718096;'>Size:</td>
+                    <td style='padding: 5px 0; color: #718096; vertical-align: top;'>Booth Type:</td>
+                    <td style='padding: 5px 0; font-weight: 600; color: #2d3748;'>{boothTypeDisplay}</td>
+                </tr>
+                <tr>
+                    <td style='padding: 5px 0; color: #718096; vertical-align: top;'>Size:</td>
                     <td style='padding: 5px 0; font-weight: 600; color: #2d3748;'>{area} Sqm</td>
                 </tr>
             </table>
         </div>
-
-        <p style='font-size: 16px; line-height: 1.5;'>You can now log in to the Exhibitor Panel to update your profile.</p>
-
+  <p style='font-size: 16px; line-height: 1.5;'>
+            Please login to your Exhibitor panel to update company profile and access other features.
+        </p>
         <div style='text-align: center; margin: 30px 0;'>
-            <a href='{loginUrl}' style='background-color: {brandColor}; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; font-size: 16px;'>Login to Exhibitor Panel</a>
+            <a href='{loginUrl}' style='background-color: {brandColor}; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; font-size: 16px;'>Login To Exhibitor Portal</a>
         </div>
 
         <div style='background-color: #edf2f7; padding: 15px; border-radius: 8px; margin-top: 20px;'>
@@ -329,6 +353,10 @@ namespace Expo_Panel.Admin
                 Note: We recommend you to change the password after your first login.
             </p>
         </div>
+
+        <p style='margin-top: 30px; font-size: 14px; color: #4a5568; border-top: 1px solid #edf2f7; padding-top: 20px;'>
+            For any assistance you may contact - <strong>Harman Singh | sales@lubricantindia.com</strong>
+        </p>
     </div>
 
     <div style='background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
@@ -341,6 +369,11 @@ namespace Expo_Panel.Admin
                 {
                     EmailMsg.From = new MailAddress(smtpUser, "Lubricant India Expo 2026");
                     EmailMsg.To.Add(new MailAddress(toEmail));
+
+                    // ADDED CC HERE
+                    EmailMsg.CC.Add(new MailAddress("sales@lubricantindia.com"));
+                    //EmailMsg.CC.Add(new MailAddress("rohitchauhaninfo@gmail.com"));
+
                     EmailMsg.Subject = "Approved: Your Stand Details - Lubricant India Expo 2026";
                     EmailMsg.Priority = MailPriority.High;
 
@@ -666,6 +699,8 @@ namespace Expo_Panel.Admin
                 string password = txtPassword.Text.Trim();
                 string hallNo = txtApprovalHall.Text.Trim();
                 string boothNo = txtApprovalBooth.Text.Trim();
+                string boothType = ddlApprovalBoothType.SelectedValue;
+
                 decimal? area = null;
 
                 if (!string.IsNullOrEmpty(txtApprovalArea.Text.Trim()))
@@ -681,7 +716,7 @@ namespace Expo_Panel.Admin
                     password = GenerateRandomPassword();
 
                 // 1. Update Database
-                UpdateApprovalStatusWithArea(exhibitorId, approvalStatus, remarks, password, CurrentAdminID, area);
+                UpdateApprovalStatusWithDetails(exhibitorId, approvalStatus, remarks, password, CurrentAdminID, area, boothType);
 
                 if (!string.IsNullOrEmpty(hallNo) || !string.IsNullOrEmpty(boothNo))
                     UpdateExhibitorLogistics(exhibitorId, hallNo, boothNo);
@@ -690,13 +725,14 @@ namespace Expo_Panel.Admin
                 if (approvalStatus == "Approved")
                 {
                     string emailToSend = "";
-                    string companyToSend = ""; // Changed from nameToSend
+                    string companyToSend = "";
                     string passwordToSend = password;
+                    string boothTypeToSend = ""; // Variable to hold booth type
 
                     using (SqlConnection con = new SqlConnection(ConnectionString))
                     {
-                        // CHANGED SQL: Select 'Company' instead of 'Name'
-                        string query = "SELECT Company, Email, Password FROM TBL.Exhibitor WHERE ExhibitorID = @ID";
+                        // ADDED BoothType TO QUERY
+                        string query = "SELECT Company, Email, Password, BoothType FROM TBL.Exhibitor WHERE ExhibitorID = @ID";
                         using (SqlCommand cmd = new SqlCommand(query, con))
                         {
                             cmd.Parameters.AddWithValue("@ID", exhibitorId);
@@ -705,8 +741,11 @@ namespace Expo_Panel.Admin
                             {
                                 if (reader.Read())
                                 {
-                                    companyToSend = reader["Company"].ToString(); // Fetch Company
+                                    companyToSend = reader["Company"].ToString();
                                     emailToSend = reader["Email"].ToString();
+
+                                    // Retrieve BoothType
+                                    boothTypeToSend = reader["BoothType"] != DBNull.Value ? reader["BoothType"].ToString() : "";
 
                                     if (string.IsNullOrEmpty(txtPassword.Text.Trim()))
                                     {
@@ -719,14 +758,15 @@ namespace Expo_Panel.Admin
 
                     if (!string.IsNullOrEmpty(emailToSend))
                     {
-                        // Pass 'companyToSend' instead of name
+                        // Pass new parameters to the function
                         bool sent = SendApprovalEmail(
                             emailToSend,
                             companyToSend,
                             passwordToSend,
                             string.IsNullOrEmpty(hallNo) ? "Not Assigned" : hallNo,
                             string.IsNullOrEmpty(boothNo) ? "Not Assigned" : boothNo,
-                            area.HasValue ? area.Value.ToString() : "0"
+                            area.HasValue ? area.Value.ToString() : "0",
+                            boothTypeToSend // Passed Booth Type here
                         );
 
                         if (sent)
@@ -1208,7 +1248,7 @@ namespace Expo_Panel.Admin
                     string query = @"
                         SELECT 
                             e.ExhibitorID, e.Name, e.Email, e.Company, e.RegistrationType, 
-                            e.ApprovalStatus, e.Remarks, e.Password, e.AreaInSqm,
+                            e.ApprovalStatus, e.Remarks, e.Password, e.AreaInSqm, e.BoothType,
                             p.HallNo, p.BoothNo
                         FROM TBL.Exhibitor e
                         LEFT JOIN TBL.PostApprovalExhibitor p ON e.ExhibitorID = p.ExhibitorID AND p.IS_ACTIVE = 1
@@ -1240,9 +1280,10 @@ namespace Expo_Panel.Admin
                             string hall = reader["HallNo"] != DBNull.Value ? reader["HallNo"].ToString().Replace("'", "\\'") : "";
                             string booth = reader["BoothNo"] != DBNull.Value ? reader["BoothNo"].ToString().Replace("'", "\\'") : "";
                             string area = reader["AreaInSqm"] != DBNull.Value ? reader["AreaInSqm"].ToString() : "";
+                            string boothType = reader["BoothType"] != DBNull.Value ? reader["BoothType"].ToString().Replace("'", "\\'") : "";
 
                             // ✅ FIXED: Added hall, booth, and area to the function call
-                            string script = $"openApprovalModal({exhibitorId}, '{name}', '{email}', '{company}', '{regType}', '{approvalStatus}', '{remarks}', '{password}', '{hall}', '{booth}', '{area}');";
+                            string script = $"openApprovalModal({exhibitorId}, '{name}', '{email}', '{company}', '{regType}', '{approvalStatus}', '{remarks}', '{password}', '{hall}', '{booth}', '{area}', '{boothType}');";
                             ScriptManager.RegisterStartupScript(this, GetType(), "openApprovalModal", script, true);
                         }
                         reader.Close();
@@ -1795,21 +1836,22 @@ namespace Expo_Panel.Admin
         }
 
         // Helper 1: Updates Status + Area
-        private void UpdateApprovalStatusWithArea(int exhibitorId, string approvalStatus, string remarks, string password, int approvedBy, decimal? area)
+        private void UpdateApprovalStatusWithDetails(int exhibitorId, string approvalStatus, string remarks, string password, int approvedBy, decimal? area, string boothType)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(@"
-                    UPDATE TBL.Exhibitor
-                    SET 
-                        ApprovalStatus = @ApprovalStatus,
-                        Remarks = @Remarks,
-                        Password = CASE WHEN @ApprovalStatus = 'Approved' THEN @Password ELSE Password END,
-                        ApprovedBy = @ApprovedBy,
-                        ApprovalDate = GETDATE(),
-                        ModifiedDate = GETDATE(),
-                        AreaInSqm = @Area  -- Update Area here
-                    WHERE ExhibitorID = @ExhibitorID", con))
+            UPDATE TBL.Exhibitor
+            SET 
+                ApprovalStatus = @ApprovalStatus,
+                Remarks = @Remarks,
+                Password = CASE WHEN @ApprovalStatus = 'Approved' THEN @Password ELSE Password END,
+                ApprovedBy = @ApprovedBy,
+                ApprovalDate = GETDATE(),
+                ModifiedDate = GETDATE(),
+                AreaInSqm = @Area,
+                BoothType = @BoothType   -- NEW: Update Booth Type
+            WHERE ExhibitorID = @ExhibitorID", con))
                 {
                     cmd.Parameters.AddWithValue("@ExhibitorID", exhibitorId);
                     cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
@@ -1817,6 +1859,9 @@ namespace Expo_Panel.Admin
                     cmd.Parameters.AddWithValue("@Password", string.IsNullOrEmpty(password) ? (object)DBNull.Value : password);
                     cmd.Parameters.AddWithValue("@ApprovedBy", approvedBy);
                     cmd.Parameters.AddWithValue("@Area", area.HasValue ? (object)area.Value : DBNull.Value);
+
+                    // Add parameter for BoothType
+                    cmd.Parameters.AddWithValue("@BoothType", string.IsNullOrEmpty(boothType) ? (object)DBNull.Value : boothType);
 
                     con.Open();
                     cmd.ExecuteNonQuery();

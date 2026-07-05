@@ -1212,6 +1212,15 @@ namespace Expo_Panel.Admin
         protected global::System.Web.UI.WebControls.TextBox txtApprovalRegType;
 
         /// <summary>
+        /// ddlApprovalBoothType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlApprovalBoothType;
+
+        /// <summary>
         /// txtApprovalHall control.
         /// </summary>
         /// <remarks>

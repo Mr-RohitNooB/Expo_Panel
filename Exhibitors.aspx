@@ -738,6 +738,7 @@
                     <a href="Exhibitors.aspx">Exhibitors</a>
                     <a href="TermsConditions.aspx">Terms & Conditions</a>
                     <a href="PrivacyPolicy.aspx">Privacy Policy</a>
+                    <a href="RefundPolicy.aspx">Refund Policy</a>
                 </div>
                 <p>© 2025 Lubricant India Expo. All rights reserved.</p>
             </div>
